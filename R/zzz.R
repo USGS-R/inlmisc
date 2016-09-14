@@ -1,0 +1,25 @@
+.onAttach <- function(lib, pkg) {
+  if (interactive()) {
+    ver <- read.dcf(file.path(lib, pkg, "DESCRIPTION"), "Version")
+    packageStartupMessage(pkg, ": version: ", ver)
+
+    s <- paste(" Type 'citation(\"", pkg, "\")' for citing this R package in publications.", sep="")
+    packageStartupMessage(s)
+
+    if (ver < 1) {
+      s <- paste("This information is preliminary or provisional and is subject to revision.",
+                 "It is being provided to meet the need for timely best science.",
+                 "The information has not received final approval by the U.S. Geological Survey (USGS) and",
+                 "is provided on the condition that neither the USGS nor the U.S. Government shall be",
+                 "held liable for any damages resulting from the authorized or unauthorized use of the information.",
+                 "Although this software program has been used by the USGS, no warranty, expressed or implied,",
+                 "is made by the USGS or the U.S. Government as to the accuracy and functioning of the program and",
+                 "related program material nor shall the fact of distribution constitute any such warranty,",
+                 "and no responsibility is assumed by the USGS in connection therewith.")
+      packageStartupMessage(paste(strwrap(s, indent=1), collapse="\n "))
+    }
+  }
+
+  raster::rasterOptions(standardnames=FALSE)
+  invisible()
+}
