@@ -8,6 +8,14 @@ processing MODFLOW-based models, and overlaying multi-polygon objects.
 Used to support packages and scripts written by researchers at the U.S. Geological Survey (USGS)
 [Idaho National Laboratory Project Office](http://id.water.usgs.gov/INL/ "INL Project Office").
 
+## Install
+
+Install it from GitHub with:
+
+```r
+devtools::install_github("jfisher-usgs/inlmisc")
+```
+
 ## Bugs
 
 Please consider reporting bugs and asking questions on the [Issues page](https://github.com/jfisher-usgs/inlmisc/issues).
