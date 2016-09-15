@@ -1,24 +1,30 @@
 # inlmisc
 
-[![Travis-CI Build Status](https://travis-ci.org/jfisher-usgs/inlmisc.svg?branch=master)](https://travis-ci.org/jfisher-usgs/inlmisc)
-[![Coverage Status](https://coveralls.io/repos/github/jfisher-usgs/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/jfisher-usgs/inlmisc?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
+[![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
 
 A collection of functions for creating high-level graphics, performing raster-based analysis,
 processing MODFLOW-based models, and overlaying multi-polygon objects.
-Used to support packages and scripts written by researchers at the U.S. Geological Survey (USGS)
+Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
 [Idaho National Laboratory Project Office](http://id.water.usgs.gov/INL/ "INL Project Office").
 
 ## Install
 
-Install it from GitHub with:
+You can install the stable version on [CRAN](https://cran.r-project.org/package=inlmisc):
 
 ```r
-devtools::install_github("jfisher-usgs/inlmisc")
+install.packages("inlmisc", dependencies = TRUE)
+```
+
+Or use **devtools** to install the development version from GitHub:
+
+```r
+devtools::install_github("USGS-R/inlmisc")
 ```
 
 ## Bugs
 
-Please consider reporting bugs and asking questions on the [Issues page](https://github.com/jfisher-usgs/inlmisc/issues).
+Please consider reporting bugs and asking questions on the [Issues page](https://github.com/USGS-R/inlmisc/issues).
 
 ## Disclaimer
 

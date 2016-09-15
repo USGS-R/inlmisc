@@ -29,8 +29,8 @@ Copyright: This software is in the public domain because it contains materials
     agency of the United States Department of Interior. For more information,
     see the official USGS copyright policy at
     http://www.usgs.gov/visual-id/credit_usgs.html#copyright
-URL: https://github.com/jfisher-usgs/inlmisc
-BugReports: https://github.com/jfisher-usgs/inlmisc/issues
+URL: https://github.com/USGS-R/inlmisc
+BugReports: https://github.com/USGS-R/inlmisc/issues
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
