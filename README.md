@@ -5,7 +5,7 @@
 
 A collection of functions for creating high-level graphics, performing raster-based analysis,
 processing MODFLOW-based models, and overlaying multi-polygon objects.
-Used to support packages and scripts written by researchers at the U.S. Geological Survey (USGS)
+Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
 [Idaho National Laboratory Project Office](http://id.water.usgs.gov/INL/ "INL Project Office").
 
 ## Install
