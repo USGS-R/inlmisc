@@ -1,7 +1,7 @@
 # inlmisc
 
-[![Travis-CI Build Status](https://travis-ci.org/jfisher-usgs/inlmisc.svg?branch=master)](https://travis-ci.org/jfisher-usgs/inlmisc)
-[![Coverage Status](https://coveralls.io/repos/github/jfisher-usgs/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/jfisher-usgs/inlmisc?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
+[![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
 
 A collection of functions for creating high-level graphics, performing raster-based analysis,
 processing MODFLOW-based models, and overlaying multi-polygon objects.
@@ -13,12 +13,12 @@ Used to support packages and scripts written by researchers at the U.S. Geologic
 Install it from GitHub with:
 
 ```r
-devtools::install_github("jfisher-usgs/inlmisc")
+devtools::install_github("USGS-R/inlmisc")
 ```
 
 ## Bugs
 
-Please consider reporting bugs and asking questions on the [Issues page](https://github.com/jfisher-usgs/inlmisc/issues).
+Please consider reporting bugs and asking questions on the [Issues page](https://github.com/USGS-R/inlmisc/issues).
 
 ## Disclaimer
 
