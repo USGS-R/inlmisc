@@ -13,7 +13,7 @@
 #' @return For the default \code{lab.type = "latex"}, a \code{character} vector of the same length as argument \code{x}.
 #'   And for \code{lab.type = "plotmath"}, an expression of the same length as \code{x},
 #'   typically with elements of the form \code{m x 10^n}.
-#'   In order to comply with \href{http://www.section508.gov/}{Section 508},
+#'   In order to comply with \href{https://www.section508.gov}{Section 508},
 #'   an \dQuote{\code{x}} is used as the label separator for the \code{plotmath} type---rather than
 #'   the more common \dQuote{\code{\%*\%}} seperator.
 #'
