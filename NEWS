@@ -1,3 +1,9 @@
+Changes in Version 0.1.2
+
+  o  Explain the USGS and INL acronyms from the Title in the DESCRIPTION file.
+
+  o  Fix invalid URLs.
+
 Changes in Version 0.1.0
 
   o  First version of inlmisc
