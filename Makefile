@@ -14,8 +14,7 @@
 #     sudo apt-get build-dep r-base-core
 #
 #   install R packages
-#     pkgs <- c("devtools", "roxygen2", "knitr")
-#     install.packages(pkgs, repos="http://cran.rstudio.com")
+#     install.packages(c("devtools", "roxygen2", "knitr", "testthat"))
 #
 # Targets: run using 'make <target>'
 #
