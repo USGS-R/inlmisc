@@ -154,14 +154,12 @@ A key showing how the colors map to raster values is shown below the map.
 The dimensions of a new graphics device is dependent on the argument values of \code{max.dev.dim} and \code{asp}.
 }
 \examples{
-library(raster)
-
-r <- raster(nrow = 10, ncol = 10)
+r <- raster::raster(nrow = 10, ncol = 10)
 r[] <- 1L
 r[51:100] <- 2L
 r[3:6, 1:5] <- 8L
-r <- ratify(r)
-rat <- levels(r)[[1]]
+r <- raster::ratify(r)
+rat <- raster::levels(r)[[1]]
 rat$land.cover <- c("Pine", "Oak", "Meadow")
 rat$code <- c(12, 25, 30)
 levels(r) <- rat
@@ -169,7 +167,7 @@ PlotMap(r, att = "land.cover", col = c("grey", "orange", "purple"))
 PlotMap(r, att = "code")
 
 graphics.off()
-r <- raster(system.file("external/test.grd", package="raster"))
+r <- raster::raster(system.file("external/test.grd", package="raster"))
 PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, trim.r = TRUE)
 
 }

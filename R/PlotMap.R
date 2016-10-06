@@ -117,14 +117,12 @@
 #' @export
 #'
 #' @examples
-#' library(raster)
-#'
-#' r <- raster(nrow = 10, ncol = 10)
+#' r <- raster::raster(nrow = 10, ncol = 10)
 #' r[] <- 1L
 #' r[51:100] <- 2L
 #' r[3:6, 1:5] <- 8L
-#' r <- ratify(r)
-#' rat <- levels(r)[[1]]
+#' r <- raster::ratify(r)
+#' rat <- raster::levels(r)[[1]]
 #' rat$land.cover <- c("Pine", "Oak", "Meadow")
 #' rat$code <- c(12, 25, 30)
 #' levels(r) <- rat
@@ -132,7 +130,7 @@
 #' PlotMap(r, att = "code")
 #'
 #' graphics.off()
-#' r <- raster(system.file("external/test.grd", package="raster"))
+#' r <- raster::raster(system.file("external/test.grd", package="raster"))
 #' PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, trim.r = TRUE)
 #'
 
@@ -339,20 +337,32 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
     h2 <- dev.dim[2] - h1
     h <- h1 + h2
   } else {
-    w <- max.dev.dim[1]
-    repeat {
-      y2 <- (w - mar2[2] - mar2[4]) * (diff(ylim) / diff(xlim)) * asp
-      h2 <- y2 + mar2[1] + mar2[3]
-      h1 <- y1 + mar1[1] + mar1[3]
-      h <- h1 + h2
-      if (h > max.dev.dim[2])
-        w <- w - 0.01
-      else
+    for (i in 1:2) {
+      w <- max.dev.dim[1]
+      repeat {
+        y2 <- (w - mar2[2] - mar2[4]) * (diff(ylim) / diff(xlim)) * asp
+        h2 <- y2 + mar2[1] + mar2[3]
+        h1 <- y1 + mar1[1] + mar1[3]
+        h <- h1 + h2
+        if (h > max.dev.dim[2])
+          w <- w - 0.01
+        else
+          break
+      }
+      wi <- w * inches.in.pica
+      hi <- h * inches.in.pica
+      grDevices::dev.new(width=wi, height=hi, noRStudioGD=TRUE)
+
+      # ensure user specified max device size is not > actual device size
+      dev.dim <- grDevices::dev.size("in") / inches.in.pica
+      if (any(dev.dim < c(w, h))) {
+        if (dev.dim[1] < max.dev.dim[1]) max.dev.dim[1] <- dev.dim[1]
+        if (dev.dim[2] < max.dev.dim[2]) max.dev.dim[2] <- dev.dim[2]
+        grDevices::dev.off()
+      } else {
         break
+      }
     }
-    wi <- w * inches.in.pica
-    hi <- h * inches.in.pica
-    grDevices::dev.new(width=wi, height=hi)
   }
 
   if (draw.key)

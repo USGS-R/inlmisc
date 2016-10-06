@@ -1,6 +1,8 @@
-Changes in Version 0.1.3
+Changes in Version 0.1.4
 
-  o  ...
+  o  Fix bug in PlotMap function that resulted in an error when the user specified
+     maximum graphics device dimensions, set using the max.dev.dim argument,
+     was greater than the dimension limits of the users screen.
 
 Changes in Version 0.1.2
 
