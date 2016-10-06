@@ -48,8 +48,7 @@ The \code{budget[[i]]$d} data table component must contain a numeric \code{id} f
 }
 \examples{
 \dontrun{
-  path <- file.path(getwd(), "modflow.bud")
-  d <- SummariseBudget(path)
+  d <- SummariseBudget("modflow.bud")
 }
 
 }

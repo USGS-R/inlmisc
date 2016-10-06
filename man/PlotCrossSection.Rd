@@ -120,26 +120,24 @@ A key showing how the colors map to raster values is shown below the map.
 The dimensions of a new graphics device is dependent on the argument values of \code{max.dev.dim} and \code{asp}.
 }
 \examples{
-library(raster)
-
 data(volcano)
 x <- seq(from = 2667405, length.out = 61, by = 10)
 y <- seq(from = 6478705, length.out = 87, by = 10)
-r1 <- raster(volcano, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
-             crs = CRS("+init=epsg:27200"))
+r1 <- raster::raster(volcano, xmn = min(x), xmx = max(x), ymn = min(y),
+                     ymx = max(y), crs = sp::CRS("+init=epsg:27200"))
 r2 <- min(r1[]) - r1 / 10
 r3 <- r1 - r2
-rs <- stack(r1, r2, r3)
+rs <- raster::stack(r1, r2, r3)
 names(rs) <- c("r1", "r2", "r3")
 
 xy <- rbind(c(2667508, 6479501), c(2667803, 6479214), c(2667508, 6478749))
-transect <- SpatialLines(list(Lines(list(Line(xy)), ID = "Transect")),
-                         proj4string = crs(rs))
+transect <- sp::SpatialLines(list(sp::Lines(list(sp::Line(xy)), ID = "Transect")),
+                             proj4string = raster::crs(rs))
 
-plot(r1)
+raster::plot(r1)
 lines(transect)
-text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"), cex = 0.7,
-     pos = c(3, 4, 1), offset = 0.1, font = 4)
+raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
+             cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
 
 graphics.off()
 PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",

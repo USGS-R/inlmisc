@@ -45,8 +45,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'   path <- file.path(getwd(), "modflow.bud")
-#'   d <- SummariseBudget(path)
+#'   d <- SummariseBudget("modflow.bud")
 #' }
 #'
 

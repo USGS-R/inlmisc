@@ -31,24 +31,24 @@
 #' @export
 #'
 #' @examples
-#' library(sp)
-#'
 #' m1a <- matrix(c(17.5, 24.7, 22.6, 16.5, 55.1, 55.0, 61.1, 59.7), nrow = 4, ncol = 2)
 #' m1b <- m1a
 #' m1b[, 1] <- m1b[, 1] + 11
-#' p1 <- SpatialPolygons(list(Polygons(list(Polygon(m1a, FALSE), Polygon(m1b, FALSE)), 1)))
-#' plot(p1, col = "blue")
+#' p1 <- sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(m1a, FALSE),
+#'                                                  sp::Polygon(m1b, FALSE)), 1)))
+#' sp::plot(p1, col = "blue")
 #'
 #' m2a <- matrix(c(19.6, 35.7, 28.2, 60.0, 58.8, 64.4), nrow = 3, ncol = 2)
 #' m2b <- matrix(c(20.6, 30.9, 27.3, 56.2, 53.8, 51.4), nrow = 3, ncol = 2)
-#' p2 <- SpatialPolygons(list(Polygons(list(Polygon(m2a, FALSE), Polygon(m2b, FALSE)), 2)))
-#' plot(p2, col = "red", add = TRUE)
+#' p2 <- sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(m2a, FALSE),
+#'                                                  sp::Polygon(m2b, FALSE)), 2)))
+#' sp::plot(p2, col = "red", add = TRUE)
 #'
 #' p <- SetPolygons(p1, p2, "gIntersection")
-#' plot(p, col = "green", add = TRUE)
+#' sp::plot(p, col = "green", add = TRUE)
 #'
 #' p <- SetPolygons(p2, p1, "gDifference")
-#' plot(p, col = "purple", add = TRUE)
+#' sp::plot(p, col = "purple", add = TRUE)
 #'
 
 SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"),

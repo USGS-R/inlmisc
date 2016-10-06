@@ -355,7 +355,7 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
 
       # ensure user specified max device size is not > actual device size
       dev.dim <- grDevices::dev.size("in") / inches.in.pica
-      if (any(dev.dim < c(w, h))) {
+      if (any(dev.dim < (c(w, h) * 0.99))) {
         if (dev.dim[1] < max.dev.dim[1]) max.dev.dim[1] <- dev.dim[1]
         if (dev.dim[2] < max.dev.dim[2]) max.dev.dim[2] <- dev.dim[2]
         grDevices::dev.off()
