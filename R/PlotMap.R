@@ -60,7 +60,7 @@
 #'   Position of the north arrow:
 #'   "bottomleft", "topleft", "topright", or "bottomright" to denote arrow location.
 #' @param explanation character.
-#'   Label explaining the raster value.
+#'   Label explaining the raster cell value.
 #' @param credit character.
 #'   Label crediting the base map.
 #' @param shade list.
@@ -93,6 +93,10 @@
 #' @param useRaster logical.
 #'   If true, a bitmap raster is used to plot \code{r} instead of using polygons.
 #'   If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.
+#' @param file character.
+#'   Name of PDF file.
+#'   Specifying this argument will start a graphics device driver for producing a PDF graphic.
+#'   The graphics driver will close when the function exits.
 #'
 #' @details The dimensions of a new graphics device is dependent on the argument values of \code{max.dev.dim} and \code{asp}.
 #'
@@ -132,6 +136,16 @@
 #' graphics.off()
 #' r <- raster::raster(system.file("external/test.grd", package="raster"))
 #' PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, trim.r = TRUE)
+#' data(meuse, package = "sp")
+#' sp::coordinates(meuse) = ~x+y
+#' points(meuse)
+#'
+#' r <- wrv::alluvium.thickness
+#' map.par <- PlotMap(r@crs, bg.image = wrv::hill.shading, reg.axs = FALSE,
+#'                    file = "Rplots.pdf")
+#' print(map.par)
+#'
+#' file.remove("Rplots.pdf")
 #'
 
 PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
@@ -141,7 +155,8 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
                     max.dev.dim=c(43, 56), labels=NULL, scale.loc="bottomleft",
                     arrow.loc=NULL, explanation=NULL, credit=proj4string(r),
                     shade=NULL, contour.lines=NULL, rivers=NULL, lakes=NULL,
-                    roads=NULL, draw.key=NULL, draw.raster=TRUE, useRaster) {
+                    roads=NULL, draw.key=NULL, draw.raster=TRUE,
+                    useRaster, file) {
 
   if (!is.null(bg.image) && !inherits(bg.image, "RasterLayer"))
     stop("background image is the incorrect class")
@@ -330,39 +345,26 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
     mar1 <- c(0, 0, 0, 0)
   }
 
-  if (grDevices::dev.cur() > 1) {
+  if (missing(file)) {
+    if (grDevices::dev.cur() == 1) grDevices::dev.new()
     dev.dim <- grDevices::dev.size() / inches.in.pica
     w <- dev.dim[1]
     h1 <- y1 + mar1[1] + mar1[3]
     h2 <- dev.dim[2] - h1
     h <- h1 + h2
   } else {
-    for (i in 1:2) {
-      w <- max.dev.dim[1]
-      repeat {
-        y2 <- (w - mar2[2] - mar2[4]) * (diff(ylim) / diff(xlim)) * asp
-        h2 <- y2 + mar2[1] + mar2[3]
-        h1 <- y1 + mar1[1] + mar1[3]
-        h <- h1 + h2
-        if (h > max.dev.dim[2])
-          w <- w - 0.01
-        else
-          break
-      }
-      wi <- w * inches.in.pica
-      hi <- h * inches.in.pica
-      grDevices::dev.new(width=wi, height=hi, noRStudioGD=TRUE)
-
-      # ensure user specified max device size is not > actual device size
-      dev.dim <- grDevices::dev.size("in") / inches.in.pica
-      if (any(dev.dim < (c(w, h) * 0.99))) {
-        if (dev.dim[1] < max.dev.dim[1]) max.dev.dim[1] <- dev.dim[1]
-        if (dev.dim[2] < max.dev.dim[2]) max.dev.dim[2] <- dev.dim[2]
-        grDevices::dev.off()
-      } else {
-        break
-      }
+    w <- max.dev.dim[1]
+    repeat {
+      y2 <- (w - mar2[2] - mar2[4]) * (diff(ylim) / diff(xlim)) * asp
+      h2 <- y2 + mar2[1] + mar2[3]
+      h1 <- y1 + mar1[1] + mar1[3]
+      h <- h1 + h2
+      if (h > max.dev.dim[2]) w <- w - 0.01 else break
     }
+    wi <- w * inches.in.pica
+    hi <- h * inches.in.pica
+    grDevices::pdf(file, width=wi, height=hi)
+    on.exit(grDevices::dev.off())
   }
 
   if (draw.key)
@@ -535,7 +537,9 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
   if (!is.null(arrow.loc))
     .AddNorthArrow(arrow.loc, r@crs, cex)
 
-  invisible(list(din=graphics::par("din"), usr=graphics::par("usr"), heights=c(h2, h1) / h))
+  invisible(list(din=graphics::par("din"),
+                 usr=graphics::par("usr"),
+                 heights=c(h2, h1) / h))
 }
 
 

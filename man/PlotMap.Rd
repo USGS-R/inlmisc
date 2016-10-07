@@ -11,7 +11,7 @@ PlotMap(r, layer = 1, att = NULL, n, breaks, xlim = NULL, ylim = NULL,
   max.dev.dim = c(43, 56), labels = NULL, scale.loc = "bottomleft",
   arrow.loc = NULL, explanation = NULL, credit = proj4string(r),
   shade = NULL, contour.lines = NULL, rivers = NULL, lakes = NULL,
-  roads = NULL, draw.key = NULL, draw.raster = TRUE, useRaster)
+  roads = NULL, draw.key = NULL, draw.raster = TRUE, useRaster, file)
 }
 \arguments{
 \item{r}{RasterLayer, SpatialGridDataFrame, or CRS.
@@ -94,7 +94,7 @@ Position of the north arrow:
 "bottomleft", "topleft", "topright", or "bottomright" to denote arrow location.}
 
 \item{explanation}{character.
-Label explaining the raster value.}
+Label explaining the raster cell value.}
 
 \item{credit}{character.
 Label crediting the base map.}
@@ -136,6 +136,11 @@ If true, the raster image is drawn.}
 \item{useRaster}{logical.
 If true, a bitmap raster is used to plot \code{r} instead of using polygons.
 If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.}
+
+\item{file}{character.
+Name of PDF file.
+Specifying this argument will start a graphics device driver for producing a PDF graphic.
+The graphics driver will close when the function exits.}
 }
 \value{
 Used for the side-effect of a new plot generated.
@@ -169,6 +174,16 @@ PlotMap(r, att = "code")
 graphics.off()
 r <- raster::raster(system.file("external/test.grd", package="raster"))
 PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, trim.r = TRUE)
+data(meuse, package = "sp")
+sp::coordinates(meuse) = ~x+y
+points(meuse)
+
+r <- wrv::alluvium.thickness
+map.par <- PlotMap(r@crs, bg.image = wrv::hill.shading, reg.axs = FALSE,
+                   file = "Rplots.pdf")
+print(map.par)
+
+file.remove("Rplots.pdf")
 
 }
 \author{

@@ -1,8 +1,9 @@
 Changes in Version 0.1.4
 
-  o  Fix bug in PlotMap function that resulted in an error when the user specified
-     maximum graphics device dimensions, set using the max.dev.dim argument,
-     was greater than the dimension limits of the users screen.
+  o  Add file argument to PlotMap and PlotCrossSection functions,
+     Specifying this argument will start a graphics device driver for producing a PDF graphic.
+
+  o  Width and height of graphics device is no longer calculated when drawing to screen.
 
 Changes in Version 0.1.2
 

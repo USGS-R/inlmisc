@@ -10,7 +10,7 @@ PlotCrossSection(transect, rs, geo.lays = names(rs), val.lays = NULL,
   unit = NULL, id = c("A", "A'"), labels = NULL, explanation = NULL,
   features = NULL, max.feature.dist = Inf, draw.key = TRUE,
   draw.sep = TRUE, is.categorical = FALSE, contour.lines = NULL,
-  bg.col = "#E1E1E1", wt.col = "#FFFFFFD8")
+  bg.col = "#E1E1E1", wt.col = "#FFFFFFD8", file)
 }
 \arguments{
 \item{transect}{SpatialLines.
@@ -50,7 +50,7 @@ Desired number of intervals to partition the range of raster values (optional).}
 Vector of break points used to partition the colors representing numeric raster values (optional).}
 
 \item{pal}{function.
-A color palette to be used to assign colors in the plot, \code{rainbow} by default.}
+Color palette to be used to assign colors in the plot, rainbow by default.}
 
 \item{col}{character.
 Vector of colors to be used in the plot.
@@ -70,10 +70,10 @@ defaults to \emph{A--A'}.}
 
 \item{labels}{list.
 Describes the location and values of labels in the color key.
-This list may include components \code{at} and \code{labels}, numeric and character vectors, respectively.}
+This list may include components \code{at} and \code{labels}.}
 
 \item{explanation}{character.
-Label that describes the cell values.}
+Label explaining the raster cell value.}
 
 \item{features}{SpatialGridDataFrame.
 Point features adjacent to the transect line that are used as reference labels for the upper geometry layer.}
@@ -83,13 +83,13 @@ Maximum distance from a point feature to the transect line,
 specified in the units of the \code{rs} projection.}
 
 \item{draw.key}{logical.
-If \code{FALSE}, a color key is not drawn.}
+If true, a color key should be drawn.}
 
 \item{draw.sep}{logical.
-If \code{TRUE}, lines separating geometry layers are drawn.}
+If true, lines separating geometry layers are drawn.}
 
 \item{is.categorical}{logical.
-If \code{TRUE}, cell values in \code{val.lays} represent categorical data;
+If true, cell values in \code{val.lays} represent categorical data;
 otherwise, these data values are assumed continuous.}
 
 \item{contour.lines}{list.
@@ -102,10 +102,15 @@ Color used for the background of the area below the upper geometry raster layer.
 
 \item{wt.col}{character.
 Color used for the water-table line.}
+
+\item{file}{character.
+Name of PDF file.
+Specifying this argument will start a graphics device driver for producing a PDF graphic.
+The graphics driver will close when the function exits.}
 }
 \value{
 Used for the side-effect of a new plot generated.
-  Returns a \code{list} object with the following graphical parameters:
+  Returns a list object with the following graphical parameters:
   \describe{
     \item{din}{device dimensions \code{(width, height)}, in inches.}
     \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}
@@ -116,11 +121,8 @@ Used for the side-effect of a new plot generated.
 This function creates a cross-section view of raster data.
 A key showing how the colors map to raster values is shown below the map.
 }
-\details{
-The dimensions of a new graphics device is dependent on the argument values of \code{max.dev.dim} and \code{asp}.
-}
 \examples{
-data(volcano)
+data(volcano, package = "datasets")
 x <- seq(from = 2667405, length.out = 61, by = 10)
 y <- seq(from = 6478705, length.out = 87, by = 10)
 r1 <- raster::raster(volcano, xmn = min(x), xmx = max(x), ymn = min(y),
