@@ -45,8 +45,6 @@ The smaller axis-aligned rectangle (relative to the larger map polygon) is defin
   the user coordinate extent of the main plot region, see \code{par("usr")}.
 }
 \examples{
-library(maptools)
-
 nc <- maptools::readShapePoly(system.file("shapes/sids.shp", package = "maptools")[1],
                               proj4string=sp::CRS("+proj=longlat +datum=NAD27"))
 bb <- sp::bbox(nc[100, ])

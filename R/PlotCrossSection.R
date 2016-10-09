@@ -103,7 +103,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
                              features=NULL, max.feature.dist=Inf, draw.key=TRUE,
                              draw.sep=TRUE, is.categorical=FALSE,
                              contour.lines=NULL, bg.col="#E1E1E1",
-                             wt.col="#FFFFFFD8", file) {
+                             wt.col="#FFFFFFD8", file=NULL) {
 
   if (!inherits(transect, "SpatialLines"))
     stop("incorrect class for 'transect' argument")
@@ -197,7 +197,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     mar1 <- c(0, 0, 0, 0)
   }
 
-  if (missing(file)) {
+  if (is.null(file)) {
     if (grDevices::dev.cur() == 1) grDevices::dev.new()
     dev.dim <- grDevices::dev.size() / inches.in.pica
     w <- dev.dim[1]
@@ -215,7 +215,14 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     }
     wi <- w * inches.in.pica
     hi <- h * inches.in.pica
-    grDevices::pdf(file, width=wi, height=hi)
+    ext <- tolower(tools::file_ext(file))
+    if (ext == "pdf") {
+      grDevices::pdf(file, width=wi, height=hi)
+    } else if (ext == "png") {
+      grDevices::png(file, width=wi * 100, height=hi * 100, res=100)
+    } else {
+      stop("file argument does not have a valid extension")
+    }
     on.exit(grDevices::dev.off())
   }
 

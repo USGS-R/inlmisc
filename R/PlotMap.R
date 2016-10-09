@@ -90,13 +90,14 @@
 #'   If true, a color key should be drawn.
 #' @param draw.raster logical.
 #'   If true, the raster image is drawn.
+#' @param file character.
+#'   Name of the output file.
+#'   Specifying this argument will start a graphics device driver for producing a
+#'   PDF or PNG format file---type of format based on file extension.
+#'   The graphics driver will close when the function exits.
 #' @param useRaster logical.
 #'   If true, a bitmap raster is used to plot \code{r} instead of using polygons.
 #'   If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.
-#' @param file character.
-#'   Name of PDF file.
-#'   Specifying this argument will start a graphics device driver for producing a PDF graphic.
-#'   The graphics driver will close when the function exits.
 #'
 #' @details The dimensions of a new graphics device is dependent on the argument values of \code{max.dev.dim} and \code{asp}.
 #'
@@ -155,8 +156,8 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
                     max.dev.dim=c(43, 56), labels=NULL, scale.loc="bottomleft",
                     arrow.loc=NULL, explanation=NULL, credit=proj4string(r),
                     shade=NULL, contour.lines=NULL, rivers=NULL, lakes=NULL,
-                    roads=NULL, draw.key=NULL, draw.raster=TRUE,
-                    useRaster, file) {
+                    roads=NULL, draw.key=NULL, draw.raster=TRUE, file=NULL,
+                    useRaster) {
 
   if (!is.null(bg.image) && !inherits(bg.image, "RasterLayer"))
     stop("background image is the incorrect class")
@@ -345,7 +346,7 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
     mar1 <- c(0, 0, 0, 0)
   }
 
-  if (missing(file)) {
+  if (is.null(file)) {
     if (grDevices::dev.cur() == 1) grDevices::dev.new()
     dev.dim <- grDevices::dev.size() / inches.in.pica
     w <- dev.dim[1]
@@ -363,7 +364,14 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
     }
     wi <- w * inches.in.pica
     hi <- h * inches.in.pica
-    grDevices::pdf(file, width=wi, height=hi)
+    ext <- tolower(tools::file_ext(file))
+    if (ext == "pdf") {
+      grDevices::pdf(file, width=wi, height=hi)
+    } else if (ext == "png") {
+      grDevices::png(file, width=wi * 100, height=hi * 100, res=100)
+    } else {
+      stop("file argument does not have a valid extension")
+    }
     on.exit(grDevices::dev.off())
   }
 
@@ -618,3 +626,4 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
   sapply(x, function(i) tryCatch(is.matrix(grDevices::col2rgb(i)),
                                  error=function(e) FALSE))
 }
+

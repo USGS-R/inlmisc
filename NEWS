@@ -1,7 +1,7 @@
 Changes in Version 0.1.4
 
   o  Add file argument to PlotMap and PlotCrossSection functions,
-     Specifying this argument will start a graphics device driver for producing a PDF graphic.
+     Specifying this argument will start a graphics device driver for producing either a PDF or PNG file.
 
   o  Width and height of graphics device is no longer calculated when drawing to screen.
 

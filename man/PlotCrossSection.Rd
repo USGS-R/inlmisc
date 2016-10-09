@@ -10,7 +10,7 @@ PlotCrossSection(transect, rs, geo.lays = names(rs), val.lays = NULL,
   unit = NULL, id = c("A", "A'"), labels = NULL, explanation = NULL,
   features = NULL, max.feature.dist = Inf, draw.key = TRUE,
   draw.sep = TRUE, is.categorical = FALSE, contour.lines = NULL,
-  bg.col = "#E1E1E1", wt.col = "#FFFFFFD8", file)
+  bg.col = "#E1E1E1", wt.col = "#FFFFFFD8", file = NULL)
 }
 \arguments{
 \item{transect}{SpatialLines.
@@ -104,8 +104,9 @@ Color used for the background of the area below the upper geometry raster layer.
 Color used for the water-table line.}
 
 \item{file}{character.
-Name of PDF file.
-Specifying this argument will start a graphics device driver for producing a PDF graphic.
+Name of the output file.
+Specifying this argument will start a graphics device driver for producing a
+PDF or PNG format file---type of format based on file extension.
 The graphics driver will close when the function exits.}
 }
 \value{

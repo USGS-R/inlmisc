@@ -11,7 +11,8 @@ PlotMap(r, layer = 1, att = NULL, n, breaks, xlim = NULL, ylim = NULL,
   max.dev.dim = c(43, 56), labels = NULL, scale.loc = "bottomleft",
   arrow.loc = NULL, explanation = NULL, credit = proj4string(r),
   shade = NULL, contour.lines = NULL, rivers = NULL, lakes = NULL,
-  roads = NULL, draw.key = NULL, draw.raster = TRUE, useRaster, file)
+  roads = NULL, draw.key = NULL, draw.raster = TRUE, file = NULL,
+  useRaster)
 }
 \arguments{
 \item{r}{RasterLayer, SpatialGridDataFrame, or CRS.
@@ -133,14 +134,15 @@ If true, a color key should be drawn.}
 \item{draw.raster}{logical.
 If true, the raster image is drawn.}
 
+\item{file}{character.
+Name of the output file.
+Specifying this argument will start a graphics device driver for producing a
+PDF or PNG format file---type of format based on file extension.
+The graphics driver will close when the function exits.}
+
 \item{useRaster}{logical.
 If true, a bitmap raster is used to plot \code{r} instead of using polygons.
 If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.}
-
-\item{file}{character.
-Name of PDF file.
-Specifying this argument will start a graphics device driver for producing a PDF graphic.
-The graphics driver will close when the function exits.}
 }
 \value{
 Used for the side-effect of a new plot generated.

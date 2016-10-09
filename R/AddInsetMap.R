@@ -37,8 +37,6 @@
 #' @export
 #'
 #' @examples
-#' library(maptools)
-#'
 #' nc <- maptools::readShapePoly(system.file("shapes/sids.shp", package = "maptools")[1],
 #'                               proj4string=sp::CRS("+proj=longlat +datum=NAD27"))
 #' bb <- sp::bbox(nc[100, ])
