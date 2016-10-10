@@ -5,7 +5,7 @@
 [![Travis-CI Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
 [![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
 
-**Version on CRAN**
+**CRAN version**
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/inlmisc)](http://cran.r-project.org/package=inlmisc)
 
