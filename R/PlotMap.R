@@ -64,8 +64,8 @@
 #' @param explanation character.
 #'   Label explaining the raster cell value.
 #' @param credit character.
-#'   Label crediting the base map.
-#'   By default, the character string describing the raster layers (\code{r}) projection and datum in the PROJ.4 format.
+#'   Label crediting the base map;
+#'   by default, the character string describing the raster layer's (\code{r}) projection and datum in the PROJ.4 format.
 #' @param shade list.
 #'   If specified, a semi-transparent shade layer is drawn on top of the raster layer.
 #'   This layer is described using a list of arguments supplied to \code{raster::hillShade} function.
