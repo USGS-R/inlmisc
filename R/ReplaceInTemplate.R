@@ -20,8 +20,8 @@
 #' @keywords IO
 #'
 #' @references This code was derived from the
-#'   \href{https://cran.r-project.org/package=sensitivity}{sensitivity}\code{::template.replace} function,
-#'   accessed on Feb 6, 2015 (https://cran.r-project.org/package=sensitivity).
+#'   \href{https://CRAN.R-project.org/package=sensitivity}{sensitivity}\code{::template.replace} function,
+#'   accessed on Feb 6, 2015 (https://CRAN.R-project.org/package=sensitivity).
 #'
 #' @export
 #'
