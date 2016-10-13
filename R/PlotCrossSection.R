@@ -2,6 +2,7 @@
 #'
 #' This function creates a cross-section view of raster data.
 #' A key showing how the colors map to raster values is shown below the map.
+#' The width and height of the graphics region will be automagically determined in some cases.
 #'
 #' @param transect SpatialLines.
 #'   Piecewise linear transect line.
@@ -17,20 +18,10 @@
 #'   the second layer mapped between the second and third geometry layers, and so on.
 #' @param wt.lay character.
 #'   The name in \code{rs} that specifies the water-table raster layer (optional).
-#' @param asp numeric.
-#'   The \emph{y/x} aspect ratio for spatial axes.
-#' @param ylim numeric.
-#'   Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.
-#' @param max.dev.dim numeric.
-#'   Vector of length 2 giving the maximum width and height for the graphics device in picas, respectively.
-#'   Suggested dimensions for single-column, double-column, and sidetitle figures are
-#'   \code{c(21, 56)}, \code{c(43, 56)}, and \code{c(56, 43)}, respectively.
 #' @param n integer.
 #'   Desired number of intervals to partition the range of raster values (optional).
 #' @param breaks numeric.
 #'   Vector of break points used to partition the colors representing numeric raster values (optional).
-#' @param pal function.
-#'   A color palette to be used to assign colors in the plot, \code{rainbow} by default.
 #' @param col character.
 #'   Vector of colors to be used in the plot.
 #'   This argument requires \code{breaks} specification for numeric raster values and overrides any palette function specification.
@@ -43,36 +34,24 @@
 #' @param id character.
 #'   Vector of length 2 giving the labels for the end points of the transect line,
 #'   defaults to \emph{A--A'}.
-#' @param labels list.
-#'   Describes the location and values of labels in the color key.
-#'   This list may include components \code{at} and \code{labels}, numeric and character vectors, respectively.
-#' @param explanation character.
-#'   Label that describes the cell values.
 #' @param features SpatialGridDataFrame.
 #'   Point features adjacent to the transect line that are used as reference labels for the upper geometry layer.
 #' @param max.feature.dist numeric.
 #'   Maximum distance from a point feature to the transect line,
 #'   specified in the units of the \code{rs} projection.
-#' @param draw.key logical.
-#'   If \code{FALSE}, a color key is not drawn.
 #' @param draw.sep logical.
-#'   If \code{TRUE}, lines separating geometry layers are drawn.
+#'   If true, lines separating geometry layers are drawn.
 #' @param is.categorical logical.
-#'   If \code{TRUE}, cell values in \code{val.lays} represent categorical data;
+#'   If true, cell values in \code{val.lays} represent categorical data;
 #'   otherwise, these data values are assumed continuous.
-#' @param contour.lines list.
-#'   If specified, contour lines are drawn.
-#'   The contours are described using a list of arguments supplied to \code{contour}.
-#'   Passed arguments include \code{"drawlables"}, \code{"method"}, and \code{"col"}.
 #' @param bg.col character.
 #'   Color used for the background of the area below the upper geometry raster layer.
 #' @param wt.col character.
 #'   Color used for the water-table line.
-#'
-#' @details The dimensions of a new graphics device is dependent on the argument values of \code{max.dev.dim} and \code{asp}.
+#' @inheritParams PlotMap
 #'
 #' @return Used for the side-effect of a new plot generated.
-#'   Returns a \code{list} object with the following graphical parameters:
+#'   Returns a list object with the following graphical parameters:
 #'   \describe{
 #'     \item{din}{device dimensions \code{(width, height)}, in inches.}
 #'     \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}
@@ -92,31 +71,36 @@
 #' @export
 #'
 #' @examples
-#' library(raster)
-#'
-#' data(volcano)
+#' data(volcano, package = "datasets")
 #' x <- seq(from = 2667405, length.out = 61, by = 10)
 #' y <- seq(from = 6478705, length.out = 87, by = 10)
-#' r1 <- raster(volcano, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
-#'              crs = CRS("+init=epsg:27200"))
+#' r1 <- raster::raster(volcano, xmn = min(x), xmx = max(x), ymn = min(y),
+#'                      ymx = max(y), crs = sp::CRS("+init=epsg:27200"))
 #' r2 <- min(r1[]) - r1 / 10
 #' r3 <- r1 - r2
-#' rs <- stack(r1, r2, r3)
+#' rs <- raster::stack(r1, r2, r3)
 #' names(rs) <- c("r1", "r2", "r3")
 #'
 #' xy <- rbind(c(2667508, 6479501), c(2667803, 6479214), c(2667508, 6478749))
-#' transect <- SpatialLines(list(Lines(list(Line(xy)), ID = "Transect")),
-#'                          proj4string = crs(rs))
+#' transect <- sp::SpatialLines(list(sp::Lines(list(sp::Line(xy)), ID = "Transect")),
+#'                              proj4string = raster::crs(rs))
 #'
-#' plot(r1)
+#' raster::plot(r1)
 #' lines(transect)
-#' text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"), cex = 0.7,
-#'      pos = c(3, 4, 1), offset = 0.1, font = 4)
+#' raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
+#'              cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
 #'
-#' graphics.off()
+#' explanation <- "Vertical thickness between layers, in meters."
 #' PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
-#'                  ylab="Elevation", asp = 5, unit = "METERS",
-#'                  explanation = "Vertical thickness between layers, in meters.")
+#'                  ylab="Elevation", asp = 5, unit = "METERS", explanation = explanation)
+#'
+#' val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
+#'                         ylab="Elevation", asp = 5, unit = "METERS",
+#'                         explanation = explanation, file = "Rplots.png")
+#' print(val)
+#'
+#' file.remove("Rplots.png")
+#' graphics.off()
 #'
 
 PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
@@ -127,7 +111,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
                              features=NULL, max.feature.dist=Inf, draw.key=TRUE,
                              draw.sep=TRUE, is.categorical=FALSE,
                              contour.lines=NULL, bg.col="#E1E1E1",
-                             wt.col="#FFFFFFD8") {
+                             wt.col="#FFFFFFD8", file=NULL) {
 
   if (!inherits(transect, "SpatialLines"))
     stop("incorrect class for 'transect' argument")
@@ -220,7 +204,9 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     y1 <- 0
     mar1 <- c(0, 0, 0, 0)
   }
-  if (grDevices::dev.cur() > 1) {
+
+  if (is.null(file)) {
+    if (grDevices::dev.cur() == 1) grDevices::dev.new()
     dev.dim <- grDevices::dev.size() / inches.in.pica
     w <- dev.dim[1]
     h1 <- y1 + mar1[1] + mar1[3]
@@ -237,7 +223,15 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     }
     wi <- w * inches.in.pica
     hi <- h * inches.in.pica
-    grDevices::dev.new(width=wi, height=hi)
+    ext <- tolower(tools::file_ext(file))
+    if (ext == "pdf") {
+      grDevices::pdf(file, width=wi, height=hi)
+    } else if (ext == "png") {
+      grDevices::png(file, width=wi * 100, height=hi * 100, res=100)
+    } else {
+      stop("file argument does not have a valid extension")
+    }
+    on.exit(grDevices::dev.off())
   }
 
   if (draw.key) {

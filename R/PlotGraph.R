@@ -12,12 +12,8 @@
 #' @param ylab character.
 #'   Vector of length 2 giving the title for the 1st and 2nd-\emph{y} axes.
 #'   The title for the 2nd-\emph{y} axis is optional and requires \code{conversion.factor} be specified.
-#' @param asp numeric.
-#'   The \emph{y/x} aspect ratio.
 #' @param xlim numeric or Date.
-#'   The \code{x} limits \code{(x1, x2)} of the plot.
-#' @param ylim numeric.
-#'   The \code{y} limits \code{(y1, y2)} of the plot.
+#'   Vector of length 2 giving the minimum and maximum values for the \emph{x}-axis.
 #' @param xn,yn integer.
 #'   Desired number of intervals between tick-marks on the \emph{x}- and \emph{y}-axis, respectively.
 #' @param ylog logical.
@@ -57,6 +53,7 @@
 #'   If specified, a background polygon is drawn.
 #'   The polygon is described using a list of arguments supplied to the \code{polygon} function.
 #'   Passed arguments include \code{"x"} and \code{"col"}.
+#' @inheritParams PlotMap
 #'
 #' @return Used for the side-effect of a new plot generated.
 #'
@@ -70,18 +67,15 @@
 #'
 #' @examples
 #' n <- 50L
-#'
 #' x <- as.Date("2008-07-12") + 1:n
 #' y <- sample.int(n, replace = TRUE)
 #' PlotGraph(x, y, ylab = paste("Random number in", c("meters", "feet")), type = "p",
 #'           pch = 16, seq.date.by = "weeks", scientific = FALSE, conversion.factor = 3.28)
 #'
-#' graphics.off()
 #' y <- data.frame(lapply(1:3, function(i) sample(n, replace = TRUE)))
 #' PlotGraph(x, y, ylab = "Random number", type = "s", pch = 1, seq.date.by = "days",
 #'           scientific=TRUE)
 #'
-#' graphics.off()
 #' y <- sapply(1:3, function(i) sample((1:100) + i * 100, n, replace = TRUE))
 #' m <- cbind(as.numeric(x), y)
 #' col <- c("red", "gold", "green")
@@ -89,6 +83,8 @@
 #'           col = col, pt.cex = 0.9)
 #' legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
 #'        pt.cex = 0.9, cex = 0.8, bg = "white")
+#'
+#' graphics.off()
 #'
 
 PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,

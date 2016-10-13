@@ -37,15 +37,13 @@
 #' @export
 #'
 #' @examples
-#' library(maptools)
-#'
-#' nc <- readShapePoly(system.file("shapes/sids.shp", package = "maptools")[1],
-#'                     proj4string=CRS("+proj=longlat +datum=NAD27"))
-#' bb <- bbox(nc[100, ])
-#' xlim <- extendrange(bb["x", ])
-#' ylim <- extendrange(bb["y", ])
+#' nc <- maptools::readShapePoly(system.file("shapes/sids.shp", package = "maptools")[1],
+#'                               proj4string=sp::CRS("+proj=longlat +datum=NAD27"))
+#' bb <- sp::bbox(nc[100, ])
+#' xlim <- grDevices::extendrange(bb["x", ])
+#' ylim <- grDevices::extendrange(bb["y", ])
 #' PlotMap(raster::crs(nc), xlim = xlim, ylim = ylim, dms.tick = TRUE)
-#' plot(nc, add = TRUE)
+#' sp::plot(nc, add = TRUE)
 #' AddInsetMap(nc, width = 3, main.label = list("North Carolina", adj = c(1.8, 3)),
 #'             sub.label = list("Map area", adj = c(1.5, 0.5)), loc = "topright")
 #'

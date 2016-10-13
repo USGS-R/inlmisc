@@ -1,3 +1,10 @@
+Changes in Version 0.2.0
+
+  o  Add "file" argument to PlotMap and PlotCrossSection functions,
+     Specifying this argument will start a graphics device driver for producing either a PDF or PNG file.
+
+  o  Width and height of graphics device is no longer calculated when drawing to screen.
+
 Changes in Version 0.1.2
 
   o  Explain the USGS and INL acronyms from the Title in the DESCRIPTION file.

@@ -22,16 +22,14 @@
 #' @export
 #'
 #' @examples
-#' library(raster)
-#'
-#' set.seed(0)
-#' r <- raster(ncols = 10, nrows = 10)
-#' r[] <- round(runif(ncell(r)) * 0.7)
-#' r <- clump(r)
-#' plot(r)
+#' set.seed(10)
+#' r <- raster::raster(ncols = 10, nrows = 10)
+#' r[] <- round(runif(raster::ncell(r)) * 0.7)
+#' r <- raster::clump(r)
+#' raster::plot(r)
 #'
 #' r.new <- RmSmallCellChunks(r)
-#' plot(r.new, zlim = range(r[], na.rm = TRUE))
+#' raster::plot(r.new, zlim = range(r[], na.rm = TRUE))
 #'
 
 RmSmallCellChunks <- function(r) {

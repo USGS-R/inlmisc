@@ -2,6 +2,9 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
 [![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/inlmisc)](http://cran.r-project.org/package=inlmisc)
+
+## Overview
 
 A collection of functions for creating high-level graphics, performing raster-based analysis,
 processing MODFLOW-based models, and overlaying multi-polygon objects.
@@ -13,13 +16,13 @@ Used to support packages and scripts written by researchers at the United States
 You can install the stable version on [CRAN](https://cran.r-project.org/package=inlmisc):
 
 ```r
-install.packages("inlmisc", dependencies = TRUE)
+install.packages("inlmisc")
 ```
 
 Or use **devtools** to install the development version from GitHub:
 
 ```r
-devtools::install_github("USGS-R/inlmisc")
+devtools::install_github("jfisher-usgs/inlmisc")
 ```
 
 ## Bugs

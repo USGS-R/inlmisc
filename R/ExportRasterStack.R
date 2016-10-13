@@ -40,7 +40,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'   f <- file.path(getwd(), "SIR2016-5080/ancillary/uncalibrated/data/rda/rasters.rda")
+#'   f <- "SIR2016-5080/ancillary/uncalibrated/data/rda/rasters.rda"
 #'   load(file = f)
 #'   ExportRasterStack(rs, tempdir())
 #' }

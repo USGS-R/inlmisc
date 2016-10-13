@@ -36,17 +36,15 @@ During each iteration of the algorithm:
       decreased by the value specified in the \code{bump.by} argument.
 }
 \examples{
-library(raster)
-
 set.seed(0)
-r.top <- raster(ncols = 10, nrows = 10)
-r.bot <- raster(ncols = 10, nrows = 10)
-r.top[] <- rnorm(ncell(r.top), mean = 12)
-r.bot[] <- rnorm(ncell(r.bot), mean = 10)
+r.top <- raster::raster(ncols = 10, nrows = 10)
+r.bot <- raster::raster(ncols = 10, nrows = 10)
+r.top[] <- rnorm(raster::ncell(r.top), mean = 12)
+r.bot[] <- rnorm(raster::ncell(r.bot), mean = 10)
 summary(r.top - r.bot)
 
-r <- BumpDisconnectCells(stack(r.top, r.bot), min.overlap = 0.1)
-plot(r.bot + r)
+r <- BumpDisconnectCells(raster::stack(r.top, r.bot), min.overlap = 0.1)
+raster::plot(r.bot + r)
 
 }
 \author{

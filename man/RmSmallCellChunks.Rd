@@ -19,16 +19,14 @@ where a cell chunk is defined as a group of connected cells with non-missing val
 The cell chunk with the largest surface area is preserved and all others removed.
 }
 \examples{
-library(raster)
-
-set.seed(0)
-r <- raster(ncols = 10, nrows = 10)
-r[] <- round(runif(ncell(r)) * 0.7)
-r <- clump(r)
-plot(r)
+set.seed(10)
+r <- raster::raster(ncols = 10, nrows = 10)
+r[] <- round(runif(raster::ncell(r)) * 0.7)
+r <- raster::clump(r)
+raster::plot(r)
 
 r.new <- RmSmallCellChunks(r)
-plot(r.new, zlim = range(r[], na.rm = TRUE))
+raster::plot(r.new, zlim = range(r[], na.rm = TRUE))
 
 }
 \author{
