@@ -67,18 +67,15 @@
 #'
 #' @examples
 #' n <- 50L
-#'
 #' x <- as.Date("2008-07-12") + 1:n
 #' y <- sample.int(n, replace = TRUE)
 #' PlotGraph(x, y, ylab = paste("Random number in", c("meters", "feet")), type = "p",
 #'           pch = 16, seq.date.by = "weeks", scientific = FALSE, conversion.factor = 3.28)
 #'
-#' graphics.off()
 #' y <- data.frame(lapply(1:3, function(i) sample(n, replace = TRUE)))
 #' PlotGraph(x, y, ylab = "Random number", type = "s", pch = 1, seq.date.by = "days",
 #'           scientific=TRUE)
 #'
-#' graphics.off()
 #' y <- sapply(1:3, function(i) sample((1:100) + i * 100, n, replace = TRUE))
 #' m <- cbind(as.numeric(x), y)
 #' col <- c("red", "gold", "green")
@@ -86,6 +83,8 @@
 #'           col = col, pt.cex = 0.9)
 #' legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
 #'        pt.cex = 0.9, cex = 0.8, bg = "white")
+#'
+#' graphics.off()
 #'
 
 PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,

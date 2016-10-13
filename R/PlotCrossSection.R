@@ -2,6 +2,7 @@
 #'
 #' This function creates a cross-section view of raster data.
 #' A key showing how the colors map to raster values is shown below the map.
+#' The width and height of the graphics region will be automagically determined in some cases.
 #'
 #' @param transect SpatialLines.
 #'   Piecewise linear transect line.
@@ -89,10 +90,17 @@
 #' raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
 #'              cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
 #'
-#' graphics.off()
+#' explanation <- "Vertical thickness between layers, in meters."
 #' PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
-#'                  ylab="Elevation", asp = 5, unit = "METERS",
-#'                  explanation = "Vertical thickness between layers, in meters.")
+#'                  ylab="Elevation", asp = 5, unit = "METERS", explanation = explanation)
+#'
+#' val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
+#'                         ylab="Elevation", asp = 5, unit = "METERS",
+#'                         explanation = explanation, file = "Rplots.png")
+#' print(val)
+#'
+#' file.remove("Rplots.png")
+#' graphics.off()
 #'
 
 PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
