@@ -2,6 +2,5 @@
 .gitignore
 .RData
 .Rhistory
-misc
 Makefile
 ^\.travis\.yml$

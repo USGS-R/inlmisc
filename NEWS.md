@@ -1,6 +1,6 @@
 # inlmisc 0.2.1.9000
 
-- ...
+- Remove "misc" folder from ".Rbuildignore", the "misc/preamble.tex" file is back in the package build.
 
 # inlmisc 0.2.1
 
