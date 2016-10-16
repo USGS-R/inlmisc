@@ -6,7 +6,7 @@
     s <- paste(" Type 'citation(\"", pkg, "\")' for citing this R package in publications.", sep="")
     packageStartupMessage(s)
 
-    if (ver < 1) {
+    if (ver < 1 || grepl("\\.9000$", ver)) {
       s <- paste("This information is preliminary or provisional and is subject to revision.",
                  "It is being provided to meet the need for timely best science.",
                  "The information has not received final approval by the U.S. Geological Survey (USGS) and",

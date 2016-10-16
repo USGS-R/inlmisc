@@ -1,0 +1,9 @@
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(bibtype = "Manual",
+         title = "{inlmisc}: Miscellaneous Functions for the USGS INL Project Office",
+         author = person("Jason", "Fisher"),
+         year = year,
+         note = note,
+         url = "https://CRAN.R-project.org/package=inlmisc")

@@ -1,6 +1,6 @@
 Package: inlmisc
 Title: Miscellaneous Functions for the USGS INL Project Office
-Version: 0.2.1
+Version: 0.2.1.9000
 Authors@R: person("Jason", "Fisher", email="jfisher@usgs.gov", role=c("aut", "cre"))
 Description: A collection of functions for creating high-level graphics,
     performing raster-based analysis, processing MODFLOW-based models, and
