@@ -13,13 +13,13 @@ Used to support packages and scripts written by researchers at the United States
 
 ## Install
 
-You can install the stable version on [CRAN](https://CRAN.R-project.org/package=inlmisc) using the following command:
+You can install the stable version from [CRAN](https://CRAN.R-project.org/package=inlmisc) using the following command:
 
 ```r
 install.packages("inlmisc")
 ```
 
-Or use **devtools** to install the development version from GitHub:
+Or use **devtools** to install the development version from GitHub.
 
 ```r
 devtools::install_github("USGS-R/inlmisc")
