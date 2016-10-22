@@ -14,6 +14,7 @@ Imports:
     grDevices,
     graphics,
     igraph,
+    knitr,
     methods,
     sp,
     stats,
