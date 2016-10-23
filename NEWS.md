@@ -1,6 +1,6 @@
 # inlmisc 0.2.1.9000
 
-- Change argument name in `ReadModflowBinary` from `f` to `path`.
+- Change argument name in `ReadModflowBinary` function from `f` to `path`.
 
 - Add `ReadCodeChunk` function, reads **knitr** code chunks into the current session.
 
