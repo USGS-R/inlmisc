@@ -9,7 +9,7 @@
 #' @param replacement list.
 #'   Values to replace in \code{text}.
 #'
-#' @details Keys are enclosed into markups of the form $(KEY) and @\{CODE\}.
+#' @details Keys are enclosed into markups of the form \code{$(KEY)} and \code{@\{CODE\}}.
 #'
 #' @return Returns a vector of character strings after key replacement.
 #'
@@ -21,7 +21,7 @@
 #'
 #' @references This code was derived from the
 #'   \href{https://CRAN.R-project.org/package=sensitivity}{sensitivity}\code{::template.replace} function,
-#'   accessed on Feb 6, 2015 (https://CRAN.R-project.org/package=sensitivity).
+#'   accessed on Feb 6, 2015.
 #'
 #' @export
 #'
