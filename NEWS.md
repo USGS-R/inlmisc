@@ -1,6 +1,12 @@
-# inlmisc 0.2.1.9000
+# inlmisc 0.2.2
 
-- Remove "misc" folder from ".Rbuildignore", the "misc/preamble.tex" file is back in the package build.
+- Change argument name in `ReadModflowBinary` function from `f` to `path`.
+
+- Add `ReadCodeChunk` function, reads **knitr** code chunks into the current session.
+
+- Change NEWS file to markdown format.
+
+- Remove "misc" folder from ".Rbuildignore", adds the "misc/preamble.tex" file back to the package build.
 
 # inlmisc 0.2.1
 

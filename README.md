@@ -6,20 +6,20 @@
 
 ## Overview
 
-A collection of functions for creating high-level graphics, performing raster-based analysis,
-processing MODFLOW-based models, and overlaying multi-polygon objects.
+The [R](http://www.r-project.org/) package **inlmisc** is a collection of functions for creating high-level graphics,
+performing raster-based analysis, processing MODFLOW-based models, and overlaying multi-polygon objects.
 Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
 [Idaho National Laboratory Project Office](http://id.water.usgs.gov/INL/ "INL Project Office").
 
 ## Install
 
-You can install the stable version on [CRAN](https://CRAN.R-project.org/package=inlmisc):
+You can install the stable version from [CRAN](https://CRAN.R-project.org/package=inlmisc) using the following command:
 
 ```r
 install.packages("inlmisc")
 ```
 
-Or use **devtools** to install the development version from GitHub:
+Or use **devtools** to install the development version from GitHub.
 
 ```r
 devtools::install_github("USGS-R/inlmisc")

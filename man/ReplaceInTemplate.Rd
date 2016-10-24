@@ -22,7 +22,7 @@ Pieces of \R code can be put into the markups of the template text,
 and are evaluated during the replacement.
 }
 \details{
-Keys are enclosed into markups of the form $(KEY) and @\{CODE\}.
+Keys are enclosed into markups of the form \code{$(KEY)} and \code{@\{CODE\}}.
 }
 \examples{
 text <- c("Hello $(name)!", "$(a) + $(b) = @{$(a) + $(b)}",
@@ -37,7 +37,7 @@ J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 \references{
 This code was derived from the
   \href{https://CRAN.R-project.org/package=sensitivity}{sensitivity}\code{::template.replace} function,
-  accessed on Feb 6, 2015 (https://CRAN.R-project.org/package=sensitivity).
+  accessed on Feb 6, 2015.
 }
 \seealso{
 \code{\link{SummariseBudget}}

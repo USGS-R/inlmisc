@@ -3,8 +3,8 @@
 #' This is a utility function for \href{http://water.usgs.gov/ogw/modflow/}{MODFLOW}.
 #' It reads binary output data from a model run.
 #'
-#' @param f character.
-#'   Name of the binary file.
+#' @param path character.
+#'   Path name of the binary file.
 #' @param data.type character.
 #'    Description of how the data are saved.
 #' @param rm.totim.0 logical.
@@ -40,16 +40,16 @@
 #' hds <- ReadModflowBinary(path, "array")
 #'
 
-ReadModflowBinary <- function(f, data.type=c("array", "flow"),
+ReadModflowBinary <- function(path, data.type=c("array", "flow"),
                               rm.totim.0=FALSE) {
-  if (!file.exists(f))
+  if (!file.exists(path))
     stop("binary file can not be found")
 
   data.type <- match.arg(data.type)
 
-  ans <- try(.ReadBinary(f, data.type, nbytes=4L), silent=TRUE)
+  ans <- try(.ReadBinary(path, data.type, nbytes=4L), silent=TRUE)
   if (inherits(ans, "try-error"))
-    ans <- .ReadBinary(f,  data.type, nbytes=8L)
+    ans <- .ReadBinary(path,  data.type, nbytes=8L)
 
   if (rm.totim.0)
     ans <- ans[vapply(ans, function(i) i$totim, 0) != 0]
@@ -72,8 +72,8 @@ ReadModflowBinary <- function(f, data.type=c("array", "flow"),
 }
 
 
-.ReadBinary <- function(f, data.type, nbytes) {
-  con <- file(f, open="rb", encoding="bytes")
+.ReadBinary <- function(path, data.type, nbytes) {
+  con <- file(path, open="rb", encoding="bytes")
   on.exit(close(con, type="rb"))
 
   ## kstp:   time step number

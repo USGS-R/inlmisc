@@ -4,11 +4,11 @@
 \alias{ReadModflowBinary}
 \title{Read MODFLOW Binary File}
 \usage{
-ReadModflowBinary(f, data.type = c("array", "flow"), rm.totim.0 = FALSE)
+ReadModflowBinary(path, data.type = c("array", "flow"), rm.totim.0 = FALSE)
 }
 \arguments{
-\item{f}{character.
-Name of the binary file.}
+\item{path}{character.
+Path name of the binary file.}
 
 \item{data.type}{character.
 Description of how the data are saved.}
