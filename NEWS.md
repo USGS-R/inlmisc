@@ -1,3 +1,7 @@
+# inlmisc 0.2.2.9000
+
+- ...
+
 # inlmisc 0.2.2
 
 - Change argument name in `ReadModflowBinary` function from `f` to `path`.
