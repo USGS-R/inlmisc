@@ -85,7 +85,7 @@ ExportRasterStack <- function(rs, path, zip="",
   save(rs, file=f)
 
   f <- file.path(path.kml, "rasters.kml")
-  crs <- "+proj=longlat +datum=WGS84"
+  crs <- "+init=epsg:4326"
   rs <- projectRaster(rs, crs=crs, method="ngb", alignOnly=FALSE)
   KML(rs, f, col=col, maxpixels=ncell(rs) * 2, blur=5, zip=zip,
       overwrite=TRUE)

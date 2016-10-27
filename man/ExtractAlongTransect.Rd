@@ -33,7 +33,7 @@ The transect line is described using a simple polygonal chain.
 library(raster)
 
 coords <- rbind(c(-100, -90), c(80, 90), c(80, 0), c(40, -40))
-crs <- CRS("+proj=longlat +datum=WGS84")
+crs <- CRS("+init=epsg:4326")
 transect <- SpatialPoints(coords, proj4string = crs)
 r <- raster(nrows = 10, ncols = 10, ymn = -80, ymx = 80, crs = crs)
 names(r) <- "value"

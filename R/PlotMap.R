@@ -315,7 +315,7 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
     al[[4]] <- Lines(list(Line(rbind(c(xlim[2], ylim[1]),
                                      c(xlim[2], ylim[2])))), ID="al4")
     sl <- SpatialLines(al, proj4string=r@crs)
-    sl.dd <- spTransform(sl, CRS("+proj=longlat +datum=WGS84"))
+    sl.dd <- spTransform(sl, CRS("+init=epsg:4326"))
     e.dd <- pretty(range(bbox(sl.dd)[1, ]))
     n.dd <- pretty(range(bbox(sl.dd)[2, ]))
     grd.dd <- gridlines(sl.dd, easts=e.dd, norths=n.dd, ndiscr=1000)
@@ -581,7 +581,7 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
   x.mid <- (usr[2] + usr[1]) / 2
   y.mid <- (usr[4] + usr[3]) / 2
 
-  crs.dd <- CRS("+proj=longlat +datum=WGS84")
+  crs.dd <- CRS("+init=epsg:4326")
 
   d <- 0.05 * (usr[4] - usr[3])
 
