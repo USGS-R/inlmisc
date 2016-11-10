@@ -1,6 +1,6 @@
 # inlmisc 0.2.2.9000
 
-- ...
+- Generalize CITATION file
 
 # inlmisc 0.2.2
 
