@@ -1,5 +1,7 @@
 # inlmisc 0.2.2.9000
 
+- Update URL links to HTTP Secure
+
 - Generalize CITATION file
 
 # inlmisc 0.2.2
