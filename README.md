@@ -2,11 +2,11 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
 [![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
 
 ## Overview
 
-The [R](http://www.r-project.org/) package **inlmisc** is a collection of functions for creating high-level graphics,
+The [R](https://www.r-project.org/) package **inlmisc** is a collection of functions for creating high-level graphics,
 performing raster-based analysis, processing MODFLOW-based models, and overlaying multi-polygon objects.
 Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
 [Idaho National Laboratory Project Office](http://id.water.usgs.gov/INL/ "INL Project Office").
@@ -42,4 +42,4 @@ and no responsibility is assumed by the USGS in connection therewith.
 
 This software is provided "AS IS."
 
-[![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](http://creativecommons.org/publicdomain/zero/1.0/)
+[![CC0](https://i.creativecommons.org/p/zero/1.0/88x31.png)](https://creativecommons.org/publicdomain/zero/1.0/)

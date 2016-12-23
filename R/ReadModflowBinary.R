@@ -1,6 +1,6 @@
 #' Read MODFLOW Binary File
 #'
-#' This is a utility function for \href{http://water.usgs.gov/ogw/modflow/}{MODFLOW}.
+#' This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}.
 #' It reads binary output data from a model run.
 #'
 #' @param path character.

@@ -1,6 +1,6 @@
 #' Summarize MODFLOW Water Budget
 #'
-#' This is a utility function for \href{http://water.usgs.gov/ogw/modflow/}{MODFLOW}.
+#' This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}.
 #' It summarizes volumetric flow rates by boundary condition types.
 #' That is, it splits the MODFLOW water-budget data into subsets,
 #' computes summary statistics for each, and

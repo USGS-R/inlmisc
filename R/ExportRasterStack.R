@@ -29,7 +29,6 @@
 #'
 #' @return Used for the side-effect files written to disk.
 #'
-#'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
 #' @seealso \code{\link{writeRaster}}
