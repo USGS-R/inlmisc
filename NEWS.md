@@ -1,5 +1,7 @@
 # inlmisc 0.2.2.9000
 
+- Add function `POSIXct2Character`, used to convert objects from `POSIXct` to `character` class.
+
 - Update URL links to HTTP Secure
 
 - Generalize CITATION file
