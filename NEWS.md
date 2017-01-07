@@ -1,5 +1,11 @@
 # inlmisc 0.2.2.9000
 
+- Change default for `scale.loc` argument in `PlotMap` function from `"leftbottom"` to `NULL`;
+  the scale bar is no longer drawn by default.
+
+- Change `asp` argument in `PlotMap` function from 1 to NULL.
+  Defaults to 1 when data is projected, otherwise, a calculated value based on axes limits is used.
+
 - Add function `POSIXct2Character`, used to convert objects from `POSIXct` to `character` class.
 
 - Update URL links to HTTP Secure

@@ -23,6 +23,8 @@
 #'   Vector of length 2 giving the minimum and maximum raster values for which colors should be plotted.
 #' @param asp numeric.
 #'   The \emph{y/x} aspect ratio for spatial axes.
+#'   Defaults to 1 (one unit on the \emph{x}-axis equals one unit on the \emph{y}-axis) when \code{r} is projected,
+#'   otherwise, a calculated value based on axes limits is used.
 #' @param extend.xy logical.
 #'   If true, the spatial limits will be extended to the next tick mark on the axes beyond the grid extent.
 #' @param extend.z logical.
@@ -127,7 +129,7 @@
 #' @export
 #'
 #' @examples
-#' r <- raster::raster(nrow = 10, ncol = 10)
+#' r <- raster::raster(nrow = 10, ncol = 10, crs = NA)
 #' r[] <- 1L
 #' r[51:100] <- 2L
 #' r[3:6, 1:5] <- 8L
@@ -142,7 +144,7 @@
 #' r <- raster::raster(system.file("external/test.grd", package="raster"))
 #' credit <- "Label crediting the base map."
 #' explanation <- "Label explaining the raster cell value."
-#' PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, trim.r = TRUE,
+#' PlotMap(r, scale.loc = "bottomright", dms.tick = TRUE, trim.r = TRUE,
 #'         credit = credit, explanation = explanation)
 #' data(meuse, package = "sp")
 #' sp::coordinates(meuse) = ~ x + y
@@ -164,10 +166,10 @@
 #'
 
 PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
-                    zlim=NULL, asp=1, extend.xy=FALSE, extend.z=FALSE,
+                    zlim=NULL, asp=NULL, extend.xy=FALSE, extend.z=FALSE,
                     reg.axs=TRUE, trim.r=TRUE, dms.tick=FALSE, bg.lines=FALSE,
                     bg.image=NULL, bg.image.alpha=1, pal=NULL, col=NULL,
-                    max.dev.dim=c(43, 56), labels=NULL, scale.loc="bottomleft",
+                    max.dev.dim=c(43, 56), labels=NULL, scale.loc=NULL,
                     arrow.loc=NULL, explanation=NULL, credit=proj4string(r),
                     shade=NULL, contour.lines=NULL, rivers=NULL, lakes=NULL,
                     roads=NULL, draw.key=NULL, draw.raster=TRUE, file=NULL,
@@ -191,6 +193,8 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
     r[] <- NA
   }
 
+  if (is.null(asp) && !is.na(rgdal::CRSargs(raster::crs(r)))) asp <- 1
+
   if (inherits(r, "SpatialGridDataFrame"))
     r <- raster(r, layer=layer)
   if (!inherits(r, "RasterLayer"))
@@ -212,26 +216,18 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
     r <- rr
   }
 
-  if (is.null(xlim))
-    xlim <- c(NA, NA)
-  if (is.null(ylim))
-    ylim <- c(NA, NA)
-  if (is.null(zlim))
-    zlim <- c(NA, NA)
+  if (is.null(xlim)) xlim <- c(NA, NA)
+  if (is.null(ylim)) ylim <- c(NA, NA)
+  if (is.null(zlim)) zlim <- c(NA, NA)
 
   e <- as.vector(extent(r))
-  if (!is.na(xlim[1]))
-    e[1] <- xlim[1]
-  if (!is.na(xlim[2]))
-    e[2] <- xlim[2]
-  if (!is.na(ylim[1]))
-    e[3] <- ylim[1]
-  if (!is.na(ylim[2]))
-    e[4] <- ylim[2]
+  if (!is.na(xlim[1])) e[1] <- xlim[1]
+  if (!is.na(xlim[2])) e[2] <- xlim[2]
+  if (!is.na(ylim[1])) e[3] <- ylim[1]
+  if (!is.na(ylim[2])) e[4] <- ylim[2]
   r <- crop(r, extent(e))
 
-  if (trim.r && !all(is.na(r[])))
-    r <- trim(r)
+  if (trim.r && !all(is.na(r[]))) r <- trim(r)
 
   xran <- bbox(r)[1, ]
   yran <- bbox(r)[2, ]
@@ -242,58 +238,40 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
   } else {
     if (reg.axs) {
       buf <- diff(xran) * 0.04
+      aspect <- ifelse(is.null(asp), (diff(xran) / diff(yran)), asp)
       default.xlim <- c(xran[1] - buf, xran[2] + buf)
-      default.ylim <- c(yran[1] - (buf * asp), yran[2] + (buf * asp))
+      default.ylim <- c(yran[1] - (buf * aspect), yran[2] + (buf * aspect))
     } else {
       default.xlim <- range(xran)
       default.ylim <- range(yran)
     }
   }
 
-  if (is.na(xlim[1]))
-    xlim[1] <- default.xlim[1]
-  if (is.na(xlim[2]))
-    xlim[2] <- default.xlim[2]
-  if (is.na(ylim[1]))
-    ylim[1] <- default.ylim[1]
-  if (is.na(ylim[2]))
-    ylim[2] <- default.ylim[2]
+  if (is.na(xlim[1])) xlim[1] <- default.xlim[1]
+  if (is.na(xlim[2])) xlim[2] <- default.xlim[2]
+  if (is.na(ylim[1])) ylim[1] <- default.ylim[1]
+  if (is.na(ylim[2])) ylim[2] <- default.ylim[2]
 
   zran <- range(r[], finite=TRUE)
   if (anyNA(zran)) {
     n <- 0
   } else {
-    default.zlim <- range(if (extend.z) pretty(zran) else zran)
+    default.zlim <- if (extend.z) range(pretty(zran, n=6)) else zran
     if (raster::is.factor(r)) {
       at1 <- raster::levels(r)[[1]][, "ID"]
       breaks <- c(0.5, at1 + 0.5)
-      zlim <- range(breaks)
+      zlim <- range(breaks, finite=TRUE)
     } else {
-      if (all(is.na(zlim))) {
-        if (missing(breaks)) {
-          if (missing(n))
-            zlim <- if (extend.z) range(pretty(zran)) else zran
-        } else {
-          zlim <- range(breaks)
-        }
+      if (all(is.na(zlim)) && !missing(breaks)) {
+        zlim <- range(breaks, finite=TRUE)
       } else {
-        if (is.na(zlim[1]))
-          zlim[1] <- default.zlim[1]
-        if (is.na(zlim[2]))
-          zlim[2] <- default.zlim[2]
+        if (is.na(zlim[1])) zlim[1] <- default.zlim[1]
+        if (is.na(zlim[2])) zlim[2] <- default.zlim[2]
       }
       if (missing(breaks)) {
         if (missing(n) || n > 200L) {
-          breaks <- seq(zlim[1], zlim[2], length.out=200L)
-          at1 <- if (extend.z) pretty(zran) else pretty(zlim)
-        } else {
-          if (all(is.na(zlim))) {
-            breaks <- pretty(zran, n=n)
-            zlim <- if (extend.z) range(breaks) else zran
-          } else {
-            breaks <- pretty(zlim, n=n)
-          }
-          at1 <- breaks
+          breaks <- pretty(zlim, n=200)
+          at1 <- pretty(if (extend.z) zran else zlim, n=6)
         }
       } else {
         at1 <- breaks
@@ -302,7 +280,7 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
     n <- length(breaks) - 1L
   }
 
-  if (!is.logical(draw.key)) draw.key <- if (n == 0) FALSE else TRUE
+  if (!is.logical(draw.key)) draw.key <- ifelse(n == 0, FALSE, TRUE)
 
   if (dms.tick) {
     al <- list()
@@ -369,8 +347,9 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
     h <- h1 + h2
   } else {
     w <- max.dev.dim[1]
+    aspect <- ifelse(is.null(asp), (diff(xlim) / diff(ylim)), asp)
     repeat {
-      y2 <- (w - mar2[2] - mar2[4]) * (diff(ylim) / diff(xlim)) * asp
+      y2 <- (w - mar2[2] - mar2[4]) * (diff(ylim) / diff(xlim)) * aspect
       h2 <- y2 + mar2[1] + mar2[3]
       h1 <- y1 + mar1[1] + mar1[3]
       h <- h1 + h2

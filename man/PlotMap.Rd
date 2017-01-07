@@ -5,10 +5,10 @@
 \title{Plot Method for Maps}
 \usage{
 PlotMap(r, layer = 1, att = NULL, n, breaks, xlim = NULL, ylim = NULL,
-  zlim = NULL, asp = 1, extend.xy = FALSE, extend.z = FALSE,
+  zlim = NULL, asp = NULL, extend.xy = FALSE, extend.z = FALSE,
   reg.axs = TRUE, trim.r = TRUE, dms.tick = FALSE, bg.lines = FALSE,
   bg.image = NULL, bg.image.alpha = 1, pal = NULL, col = NULL,
-  max.dev.dim = c(43, 56), labels = NULL, scale.loc = "bottomleft",
+  max.dev.dim = c(43, 56), labels = NULL, scale.loc = NULL,
   arrow.loc = NULL, explanation = NULL, credit = proj4string(r),
   shade = NULL, contour.lines = NULL, rivers = NULL, lakes = NULL,
   roads = NULL, draw.key = NULL, draw.raster = TRUE, file = NULL,
@@ -41,7 +41,9 @@ Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.}
 Vector of length 2 giving the minimum and maximum raster values for which colors should be plotted.}
 
 \item{asp}{numeric.
-The \emph{y/x} aspect ratio for spatial axes.}
+The \emph{y/x} aspect ratio for spatial axes.
+Defaults to 1 (one unit on the \emph{x}-axis equals one unit on the \emph{y}-axis) when \code{r} is projected,
+otherwise, a calculated value based on axes limits is used.}
 
 \item{extend.xy}{logical.
 If true, the spatial limits will be extended to the next tick mark on the axes beyond the grid extent.}
@@ -165,7 +167,7 @@ A key showing how the colors map to raster values is shown below the map.
 The width and height of the graphics region will be automagically determined in some cases.
 }
 \examples{
-r <- raster::raster(nrow = 10, ncol = 10)
+r <- raster::raster(nrow = 10, ncol = 10, crs = NA)
 r[] <- 1L
 r[51:100] <- 2L
 r[3:6, 1:5] <- 8L
@@ -180,7 +182,7 @@ PlotMap(r, att = "code")
 r <- raster::raster(system.file("external/test.grd", package="raster"))
 credit <- "Label crediting the base map."
 explanation <- "Label explaining the raster cell value."
-PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, trim.r = TRUE,
+PlotMap(r, scale.loc = "bottomright", dms.tick = TRUE, trim.r = TRUE,
         credit = credit, explanation = explanation)
 data(meuse, package = "sp")
 sp::coordinates(meuse) = ~ x + y

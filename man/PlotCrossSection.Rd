@@ -33,7 +33,9 @@ the second layer mapped between the second and third geometry layers, and so on.
 The name in \code{rs} that specifies the water-table raster layer (optional).}
 
 \item{asp}{numeric.
-The \emph{y/x} aspect ratio for spatial axes.}
+The \emph{y/x} aspect ratio for spatial axes.
+Defaults to 1 (one unit on the \emph{x}-axis equals one unit on the \emph{y}-axis) when \code{r} is projected,
+otherwise, a calculated value based on axes limits is used.}
 
 \item{ylim}{numeric.
 Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.}
