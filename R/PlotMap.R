@@ -165,7 +165,7 @@
 #' graphics.off()
 #'
 
-PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
+PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=NULL,
                     zlim=NULL, asp=NULL, extend.xy=FALSE, extend.z=FALSE,
                     reg.axs=TRUE, trim.r=TRUE, dms.tick=FALSE, bg.lines=FALSE,
                     bg.image=NULL, bg.image.alpha=1, pal=NULL, col=NULL,
@@ -262,16 +262,19 @@ PlotMap <- function(r, layer=1, att=NULL, n, breaks, xlim=NULL, ylim=NULL,
       breaks <- c(0.5, at1 + 0.5)
       zlim <- range(breaks, finite=TRUE)
     } else {
-      if (all(is.na(zlim)) && !missing(breaks)) {
+      if (all(is.na(zlim)) && !is.null(breaks)) {
         zlim <- range(breaks, finite=TRUE)
       } else {
         if (is.na(zlim[1])) zlim[1] <- default.zlim[1]
         if (is.na(zlim[2])) zlim[2] <- default.zlim[2]
       }
-      if (missing(breaks)) {
-        if (missing(n) || n > 200L) {
-          breaks <- pretty(zlim, n=200)
+      if (is.null(breaks)) {
+        if (is.null(n) || n > 200L) {
+          breaks <- seq(zlim[1], zlim[2], length.out=200L)
           at1 <- pretty(if (extend.z) zran else zlim, n=6)
+        } else {
+          breaks <- pretty(zlim, n=n)
+          at1 <- breaks
         }
       } else {
         at1 <- breaks

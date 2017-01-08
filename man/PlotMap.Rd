@@ -4,15 +4,15 @@
 \alias{PlotMap}
 \title{Plot Method for Maps}
 \usage{
-PlotMap(r, layer = 1, att = NULL, n, breaks, xlim = NULL, ylim = NULL,
-  zlim = NULL, asp = NULL, extend.xy = FALSE, extend.z = FALSE,
-  reg.axs = TRUE, trim.r = TRUE, dms.tick = FALSE, bg.lines = FALSE,
-  bg.image = NULL, bg.image.alpha = 1, pal = NULL, col = NULL,
-  max.dev.dim = c(43, 56), labels = NULL, scale.loc = NULL,
-  arrow.loc = NULL, explanation = NULL, credit = proj4string(r),
-  shade = NULL, contour.lines = NULL, rivers = NULL, lakes = NULL,
-  roads = NULL, draw.key = NULL, draw.raster = TRUE, file = NULL,
-  useRaster)
+PlotMap(r, layer = 1, att = NULL, n = NULL, breaks = NULL,
+  xlim = NULL, ylim = NULL, zlim = NULL, asp = NULL,
+  extend.xy = FALSE, extend.z = FALSE, reg.axs = TRUE, trim.r = TRUE,
+  dms.tick = FALSE, bg.lines = FALSE, bg.image = NULL,
+  bg.image.alpha = 1, pal = NULL, col = NULL, max.dev.dim = c(43, 56),
+  labels = NULL, scale.loc = NULL, arrow.loc = NULL, explanation = NULL,
+  credit = proj4string(r), shade = NULL, contour.lines = NULL,
+  rivers = NULL, lakes = NULL, roads = NULL, draw.key = NULL,
+  draw.raster = TRUE, file = NULL, useRaster)
 }
 \arguments{
 \item{r}{RasterLayer, SpatialGridDataFrame, or CRS.
