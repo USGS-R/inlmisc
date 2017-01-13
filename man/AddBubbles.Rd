@@ -10,7 +10,7 @@ AddBubbles(x, y = NULL, z, zlim = NULL, inches = c(0, 0.2),
   draw.legend = TRUE, loc = c("bottomleft", "topleft", "topright",
   "bottomright"), inset = 0.02, breaks = NULL, break.labels = NULL,
   quantile.breaks = FALSE, make.intervals = FALSE, title = NULL,
-  subtitle = NULL, add = TRUE)
+  subtitle = NULL, fixed.radius = NULL, add = TRUE)
 }
 \arguments{
 \item{x, y}{numeric.
@@ -83,6 +83,10 @@ Main title to be placed at the top of the legend.}
 \item{subtitle}{character.
 Legend subtitle to be placed below the main title.}
 
+\item{fixed.radius}{numeric.
+A fixed radius applied to all circle symbols, in inches;
+overrides proportional circle symbols and function behaves more like \code{\link{points}} function.}
+
 \item{add}{logical.
 If true, circle symbols (and an optional legend) are added to an existing plot.}
 }
@@ -107,6 +111,9 @@ AddBubbles(x, z = z, bg.pos = Pal1, bg.neg = Pal2, add = FALSE)
 
 AddBubbles(x, z = z, bg.pos = Pal1, bg.neg = Pal2, add = FALSE,
            make.intervals = TRUE)
+
+AddBubbles(x, z = z, bg.pos = Pal1, bg.neg = Pal2, add = FALSE,
+           make.intervals = TRUE, fixed.radius = 0.1)
 
 AddBubbles(x, z = runif(n, 10, 10000), title = "Quantiles", bg.pos = topo.colors,
            quantile.breaks = TRUE, fg = NULL, add = FALSE)

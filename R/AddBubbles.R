@@ -6,7 +6,7 @@
 #'
 #' @param x,y numeric.
 #'   The x and y coordinates for the centers of the circle symbols.
-#'   They can be specified in any way which is accepted by \code{xy.coords}.
+#'   They can be specified in any way which is accepted by \code{\link{xy.coords}}.
 #' @param z numeric.
 #'   Attribute variable
 #' @param zlim numeric.
@@ -54,6 +54,9 @@
 #'   Main title to be placed at the top of the legend.
 #' @param subtitle character.
 #'   Legend subtitle to be placed below the main title.
+#' @param fixed.radius numeric.
+#'   A fixed radius applied to all circle symbols, in inches;
+#'   overrides proportional circle symbols and function behaves more like \code{\link{points}} function.
 #' @param add logical.
 #'   If true, circle symbols (and an optional legend) are added to an existing plot.
 #'
@@ -83,6 +86,9 @@
 #' AddBubbles(x, z = z, bg.pos = Pal1, bg.neg = Pal2, add = FALSE,
 #'            make.intervals = TRUE)
 #'
+#' AddBubbles(x, z = z, bg.pos = Pal1, bg.neg = Pal2, add = FALSE,
+#'            make.intervals = TRUE, fixed.radius = 0.1)
+#'
 #' AddBubbles(x, z = runif(n, 10, 10000), title = "Quantiles", bg.pos = topo.colors,
 #'            quantile.breaks = TRUE, fg = NULL, add = FALSE)
 #'
@@ -94,7 +100,7 @@ AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
                        loc=c("bottomleft", "topleft", "topright", "bottomright"),
                        inset=0.02, breaks=NULL, break.labels=NULL,
                        quantile.breaks=FALSE, make.intervals=FALSE,
-                       title=NULL, subtitle=NULL,
+                       title=NULL, subtitle=NULL, fixed.radius=NULL,
                        add=TRUE) {
 
   xy <- grDevices::xy.coords(x, y,
@@ -157,7 +163,9 @@ AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
     Scale <- function(v, max.v, max.r) {return(sqrt(v / max.v) * max.r)}
   else
     Scale <- function(v, max.v, max.r) {return(((v / max.v)^0.57) * max.r)}
+
   r <- Scale(abs(z), max(abs(c(z, breaks))), max.r) + min.r
+  if (is.numeric(fixed.radius)) r <- rep(fixed.radius, length(r))
 
   cols <- rep("#02080D", length(z))
   if (is.function(bg.neg))
@@ -184,6 +192,7 @@ AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
     pady <- inset * diff(usr[3:4])
 
     r <- Scale(abs(breaks), max(abs(c(z, breaks))), max.r) + min.r
+    if (is.numeric(fixed.radius)) r <- rep(fixed.radius, length(r))
 
     gap <- max(c(stats::median(r), graphics::strheight("O", cex=cex) * 1.5))
 

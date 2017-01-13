@@ -1,5 +1,9 @@
 # inlmisc 0.2.2.9000
 
+- Add `fixed.radius` argument in `AddBubbles` function; enables a fixed radius to be used for all circle symbols.
+
+- In `PlotMap` function, account for *z*-axis limits prior to removing rows and columns having all missing values.
+
 - Change default for `scale.loc` argument in `PlotMap` function from `"leftbottom"` to `NULL`;
   the scale bar is no longer drawn by default.
 

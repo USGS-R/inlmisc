@@ -220,38 +220,6 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
   if (is.null(ylim)) ylim <- c(NA, NA)
   if (is.null(zlim)) zlim <- c(NA, NA)
 
-  e <- as.vector(extent(r))
-  if (!is.na(xlim[1])) e[1] <- xlim[1]
-  if (!is.na(xlim[2])) e[2] <- xlim[2]
-  if (!is.na(ylim[1])) e[3] <- ylim[1]
-  if (!is.na(ylim[2])) e[4] <- ylim[2]
-  r <- crop(r, extent(e))
-
-  if (trim.r && !all(is.na(r[]))) r <- trim(r)
-
-  xran <- bbox(r)[1, ]
-  yran <- bbox(r)[2, ]
-
-  if (extend.xy) {
-    default.xlim <- range(pretty(xran))
-    default.ylim <- range(pretty(yran))
-  } else {
-    if (reg.axs) {
-      buf <- diff(xran) * 0.04
-      aspect <- ifelse(is.null(asp), (diff(xran) / diff(yran)), asp)
-      default.xlim <- c(xran[1] - buf, xran[2] + buf)
-      default.ylim <- c(yran[1] - (buf * aspect), yran[2] + (buf * aspect))
-    } else {
-      default.xlim <- range(xran)
-      default.ylim <- range(yran)
-    }
-  }
-
-  if (is.na(xlim[1])) xlim[1] <- default.xlim[1]
-  if (is.na(xlim[2])) xlim[2] <- default.xlim[2]
-  if (is.na(ylim[1])) ylim[1] <- default.ylim[1]
-  if (is.na(ylim[2])) ylim[2] <- default.ylim[2]
-
   zran <- range(r[], finite=TRUE)
   if (anyNA(zran)) {
     n <- 0
@@ -281,7 +249,40 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
       }
     }
     n <- length(breaks) - 1L
+    r[r[] < zlim[1] | r[] > zlim[2]] <- NA
   }
+
+  if (trim.r && !all(is.na(r[]))) r <- trim(r)
+
+  e <- as.vector(extent(r))
+  if (!is.na(xlim[1])) e[1] <- xlim[1]
+  if (!is.na(xlim[2])) e[2] <- xlim[2]
+  if (!is.na(ylim[1])) e[3] <- ylim[1]
+  if (!is.na(ylim[2])) e[4] <- ylim[2]
+  r <- crop(r, extent(e), snap="near")
+
+  xran <- bbox(r)[1, ]
+  yran <- bbox(r)[2, ]
+
+  if (extend.xy) {
+    default.xlim <- range(pretty(xran))
+    default.ylim <- range(pretty(yran))
+  } else {
+    if (reg.axs) {
+      buf <- diff(xran) * 0.04
+      aspect <- ifelse(is.null(asp), (diff(xran) / diff(yran)), asp)
+      default.xlim <- c(xran[1] - buf, xran[2] + buf)
+      default.ylim <- c(yran[1] - (buf * aspect), yran[2] + (buf * aspect))
+    } else {
+      default.xlim <- range(xran)
+      default.ylim <- range(yran)
+    }
+  }
+
+  if (is.na(xlim[1])) xlim[1] <- default.xlim[1]
+  if (is.na(xlim[2])) xlim[2] <- default.xlim[2]
+  if (is.na(ylim[1])) ylim[1] <- default.ylim[1]
+  if (is.na(ylim[2])) ylim[2] <- default.ylim[2]
 
   if (!is.logical(draw.key)) draw.key <- ifelse(n == 0, FALSE, TRUE)
 
