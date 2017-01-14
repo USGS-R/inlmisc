@@ -1,5 +1,11 @@
 # inlmisc 0.2.2.9000
 
+- In `AddBubble` function, account for aspect ratio when constructing legend.
+
+- In `AddBubble` function, rename `bg.pos` argument to `bg`, and set `bg.neg = NULL`.
+  The `bg` argument may be used to specify circle symbol colors for all `z` values (not just positive values).
+  See help documentation for details.
+
 - Add `fixed.radius` argument in `AddBubbles` function; enables a fixed radius to be used for all circle symbols.
 
 - In `PlotMap` function, account for *z*-axis limits prior to removing rows and columns having all missing values.

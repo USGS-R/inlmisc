@@ -5,17 +5,17 @@
 \title{Add Bubble Map to Plot}
 \usage{
 AddBubbles(x, y = NULL, z, zlim = NULL, inches = c(0, 0.2),
-  scaling = c("perceptual", "mathematical"), bg.pos = "red",
-  bg.neg = "blue", fg = NA, lwd = 0.25, cex = 0.7, format = NULL,
-  draw.legend = TRUE, loc = c("bottomleft", "topleft", "topright",
-  "bottomright"), inset = 0.02, breaks = NULL, break.labels = NULL,
-  quantile.breaks = FALSE, make.intervals = FALSE, title = NULL,
-  subtitle = NULL, fixed.radius = NULL, add = TRUE)
+  scaling = c("perceptual", "mathematical"), bg = "red", bg.neg = NULL,
+  fg = NA, lwd = 0.25, cex = 0.7, format = NULL, draw.legend = TRUE,
+  loc = c("bottomleft", "topleft", "topright", "bottomright"), inset = 0.02,
+  breaks = NULL, break.labels = NULL, quantile.breaks = FALSE,
+  make.intervals = FALSE, title = NULL, subtitle = NULL,
+  fix.radii = NULL, add = TRUE)
 }
 \arguments{
 \item{x, y}{numeric.
 The x and y coordinates for the centers of the circle symbols.
-They can be specified in any way which is accepted by \code{xy.coords}.}
+They can be specified in any way which is accepted by \code{\link{xy.coords}}.}
 
 \item{z}{numeric.
 Attribute variable}
@@ -31,13 +31,15 @@ Vector of length 2 specifying the radii limits for the drawn circle symbol.}
 Selects the proportional symbol mapping algorithm to be used;
 either "perceptual" or "mathematical" scaling (Tanimura and others, 2006).}
 
-\item{bg.pos}{character or function.
-Fill color(s) for circle symbols corresponding to positive \code{z} values.
+\item{bg}{character or function.
+Fill color(s) for circle symbols.
 A color palette also may be specified.}
 
 \item{bg.neg}{character or function.
 Fill color(s) for circle symbols corresponding to negative \code{z} values.
-A color palette also may be specified.}
+A color palette also may be specified.
+For circle symbols corresponding to positive \code{z} values,
+the \code{bg} argument is used for color(s).}
 
 \item{fg}{character.
 Outer-line color for circle symbols.
@@ -83,8 +85,8 @@ Main title to be placed at the top of the legend.}
 \item{subtitle}{character.
 Legend subtitle to be placed below the main title.}
 
-\item{fixed.radius}{numeric.
-A fixed radius applied to all circle symbols, in inches;
+\item{fix.radii}{numeric.
+A fixed radius for all circle symbols, in inches;
 overrides proportional circle symbols and function behaves more like \code{\link{points}} function.}
 
 \item{add}{logical.
@@ -99,24 +101,30 @@ Proportional circle symbols are used to represent spatial point data,
 where symbol area varies in proportion to an attribute variable.
 }
 \examples{
+set.seed(2)
+
 n <- 50L
-x <- cbind(runif(n, 1, 10), runif(n, 1, 10))
-z <- runif(n, -5000, 10000)
-AddBubbles(x, z = z, fg = "green", lwd = 2, title = "Title", loc = "topright",
-           breaks=pretty(z, n = 8), add = FALSE)
+x <- cbind(runif(n, 1, 10), runif(n, 1, 500))
+z <- runif(n, 0, 1000)
+z[sample.int(n, 2)] <- 0
+AddBubbles(x, z = z, fg = "green", lwd = 2, loc = "topright",
+           title = "Title", subtitle = "Subtitle", add = FALSE)
 
-Pal1 <- colorRampPalette(c("#F4A582", "#CA0020"))
-Pal2 <- colorRampPalette(c("#92C5DE", "#0571B0"))
-AddBubbles(x, z = z, bg.pos = Pal1, bg.neg = Pal2, add = FALSE)
+idxs <- sample.int(n, floor(n / 2))
+z[idxs] <- -z[idxs]
+AddBubbles(x, z = z, bg.neg = "blue", breaks = pretty(z, n = 8), add = FALSE)
 
-AddBubbles(x, z = z, bg.pos = Pal1, bg.neg = Pal2, add = FALSE,
-           make.intervals = TRUE)
+Pal1 <- colorRampPalette(c("#CA0020BF", "#F4A582BF"), alpha = TRUE)
+Pal2 <- colorRampPalette(c("#0571B0BF", "#92C5DEBF"), alpha = TRUE)
+AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE)
 
-AddBubbles(x, z = z, bg.pos = Pal1, bg.neg = Pal2, add = FALSE,
-           make.intervals = TRUE, fixed.radius = 0.1)
+AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE)
 
-AddBubbles(x, z = runif(n, 10, 10000), title = "Quantiles", bg.pos = topo.colors,
-           quantile.breaks = TRUE, fg = NULL, add = FALSE)
+AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE,
+           fix.radii = 0.1)
+
+AddBubbles(x, z = abs(z), title = "Quantiles", bg = topo.colors,
+           quantile.breaks = TRUE, add = FALSE)
 
 }
 \author{

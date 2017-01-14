@@ -17,12 +17,14 @@
 #' @param scaling character.
 #'   Selects the proportional symbol mapping algorithm to be used;
 #'   either "perceptual" or "mathematical" scaling (Tanimura and others, 2006).
-#' @param bg.pos character or function.
-#'   Fill color(s) for circle symbols corresponding to positive \code{z} values.
+#' @param bg character or function.
+#'   Fill color(s) for circle symbols.
 #'   A color palette also may be specified.
 #' @param bg.neg character or function.
 #'   Fill color(s) for circle symbols corresponding to negative \code{z} values.
 #'   A color palette also may be specified.
+#'   For circle symbols corresponding to positive \code{z} values,
+#'   the \code{bg} argument is used for color(s).
 #' @param fg character.
 #'   Outer-line color for circle symbols.
 #'   Specify a value of \code{NA} to remove the symbols outer line, and
@@ -54,8 +56,8 @@
 #'   Main title to be placed at the top of the legend.
 #' @param subtitle character.
 #'   Legend subtitle to be placed below the main title.
-#' @param fixed.radius numeric.
-#'   A fixed radius applied to all circle symbols, in inches;
+#' @param fix.radii numeric.
+#'   A fixed radius for all circle symbols, in inches;
 #'   overrides proportional circle symbols and function behaves more like \code{\link{points}} function.
 #' @param add logical.
 #'   If true, circle symbols (and an optional legend) are added to an existing plot.
@@ -73,42 +75,46 @@
 #' @export
 #'
 #' @examples
+#' set.seed(2)
+#'
 #' n <- 50L
-#' x <- cbind(runif(n, 1, 10), runif(n, 1, 10))
-#' z <- runif(n, -5000, 10000)
-#' AddBubbles(x, z = z, fg = "green", lwd = 2, title = "Title", loc = "topright",
-#'            breaks=pretty(z, n = 8), add = FALSE)
+#' x <- cbind(runif(n, 1, 10), runif(n, 1, 500))
+#' z <- runif(n, 0, 1000)
+#' z[sample.int(n, 2)] <- 0
+#' AddBubbles(x, z = z, fg = "green", lwd = 2, loc = "topright",
+#'            title = "Title", subtitle = "Subtitle", add = FALSE)
 #'
-#' Pal1 <- colorRampPalette(c("#F4A582", "#CA0020"))
-#' Pal2 <- colorRampPalette(c("#92C5DE", "#0571B0"))
-#' AddBubbles(x, z = z, bg.pos = Pal1, bg.neg = Pal2, add = FALSE)
+#' idxs <- sample.int(n, floor(n / 2))
+#' z[idxs] <- -z[idxs]
+#' AddBubbles(x, z = z, bg.neg = "blue", breaks = pretty(z, n = 8), add = FALSE)
 #'
-#' AddBubbles(x, z = z, bg.pos = Pal1, bg.neg = Pal2, add = FALSE,
-#'            make.intervals = TRUE)
+#' Pal1 <- colorRampPalette(c("#CA0020BF", "#F4A582BF"), alpha = TRUE)
+#' Pal2 <- colorRampPalette(c("#0571B0BF", "#92C5DEBF"), alpha = TRUE)
+#' AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE)
 #'
-#' AddBubbles(x, z = z, bg.pos = Pal1, bg.neg = Pal2, add = FALSE,
-#'            make.intervals = TRUE, fixed.radius = 0.1)
+#' AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE)
 #'
-#' AddBubbles(x, z = runif(n, 10, 10000), title = "Quantiles", bg.pos = topo.colors,
-#'            quantile.breaks = TRUE, fg = NULL, add = FALSE)
+#' AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE,
+#'            fix.radii = 0.1)
+#'
+#' AddBubbles(x, z = abs(z), title = "Quantiles", bg = topo.colors,
+#'            quantile.breaks = TRUE, add = FALSE)
 #'
 
 AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
                        scaling=c("perceptual", "mathematical"),
-                       bg.pos="red", bg.neg="blue", fg=NA, lwd=0.25,
+                       bg="red", bg.neg=NULL, fg=NA, lwd=0.25,
                        cex=0.7, format=NULL, draw.legend=TRUE,
                        loc=c("bottomleft", "topleft", "topright", "bottomright"),
                        inset=0.02, breaks=NULL, break.labels=NULL,
                        quantile.breaks=FALSE, make.intervals=FALSE,
-                       title=NULL, subtitle=NULL, fixed.radius=NULL,
-                       add=TRUE) {
+                       title=NULL, subtitle=NULL, fix.radii=NULL, add=TRUE) {
 
   xy <- grDevices::xy.coords(x, y,
                              xlab=deparse(substitute(x)),
                              ylab=deparse(substitute(y)))
   x <- xy$x
   y <- xy$y
-
   if (is.numeric(zlim)) {
     if (is.na(zlim[1])) zlim[1] <- min(z, na.rm=TRUE)
     if (is.na(zlim[2])) zlim[2] <- max(z, na.rm=TRUE)
@@ -119,14 +125,13 @@ AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
   y <- y[is]
   z <- z[is]
 
+  # breaks
   if (is.null(breaks)) breaks <- pretty(z, n=6)
-
   if (quantile.breaks) {
     breaks <- quantile(z, probs=seq(0, 1, 0.25))
     if (is.null(break.labels)) {
       val <- formatC(breaks, format=format, big.mark=",")
-      lab <- c("minimum", "25th quartile", "median",
-               "75th quartile", "maximum")
+      lab <- c("minimum", "25th quartile", "median", "75th quartile", "maximum")
       break.labels <- sprintf("%s (%s)", val, lab)
     }
   } else if (make.intervals) {
@@ -142,75 +147,122 @@ AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
         ss[length(ss)] <- sprintf("[%s, Inf)", s[length(s) - 1L])
     }
     if (is.null(break.labels)) break.labels <- ss
-    idxs <- findInterval(z, breaks, all.inside=TRUE)
+    interval <- findInterval(z, breaks, all.inside=TRUE)
     breaks <- (head(breaks, -1) + tail(breaks, -1)) / 2
-    z <- breaks[idxs]
+    z <- breaks[interval]
   }
-
   if (is.null(break.labels))
     break.labels <- formatC(breaks, format=format, big.mark=",")
 
-  if (!add) plot(NA, type="n", xlim=grDevices::extendrange(x),
-                 ylim=grDevices::extendrange(y), xlab="x", ylab="y")
+  # plot
+  if (!add)
+    plot(NA, type="n", xlim=grDevices::extendrange(x), ylim=grDevices::extendrange(y),
+         xlab="x", ylab="y")
 
+  # aspect ratio
+  usr <- graphics::par("usr")
+  pin <- graphics::par("pin")
+  w <- pin[1] / diff(usr[1:2])
+  h <- pin[2] / diff(usr[3:4])
+  asp <- w / h
+
+  # radii
   if (is.na(inches[1])) inches[1] <- 0
   if (is.na(inches[2])) inches[2] <- 0.2
   min.r <- diff(graphics::grconvertX(c(0, inches[1]), from="inches", to="user"))
   max.r <- diff(graphics::grconvertX(c(0, inches[2]), from="inches", to="user")) - min.r
-
+  fix.r <- diff(graphics::grconvertX(c(0, fix.radii), from="inches", to="user"))
   scaling <- match.arg(scaling)
   if (scaling == "mathematical")
     Scale <- function(v, max.v, max.r) {return(sqrt(v / max.v) * max.r)}
   else
     Scale <- function(v, max.v, max.r) {return(((v / max.v)^0.57) * max.r)}
+  if (is.numeric(fix.radii)) {
+    r  <- rep(fix.r, length(z))
+    r0 <- rep(fix.r, length(breaks))
+  } else {
+    r  <- Scale(abs(z), max(abs(c(z, breaks))), max.r) + min.r
+    r0 <- Scale(abs(breaks), max(abs(c(z, breaks))), max.r) + min.r
+  }
 
-  r <- Scale(abs(z), max(abs(c(z, breaks))), max.r) + min.r
-  if (is.numeric(fixed.radius)) r <- rep(fixed.radius, length(r))
+  # color
+  cols  <- rep("#02080D", length(z))
+  cols0 <- rep("#02080D", length(breaks))
+  if (is.null(bg.neg)) {
+    if (is.function(bg)) {
+      if (make.intervals) {
+        cols  <- .Map2Color(breaks, bg, n=length(breaks))[interval]
+        cols0 <- .Map2Color(breaks, bg, n=length(breaks))
+      } else {
+        cols  <- .Map2Color(z, bg)
+        cols0 <- .Map2Color(breaks, bg)
+      }
+    } else {
+      cols  <- rep(bg, length(z))
+      cols0 <- rep(bg, length(breaks))
+    }
+  } else {
+    if (is.function(bg)) {
+      if (make.intervals) {
+        idxs <- interval
+        idxs[z < 0] <- NA
+        idxs <- idxs - min(idxs, na.rm=TRUE) + 1L
+        cols[z > 0] <- .Map2Color(breaks[breaks > 0], bg)[stats::na.omit(idxs)]
+      } else {
+        cols[z > 0] <- .Map2Color(z[z > 0], bg)
+      }
+      cols0[breaks > 0] <- .Map2Color(breaks[breaks > 0], bg)
+    } else {
+      cols[z > 0] <- bg
+      cols0[breaks > 0] <- bg
+    }
+    if (is.function(bg.neg)) {
+      if (make.intervals) {
+        idxs <- interval
+        idxs[z > 0] <- NA
+        idxs <- idxs - min(idxs, na.rm=TRUE) + 1L
+        cols[z < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg)[stats::na.omit(idxs)]
+      } else {
+        cols[z < 0] <- .Map2Color(abs(z[z < 0]), bg.neg)
+      }
+      cols0[breaks < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg)
+    } else {
+      cols[z < 0] <- bg.neg
+      cols0[breaks < 0] <- bg.neg
+    }
+  }
 
-  cols <- rep("#02080D", length(z))
-  if (is.function(bg.neg))
-    cols[z < 0] <- .Map2Color(abs(z[z < 0]), bg.neg)
-  else
-    cols[z < 0] <- bg.neg
-  if (is.function(bg.pos))
-    cols[z > 0] <- .Map2Color(z[z > 0], bg.pos)
-  else
-    cols[z > 0] <- bg.pos
-
+  # draw circle symbols
   idxs <- order(r, decreasing=TRUE)
-  fg.cols <- if (is.null(fg)) cols[idxs] else fg
+  fg.col  <- if (is.null(fg)) cols[idxs] else fg
+  fg.col0 <- if (is.null(fg)) cols0 else fg
   graphics::symbols(x[idxs], y[idxs], circles=r[idxs], bg=cols[idxs],
-                    fg=fg.cols, inches=FALSE, add=TRUE, lwd=lwd)
+                    fg=fg.col, inches=FALSE, lwd=lwd, add=TRUE)
 
+  # legend
   if (draw.legend) {
-    ipad <- graphics::strwidth("0", cex=cex)  # arbitrary choice for inner padding
-
+    ipadx <- graphics::strwidth("O", cex=cex)
+    ipady <- ipadx * asp
     lab.width <- max(graphics::strwidth(break.labels, cex=cex))
-
-    usr <- graphics::par("usr")
     padx <- inset * diff(usr[1:2])
     pady <- inset * diff(usr[3:4])
 
-    r <- Scale(abs(breaks), max(abs(c(z, breaks))), max.r) + min.r
-    if (is.numeric(fixed.radius)) r <- rep(fixed.radius, length(r))
+    r1 <- r0
+    r1[r1 < (ipadx / 2)] <- ipadx / 2
+    s <- ipady + r1[1] * asp
+    for (i in seq_along(r1)[-1]) s[i] <- s[i-1] + r1[i - 1] * asp + ipady + r1[i] * asp
+    dx <- ipadx + max(r0) * 2 + ipadx + lab.width + ipadx
+    dy <- max(s) + r1[length(r1)] * asp + ipady
 
-    gap <- max(c(stats::median(r), graphics::strheight("O", cex=cex) * 1.5))
-
-    s <- vapply(seq_along(r), function(i) sum(r[1:i]), 0)
-    s <- ipad + gap + 2 * s - r + (seq_along(r) - 1L) * gap
-
-    dx <- ipad + max(r) * 2 + ipad + lab.width + ipad
-    dy <- max(s) + r[length(r)] + ipad * 2
-
+    # titles
     if (!is.null(title)) {
-      title.width <- graphics::strwidth(title, cex=cex, font=2) + ipad * 2
+      title.width <- graphics::strwidth(title, cex=cex, font=2) + ipadx * 2
       if (dx < title.width) dx <- title.width
-      title.height <- graphics::strheight(title, cex=cex, font=2)
-      dy <- dy + title.height + ipad
+      title.height <- graphics::strheight(title, cex=cex, font=2) * 1.5
+      dy <- dy + title.height
     }
-
     if (!is.null(subtitle)) {
-      subtitle.width <- graphics::strwidth(subtitle, cex=cex) + ipad * 2
+      subtitle.width <- graphics::strwidth(subtitle, cex=cex) + ipadx * 2
       if (dx < subtitle.width) dx <- subtitle.width
       subtitle.height <- graphics::strheight(subtitle, cex=cex) * 1.5
       dy <- dy + subtitle.height
@@ -226,38 +278,20 @@ AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
     } else if (loc == "bottomright") {
       loc <- c(usr[2] - padx - dx, usr[3] + pady)
     }
-
-    graphics::rect(loc[1], loc[2], loc[1] + dx, loc[2] + dy,
-                   col="#FFFFFFE7", border="black", lwd=0.5)
-
-    x <- rep(loc[1] + ipad + max(r), length(r))
+    graphics::rect(loc[1], loc[2], loc[1] + dx, loc[2] + dy, col="#FFFFFFE7",
+                   border="black", lwd=0.5)
+    x <- rep(loc[1] + ipadx + max(r0), length(r0))
     y <- loc[2] + s
+    graphics::symbols(x, y, circles=r0, bg=cols0, fg=fg.col0, inches=FALSE,
+                      lwd=lwd, add=TRUE)
 
-    cols <- rep("#02080D", length(breaks))
-    if (is.function(bg.neg))
-      cols[breaks < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg)
-    else
-      cols[breaks < 0] <- bg.neg
-    if (is.function(bg.pos))
-      cols[breaks > 0] <- .Map2Color(breaks[breaks > 0], bg.pos)
-    else
-      cols[breaks > 0] <- bg.pos
-    fg.cols <- if (is.null(fg)) cols else fg
-    graphics::symbols(x, y, circles=r, bg=cols, fg=fg.cols, inches=FALSE,
-                      add=TRUE, lwd=lwd)
-
-    text(loc[1] + ipad + max(r) * 2 + ipad, y, break.labels,
-         adj=c(0, 0.5), cex=cex)
-
+    text(loc[1] + ipadx + max(r0) * 2 + ipadx, y, break.labels, adj=c(0, 0.5), cex=cex)
     if (!is.null(title))
-      text(loc[1] + dx / 2, loc[2] + dy - ipad, title,
-           adj=c(0.5, 1), cex=cex, font=2)
-
+      text(loc[1] + dx / 2, loc[2] + dy - ipady, title, adj=c(0.5, 0.5), cex=cex, font=2)
     if (!is.null(subtitle))
-      text(loc[1] + dx / 2, loc[2] + dy - subtitle.height - title.height - ipad,
-           subtitle, adj=c(0.5, 0), cex=cex)
+      text(loc[1] + dx / 2, loc[2] + dy - title.height - subtitle.height, subtitle,
+           adj=c(0.5, 0), cex=cex)
   }
-
   invisible(NULL)
 }
 
