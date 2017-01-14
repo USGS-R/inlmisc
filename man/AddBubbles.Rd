@@ -100,6 +100,9 @@ This function can be used to add a bubble map to a plot.
 Proportional circle symbols are used to represent spatial point data,
 where symbol area varies in proportion to an attribute variable.
 }
+\note{
+To avoid overplotting, circle symbols are drawn in order of decreasing radius.
+}
 \examples{
 set.seed(2)
 

@@ -64,6 +64,8 @@
 #'
 #' @return Used for the side-effect of a bubble map drawn on the current graphics device.
 #'
+#' @note To avoid overplotting, circle symbols are drawn in order of decreasing radius.
+#'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
 #' @references Tanimura, S., Kuroiwa, C., and Mizota, T., 2006, Proportional Symbol Mapping in R: Journal of Statistical Software, v. 15, no. 5, 7 p.
@@ -191,8 +193,9 @@ AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
   if (is.null(bg.neg)) {
     if (is.function(bg)) {
       if (make.intervals) {
-        cols  <- .Map2Color(breaks, bg, n=length(breaks))[interval]
-        cols0 <- .Map2Color(breaks, bg, n=length(breaks))
+        n <- length(breaks) + 1L
+        cols  <- .Map2Color(breaks, bg, n=n)[interval]
+        cols0 <- .Map2Color(breaks, bg, n=n)
       } else {
         cols  <- .Map2Color(z, bg)
         cols0 <- .Map2Color(breaks, bg)
@@ -207,11 +210,13 @@ AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
         idxs <- interval
         idxs[z < 0] <- NA
         idxs <- idxs - min(idxs, na.rm=TRUE) + 1L
-        cols[z > 0] <- .Map2Color(breaks[breaks > 0], bg)[stats::na.omit(idxs)]
+        n <- length(breaks[breaks > 0]) + 1L
+        cols[z > 0] <- .Map2Color(breaks[breaks > 0], bg, n=n)[stats::na.omit(idxs)]
+        cols0[breaks > 0] <- .Map2Color(breaks[breaks > 0], bg, n=n)
       } else {
         cols[z > 0] <- .Map2Color(z[z > 0], bg)
+        cols0[breaks > 0] <- .Map2Color(breaks[breaks > 0], bg)
       }
-      cols0[breaks > 0] <- .Map2Color(breaks[breaks > 0], bg)
     } else {
       cols[z > 0] <- bg
       cols0[breaks > 0] <- bg
@@ -221,11 +226,14 @@ AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
         idxs <- interval
         idxs[z > 0] <- NA
         idxs <- idxs - min(idxs, na.rm=TRUE) + 1L
-        cols[z < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg)[stats::na.omit(idxs)]
+        n <- length(breaks[breaks < 0]) + 1L
+        cols[z < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg, n=n)[stats::na.omit(idxs)]
+        cols0[breaks < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg, n=n)
       } else {
         cols[z < 0] <- .Map2Color(abs(z[z < 0]), bg.neg)
+        cols0[breaks < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg)
       }
-      cols0[breaks < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg)
+
     } else {
       cols[z < 0] <- bg.neg
       cols0[breaks < 0] <- bg.neg
