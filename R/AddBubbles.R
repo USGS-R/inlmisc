@@ -30,9 +30,9 @@
 #'   Specify a value of \code{NA} to remove the symbols outer line, and
 #'   \code{NULL} to match the outer-line color with the symbols fill color.
 #' @param lwd numeric.
-#'   Line width for drawing circle symbols
+#'   Line width for drawing circle symbols.
 #' @param cex character.
-#'   Character expansion factor for legend labels
+#'   Character expansion factor for legend labels.
 #' @param format character.
 #'   Formatting for legend values, see \code{\link{formatC}} for options.
 #' @param draw.legend logical.
@@ -83,15 +83,15 @@
 #' x <- cbind(runif(n, 1, 10), runif(n, 1, 500))
 #' z <- runif(n, 0, 1000)
 #' z[sample.int(n, 2)] <- 0
-#' AddBubbles(x, z = z, fg = "green", lwd = 2, loc = "topright",
+#' AddBubbles(x, z = z, fg = "#00000080", lwd = 0.5, loc = "topright",
 #'            title = "Title", subtitle = "Subtitle", add = FALSE)
 #'
 #' idxs <- sample.int(n, floor(n / 2))
 #' z[idxs] <- -z[idxs]
-#' AddBubbles(x, z = z, bg.neg = "blue", breaks = pretty(z, n = 8), add = FALSE)
+#' AddBubbles(x, z = z, bg.neg = "#2A8FBDCB", breaks = pretty(z, n = 8), add = FALSE)
 #'
-#' Pal1 <- colorRampPalette(c("#CA0020BF", "#F4A582BF"), alpha = TRUE)
-#' Pal2 <- colorRampPalette(c("#0571B0BF", "#92C5DEBF"), alpha = TRUE)
+#' Pal1 <- colorRampPalette(c("#CA0020CB", "#F4A582CB"), alpha = TRUE)
+#' Pal2 <- colorRampPalette(c("#0571B0CB", "#92C5DECB"), alpha = TRUE)
 #' AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE)
 #'
 #' AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE)
@@ -105,7 +105,7 @@
 
 AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
                        scaling=c("perceptual", "mathematical"),
-                       bg="red", bg.neg=NULL, fg=NA, lwd=0.25,
+                       bg="#F02311CB", bg.neg=NULL, fg=NA, lwd=0.25,
                        cex=0.7, format=NULL, draw.legend=TRUE,
                        loc=c("bottomleft", "topleft", "topright", "bottomright"),
                        inset=0.02, breaks=NULL, break.labels=NULL,
