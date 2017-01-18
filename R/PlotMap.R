@@ -8,7 +8,7 @@
 #'   A raster layer with values to be plotted or a coordinate reference system (CRS).
 #' @param layer integer.
 #'   Column to use in the SpatialGridDataFrame.
-#' @param att numeric or character.
+#' @param att integer or character.
 #'   Variable identifying the levels attribute to use in the Raster Attribute Table (RAT).
 #'   This argument requires \code{r} values that are of class factor.
 #' @param n integer.
@@ -220,6 +220,13 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
   if (is.null(ylim)) ylim <- c(NA, NA)
   if (is.null(zlim)) zlim <- c(NA, NA)
 
+  e <- as.vector(extent(r))
+  if (!is.na(xlim[1])) e[1] <- xlim[1]
+  if (!is.na(xlim[2])) e[2] <- xlim[2]
+  if (!is.na(ylim[1])) e[3] <- ylim[1]
+  if (!is.na(ylim[2])) e[4] <- ylim[2]
+  r <- crop(r, extent(e), snap="near")
+
   zran <- range(r[], finite=TRUE)
   if (anyNA(zran)) {
     n <- 0
@@ -253,13 +260,6 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
   }
 
   if (trim.r && !all(is.na(r[]))) r <- trim(r)
-
-  e <- as.vector(extent(r))
-  if (!is.na(xlim[1])) e[1] <- xlim[1]
-  if (!is.na(xlim[2])) e[2] <- xlim[2]
-  if (!is.na(ylim[1])) e[3] <- ylim[1]
-  if (!is.na(ylim[2])) e[4] <- ylim[2]
-  r <- crop(r, extent(e), snap="near")
 
   xran <- bbox(r)[1, ]
   yran <- bbox(r)[2, ]

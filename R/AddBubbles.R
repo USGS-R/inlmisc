@@ -4,16 +4,27 @@
 #' Proportional circle symbols are used to represent spatial point data,
 #' where symbol area varies in proportion to an attribute variable.
 #'
-#' @param x,y numeric.
+#' @param x,y numeric or SpatialPoints*.
 #'   The x and y coordinates for the centers of the circle symbols.
-#'   They can be specified in any way which is accepted by \code{\link{xy.coords}}.
-#' @param z numeric.
-#'   Attribute variable
+#'   If numeric, can be specified in any way which is accepted by \code{\link{xy.coords}}.
+#' @param z numeric, integer, or factor.
+#'   Attribute variable.
+#'   For objects of class factor, a fixed radius is used for circle symbols,
+#'   see \code{inches} argument description.
+#' @param att integer or character.
+#'   Variable identifier when \code{x} of class SpatialPointsDataFrame.
+#' @param crs character or CRS.
+#'   Coordinate reference system arguments
+#' @param xlim numeric.
+#'   Vector of length 2 giving the x limits for the plot.
+#' @param ylim numeric.
+#'   Vector of length 2 giving the y limits for the plot.
 #' @param zlim numeric.
-#'   Minimum and maximum \code{z} values that circle symbols are plotted;
-#'   defaults to the range of the finite values of \code{z}.
+#'   Vector of length 2 giving the z limits for the plot.
 #' @param inches numeric.
-#'   Vector of length 2 specifying the radii limits for the drawn circle symbol.
+#'   Vector of length 2 giving the radii limits for the drawn circle symbol.
+#'   Alternatively, a single number can be given resulting in a fixed radius being used for all circle symbols;
+#'   this overrides proportional circles and the function behaves like the \code{\link{points}} function.
 #' @param scaling character.
 #'   Selects the proportional symbol mapping algorithm to be used;
 #'   either "perceptual" or "mathematical" scaling (Tanimura and others, 2006).
@@ -56,11 +67,11 @@
 #'   Main title to be placed at the top of the legend.
 #' @param subtitle character.
 #'   Legend subtitle to be placed below the main title.
-#' @param fix.radii numeric.
-#'   A fixed radius for all circle symbols, in inches;
-#'   overrides proportional circle symbols and function behaves more like \code{\link{points}} function.
 #' @param add logical.
 #'   If true, circle symbols (and an optional legend) are added to an existing plot.
+#' @param ...
+#'   Graphics parameters to be passed to \code{\link{PlotMap}}.
+#'   Unused if \code{add = TRUE}.
 #'
 #' @return Used for the side-effect of a bubble map drawn on the current graphics device.
 #'
@@ -97,35 +108,89 @@
 #' AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE)
 #'
 #' AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE,
-#'            fix.radii = 0.1)
+#'            inches = 0.1)
 #'
 #' AddBubbles(x, z = abs(z), title = "Quantiles", bg = topo.colors,
 #'            quantile.breaks = TRUE, add = FALSE)
 #'
+#' z <- as.factor(rep(c("dog", "cat", "ant", "pig", "bat"), length.out = n))
+#' AddBubbles(x, z = z, bg = rainbow(nlevels(z), end = 0.8, alpha = 0.8), add = FALSE)
+#'
+#' AddBubbles(x, draw.legend = FALSE, add = FALSE)
+#'
 
-AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
-                       scaling=c("perceptual", "mathematical"),
-                       bg="#F02311CB", bg.neg=NULL, fg=NA, lwd=0.25,
+AddBubbles <- function(x, y=NULL, z=NULL, att=NULL, crs=NULL,
+                       xlim=NULL, ylim=NULL, zlim=NULL,
+                       inches=c(0, 0.2), scaling=c("perceptual", "mathematical"),
+                       bg="#1F1F1FCB", bg.neg=NULL, fg=NA, lwd=0.25,
                        cex=0.7, format=NULL, draw.legend=TRUE,
                        loc=c("bottomleft", "topleft", "topright", "bottomright"),
                        inset=0.02, breaks=NULL, break.labels=NULL,
                        quantile.breaks=FALSE, make.intervals=FALSE,
-                       title=NULL, subtitle=NULL, fix.radii=NULL, add=TRUE) {
+                       title=NULL, subtitle=NULL, add=TRUE, ...) {
 
-  xy <- grDevices::xy.coords(x, y,
-                             xlab=deparse(substitute(x)),
-                             ylab=deparse(substitute(y)))
+  if (is.character(crs)) crs <- try(sp::CRS(crs), silent=TRUE)
+  if (!inherits(crs, "CRS")) crs <- sp::CRS(as.character(NA))
+
+  if (inherits(x, "SpatialPoints")) {
+    if (inherits(x, "SpatialPointsDataFrame") && is.null(z))
+      z <- x@data[, ifelse(is.null(att), 1, att)]
+    if (!is.na(rgdal::CRSargs(crs)) && !is.na(rgdal::CRSargs(x@proj4string)))
+      x <- sp::spTransform(x, crs)
+    crs <- x@proj4string
+    y <- sp::coordinates(x)[, 2]
+    x <- sp::coordinates(x)[, 1]
+  }
+
+  if (is.null(z)) z <- factor(rep(1, length(x)), labels="missing")
+
+  if (is.factor(z)) {
+    z <- factor(z)  # drop levels that do not occur
+    z <- factor(z, levels=rev(levels(z)))  # reverse order of levels
+    break.labels <- levels(z)
+    n <- length(break.labels)
+    z <- as.numeric(z)
+    breaks <- seq(0.5, max(z, na.rm=TRUE) - 0.5, by=1)
+    zlim <- NULL
+    quantile.breaks <- FALSE
+    make.intervals <- FALSE
+    if (length(inches) > 1) inches <- 0.03
+  }
+
+  # coordinates
+  xy <- grDevices::xy.coords(x, y, xlab=deparse(substitute(x)),
+                                   ylab=deparse(substitute(y)))
   x <- xy$x
   y <- xy$y
+
+  # limits
   if (is.numeric(zlim)) {
-    if (is.na(zlim[1])) zlim[1] <- min(z, na.rm=TRUE)
-    if (is.na(zlim[2])) zlim[2] <- max(z, na.rm=TRUE)
+    zran <- range(z, na.rm=TRUE)
+    if (is.na(zlim[1])) zlim[1] <- zran[1]
+    if (is.na(zlim[2])) zlim[2] <- zran[2]
     z[z < zlim[1] | z > zlim[2]] <- NA
   }
   is <- !is.na(z)
-  x <- x[is]
-  y <- y[is]
-  z <- z[is]
+  xran <- grDevices::extendrange(x[is])
+  yran <- grDevices::extendrange(y[is])
+  if (is.numeric(xlim)) {
+    if (is.na(xlim[1])) xlim[1] <- xran[1]
+    if (is.na(xlim[2])) xlim[2] <- xran[2]
+    z[x < xlim[1] | x > xlim[2]] <- NA
+  } else {
+    xlim <- xran
+  }
+  if (is.numeric(ylim)) {
+    if (is.na(ylim[1])) ylim[1] <- yran[1]
+    if (is.na(ylim[2])) ylim[2] <- yran[2]
+    z[y < ylim[1] | y > ylim[2]] <- NA
+  } else {
+    ylim <- yran
+  }
+  is.lim <- !is.na(z)
+  x <- x[is.lim]
+  y <- y[is.lim]
+  z <- z[is.lim]
 
   # breaks
   if (is.null(breaks)) breaks <- pretty(z, n=6)
@@ -156,38 +221,36 @@ AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
   if (is.null(break.labels))
     break.labels <- formatC(breaks, format=format, big.mark=",")
 
-  # plot
-  if (!add)
-    plot(NA, type="n", xlim=grDevices::extendrange(x), ylim=grDevices::extendrange(y),
-         xlab="x", ylab="y")
+  # default plot
+  if (!add) PlotMap(crs, xlim=xlim, ylim=ylim, ...)
 
-  # aspect ratio
+  # plot aspect ratio
   usr <- graphics::par("usr")
   pin <- graphics::par("pin")
   w <- pin[1] / diff(usr[1:2])
   h <- pin[2] / diff(usr[3:4])
   asp <- w / h
 
-  # radii
-  if (is.na(inches[1])) inches[1] <- 0
-  if (is.na(inches[2])) inches[2] <- 0.2
-  min.r <- diff(graphics::grconvertX(c(0, inches[1]), from="inches", to="user"))
-  max.r <- diff(graphics::grconvertX(c(0, inches[2]), from="inches", to="user")) - min.r
-  fix.r <- diff(graphics::grconvertX(c(0, fix.radii), from="inches", to="user"))
-  scaling <- match.arg(scaling)
-  if (scaling == "mathematical")
-    Scale <- function(v, max.v, max.r) {return(sqrt(v / max.v) * max.r)}
-  else
-    Scale <- function(v, max.v, max.r) {return(((v / max.v)^0.57) * max.r)}
-  if (is.numeric(fix.radii)) {
+  # circle radii
+  if (length(inches) > 1) {
+    if (is.na(inches[1])) inches[1] <- 0
+    if (is.na(inches[2])) inches[2] <- 0.2
+    min.r <- diff(graphics::grconvertX(c(0, inches[1]), from="inches", to="user"))
+    max.r <- diff(graphics::grconvertX(c(0, inches[2]), from="inches", to="user")) - min.r
+    scaling <- match.arg(scaling)
+    if (scaling == "mathematical")
+      FUN <- function(v, max.v, max.r) {return(sqrt(v / max.v) * max.r)}
+    else
+      FUN <- function(v, max.v, max.r) {return(((v / max.v)^0.57) * max.r)}
+    r  <- FUN(abs(z), max(abs(c(z, breaks))), max.r) + min.r
+    r0 <- FUN(abs(breaks), max(abs(c(z, breaks))), max.r) + min.r
+  } else {
+    fix.r <- diff(graphics::grconvertX(c(0, inches), from="inches", to="user"))
     r  <- rep(fix.r, length(z))
     r0 <- rep(fix.r, length(breaks))
-  } else {
-    r  <- Scale(abs(z), max(abs(c(z, breaks))), max.r) + min.r
-    r0 <- Scale(abs(breaks), max(abs(c(z, breaks))), max.r) + min.r
   }
 
-  # color
+  # circle color
   cols  <- rep("#02080D", length(z))
   cols0 <- rep("#02080D", length(breaks))
   if (is.null(bg.neg)) {
@@ -240,14 +303,14 @@ AddBubbles <- function(x, y=NULL, z, zlim=NULL, inches=c(0, 0.2),
     }
   }
 
-  # draw circle symbols
+  # draw circles
   idxs <- order(r, decreasing=TRUE)
   fg.col  <- if (is.null(fg)) cols[idxs] else fg
   fg.col0 <- if (is.null(fg)) cols0 else fg
   graphics::symbols(x[idxs], y[idxs], circles=r[idxs], bg=cols[idxs],
                     fg=fg.col, inches=FALSE, lwd=lwd, add=TRUE)
 
-  # legend
+  # add legend
   if (draw.legend) {
     ipadx <- graphics::strwidth("O", cex=cex)
     ipady <- ipadx * asp

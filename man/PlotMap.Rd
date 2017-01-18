@@ -21,7 +21,7 @@ A raster layer with values to be plotted or a coordinate reference system (CRS).
 \item{layer}{integer.
 Column to use in the SpatialGridDataFrame.}
 
-\item{att}{numeric or character.
+\item{att}{integer or character.
 Variable identifying the levels attribute to use in the Raster Attribute Table (RAT).
 This argument requires \code{r} values that are of class factor.}
 

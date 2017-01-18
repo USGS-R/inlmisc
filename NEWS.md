@@ -1,19 +1,22 @@
 # inlmisc 0.2.2.9000
 
-- In `AddBubble` function, account for aspect ratio when constructing legend.
+- In `AddBubbles` function, allow `z` argument to be an object of class `factor`.
 
-- In `AddBubble` function, rename `bg.pos` argument to `bg`, and set `bg.neg = NULL`.
-  The `bg` argument may be used to specify circle symbol colors for all `z` values (not just positive values).
+- In `AddBubbles` function, account for aspect ratio when constructing legend.
+
+- In `AddBubbles` function, rename `bg.pos` argument to `bg`, and set `bg.neg = NULL`.
+  The `bg` argument may now be used to specify circle colors for all `z` values, not just positive values.
   See help documentation for details.
 
-- Add `fixed.radius` argument in `AddBubbles` function; enables a fixed radius to be used for all circle symbols.
+- In `AddBubbles` function, specifying a single numeric value for the `inches` arguments results in
+  a fixed radius being used for all circle symbols.
 
-- In `PlotMap` function, account for *z*-axis limits prior to removing rows and columns having all missing values.
+- In `PlotMap` function, account for z-axis limits prior to removing rows and columns having all missing values.
 
-- Change default for `scale.loc` argument in `PlotMap` function from `"leftbottom"` to `NULL`;
+- In `PlotMap` function, change default for `scale.loc` argument from `"leftbottom"` to `NULL`;
   the scale bar is no longer drawn by default.
 
-- Change `asp` argument in `PlotMap` function from 1 to NULL.
+- In `PlotMap` function, change `asp` argument from 1 to NULL.
   Defaults to 1 when data is projected, otherwise, a calculated value based on axes limits is used.
 
 - Add function `POSIXct2Character`, used to convert objects from `POSIXct` to `character` class.

@@ -4,28 +4,44 @@
 \alias{AddBubbles}
 \title{Add Bubble Map to Plot}
 \usage{
-AddBubbles(x, y = NULL, z, zlim = NULL, inches = c(0, 0.2),
-  scaling = c("perceptual", "mathematical"), bg = "#F02311CB",
+AddBubbles(x, y = NULL, z = NULL, att = NULL, crs = NULL, xlim = NULL,
+  ylim = NULL, zlim = NULL, inches = c(0, 0.2),
+  scaling = c("perceptual", "mathematical"), bg = "#1F1F1FCB",
   bg.neg = NULL, fg = NA, lwd = 0.25, cex = 0.7, format = NULL,
   draw.legend = TRUE, loc = c("bottomleft", "topleft", "topright",
   "bottomright"), inset = 0.02, breaks = NULL, break.labels = NULL,
   quantile.breaks = FALSE, make.intervals = FALSE, title = NULL,
-  subtitle = NULL, fix.radii = NULL, add = TRUE)
+  subtitle = NULL, add = TRUE, ...)
 }
 \arguments{
-\item{x, y}{numeric.
+\item{x, y}{numeric or SpatialPoints*.
 The x and y coordinates for the centers of the circle symbols.
-They can be specified in any way which is accepted by \code{\link{xy.coords}}.}
+If numeric, can be specified in any way which is accepted by \code{\link{xy.coords}}.}
 
-\item{z}{numeric.
-Attribute variable}
+\item{z}{numeric, integer, or factor.
+Attribute variable.
+For objects of class factor, a fixed radius is used for circle symbols,
+see \code{inches} argument description.}
+
+\item{att}{integer or character.
+Variable identifier when \code{x} of class SpatialPointsDataFrame.}
+
+\item{crs}{character or CRS.
+Coordinate reference system arguments}
+
+\item{xlim}{numeric.
+Vector of length 2 giving the x limits for the plot.}
+
+\item{ylim}{numeric.
+Vector of length 2 giving the y limits for the plot.}
 
 \item{zlim}{numeric.
-Minimum and maximum \code{z} values that circle symbols are plotted;
-defaults to the range of the finite values of \code{z}.}
+Vector of length 2 giving the z limits for the plot.}
 
 \item{inches}{numeric.
-Vector of length 2 specifying the radii limits for the drawn circle symbol.}
+Vector of length 2 giving the radii limits for the drawn circle symbol.
+Alternatively, a single number can be given resulting in a fixed radius being used for all circle symbols;
+this overrides proportional circles and the function behaves like the \code{\link{points}} function.}
 
 \item{scaling}{character.
 Selects the proportional symbol mapping algorithm to be used;
@@ -85,12 +101,11 @@ Main title to be placed at the top of the legend.}
 \item{subtitle}{character.
 Legend subtitle to be placed below the main title.}
 
-\item{fix.radii}{numeric.
-A fixed radius for all circle symbols, in inches;
-overrides proportional circle symbols and function behaves more like \code{\link{points}} function.}
-
 \item{add}{logical.
 If true, circle symbols (and an optional legend) are added to an existing plot.}
+
+\item{...}{Graphics parameters to be passed to \code{\link{PlotMap}}.
+Unused if \code{add = TRUE}.}
 }
 \value{
 Used for the side-effect of a bubble map drawn on the current graphics device.
@@ -124,10 +139,15 @@ AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE)
 AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE)
 
 AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE,
-           fix.radii = 0.1)
+           inches = 0.1)
 
 AddBubbles(x, z = abs(z), title = "Quantiles", bg = topo.colors,
            quantile.breaks = TRUE, add = FALSE)
+
+z <- as.factor(rep(c("dog", "cat", "ant", "pig", "bat"), length.out = n))
+AddBubbles(x, z = z, bg = rainbow(nlevels(z), end = 0.8, alpha = 0.8), add = FALSE)
+
+AddBubbles(x, draw.legend = FALSE, add = FALSE)
 
 }
 \author{
