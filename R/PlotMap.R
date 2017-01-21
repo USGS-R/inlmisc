@@ -1,16 +1,21 @@
 #' Plot Method for Maps
 #'
-#' This function maps raster layer values.
+#' This function maps raster and point data.
 #' A key showing how the colors map to raster values is shown below the map.
 #' The width and height of the graphics region will be automagically determined in some cases.
 #'
-#' @param r RasterLayer, SpatialGridDataFrame, or CRS.
-#'   A raster layer with values to be plotted or a coordinate reference system (CRS).
+#' @param r Raster*, SpatialGridDataFrame, or CRS.
+#'   An object that can be converted to a raster layer, or a coordinate reference system (CRS).
+#' @param p SpatialPointsDataFrame.
+#'   Spatial point data to be plotted.
+#' @param ...
+#'   Graphics parameters to be passed to \code{\link{AddBubbles}}.
+#'   Unused if \code{p = NULL}.
 #' @param layer integer.
-#'   Column to use in the SpatialGridDataFrame.
+#'   Layer to extract from if \code{r} is of class RasterStack/Brick or SpatialGridDataFrame.
 #' @param att integer or character.
-#'   Variable identifying the levels attribute to use in the Raster Attribute Table (RAT).
-#'   This argument requires \code{r} values that are of class factor.
+#'   The levels attribute to use in the Raster Attribute Table (RAT);
+#'   requires \code{r} values of class factor.
 #' @param n integer.
 #'   Desired number of intervals to partition the range of raster values (or \code{zlim} if specified) (optional).
 #' @param breaks numeric.
@@ -31,8 +36,6 @@
 #'   If true, the raster value limits will be extended to the next tick mark on the color key beyond the measured range.
 #' @param reg.axs logical.
 #'   If true, the spatial data range is extended.
-#' @param trim.r logical.
-#'   If true, the outer rows and columns that consist of all NA values will be removed.
 #' @param dms.tick logical.
 #'   If true, the axes tickmarks are specified in degrees, minutes, and decimal seconds.
 #' @param bg.lines logical.
@@ -144,20 +147,19 @@
 #' r <- raster::raster(system.file("external/test.grd", package="raster"))
 #' credit <- "Label crediting the base map."
 #' explanation <- "Label explaining the raster cell value."
-#' PlotMap(r, scale.loc = "bottomright", dms.tick = TRUE, trim.r = TRUE,
-#'         credit = credit, explanation = explanation)
+#' PlotMap(r, scale.loc = "bottomright", dms.tick = TRUE, credit = credit,
+#'         explanation = explanation)
 #' data(meuse, package = "sp")
 #' sp::coordinates(meuse) = ~ x + y
 #' points(meuse)
 #'
-#' val <- PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, trim.r = TRUE,
-#'                credit = credit, explanation = explanation,
-#'                file = "Rplots1.pdf")
+#' val <- PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, credit = credit,
+#'                explanation = explanation, file = "Rplots1.pdf")
 #' print(val)
 #'
 #' pdf(file = "Rplots2.pdf", width = val$din[1], height = val$din[2])
-#' PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, trim.r = TRUE,
-#'         credit = credit, explanation = explanation)
+#' PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, credit = credit,
+#'         explanation = explanation)
 #' points(meuse)
 #' dev.off()
 #'
@@ -165,15 +167,18 @@
 #' graphics.off()
 #'
 
-PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=NULL,
-                    zlim=NULL, asp=NULL, extend.xy=FALSE, extend.z=FALSE,
-                    reg.axs=TRUE, trim.r=TRUE, dms.tick=FALSE, bg.lines=FALSE,
-                    bg.image=NULL, bg.image.alpha=1, pal=NULL, col=NULL,
-                    max.dev.dim=c(43, 56), labels=NULL, scale.loc=NULL,
-                    arrow.loc=NULL, explanation=NULL, credit=proj4string(r),
-                    shade=NULL, contour.lines=NULL, rivers=NULL, lakes=NULL,
-                    roads=NULL, draw.key=NULL, draw.raster=TRUE, file=NULL,
-                    useRaster) {
+PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
+                    xlim=NULL, ylim=NULL, zlim=NULL, asp=NULL,
+                    extend.xy=FALSE, extend.z=FALSE,
+                    reg.axs=TRUE, dms.tick=FALSE, bg.lines=FALSE, bg.image=NULL,
+                    bg.image.alpha=1, pal=NULL, col=NULL, max.dev.dim=c(43, 56),
+                    labels=NULL, scale.loc=NULL, arrow.loc=NULL, explanation=NULL,
+                    credit=proj4string(r), shade=NULL, contour.lines=NULL,
+                    rivers=NULL, lakes=NULL, roads=NULL, draw.key=NULL,
+                    draw.raster=TRUE, file=NULL, useRaster) {
+
+  if (!is.null(p) && !inherits(p, "SpatialPoints"))
+    stop("spatial point data is the incorrect class")
 
   if (!is.null(bg.image) && !inherits(bg.image, "RasterLayer"))
     stop("background image is the incorrect class")
@@ -188,17 +193,18 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
               is.numeric(ylim) && length(ylim) == 2 && all(!is.na(ylim))
     if (!is.lim && is.null(bg.image))
       stop("spatial limits must be specified")
-    e <- raster::extent(if (is.lim) c(xlim, ylim) else bg.image)
+    e <- extent(if (is.lim) c(xlim, ylim) else bg.image)
     r <- raster(e, crs=r)
     r[] <- NA
   }
 
+  if (!is.null(p)) try(p <- spTransform(p, r@crs), silent=TRUE)
+
   if (is.null(asp) && !is.na(rgdal::CRSargs(raster::crs(r)))) asp <- 1
 
-  if (inherits(r, "SpatialGridDataFrame"))
+  if (inherits(r, c("RasterStack", "RasterBrick", "SpatialGrid")))
     r <- raster(r, layer=layer)
-  if (!inherits(r, "RasterLayer"))
-    stop("raster layer is the incorrect class")
+  if (!inherits(r, "RasterLayer")) stop("raster layer is the incorrect class")
 
   if (raster::is.factor(r)) {
     att.tbl <- raster::levels(r)[[1]]
@@ -216,39 +222,41 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
     r <- rr
   }
 
-  if (is.null(xlim)) xlim <- c(NA, NA)
-  if (is.null(ylim)) ylim <- c(NA, NA)
-  if (is.null(zlim)) zlim <- c(NA, NA)
+  xl <- if (is.null(xlim)) c(NA, NA) else xlim
+  yl <- if (is.null(ylim)) c(NA, NA) else ylim
+  zl <- if (is.null(zlim)) c(NA, NA) else zlim
 
-  e <- as.vector(extent(r))
-  if (!is.na(xlim[1])) e[1] <- xlim[1]
-  if (!is.na(xlim[2])) e[2] <- xlim[2]
-  if (!is.na(ylim[1])) e[3] <- ylim[1]
-  if (!is.na(ylim[2])) e[4] <- ylim[2]
+  e <- cbind(as.vector(extent(r)), if (is.null(p)) NULL else as.vector(extent(p)))
+  e <- c(min(e[1, ]), max(e[2, ]), min(e[3, ]), max(e[4, ]))
+  if (!is.na(xl[1])) e[1] <- xl[1]
+  if (!is.na(xl[2])) e[2] <- xl[2]
+  if (!is.na(yl[1])) e[3] <- yl[1]
+  if (!is.na(yl[2])) e[4] <- yl[2]
   r <- crop(r, extent(e), snap="near")
+  if (!is.null(p)) p <- crop(p, extent(e), snap="near")
 
   zran <- range(r[], finite=TRUE)
   if (anyNA(zran)) {
     n <- 0
   } else {
-    default.zlim <- if (extend.z) range(pretty(zran, n=6)) else zran
+    default.zl <- if (extend.z) range(pretty(zran, n=6)) else zran
     if (raster::is.factor(r)) {
       at1 <- raster::levels(r)[[1]][, "ID"]
       breaks <- c(0.5, at1 + 0.5)
-      zlim <- range(breaks, finite=TRUE)
+      zl <- range(breaks, finite=TRUE)
     } else {
-      if (all(is.na(zlim)) && !is.null(breaks)) {
-        zlim <- range(breaks, finite=TRUE)
+      if (all(is.na(zl)) && !is.null(breaks)) {
+        zl <- range(breaks, finite=TRUE)
       } else {
-        if (is.na(zlim[1])) zlim[1] <- default.zlim[1]
-        if (is.na(zlim[2])) zlim[2] <- default.zlim[2]
+        if (is.na(zl[1])) zl[1] <- default.zl[1]
+        if (is.na(zl[2])) zl[2] <- default.zl[2]
       }
       if (is.null(breaks)) {
         if (is.null(n) || n > 200L) {
-          breaks <- seq(zlim[1], zlim[2], length.out=200L)
-          at1 <- pretty(if (extend.z) zran else zlim, n=6)
+          breaks <- seq(zl[1], zl[2], length.out=200L)
+          at1 <- pretty(if (extend.z) zran else zl, n=6)
         } else {
-          breaks <- pretty(zlim, n=n)
+          breaks <- pretty(zl, n=n)
           at1 <- breaks
         }
       } else {
@@ -256,46 +264,46 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
       }
     }
     n <- length(breaks) - 1L
-    r[r[] < zlim[1] | r[] > zlim[2]] <- NA
+    r[r[] < zl[1] | r[] > zl[2]] <- NA
   }
 
-  if (trim.r && !all(is.na(r[]))) r <- trim(r)
+  if (!all(is.na(r[]))) r <- trim(r)
 
-  xran <- bbox(r)[1, ]
-  yran <- bbox(r)[2, ]
+  xran <- range(c(bbox(r)[1, ]), if (is.null(p)) NULL else bbox(p)[1, ])
+  yran <- range(c(bbox(r)[2, ]), if (is.null(p)) NULL else bbox(p)[2, ])
 
   if (extend.xy) {
-    default.xlim <- range(pretty(xran))
-    default.ylim <- range(pretty(yran))
+    default.xl <- range(pretty(xran))
+    default.yl <- range(pretty(yran))
   } else {
     if (reg.axs) {
       buf <- diff(xran) * 0.04
       aspect <- ifelse(is.null(asp), (diff(xran) / diff(yran)), asp)
-      default.xlim <- c(xran[1] - buf, xran[2] + buf)
-      default.ylim <- c(yran[1] - (buf * aspect), yran[2] + (buf * aspect))
+      default.xl <- c(xran[1] - buf, xran[2] + buf)
+      default.yl <- c(yran[1] - (buf * aspect), yran[2] + (buf * aspect))
     } else {
-      default.xlim <- range(xran)
-      default.ylim <- range(yran)
+      default.xl <- range(xran)
+      default.yl <- range(yran)
     }
   }
 
-  if (is.na(xlim[1])) xlim[1] <- default.xlim[1]
-  if (is.na(xlim[2])) xlim[2] <- default.xlim[2]
-  if (is.na(ylim[1])) ylim[1] <- default.ylim[1]
-  if (is.na(ylim[2])) ylim[2] <- default.ylim[2]
+  if (is.na(xl[1])) xl[1] <- default.xl[1]
+  if (is.na(xl[2])) xl[2] <- default.xl[2]
+  if (is.na(yl[1])) yl[1] <- default.yl[1]
+  if (is.na(yl[2])) yl[2] <- default.yl[2]
 
   if (!is.logical(draw.key)) draw.key <- ifelse(n == 0, FALSE, TRUE)
 
   if (dms.tick) {
     al <- list()
-    al[[1]] <- Lines(list(Line(rbind(c(xlim[1], ylim[1]),
-                                     c(xlim[2], ylim[1])))), ID="al1")
-    al[[2]] <- Lines(list(Line(rbind(c(xlim[1], ylim[1]),
-                                     c(xlim[1], ylim[2])))), ID="al2")
-    al[[3]] <- Lines(list(Line(rbind(c(xlim[1], ylim[2]),
-                                     c(xlim[2], ylim[2])))), ID="al3")
-    al[[4]] <- Lines(list(Line(rbind(c(xlim[2], ylim[1]),
-                                     c(xlim[2], ylim[2])))), ID="al4")
+    al[[1]] <- Lines(list(Line(rbind(c(xl[1], yl[1]),
+                                     c(xl[2], yl[1])))), ID="al1")
+    al[[2]] <- Lines(list(Line(rbind(c(xl[1], yl[1]),
+                                     c(xl[1], yl[2])))), ID="al2")
+    al[[3]] <- Lines(list(Line(rbind(c(xl[1], yl[2]),
+                                     c(xl[2], yl[2])))), ID="al3")
+    al[[4]] <- Lines(list(Line(rbind(c(xl[2], yl[1]),
+                                     c(xl[2], yl[2])))), ID="al4")
     sl <- SpatialLines(al, proj4string=r@crs)
     sl.dd <- spTransform(sl, CRS("+init=epsg:4326"))
     e.dd <- pretty(range(bbox(sl.dd)[1, ]))
@@ -314,20 +322,17 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
     at2[[3]] <- as.vector(coordinates(pts[ids == "al3 NS", ])[, 1])
     at2[[4]] <- as.vector(coordinates(pts[ids == "al4 EW", ])[, 2])
 
-    xlabs <- .FormatDMS(dd2dms(coordinates(pts.dd[ids == "al3 NS", ])[, 1],
-                               NS=FALSE))
-    ylabs <- .FormatDMS(dd2dms(coordinates(pts.dd[ids == "al2 EW", ])[, 2],
-                               NS=TRUE))
+    xlabs <- .FormatDMS(dd2dms(coordinates(pts.dd[ids == "al3 NS", ])[, 1], NS=FALSE))
+    ylabs <- .FormatDMS(dd2dms(coordinates(pts.dd[ids == "al2 EW", ])[, 2], NS=TRUE))
   } else {
     at2 <- list()
-    at2[[1]] <- pretty(xlim)
-    at2[[2]] <- pretty(ylim)
+    at2[[1]] <- pretty(xl)
+    at2[[2]] <- pretty(yl)
     at2[[3]] <- at2[[1]]
     at2[[4]] <- at2[[2]]
     xlabs <- prettyNum(at2[[1]])
     ylabs <- prettyNum(at2[[2]])
-    if (extend.xy)
-     ylabs[length(ylabs)] <- ""
+    if (extend.xy) ylabs[length(ylabs)] <- ""
   }
 
   inches.in.pica <- 1 / 6
@@ -351,9 +356,9 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
     h <- h1 + h2
   } else {
     w <- max.dev.dim[1]
-    aspect <- ifelse(is.null(asp), (diff(xlim) / diff(ylim)), asp)
+    aspect <- ifelse(is.null(asp), (diff(xl) / diff(yl)), asp)
     repeat {
-      y2 <- (w - mar2[2] - mar2[4]) * (diff(ylim) / diff(xlim)) * aspect
+      y2 <- (w - mar2[2] - mar2[4]) * (diff(yl) / diff(xl)) * aspect
       h2 <- y2 + mar2[1] + mar2[3]
       h1 <- y1 + mar1[1] + mar1[3]
       h <- h1 + h2
@@ -418,7 +423,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
   # Plot map
 
   graphics::par(mai=mar2 * inches.in.pica)
-  plot(NA, type="n", xlim=xlim, ylim=ylim, xaxs="i", yaxs="i", bty="n",
+  plot(NA, type="n", xlim=xl, ylim=yl, xaxs="i", yaxs="i", bty="n",
        xaxt="n", yaxt="n", xlab="", ylab="", asp=asp)
 
   if (bg.lines) {
@@ -443,7 +448,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
   }
 
   if (draw.raster & n > 0) {
-    raster::image(r, maxpixels=length(r), useRaster=useRaster, zlim=zlim,
+    raster::image(r, maxpixels=length(r), useRaster=useRaster, zlim=zl,
                   col=cols, add=TRUE, breaks=breaks)
     if (is.list(shade)) {
       zfact <- as.numeric(shade[["z.factor"]])
@@ -507,13 +512,15 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
     color <- ifelse(length(color) == 1 && !is.na(color), color, "#1F1F1F")
     drawl <- ifelse(length(drawl) == 1 && !is.na(drawl), drawl, TRUE)
     metho <- ifelse(length(metho) == 1 && !is.na(metho), metho, "flattest")
-    contour.breaks <- if (n + 1L > 20L) pretty(zlim, 20L) else breaks
+    contour.breaks <- if (n + 1L > 20L) pretty(zl, 20L) else breaks
     ncontours <- length(contour.breaks)
     raster::contour(r, maxpixels=length(r), levels=contour.breaks,
-                    labels=formatC(contour.breaks, big.mark=","), xlim=xlim,
-                    ylim=ylim, zlim=zlim, labcex=0.5, drawlabels=drawl,
+                    labels=formatC(contour.breaks, big.mark=","),
+                    xlim=xl, ylim=yl, zlim=zl, labcex=0.5, drawlabels=drawl,
                     method=metho, axes=FALSE, col=color, lwd=lwd, add=TRUE)
   }
+
+  if (!is.null(p)) AddBubbles(p, xlim=xlim, ylim=ylim, zlim=zlim, ...)
 
   graphics::axis(1, at=at2[[1]], labels=FALSE, lwd=-1, lwd.ticks=lwd, tcl=tcl,
                  cex.axis=cex)
@@ -539,8 +546,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
     AddScaleBar(asp, unit, lonlat, scale.loc)
   }
 
-  if (!is.null(arrow.loc))
-    .AddNorthArrow(arrow.loc, r@crs, cex)
+  if (!is.null(arrow.loc)) .AddNorthArrow(arrow.loc, r@crs, cex)
 
   invisible(list(din=graphics::par("din"),
                  usr=graphics::par("usr"),
@@ -623,4 +629,3 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL, xlim=NULL, ylim=N
   sapply(x, function(i) tryCatch(is.matrix(grDevices::col2rgb(i)),
                                  error=function(e) FALSE))
 }
-

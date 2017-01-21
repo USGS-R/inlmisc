@@ -4,26 +4,32 @@
 \alias{PlotMap}
 \title{Plot Method for Maps}
 \usage{
-PlotMap(r, layer = 1, att = NULL, n = NULL, breaks = NULL,
-  xlim = NULL, ylim = NULL, zlim = NULL, asp = NULL,
-  extend.xy = FALSE, extend.z = FALSE, reg.axs = TRUE, trim.r = TRUE,
-  dms.tick = FALSE, bg.lines = FALSE, bg.image = NULL,
-  bg.image.alpha = 1, pal = NULL, col = NULL, max.dev.dim = c(43, 56),
-  labels = NULL, scale.loc = NULL, arrow.loc = NULL, explanation = NULL,
-  credit = proj4string(r), shade = NULL, contour.lines = NULL,
-  rivers = NULL, lakes = NULL, roads = NULL, draw.key = NULL,
-  draw.raster = TRUE, file = NULL, useRaster)
+PlotMap(r, p = NULL, ..., layer = 1, att = NULL, n = NULL,
+  breaks = NULL, xlim = NULL, ylim = NULL, zlim = NULL, asp = NULL,
+  extend.xy = FALSE, extend.z = FALSE, reg.axs = TRUE, dms.tick = FALSE,
+  bg.lines = FALSE, bg.image = NULL, bg.image.alpha = 1, pal = NULL,
+  col = NULL, max.dev.dim = c(43, 56), labels = NULL, scale.loc = NULL,
+  arrow.loc = NULL, explanation = NULL, credit = proj4string(r),
+  shade = NULL, contour.lines = NULL, rivers = NULL, lakes = NULL,
+  roads = NULL, draw.key = NULL, draw.raster = TRUE, file = NULL,
+  useRaster)
 }
 \arguments{
-\item{r}{RasterLayer, SpatialGridDataFrame, or CRS.
-A raster layer with values to be plotted or a coordinate reference system (CRS).}
+\item{r}{Raster*, SpatialGridDataFrame, or CRS.
+An object that can be converted to a raster layer, or a coordinate reference system (CRS).}
+
+\item{p}{SpatialPointsDataFrame.
+Spatial point data to be plotted.}
+
+\item{...}{Graphics parameters to be passed to \code{\link{AddBubbles}}.
+Unused if \code{p = NULL}.}
 
 \item{layer}{integer.
-Column to use in the SpatialGridDataFrame.}
+Layer to extract from if \code{r} is of class RasterStack/Brick or SpatialGridDataFrame.}
 
 \item{att}{integer or character.
-Variable identifying the levels attribute to use in the Raster Attribute Table (RAT).
-This argument requires \code{r} values that are of class factor.}
+The levels attribute to use in the Raster Attribute Table (RAT);
+requires \code{r} values of class factor.}
 
 \item{n}{integer.
 Desired number of intervals to partition the range of raster values (or \code{zlim} if specified) (optional).}
@@ -53,9 +59,6 @@ If true, the raster value limits will be extended to the next tick mark on the c
 
 \item{reg.axs}{logical.
 If true, the spatial data range is extended.}
-
-\item{trim.r}{logical.
-If true, the outer rows and columns that consist of all NA values will be removed.}
 
 \item{dms.tick}{logical.
 If true, the axes tickmarks are specified in degrees, minutes, and decimal seconds.}
@@ -162,7 +165,7 @@ Used for the side-effect of a new plot generated.
   }
 }
 \description{
-This function maps raster layer values.
+This function maps raster and point data.
 A key showing how the colors map to raster values is shown below the map.
 The width and height of the graphics region will be automagically determined in some cases.
 }
@@ -182,20 +185,19 @@ PlotMap(r, att = "code")
 r <- raster::raster(system.file("external/test.grd", package="raster"))
 credit <- "Label crediting the base map."
 explanation <- "Label explaining the raster cell value."
-PlotMap(r, scale.loc = "bottomright", dms.tick = TRUE, trim.r = TRUE,
-        credit = credit, explanation = explanation)
+PlotMap(r, scale.loc = "bottomright", dms.tick = TRUE, credit = credit,
+        explanation = explanation)
 data(meuse, package = "sp")
 sp::coordinates(meuse) = ~ x + y
 points(meuse)
 
-val <- PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, trim.r = TRUE,
-               credit = credit, explanation = explanation,
-               file = "Rplots1.pdf")
+val <- PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, credit = credit,
+               explanation = explanation, file = "Rplots1.pdf")
 print(val)
 
 pdf(file = "Rplots2.pdf", width = val$din[1], height = val$din[2])
-PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, trim.r = TRUE,
-        credit = credit, explanation = explanation)
+PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, credit = credit,
+        explanation = explanation)
 points(meuse)
 dev.off()
 

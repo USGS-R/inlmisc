@@ -11,8 +11,8 @@
 #'   Attribute variable.
 #'   For objects of class factor, a fixed radius is used for circle symbols,
 #'   see \code{inches} argument description.
-#' @param att integer or character.
-#'   Variable identifier when \code{x} of class SpatialPointsDataFrame.
+#' @param zcol integer or character.
+#'   Attribute name or column number to extract from if \code{x} is of class SpatialGridDataFrame.
 #' @param crs character or CRS.
 #'   Coordinate reference system arguments
 #' @param xlim numeric.
@@ -119,7 +119,7 @@
 #' AddBubbles(x, draw.legend = FALSE, add = FALSE)
 #'
 
-AddBubbles <- function(x, y=NULL, z=NULL, att=NULL, crs=NULL,
+AddBubbles <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
                        xlim=NULL, ylim=NULL, zlim=NULL,
                        inches=c(0, 0.2), scaling=c("perceptual", "mathematical"),
                        bg="#1F1F1FCB", bg.neg=NULL, fg=NA, lwd=0.25,
@@ -133,10 +133,8 @@ AddBubbles <- function(x, y=NULL, z=NULL, att=NULL, crs=NULL,
   if (!inherits(crs, "CRS")) crs <- sp::CRS(as.character(NA))
 
   if (inherits(x, "SpatialPoints")) {
-    if (inherits(x, "SpatialPointsDataFrame") && is.null(z))
-      z <- x@data[, ifelse(is.null(att), 1, att)]
-    if (!is.na(rgdal::CRSargs(crs)) && !is.na(rgdal::CRSargs(x@proj4string)))
-      x <- sp::spTransform(x, crs)
+    if (inherits(x, "SpatialPointsDataFrame") && is.null(z)) z <- x@data[, zcol]
+    try(x <- sp::spTransform(x, crs), silent=TRUE)
     crs <- x@proj4string
     y <- sp::coordinates(x)[, 2]
     x <- sp::coordinates(x)[, 1]

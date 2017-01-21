@@ -4,7 +4,7 @@
 \alias{AddBubbles}
 \title{Add Bubble Map to Plot}
 \usage{
-AddBubbles(x, y = NULL, z = NULL, att = NULL, crs = NULL, xlim = NULL,
+AddBubbles(x, y = NULL, z = NULL, zcol = 1, crs = NULL, xlim = NULL,
   ylim = NULL, zlim = NULL, inches = c(0, 0.2),
   scaling = c("perceptual", "mathematical"), bg = "#1F1F1FCB",
   bg.neg = NULL, fg = NA, lwd = 0.25, cex = 0.7, format = NULL,
@@ -23,8 +23,8 @@ Attribute variable.
 For objects of class factor, a fixed radius is used for circle symbols,
 see \code{inches} argument description.}
 
-\item{att}{integer or character.
-Variable identifier when \code{x} of class SpatialPointsDataFrame.}
+\item{zcol}{integer or character.
+Attribute name or column number to extract from if \code{x} is of class SpatialGridDataFrame.}
 
 \item{crs}{character or CRS.
 Coordinate reference system arguments}
