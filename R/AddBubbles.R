@@ -220,7 +220,11 @@ AddBubbles <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     break.labels <- formatC(breaks, format=format, big.mark=",")
 
   # default plot
-  if (!add) PlotMap(crs, xlim=xlim, ylim=ylim, ...)
+  if (!add) {
+    PlotMap(crs, xlim=xlim, ylim=ylim, close.file=FALSE, ...)
+    if (methods::hasArg(file) && !is.null(list(...)$file))
+      on.exit(grDevices::dev.off())
+  }
 
   # plot aspect ratio
   usr <- graphics::par("usr")

@@ -1,5 +1,8 @@
 # inlmisc 0.2.2.9000
 
+- In `PlotMap` function, add `file.close` argument.
+  A logical that idicates if the graphics device driver should be shut down when the function exits.
+
 - In `AddBubbles` function, allow `z` argument to be an object of class `factor`.
 
 - In `AddBubbles` function, account for aspect ratio when constructing legend.
