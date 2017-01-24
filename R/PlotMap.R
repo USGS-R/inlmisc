@@ -37,7 +37,7 @@
 #' @param reg.axs logical.
 #'   If true, the spatial data range is extended.
 #' @param dms.tick logical.
-#'   If true, the axes tickmarks are specified in degrees, minutes, and decimal seconds.
+#'   If true and \code{r} is projected, the axes tickmarks are specified in degrees, minutes, and decimal seconds (DMS).
 #' @param bg.lines logical.
 #'   If true, the graticule is drawn in back of the raster layer using white lines and a grey background.
 #' @param bg.image RasterLayer.
@@ -203,6 +203,8 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (is.null(asp) && !is.na(rgdal::CRSargs(raster::crs(r)))) asp <- 1
 
+  is.dms <- dms.tick && !is.na(CRSargs(r@crs))
+
   if (inherits(r, c("RasterStack", "RasterBrick", "SpatialGrid")))
     r <- raster(r, layer=layer)
   if (!inherits(r, "RasterLayer")) stop("raster layer is the incorrect class")
@@ -295,47 +297,6 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (!is.logical(draw.key)) draw.key <- ifelse(n == 0, FALSE, TRUE)
 
-  if (dms.tick) {
-    al <- list()
-    al[[1]] <- Lines(list(Line(rbind(c(xl[1], yl[1]),
-                                     c(xl[2], yl[1])))), ID="al1")
-    al[[2]] <- Lines(list(Line(rbind(c(xl[1], yl[1]),
-                                     c(xl[1], yl[2])))), ID="al2")
-    al[[3]] <- Lines(list(Line(rbind(c(xl[1], yl[2]),
-                                     c(xl[2], yl[2])))), ID="al3")
-    al[[4]] <- Lines(list(Line(rbind(c(xl[2], yl[1]),
-                                     c(xl[2], yl[2])))), ID="al4")
-    sl <- SpatialLines(al, proj4string=r@crs)
-    sl.dd <- spTransform(sl, CRS("+init=epsg:4326"))
-    e.dd <- pretty(range(bbox(sl.dd)[1, ]))
-    n.dd <- pretty(range(bbox(sl.dd)[2, ]))
-    grd.dd <- gridlines(sl.dd, easts=e.dd, norths=n.dd, ndiscr=1000)
-
-    pts.dd <- rgeos::gIntersection(sl.dd, grd.dd, byid=TRUE)
-    ids <- row.names(pts.dd)
-
-    row.names(pts.dd) <- make.names(ids, unique=TRUE)
-    pts <- spTransform(pts.dd, r@crs)
-
-    at2 <- list()
-    at2[[1]] <- as.vector(coordinates(pts[ids == "al1 NS", ])[, 1])
-    at2[[2]] <- as.vector(coordinates(pts[ids == "al2 EW", ])[, 2])
-    at2[[3]] <- as.vector(coordinates(pts[ids == "al3 NS", ])[, 1])
-    at2[[4]] <- as.vector(coordinates(pts[ids == "al4 EW", ])[, 2])
-
-    xlabs <- .FormatDMS(dd2dms(coordinates(pts.dd[ids == "al3 NS", ])[, 1], NS=FALSE))
-    ylabs <- .FormatDMS(dd2dms(coordinates(pts.dd[ids == "al2 EW", ])[, 2], NS=TRUE))
-  } else {
-    at2 <- list()
-    at2[[1]] <- pretty(xl)
-    at2[[2]] <- pretty(yl)
-    at2[[3]] <- at2[[1]]
-    at2[[4]] <- at2[[2]]
-    xlabs <- prettyNum(at2[[1]])
-    ylabs <- prettyNum(at2[[2]])
-    if (extend.xy) ylabs[length(ylabs)] <- ""
-  }
-
   inches.in.pica <- 1 / 6
 
   mar2 <- c(1, 3, 2, 2)
@@ -400,11 +361,9 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
         cols <- grDevices::rainbow(n, start=0.0, end=0.8)
     }
   }
-  if (!all(.AreColors(cols)))
-    stop("colors are not valid")
+  if (!all(.AreColors(cols))) stop("colors are not valid")
 
-  # Plot color key
-
+  # plot color key
   if (draw.key & n > 0) {
     is.categorical <- raster::is.factor(r)
     at <- if (is.null(labels$at)) at1 else labels$at
@@ -421,17 +380,62 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
     graphics::par(op)
   }
 
-  # Plot map
-
+  # plot map
   graphics::par(mai=mar2 * inches.in.pica)
   plot(NA, type="n", xlim=xl, ylim=yl, xaxs="i", yaxs="i", bty="n",
        xaxt="n", yaxt="n", xlab="", ylab="", asp=asp)
+  usr <- graphics::par("usr")
+
+  if (is.null(file)) {
+    xl <- usr[1:2]
+    yl <- usr[3:4]
+  }
+
+  if (is.dms) {
+    al <- list()
+    al[[1]] <- Lines(list(Line(rbind(c(xl[1], yl[1]),
+                                     c(xl[2], yl[1])))), ID="al1")
+    al[[2]] <- Lines(list(Line(rbind(c(xl[1], yl[1]),
+                                     c(xl[1], yl[2])))), ID="al2")
+    al[[3]] <- Lines(list(Line(rbind(c(xl[1], yl[2]),
+                                     c(xl[2], yl[2])))), ID="al3")
+    al[[4]] <- Lines(list(Line(rbind(c(xl[2], yl[1]),
+                                     c(xl[2], yl[2])))), ID="al4")
+    sl <- SpatialLines(al, proj4string=r@crs)
+    sl.dd <- spTransform(sl, CRS("+init=epsg:4326"))
+    e.dd <- pretty(range(bbox(sl.dd)[1, ]))
+    n.dd <- pretty(range(bbox(sl.dd)[2, ]))
+    grd.dd <- gridlines(sl.dd, easts=e.dd, norths=n.dd, ndiscr=1000)
+
+    pts.dd <- rgeos::gIntersection(sl.dd, grd.dd, byid=TRUE)
+    ids <- row.names(pts.dd)
+
+    row.names(pts.dd) <- make.names(ids, unique=TRUE)
+    pts <- spTransform(pts.dd, r@crs)
+
+    at2 <- list()
+    at2[[1]] <- as.vector(coordinates(pts[ids == "al1 NS", ])[, 1])
+    at2[[2]] <- as.vector(coordinates(pts[ids == "al2 EW", ])[, 2])
+    at2[[3]] <- as.vector(coordinates(pts[ids == "al3 NS", ])[, 1])
+    at2[[4]] <- as.vector(coordinates(pts[ids == "al4 EW", ])[, 2])
+
+    xlabs <- .FormatDMS(dd2dms(coordinates(pts.dd[ids == "al3 NS", ])[, 1], NS=FALSE))
+    ylabs <- .FormatDMS(dd2dms(coordinates(pts.dd[ids == "al2 EW", ])[, 2], NS=TRUE))
+  } else {
+    at2 <- list()
+    at2[[1]] <- pretty(xl)
+    at2[[2]] <- pretty(yl)
+    at2[[3]] <- at2[[1]]
+    at2[[4]] <- at2[[2]]
+    xlabs <- prettyNum(at2[[1]], big.mark=",")
+    ylabs <- prettyNum(at2[[2]], big.mark=",")
+    if (extend.xy) ylabs[length(ylabs)] <- ""
+  }
 
   if (bg.lines) {
-    usr <- graphics::par()$usr
     graphics::rect(xleft=usr[1], ybottom=usr[3], xright=usr[2], ytop=usr[4],
                    col="#E7E7E7", border=NA)
-    if (dms.tick) {
+    if (is.dms) {
       plot(spTransform(grd.dd, r@crs), lwd=lwd, col="#FFFFFF", add=TRUE)
     } else {
       graphics::abline(v=at2[[1]], lwd=lwd, col="#FFFFFF")
@@ -525,7 +529,7 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
 
   graphics::axis(1, at=at2[[1]], labels=FALSE, lwd=-1, lwd.ticks=lwd, tcl=tcl,
                  cex.axis=cex)
-  if (dms.tick)
+  if (is.dms)
     graphics::axis(2, at=at2[[2]], labels=ylabs, lwd=-1, lwd.ticks=lwd, hadj=0,
                    tcl=tcl, cex.axis=cex, las=1)
   else
@@ -549,14 +553,13 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (!is.null(arrow.loc)) .AddNorthArrow(arrow.loc, r@crs, cex)
 
-  invisible(list(din=graphics::par("din"),
-                 usr=graphics::par("usr"),
-                 heights=c(h2, h1) / h))
+  invisible(list(din=graphics::par("din"), usr=usr, heights=c(h2, h1) / h))
 }
 
 
 .LocateMidTicks <- function(side) {
-  ran <- if (side %in% c(1, 3)) graphics::par("usr")[1:2] else graphics::par("usr")[3:4]
+  usr <- graphics::par("usr")
+  ran <- if (side %in% c(1, 3)) usr[1:2] else usr[3:4]
   at <- graphics::axTicks(side)
   inc <- diff(range(at)) / (length(at) - 1)
   at.mid <- seq(min(at) - inc, max(at) + inc, by=inc / 2)
@@ -566,24 +569,18 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
 
 
 .AddNorthArrow <- function(loc, crs, cex) {
+  crs.dd <- CRS("+init=epsg:4326")
   usr <- graphics::par("usr")
-
   x.mid <- (usr[2] + usr[1]) / 2
   y.mid <- (usr[4] + usr[3]) / 2
-
-  crs.dd <- CRS("+init=epsg:4326")
-
   d <- 0.05 * (usr[4] - usr[3])
-
   xy <- rbind(c(x.mid, y.mid), c(x.mid, y.mid + d))
   sp.dd <- spTransform(SpatialPoints(xy, proj4string=crs), crs.dd)
   dd <- sp.dd@coords
-
   d.dd <- sqrt((dd[2, 1] - dd[1, 1])^2 + (dd[2, 2] - dd[1, 2])^2)
   dd <- rbind(dd[1, ], c(dd[1, 1],  dd[1, 2] + d.dd))
   sp.xy <- spTransform(SpatialPoints(dd, proj4string=crs.dd), crs)
   xy <- sp.xy@coords
-
   padx <- 0.1 * (usr[2] - usr[1])
   pady <- 0.1 * (usr[4] - usr[3])
   if (loc %in% c("bottomleft", "topleft"))
@@ -596,7 +593,6 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
     y0 <- usr[4] - pady
   x1 <- xy[2, 1] + x0 - xy[1, 1]
   y1 <- xy[2, 2] + y0 - xy[1, 2]
-
   a <- atan((y1 - y0) / (x1 - x0)) * (180 / pi)
   if (a > 45 && a <= 135) {
     pos <- 3
@@ -607,7 +603,6 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   } else {
     pos <- 4
   }
-
   graphics::arrows(x0, y0, x1, y1, length=0.1)
   text(x1, y1, labels="N", pos=pos, cex=cex)
 }

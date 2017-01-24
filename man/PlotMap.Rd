@@ -61,7 +61,7 @@ If true, the raster value limits will be extended to the next tick mark on the c
 If true, the spatial data range is extended.}
 
 \item{dms.tick}{logical.
-If true, the axes tickmarks are specified in degrees, minutes, and decimal seconds.}
+If true and \code{r} is projected, the axes tickmarks are specified in degrees, minutes, and decimal seconds (DMS).}
 
 \item{bg.lines}{logical.
 If true, the graticule is drawn in back of the raster layer using white lines and a grey background.}
