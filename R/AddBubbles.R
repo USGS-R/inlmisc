@@ -63,6 +63,7 @@
 #' @param make.intervals logical.
 #'   If true, represent \code{z} within intervals.
 #'   See \code{\link{findInterval}} function for details.
+#'   Unused if \code{quantile.breaks} is true.
 #' @param title character.
 #'   Main title to be placed at the top of the legend.
 #' @param subtitle character.
@@ -199,6 +200,7 @@ AddBubbles <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       lab <- c("minimum", "25th quartile", "median", "75th quartile", "maximum")
       break.labels <- sprintf("%s (%s)", val, lab)
     }
+    make.intervals <- FALSE
   } else if (make.intervals) {
     interval <- findInterval(z, breaks, rightmost.closed=TRUE)
     s <- formatC(breaks, format=NULL, big.mark=",")
@@ -314,7 +316,7 @@ AddBubbles <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
 
   # add legend
   if (draw.legend) {
-    ipadx <- graphics::strwidth("O", cex=cex)
+    ipadx <- graphics::strwidth("M", cex=cex)
     ipady <- ipadx * asp
     lab.width <- max(graphics::strwidth(break.labels, cex=cex))
     padx <- inset * diff(usr[1:2])

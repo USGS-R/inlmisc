@@ -69,8 +69,7 @@
 #' @param explanation character.
 #'   Label explaining the raster cell value.
 #' @param credit character.
-#'   Label crediting the base map;
-#'   by default, the character string describing the raster layer's (\code{r}) projection and datum in the PROJ.4 format.
+#'   Label crediting the base map.
 #' @param shade list.
 #'   If specified, a semi-transparent shade layer is drawn on top of the raster layer.
 #'   This layer is described using a list of arguments supplied to \code{raster::hillShade} function.
@@ -174,7 +173,7 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
                     reg.axs=TRUE, dms.tick=FALSE, bg.lines=FALSE, bg.image=NULL,
                     bg.image.alpha=1, pal=NULL, col=NULL, max.dev.dim=c(43, 56),
                     labels=NULL, scale.loc=NULL, arrow.loc=NULL, explanation=NULL,
-                    credit=proj4string(r), shade=NULL, contour.lines=NULL,
+                    credit=NULL, shade=NULL, contour.lines=NULL,
                     rivers=NULL, lakes=NULL, roads=NULL, draw.key=NULL,
                     draw.raster=TRUE, file=NULL, close.file=TRUE, useRaster) {
 
@@ -339,14 +338,17 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
     if (close.file) on.exit(grDevices::dev.off())
   }
 
-  if (draw.key)
-    graphics::layout(matrix(c(2, 1), nrow=2, ncol=1), heights=c(h2, h1) / h)
-  else
+  if (draw.key) {
+    cm.in.pica <- 0.423333333
+    heights <- c(h2/ h, graphics::lcm(h1 * cm.in.pica))
+    graphics::layout(matrix(c(2, 1), nrow=2, ncol=1), heights=heights)
+  } else {
     graphics::layout(matrix(1, nrow=1, ncol=1))
+  }
 
-  lwd <- 0.5  # line weight
-  cex <- 0.7  # magnification of text relative to the default
-  tcl <- 7.2 / graphics::par("cra")[2]  # length of ticks, fraction of text height
+  lwd <- 0.5
+  cex <- 0.7
+  tcl <- 0.1 / graphics::par("csi")  # length for major ticks is 0.1 inches
 
   if (is.character(col)) {
     if (length(col) != n) stop("number of specified colors is incorrect")
@@ -541,8 +543,17 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
                  cex.axis=cex)
   graphics::box(lwd=lwd)
 
-  if (is.character(credit))
+  if (is.character(credit)) {
+    if (!grepl("\n", credit)) {
+      word <- strsplit(credit, " ")[[1]]
+      words <- sapply(seq_along(word), function(i) paste(word[1:i], collapse=" "))
+      width <- diff(graphics::par("usr")[1:2])
+      idx <- which(graphics::strwidth(words, cex=0.6) > width)[1] - 1L
+      if (!is.na(idx))
+        credit <- paste0(words[idx], "\n", paste(utils::tail(word, -idx), collapse=" "))
+    }
     graphics::mtext(credit, side=1, line=-0.5, padj=1, adj=0, cex=0.6, col="#C0C0C0")
+  }
 
   if (!is.null(scale.loc)) {
     txt <- strsplit(proj4string(r), " ")[[1]]

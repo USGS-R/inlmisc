@@ -188,14 +188,14 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   xat <- pretty(xlim)
 
   y <- unlist(lapply(eat, function(i) unlist(i@data[, geo.lays])))
-  if (is.numeric(ylim)) {
-    yat <- pretty(ylim)
-  } else {
-    yat <- pretty(range(y, na.rm=TRUE))
-    ylim <- range(yat, na.rm=TRUE)
-  }
+
+  ylim <- if (is.null(ylim)) c(NA, NA) else ylim
+  default.ylim <- range(pretty(range(y, na.rm=TRUE)))
+  if (is.na(ylim[1])) ylim[1] <- default.ylim[1]
+  if (is.na(ylim[2])) ylim[2] <- default.ylim[2]
 
   inches.in.pica <- 1 / 6
+
   mar2 <- c(1, 4.6, 4, 2)
   if (draw.key) {
     y1 <- 1
@@ -245,21 +245,25 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     graphics::layout(matrix(1, nrow=1, ncol=1))
   }
 
-  graphics::par(mai=mar2 * inches.in.pica, mgp=c(3, 0.6, 0))
-
-  plot(NA, type="n", xlim=xlim, ylim=ylim, xaxs="i", yaxs="i", bty="n",
-       xaxt="n", yaxt="n", xlab="", ylab="", asp=asp)
-
   lwd <- 0.5
   cex <- 0.7
-  tcl <- -7.2 / graphics::par("cra")[2]
+  tcl <- -0.1 / graphics::par("csi")  # length for major ticks is 0.1 inches
+
+  # plot map
+  graphics::par(mai=mar2 * inches.in.pica, mgp=c(3, 0.6, 0))
+  plot(NA, type="n", xlim=xlim, ylim=ylim, xaxs="i", yaxs="i", bty="n",
+       xaxt="n", yaxt="n", xlab="", ylab="", asp=asp)
   usr <- graphics::par("usr")
+
+  if (is.null(file)) {
+    xlim <- usr[1:2]
+    ylim <- usr[3:4]
+  }
 
   if (is.character(bg.col)) {
     FUN <- function(i) {
       m <- cbind(x=i@data[[1]], y=i@data[[2]])
-      m <- rbind(m, cbind(rev(range(m[, "x"], na.rm=TRUE)), usr[3]),
-                 m[1, , drop=FALSE])
+      m <- rbind(m, cbind(rev(range(m[, "x"], na.rm=TRUE)), usr[3]), m[1, , drop=FALSE])
       return(Polygon(m))
     }
     bg.poly <- SpatialPolygons(list(Polygons(lapply(eat, FUN), "bg")), 1L)
@@ -304,8 +308,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
                     axes=FALSE, col=color, lwd=lwd, add=TRUE)
   }
 
-  ylabs <- format(yat, big.mark=",")
-
+  yat <- pretty(ylim)
+  ylabs <- prettyNum(yat, big.mark=",")
   graphics::axis(4, at=yat, labels=FALSE, lwd=0, lwd.ticks=lwd, tcl=tcl)
   graphics::axis(2, at=yat, labels=ylabs, lwd=0, lwd.ticks=lwd, tcl=tcl,
                  cex.axis=cex, las=1)

@@ -52,9 +52,8 @@
 #' AddColorKey(is.categorical = TRUE, col = terrain.colors(5))
 #'
 
-AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL,
-                        labels=TRUE, scientific=FALSE, explanation=NULL,
-                        padx=0.2) {
+AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
+                        scientific=FALSE, explanation=NULL, padx=0.2) {
 
   if (!missing(mai)) {
     mai[2] <- mai[2] + padx
@@ -66,8 +65,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL,
   if (is.categorical) {
     n <- max(c(if (missing(col)) 0 else length(col), length(labels)))
     at <- seq_len(n)
-    if (length(n) == 0)
-      stop("categorical data requires colors and (or) labels")
+    if (length(n) == 0) stop("categorical data requires colors and (or) labels")
     breaks <- c(0.5, seq_len(n) + 0.5)
   } else if (missing(breaks)) {
     stop("missing breaks argument for continous data")
@@ -100,8 +98,8 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL,
     if (length(at) >= length(breaks) - 1L) {
       graphics::abline(v=breaks, lwd=lwd)
     } else {
-      graphics::segments(x0=at, y0=0, y1=0.25, lwd=lwd)
-      graphics::segments(x0=at, y0=1, y1=0.75, lwd=lwd)
+      graphics::axis(1, at=at, labels=FALSE, lwd=-1, lwd.ticks=lwd, tck=0.25)
+      graphics::axis(3, at=at, labels=FALSE, lwd=-1, lwd.ticks=lwd, tck=0.25)
     }
     graphics::box(lwd=lwd)
   }

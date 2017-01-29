@@ -9,10 +9,10 @@ PlotMap(r, p = NULL, ..., layer = 1, att = NULL, n = NULL,
   extend.xy = FALSE, extend.z = FALSE, reg.axs = TRUE, dms.tick = FALSE,
   bg.lines = FALSE, bg.image = NULL, bg.image.alpha = 1, pal = NULL,
   col = NULL, max.dev.dim = c(43, 56), labels = NULL, scale.loc = NULL,
-  arrow.loc = NULL, explanation = NULL, credit = proj4string(r),
-  shade = NULL, contour.lines = NULL, rivers = NULL, lakes = NULL,
-  roads = NULL, draw.key = NULL, draw.raster = TRUE, file = NULL,
-  close.file = TRUE, useRaster)
+  arrow.loc = NULL, explanation = NULL, credit = NULL, shade = NULL,
+  contour.lines = NULL, rivers = NULL, lakes = NULL, roads = NULL,
+  draw.key = NULL, draw.raster = TRUE, file = NULL, close.file = TRUE,
+  useRaster)
 }
 \arguments{
 \item{r}{Raster*, SpatialGridDataFrame, or CRS.
@@ -104,8 +104,7 @@ Position of the north arrow:
 Label explaining the raster cell value.}
 
 \item{credit}{character.
-Label crediting the base map;
-by default, the character string describing the raster layer's (\code{r}) projection and datum in the PROJ.4 format.}
+Label crediting the base map.}
 
 \item{shade}{list.
 If specified, a semi-transparent shade layer is drawn on top of the raster layer.

@@ -151,7 +151,8 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
                         xaxs="i", yaxs="i", log=ifelse(ylog, "y", ""))
 
   cex <- 0.7
-  tcl <- 7.2 / graphics::par("cra")[2]
+  tcl <- 0.1 / graphics::par("csi")  # length for major ticks is 0.1 inches
+
   is.decreasing <- diff(graphics::par("usr")[1:2]) < 0
 
   if (is.list(bg.polygon)) {

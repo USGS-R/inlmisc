@@ -93,7 +93,8 @@ If true, \code{breaks} are set to the sample quantiles of \code{z}.}
 
 \item{make.intervals}{logical.
 If true, represent \code{z} within intervals.
-See \code{\link{findInterval}} function for details.}
+See \code{\link{findInterval}} function for details.
+Unused if \code{quantile.breaks} is true.}
 
 \item{title}{character.
 Main title to be placed at the top of the legend.}
