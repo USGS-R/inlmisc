@@ -235,7 +235,9 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   }
 
   if (draw.key) {
-    graphics::layout(matrix(c(2, 1), nrow=2, ncol=1), heights=c(h2, h1) / h)
+    cm.in.pica <- 0.423333333
+    heights <- c(h2/ h, graphics::lcm(h1 * cm.in.pica))
+    graphics::layout(matrix(c(2, 1), nrow=2, ncol=1), heights=heights)
     if (!is.null(labels$at)) at <- labels$at
     labs <- if (is.null(labels$labels)) TRUE else labels$labels
     AddColorKey(mai=mar1 * inches.in.pica, is.categorical=is.categorical,
@@ -323,7 +325,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   }
 
   graphics::abline(v=xlim, col="black", lwd=lwd)
-  graphics::abline(h=usr[3],   col="black", lwd=lwd)
+  graphics::abline(h=usr[3], col="black", lwd=lwd)
 
   if (!is.null(unit)) graphics::mtext(unit, at=usr[1], cex=cex, line=0.2, adj=1)
 
@@ -341,7 +343,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   dist.to.bend <- head(d[-1], -1)
   for (d in dist.to.bend) {
     y <- GetGeoTop(d)
-    lines(c(d, d), c(ylim[1], y + pady), lwd=0.3, col="#999999")
+    lines(c(d, d), c(usr[3], y + pady), lwd=0.3, col="#999999")
     text(d, y + pady, "BEND", adj=c(-0.1, 0.5), col="#999999", cex=0.6, srt=90)
   }
   if (!is.null(features)) {

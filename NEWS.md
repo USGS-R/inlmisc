@@ -1,5 +1,7 @@
 # inlmisc 0.2.2.9000
 
+- In `PlotMap` and `PlotCrossSection` functions, fix layout so color key dimensions don't change on resize.
+
 - In `PlotMap` function, add `file.close` argument.
   A logical that idicates if the graphics device driver should be shut down when the function exits.
 
