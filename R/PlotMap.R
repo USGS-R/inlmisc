@@ -9,7 +9,7 @@
 #' @param p SpatialPointsDataFrame.
 #'   Spatial point data to be plotted.
 #' @param ...
-#'   Graphics parameters to be passed to \code{\link{AddBubbles}}.
+#'   Graphics parameters to be passed to \code{\link{AddPoints}}.
 #'   Unused if \code{p = NULL}.
 #' @param layer integer.
 #'   Layer to extract from if \code{r} is of class RasterStack/Brick or SpatialGridDataFrame.
@@ -527,7 +527,7 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
                     method=metho, axes=FALSE, col=color, lwd=lwd, add=TRUE)
   }
 
-  if (!is.null(p)) AddBubbles(p, xlim=xlim, ylim=ylim, zlim=zlim, ...)
+  if (!is.null(p)) AddPoints(p, xlim=xlim, ylim=ylim, zlim=zlim, ...)
 
   graphics::axis(1, at=at2[[1]], labels=FALSE, lwd=-1, lwd.ticks=lwd, tcl=tcl,
                  cex.axis=cex)

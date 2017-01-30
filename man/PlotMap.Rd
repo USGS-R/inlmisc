@@ -21,7 +21,7 @@ An object that can be converted to a raster layer, or a coordinate reference sys
 \item{p}{SpatialPointsDataFrame.
 Spatial point data to be plotted.}
 
-\item{...}{Graphics parameters to be passed to \code{\link{AddBubbles}}.
+\item{...}{Graphics parameters to be passed to \code{\link{AddPoints}}.
 Unused if \code{p = NULL}.}
 
 \item{layer}{integer.

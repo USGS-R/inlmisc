@@ -1,7 +1,7 @@
-#' Add Bubble Map to Plot
+#' Add Points to Plot
 #'
-#' This function can be used to add a bubble map to a plot.
-#' Proportional circle symbols are used to represent spatial point data,
+#' This function can be used to add point symbols to a plot.
+#' Proportional circle symbols may be used to represent point data,
 #' where symbol area varies in proportion to an attribute variable.
 #'
 #' @param x,y numeric or SpatialPoints*.
@@ -95,32 +95,32 @@
 #' x <- cbind(runif(n, 1, 10), runif(n, 1, 500))
 #' z <- runif(n, 0, 1000)
 #' z[sample.int(n, 2)] <- 0
-#' AddBubbles(x, z = z, fg = "#00000080", lwd = 0.5, loc = "topright",
+#' AddPoints(x, z = z, fg = "#00000080", lwd = 0.5, loc = "topright",
 #'            title = "Title", subtitle = "Subtitle", add = FALSE)
 #'
 #' idxs <- sample.int(n, floor(n / 2))
 #' z[idxs] <- -z[idxs]
-#' AddBubbles(x, z = z, bg.neg = "#2A8FBDCB", breaks = pretty(z, n = 8), add = FALSE)
+#' AddPoints(x, z = z, bg.neg = "#2A8FBDCB", breaks = pretty(z, n = 8), add = FALSE)
 #'
 #' Pal1 <- colorRampPalette(c("#CA0020CB", "#F4A582CB"), alpha = TRUE)
 #' Pal2 <- colorRampPalette(c("#0571B0CB", "#92C5DECB"), alpha = TRUE)
-#' AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE)
+#' AddPoints(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE)
 #'
-#' AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE)
+#' AddPoints(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE)
 #'
-#' AddBubbles(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE,
+#' AddPoints(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE,
 #'            inches = 0.1)
 #'
-#' AddBubbles(x, z = abs(z), title = "Quantiles", bg = topo.colors,
+#' AddPoints(x, z = abs(z), title = "Quantiles", bg = topo.colors,
 #'            quantile.breaks = TRUE, add = FALSE)
 #'
 #' z <- as.factor(rep(c("dog", "cat", "ant", "pig", "bat"), length.out = n))
-#' AddBubbles(x, z = z, bg = rainbow(nlevels(z), end = 0.8, alpha = 0.8), add = FALSE)
+#' AddPoints(x, z = z, bg = rainbow(nlevels(z), end = 0.8, alpha = 0.8), add = FALSE)
 #'
-#' AddBubbles(x, draw.legend = FALSE, add = FALSE)
+#' AddPoints(x, draw.legend = FALSE, add = FALSE)
 #'
 
-AddBubbles <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
+AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
                        xlim=NULL, ylim=NULL, zlim=NULL,
                        inches=c(0, 0.2), scaling=c("perceptual", "mathematical"),
                        bg="#1F1F1FCB", bg.neg=NULL, fg=NA, lwd=0.25,
