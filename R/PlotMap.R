@@ -294,15 +294,14 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   if (is.na(yl[1])) yl[1] <- default.yl[1]
   if (is.na(yl[2])) yl[2] <- default.yl[2]
 
-  if (!is.logical(draw.key)) draw.key <- ifelse(n == 0, FALSE, TRUE)
+  if (is.null(draw.key)) draw.key <- ifelse(n == 0, FALSE, TRUE)
 
   inches.in.pica <- 1 / 6
 
-  mar2 <- c(1, 3, 2, 2)
-  if (is.character(credit)) mar2[1] <- 2
+  mar2 <- c(2, 3, 2, 2)
   if (draw.key) {
     y1 <- 1
-    mar1 <- c(2, 3, 1, 2)
+    mar1 <- c(2, mar2[2], 1, mar2[4])
   } else {
     y1 <- 0
     mar1 <- c(0, 0, 0, 0)

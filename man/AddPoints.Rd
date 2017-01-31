@@ -8,10 +8,9 @@ AddPoints(x, y = NULL, z = NULL, zcol = 1, crs = NULL, xlim = NULL,
   ylim = NULL, zlim = NULL, inches = c(0, 0.2),
   scaling = c("perceptual", "mathematical"), bg = "#1F1F1FCB",
   bg.neg = NULL, fg = NA, lwd = 0.25, cex = 0.7, format = NULL,
-  draw.legend = TRUE, loc = c("bottomleft", "topleft", "topright",
-  "bottomright"), inset = 0.02, breaks = NULL, break.labels = NULL,
-  quantile.breaks = FALSE, make.intervals = FALSE, title = NULL,
-  subtitle = NULL, add = TRUE, ...)
+  legend.loc = "topright", inset = 0.02, breaks = NULL,
+  break.labels = NULL, quantile.breaks = FALSE, make.intervals = FALSE,
+  title = NULL, subtitle = NULL, add = TRUE, ...)
 }
 \arguments{
 \item{x, y}{numeric or SpatialPoints*.
@@ -71,12 +70,9 @@ Character expansion factor for legend labels.}
 \item{format}{character.
 Formatting for legend values, see \code{\link{formatC}} for options.}
 
-\item{draw.legend}{logical.
-If true, a legend is drawn.}
-
-\item{loc}{character.
+\item{legend.loc}{character.
 Position of the legend in the main plot region:
-"bottomleft", "topleft", "topright", or "bottomright" to denote scale location.}
+"bottomleft", "topleft", "topright", or "bottomright" to denote legend location.}
 
 \item{inset}{numeric.
 Inset distance of the legend from the margins as a fraction of the main plot region.
@@ -126,12 +122,13 @@ n <- 50L
 x <- cbind(runif(n, 1, 10), runif(n, 1, 500))
 z <- runif(n, 0, 1000)
 z[sample.int(n, 2)] <- 0
-AddPoints(x, z = z, fg = "#00000080", lwd = 0.5, loc = "topright",
-           title = "Title", subtitle = "Subtitle", add = FALSE)
+AddPoints(x, z = z, fg = "#00000080", lwd = 0.5, title = "Title",
+          subtitle = "Subtitle", add = FALSE)
 
 idxs <- sample.int(n, floor(n / 2))
 z[idxs] <- -z[idxs]
-AddPoints(x, z = z, bg.neg = "#2A8FBDCB", breaks = pretty(z, n = 8), add = FALSE)
+AddPoints(x, z = z, bg.neg = "#2A8FBDCB", breaks = pretty(z, n = 8),
+          legend.loc = "bottomleft", add = FALSE)
 
 Pal1 <- colorRampPalette(c("#CA0020CB", "#F4A582CB"), alpha = TRUE)
 Pal2 <- colorRampPalette(c("#0571B0CB", "#92C5DECB"), alpha = TRUE)
@@ -140,15 +137,15 @@ AddPoints(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE)
 AddPoints(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE)
 
 AddPoints(x, z = z, bg = Pal1, bg.neg = Pal2, add = FALSE, make.intervals = TRUE,
-           inches = 0.1)
+          inches = 0.1)
 
-AddPoints(x, z = abs(z), title = "Quantiles", bg = topo.colors,
-           quantile.breaks = TRUE, add = FALSE)
+AddPoints(x, z = abs(z), title = "Quantiles", bg = topo.colors, quantile.breaks = TRUE,
+          add = FALSE)
 
 z <- as.factor(rep(c("dog", "cat", "ant", "pig", "bat"), length.out = n))
 AddPoints(x, z = z, bg = rainbow(nlevels(z), end = 0.8, alpha = 0.8), add = FALSE)
 
-AddPoints(x, draw.legend = FALSE, add = FALSE)
+AddPoints(x, legend.loc = NULL, add = FALSE)
 
 }
 \author{

@@ -1,5 +1,8 @@
 # inlmisc 0.2.2.9000
 
+- In `AddPoints` function, remove `draw.legend` argument and rename `pos` argument to `legend.pos`.
+  A `NULL` value for `legend.pos` will prevent the legend from being drawn.
+
 - Change function name from `AddBubbles` to `AddPoints`.
 
 - In `PlotMap` and `PlotCrossSection` functions, fix layout so color key dimensions don't change on resize.
