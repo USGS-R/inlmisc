@@ -52,11 +52,10 @@ The \code{budget[[i]]$d} data table component must contain a numeric \code{id} f
 }
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{ReadModflowBinary}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{utilities}
-

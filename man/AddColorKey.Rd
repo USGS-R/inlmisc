@@ -62,11 +62,10 @@ AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
 AddColorKey(is.categorical = TRUE, col = terrain.colors(5))
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{PlotCrossSection}}, \code{\link{PlotMap}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{hplot}
-

@@ -25,4 +25,3 @@ GetDaysInMonth(c("199802", "199804", "200412"))
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 }
 \keyword{utilities}
-

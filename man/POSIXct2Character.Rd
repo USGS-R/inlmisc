@@ -43,9 +43,6 @@ POSIXct2Character(date.time, fmt = "\\\%d/\\\%m/\\\%Y \\\%H:\\\%M:\\\%OS2")
 POSIXct2Character(date.time, fmt = "\\\%H:\\\%M:\\\%OS3 \\\%Y-\\\%m-\\\%d")
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \references{
 A detailed explanation of the problem is provided
 \href{https://stackoverflow.com/questions/7726034/how-r-formats-posixct-with-fractional-seconds}{here};
@@ -55,5 +52,7 @@ solution provided
 \seealso{
 \code{\link{strptime}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{manip}
-

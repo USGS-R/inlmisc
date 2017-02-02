@@ -118,11 +118,10 @@ legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
 graphics.off()
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{matplot}}, \code{\link{boxplot}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{hplot}
-

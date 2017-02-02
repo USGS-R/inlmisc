@@ -44,11 +44,10 @@ path <- system.file("extdata", "ex3D.hds", package = "inlmisc")
 hds <- ReadModflowBinary(path, "array")
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{SummariseBudget}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{IO}
-

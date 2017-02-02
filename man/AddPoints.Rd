@@ -148,14 +148,13 @@ AddPoints(x, z = z, bg = rainbow(nlevels(z), end = 0.8, alpha = 0.8), add = FALS
 AddPoints(x, legend.loc = NULL, add = FALSE)
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \references{
 Tanimura, S., Kuroiwa, C., and Mizota, T., 2006, Proportional Symbol Mapping in R: Journal of Statistical Software, v. 15, no. 5, 7 p.
 }
 \seealso{
 \code{\link{symbols}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{hplot}
-

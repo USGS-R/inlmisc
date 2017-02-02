@@ -39,4 +39,3 @@ ToScientific(x, digits = 2, lab.type = "plotmath")
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 }
 \keyword{utilities}
-

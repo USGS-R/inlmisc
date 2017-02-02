@@ -39,11 +39,10 @@ AddScaleBar(2, unit = "FEET", loc = "topleft")
 AddScaleBar(2, unit = "METERS", loc = "bottomright", offset = c(-0.2, 0))
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{PlotCrossSection}}, \code{\link{PlotMap}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{hplot}
-

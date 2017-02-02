@@ -31,9 +31,6 @@ replacement <- list(name = "world", a = 1, b = 2)
 cat(ReplaceInTemplate(text, replacement), sep = "\\n")
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \references{
 This code was derived from the
   \href{https://CRAN.R-project.org/package=sensitivity}{sensitivity}\code{::template.replace} function,
@@ -42,5 +39,7 @@ This code was derived from the
 \seealso{
 \code{\link{SummariseBudget}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{IO}
-

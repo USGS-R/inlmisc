@@ -56,11 +56,10 @@ AddInsetMap(nc, width = 3, main.label = list("North Carolina", adj = c(1.8, 3)),
             sub.label = list("Map area", adj = c(1.5, 0.5)), loc = "topright")
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{PlotMap}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{hplot}
-

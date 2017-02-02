@@ -64,7 +64,7 @@ If true, the spatial data range is extended.}
 If true and \code{r} is projected, the axes tickmarks are specified in degrees, minutes, and decimal seconds (DMS).}
 
 \item{bg.lines}{logical.
-If true, the graticule is drawn in back of the raster layer using white lines and a grey background.}
+If true, grids or graticules are drawn in back of the raster layer using white lines and a grey background.}
 
 \item{bg.image}{RasterLayer.
 An image to drawn in back of the main raster layer \code{r}.}
@@ -206,11 +206,10 @@ file.remove(c("Rplots1.pdf", "Rplots2.pdf"))
 graphics.off()
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{AddScaleBar}}, \code{\link{AddColorKey}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{hplot}
-

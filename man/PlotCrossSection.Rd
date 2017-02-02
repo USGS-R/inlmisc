@@ -161,11 +161,10 @@ file.remove("Rplots.png")
 graphics.off()
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{AddScaleBar}}, \code{\link{AddColorKey}}, \code{\link{ExtractAlongTransect}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{hplot}
-

@@ -39,7 +39,7 @@
 #' @param dms.tick logical.
 #'   If true and \code{r} is projected, the axes tickmarks are specified in degrees, minutes, and decimal seconds (DMS).
 #' @param bg.lines logical.
-#'   If true, the graticule is drawn in back of the raster layer using white lines and a grey background.
+#'   If true, grids or graticules are drawn in back of the raster layer using white lines and a grey background.
 #' @param bg.image RasterLayer.
 #'   An image to drawn in back of the main raster layer \code{r}.
 #' @param bg.image.alpha numeric.

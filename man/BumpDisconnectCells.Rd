@@ -51,4 +51,3 @@ raster::plot(r.bot + r)
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 }
 \keyword{utilities}
-

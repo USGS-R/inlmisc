@@ -54,11 +54,10 @@ p <- SetPolygons(p2, p1, "gDifference")
 sp::plot(p, col = "purple", add = TRUE)
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{gIntersection}}, \code{\link{gDifference}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{utilities}
-

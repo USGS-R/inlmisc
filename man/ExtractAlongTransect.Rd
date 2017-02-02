@@ -63,11 +63,10 @@ mtext(paste0("(", paste(head(coords, 1), collapse = ", "), ")"), adj = 0)
 mtext(paste0("(", paste(tail(coords, 1), collapse = ", "), ")"), adj = 1)
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{PlotCrossSection}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{utilities}
-
