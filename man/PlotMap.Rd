@@ -184,7 +184,7 @@ PlotMap(r, att = "land.cover", col = c("grey", "orange", "purple"))
 PlotMap(r, att = "code")
 
 r <- raster::raster(system.file("external/test.grd", package="raster"))
-credit <- "Label crediting the base map."
+credit <- "Label crediting the map."
 explanation <- "Label explaining the raster cell value."
 PlotMap(r, scale.loc = "bottomright", dms.tick = TRUE, credit = credit,
         explanation = explanation)

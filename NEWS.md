@@ -1,5 +1,8 @@
 # inlmisc 0.2.2.9000
 
+- In `PlotMap`, `PlotCrossSection`, and `AddColorKey` functions,
+  dynamically adjust vertical plot margins based on the number of lines in the user specified labels.
+
 - In `AddPoints` function, remove `draw.legend` argument and rename `pos` argument to `legend.pos`.
   A `NULL` value for `legend.pos` will prevent the legend from being drawn.
 

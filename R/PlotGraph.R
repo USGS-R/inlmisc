@@ -105,7 +105,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
   y <- as.matrix(y)
 
   if (inherits(x, "Date")) {
-    if (!inherits(xlim, "Date")) xlim <- range(x)
+    if (!inherits(xlim, "Date")) xlim <- grDevices::extendrange(x)
     xat <- seq(xlim[1], xlim[2], seq.date.by)
 
   } else if (inherits(x, c("character", "factor"))) {

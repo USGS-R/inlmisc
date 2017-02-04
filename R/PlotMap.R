@@ -145,7 +145,7 @@
 #' PlotMap(r, att = "code")
 #'
 #' r <- raster::raster(system.file("external/test.grd", package="raster"))
-#' credit <- "Label crediting the base map."
+#' credit <- "Label crediting the map."
 #' explanation <- "Label explaining the raster cell value."
 #' PlotMap(r, scale.loc = "bottomright", dms.tick = TRUE, credit = credit,
 #'         explanation = explanation)
@@ -296,41 +296,44 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (is.null(draw.key)) draw.key <- ifelse(n == 0, FALSE, TRUE)
 
-  inches.in.pica <- 1 / 6
-
-  mar2 <- c(2, 3, 2, 2)
+  csi <- 0.2  # assumed line height in inches
+  mai2 <- c(2, 3, 2, 2) * csi
   if (draw.key) {
-    y1 <- 1
-    mar1 <- c(2, mar2[2], 1, mar2[4])
+    y1 <- csi
+    FUN <- function(i) {if (is.null(i)) 0 else length(strsplit(i, "\n")[[1]])}
+    mai2[1] <- (FUN(credit) + 1) * (csi * 0.6)
+    mai1 <- c(1.2, 3, NA, 2) * csi
+    mai1[3] <- FUN(explanation) * (csi * 0.7)
   } else {
     y1 <- 0
-    mar1 <- c(0, 0, 0, 0)
+    mai1 <- c(0, 0, 0, 0)
   }
+
+  inches.in.pica <- 1 / 6
+  max.dev.dim <- max.dev.dim * inches.in.pica
 
   if (is.null(file)) {
     if (grDevices::dev.cur() == 1) grDevices::dev.new()
-    dev.dim <- grDevices::dev.size() / inches.in.pica
+    dev.dim <- grDevices::dev.size()
     w <- dev.dim[1]
-    h1 <- y1 + mar1[1] + mar1[3]
+    h1 <- y1 + mai1[1] + mai1[3]
     h2 <- dev.dim[2] - h1
     h <- h1 + h2
   } else {
     w <- max.dev.dim[1]
     aspect <- ifelse(is.null(asp), (diff(xl) / diff(yl)), asp)
     repeat {
-      y2 <- (w - mar2[2] - mar2[4]) * (diff(yl) / diff(xl)) * aspect
-      h2 <- y2 + mar2[1] + mar2[3]
-      h1 <- y1 + mar1[1] + mar1[3]
+      y2 <- (w - mai2[2] - mai2[4]) * (diff(yl) / diff(xl)) * aspect
+      h2 <- y2 + mai2[1] + mai2[3]
+      h1 <- y1 + mai1[1] + mai1[3]
       h <- h1 + h2
       if (h > max.dev.dim[2]) w <- w - 0.01 else break
     }
-    wi <- w * inches.in.pica
-    hi <- h * inches.in.pica
     ext <- tolower(tools::file_ext(file))
     if (ext == "pdf") {
-      grDevices::pdf(file, width=wi, height=hi)
+      grDevices::pdf(file, width=w, height=h)
     } else if (ext == "png") {
-      grDevices::png(file, width=wi * 100, height=hi * 100, res=100)
+      grDevices::png(file, width=w * 100, height=h * 100, res=100)
     } else {
       stop("file argument does not have a valid extension")
     }
@@ -338,8 +341,8 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (draw.key) {
-    cm.in.pica <- 0.423333333
-    heights <- c(h2/ h, graphics::lcm(h1 * cm.in.pica))
+    cm.in.inches <- 2.54
+    heights <- c(h2/ h, graphics::lcm(h1 * cm.in.inches))
     graphics::layout(matrix(c(2, 1), nrow=2, ncol=1), heights=heights)
   } else {
     graphics::layout(matrix(1, nrow=1, ncol=1))
@@ -372,17 +375,17 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
       labels <- if (is.categorical) raster::levels(r)[[1]][, "att"] else TRUE
     else
       labels <- labels$labels
-    AddColorKey(mai=mar1 * inches.in.pica, is.categorical=raster::is.factor(r),
+    AddColorKey(mai=mai1, is.categorical=raster::is.factor(r),
                 breaks=breaks, col=cols, at=at, labels=labels,
                 explanation=explanation)
   } else if (draw.key) {
-    op <- graphics::par(mar=c(0, 0, 0, 0))
+    op <- graphics::par(mai=c(0, 0, 0, 0))
     graphics::plot.new()
     graphics::par(op)
   }
 
   # plot map
-  graphics::par(mai=mar2 * inches.in.pica)
+  graphics::par(mai=mai2)
   plot(NA, type="n", xlim=xl, ylim=yl, xaxs="i", yaxs="i", bty="n",
        xaxt="n", yaxt="n", xlab="", ylab="", asp=asp)
   usr <- graphics::par("usr")
@@ -530,28 +533,22 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
 
   graphics::axis(1, at=at2[[1]], labels=FALSE, lwd=-1, lwd.ticks=lwd, tcl=tcl,
                  cex.axis=cex)
+
   if (is.dms)
     graphics::axis(2, at=at2[[2]], labels=ylabs, lwd=-1, lwd.ticks=lwd, hadj=0,
-                   tcl=tcl, cex.axis=cex, las=1)
+                   tcl=tcl, cex.axis=cex, las=1, mgp=c(3, 1.1, 0))
   else
-    graphics::axis(2, at=at2[[2]], labels=ylabs, lwd=-1, lwd.ticks=lwd, padj=2,
-                   tcl=tcl, cex.axis=cex)
-  graphics::axis(3, at=at2[[3]], labels=xlabs, lwd=-1, lwd.ticks=lwd, padj=2,
-                 tcl=tcl, cex.axis=cex)
+    graphics::axis(2, at=at2[[2]], labels=ylabs, lwd=-1, lwd.ticks=lwd,
+                   tcl=tcl, cex.axis=cex, mgp=c(3, 0.1, 0))
+  graphics::axis(3, at=at2[[3]], labels=xlabs, lwd=-1, lwd.ticks=lwd,
+                 tcl=tcl, cex.axis=cex, mgp=c(3, 0.1, 0))
   graphics::axis(4, at=at2[[4]], labels=FALSE, lwd=-1, lwd.ticks=lwd, tcl=tcl,
                  cex.axis=cex)
   graphics::box(lwd=lwd)
 
   if (is.character(credit)) {
-    if (!grepl("\n", credit)) {
-      word <- strsplit(credit, " ")[[1]]
-      words <- sapply(seq_along(word), function(i) paste(word[1:i], collapse=" "))
-      width <- diff(graphics::par("usr")[1:2])
-      idx <- which(graphics::strwidth(words, cex=0.6) > width)[1] - 1L
-      if (!is.na(idx))
-        credit <- paste0(words[idx], "\n", paste(utils::tail(word, -idx), collapse=" "))
-    }
-    graphics::mtext(credit, side=1, line=-0.5, padj=1, adj=0, cex=0.6, col="#C0C0C0")
+    line <- -1 * graphics::strheight("M", "inches", cex=1) / csi
+    graphics::mtext(credit, side=1, line=line, padj=1, adj=0, cex=0.6, col="#C0C0C0")
   }
 
   if (!is.null(scale.loc)) {

@@ -75,9 +75,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
 
   if (is.null(at)) at <- breaks
 
-  cex <- 0.7
   lwd <- 0.5
-
   xlim <- range(breaks)
   plot(NA, type="n", xlim=xlim, ylim=c(0, 1), xaxs="i", yaxs="i", bty="n",
        xaxt="n", yaxt="n", xlab="", ylab="")
@@ -113,8 +111,10 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
   }
 
   graphics::axis(1, at=at, labels=labels, lwd=-1, lwd.ticks=-1,
-                 cex.axis=cex, padj=0, mgp=c(3, 0, 0))
+                 padj=-0.5, mgp=c(3, 0.1, 0), cex.axis=0.7)
 
   if (!is.null(explanation))
-    graphics::mtext(explanation, side=3, line=0.6, padj=1, adj=0, cex=cex)
+    graphics::mtext(explanation, side=3, line=0.1, padj=0, adj=0, cex=0.7)
+
+  invisible()
 }
