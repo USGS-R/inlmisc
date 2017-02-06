@@ -1,4 +1,4 @@
-# inlmisc 0.2.2.9000
+# inlmisc 0.2.3
 
 - In `PlotMap`, `PlotCrossSection`, and `AddColorKey` functions,
   dynamically adjust vertical plot margins based on the number of lines in the user specified labels.
