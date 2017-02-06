@@ -188,46 +188,49 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   xat <- pretty(xlim)
 
   y <- unlist(lapply(eat, function(i) unlist(i@data[, geo.lays])))
-  if (is.numeric(ylim)) {
-    yat <- pretty(ylim)
+
+  ylim <- if (is.null(ylim)) c(NA, NA) else ylim
+  default.ylim <- range(pretty(range(y, na.rm=TRUE)))
+  if (is.na(ylim[1])) ylim[1] <- default.ylim[1]
+  if (is.na(ylim[2])) ylim[2] <- default.ylim[2]
+
+
+  csi <- 0.2  # assumed line height in inches
+  mai2 <- c(0.6, 4.6, 4, 2) * csi
+  if (draw.key) {
+    y1 <- csi
+    FUN <- function(i) {if (is.null(i)) 0 else length(strsplit(i, "\n")[[1]])}
+    mai1 <- c(1.2, 4.6, NA, 2) * csi
+    mai1[3] <- FUN(explanation) * (csi * 0.7)
   } else {
-    yat <- pretty(range(y, na.rm=TRUE))
-    ylim <- range(yat, na.rm=TRUE)
+    y1 <- 0
+    mai1 <- c(0, 0, 0, 0)
   }
 
   inches.in.pica <- 1 / 6
-  mar2 <- c(1, 4.6, 4, 2)
-  if (draw.key) {
-    y1 <- 1
-    mar1 <- c(2, mar2[2], 1, mar2[4])
-  } else {
-    y1 <- 0
-    mar1 <- c(0, 0, 0, 0)
-  }
+  max.dev.dim <- max.dev.dim * inches.in.pica
 
   if (is.null(file)) {
     if (grDevices::dev.cur() == 1) grDevices::dev.new()
-    dev.dim <- grDevices::dev.size() / inches.in.pica
+    dev.dim <- grDevices::dev.size()
     w <- dev.dim[1]
-    h1 <- y1 + mar1[1] + mar1[3]
+    h1 <- y1 + mai1[1] + mai1[3]
     h2 <- dev.dim[2] - h1
     h <- h1 + h2
   } else {
     w <- max.dev.dim[1]
     repeat {
-      y2 <- (w - mar2[2] - mar2[4]) * (diff(ylim) / diff(xlim)) * asp
-      h2 <- y2 + mar2[1] + mar2[3]
-      h1 <- y1 + mar1[1] + mar1[3]
+      y2 <- (w - mai2[2] - mai2[4]) * (diff(ylim) / diff(xlim)) * asp
+      h2 <- y2 + mai2[1] + mai2[3]
+      h1 <- y1 + mai1[1] + mai1[3]
       h <- h1 + h2
       if (h > max.dev.dim[2]) w <- w - 0.01 else break
     }
-    wi <- w * inches.in.pica
-    hi <- h * inches.in.pica
     ext <- tolower(tools::file_ext(file))
     if (ext == "pdf") {
-      grDevices::pdf(file, width=wi, height=hi)
+      grDevices::pdf(file, width=w, height=h)
     } else if (ext == "png") {
-      grDevices::png(file, width=wi * 100, height=hi * 100, res=100)
+      grDevices::png(file, width=w * 100, height=h * 100, res=100)
     } else {
       stop("file argument does not have a valid extension")
     }
@@ -235,31 +238,37 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   }
 
   if (draw.key) {
-    graphics::layout(matrix(c(2, 1), nrow=2, ncol=1), heights=c(h2, h1) / h)
+    cm.in.inches <- 2.54
+    heights <- c(h2/ h, graphics::lcm(h1 * cm.in.inches))
+    graphics::layout(matrix(c(2, 1), nrow=2, ncol=1), heights=heights)
     if (!is.null(labels$at)) at <- labels$at
     labs <- if (is.null(labels$labels)) TRUE else labels$labels
-    AddColorKey(mai=mar1 * inches.in.pica, is.categorical=is.categorical,
+    AddColorKey(mai=mai1, is.categorical=is.categorical,
                 breaks=breaks, col=col, at=at, labels=labs,
                 explanation=explanation)
   } else {
     graphics::layout(matrix(1, nrow=1, ncol=1))
   }
 
-  graphics::par(mai=mar2 * inches.in.pica, mgp=c(3, 0.6, 0))
-
-  plot(NA, type="n", xlim=xlim, ylim=ylim, xaxs="i", yaxs="i", bty="n",
-       xaxt="n", yaxt="n", xlab="", ylab="", asp=asp)
-
   lwd <- 0.5
   cex <- 0.7
-  tcl <- -7.2 / graphics::par("cra")[2]
+  tcl <- -0.1 / graphics::par("csi")  # length for major ticks is 0.1 inches
+
+  # plot map
+  graphics::par(mai=mai2, mgp=c(3, 0.7, 0))
+  plot(NA, type="n", xlim=xlim, ylim=ylim, xaxs="i", yaxs="i", bty="n",
+       xaxt="n", yaxt="n", xlab="", ylab="", asp=asp)
   usr <- graphics::par("usr")
+
+  if (is.null(file)) {
+    xlim <- usr[1:2]
+    ylim <- usr[3:4]
+  }
 
   if (is.character(bg.col)) {
     FUN <- function(i) {
       m <- cbind(x=i@data[[1]], y=i@data[[2]])
-      m <- rbind(m, cbind(rev(range(m[, "x"], na.rm=TRUE)), usr[3]),
-                 m[1, , drop=FALSE])
+      m <- rbind(m, cbind(rev(range(m[, "x"], na.rm=TRUE)), usr[3]), m[1, , drop=FALSE])
       return(Polygon(m))
     }
     bg.poly <- SpatialPolygons(list(Polygons(lapply(eat, FUN), "bg")), 1L)
@@ -304,22 +313,21 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
                     axes=FALSE, col=color, lwd=lwd, add=TRUE)
   }
 
-  ylabs <- format(yat, big.mark=",")
-
+  yat <- pretty(ylim)
+  ylabs <- prettyNum(yat, big.mark=",")
   graphics::axis(4, at=yat, labels=FALSE, lwd=0, lwd.ticks=lwd, tcl=tcl)
   graphics::axis(2, at=yat, labels=ylabs, lwd=0, lwd.ticks=lwd, tcl=tcl,
                  cex.axis=cex, las=1)
 
   if (!is.null(ylab)) {
     line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]
-    max.sw <- max(graphics::strwidth(ylabs, units="inches")) * cex
-    mar.line <- max.sw / line.in.inches + sum(graphics::par("mgp")[2:3]) +
-                graphics::par("mgp")[2]
+    max.sw <- max(graphics::strwidth(ylabs, units="inches", cex=cex))
+    mar.line <- max.sw / line.in.inches + sum(graphics::par("mgp")[2:3]) + graphics::par("mgp")[2]
     graphics::title(ylab=ylab, cex.lab=cex, line=mar.line)
   }
 
   graphics::abline(v=xlim, col="black", lwd=lwd)
-  graphics::abline(h=usr[3],   col="black", lwd=lwd)
+  graphics::abline(h=usr[3], col="black", lwd=lwd)
 
   if (!is.null(unit)) graphics::mtext(unit, at=usr[1], cex=cex, line=0.2, adj=1)
 
@@ -337,7 +345,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   dist.to.bend <- head(d[-1], -1)
   for (d in dist.to.bend) {
     y <- GetGeoTop(d)
-    lines(c(d, d), c(ylim[1], y + pady), lwd=0.3, col="#999999")
+    lines(c(d, d), c(usr[3], y + pady), lwd=0.3, col="#999999")
     text(d, y + pady, "BEND", adj=c(-0.1, 0.5), col="#999999", cex=0.6, srt=90)
   }
   if (!is.null(features)) {

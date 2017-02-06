@@ -26,7 +26,7 @@ This function decreases stage values in river cells if they are implausible
 with respect to water always flowing downhill.
 }
 \details{
-The \href{http://en.wikipedia.org/wiki/Lee_algorithm}{Lee algorithm} (Lee, 1961)
+The \href{https://en.wikipedia.org/wiki/Lee_algorithm}{Lee algorithm} (Lee, 1961)
   is used to identify flow paths among the modeled river cells.
   An analysis of river cell stage values along a flow path identifies any problematic cells
   that are obstructing downhill surface-water flow.
@@ -36,12 +36,11 @@ The \href{http://en.wikipedia.org/wiki/Lee_algorithm}{Lee algorithm} (Lee, 1961)
 print("notyet")
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \references{
 Lee, C.Y., 1961, An algorithm for path connections and its applications:
   IRE Transactions on Electronic Computers, v. EC-10, no. 2, p. 346--365.
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{utilities}
-

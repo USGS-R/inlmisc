@@ -32,7 +32,7 @@ Returns a \code{list} object of length equal to the
   }
 }
 \description{
-This is a utility function for \href{http://water.usgs.gov/ogw/modflow/}{MODFLOW}.
+This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}.
 It reads binary output data from a model run.
 }
 \details{
@@ -44,11 +44,10 @@ path <- system.file("extdata", "ex3D.hds", package = "inlmisc")
 hds <- ReadModflowBinary(path, "array")
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{SummariseBudget}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{IO}
-

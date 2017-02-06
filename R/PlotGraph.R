@@ -105,7 +105,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
   y <- as.matrix(y)
 
   if (inherits(x, "Date")) {
-    if (!inherits(xlim, "Date")) xlim <- range(x)
+    if (!inherits(xlim, "Date")) xlim <- grDevices::extendrange(x)
     xat <- seq(xlim[1], xlim[2], seq.date.by)
 
   } else if (inherits(x, c("character", "factor"))) {
@@ -151,7 +151,8 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
                         xaxs="i", yaxs="i", log=ifelse(ylog, "y", ""))
 
   cex <- 0.7
-  tcl <- 7.2 / graphics::par("cra")[2]
+  tcl <- 0.1 / graphics::par("csi")  # length for major ticks is 0.1 inches
+
   is.decreasing <- diff(graphics::par("usr")[1:2]) < 0
 
   if (is.list(bg.polygon)) {

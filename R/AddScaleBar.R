@@ -39,6 +39,8 @@ AddScaleBar <- function(asp=1, unit=NULL, is.lonlat=FALSE,
   usr <- graphics::par("usr")
   pin <- graphics::par("pin")
 
+  if (is.null(asp)) asp <- pin[2] / pin[1]
+
   if (is.lonlat) {
     y <- (usr[3] + usr[4]) / 2
     xaxp <- graphics::par("xaxp")

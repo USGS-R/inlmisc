@@ -52,9 +52,8 @@
 #' AddColorKey(is.categorical = TRUE, col = terrain.colors(5))
 #'
 
-AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL,
-                        labels=TRUE, scientific=FALSE, explanation=NULL,
-                        padx=0.2) {
+AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
+                        scientific=FALSE, explanation=NULL, padx=0.2) {
 
   if (!missing(mai)) {
     mai[2] <- mai[2] + padx
@@ -66,8 +65,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL,
   if (is.categorical) {
     n <- max(c(if (missing(col)) 0 else length(col), length(labels)))
     at <- seq_len(n)
-    if (length(n) == 0)
-      stop("categorical data requires colors and (or) labels")
+    if (length(n) == 0) stop("categorical data requires colors and (or) labels")
     breaks <- c(0.5, seq_len(n) + 0.5)
   } else if (missing(breaks)) {
     stop("missing breaks argument for continous data")
@@ -77,9 +75,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL,
 
   if (is.null(at)) at <- breaks
 
-  cex <- 0.7
   lwd <- 0.5
-
   xlim <- range(breaks)
   plot(NA, type="n", xlim=xlim, ylim=c(0, 1), xaxs="i", yaxs="i", bty="n",
        xaxt="n", yaxt="n", xlab="", ylab="")
@@ -100,8 +96,8 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL,
     if (length(at) >= length(breaks) - 1L) {
       graphics::abline(v=breaks, lwd=lwd)
     } else {
-      graphics::segments(x0=at, y0=0, y1=0.25, lwd=lwd)
-      graphics::segments(x0=at, y0=1, y1=0.75, lwd=lwd)
+      graphics::axis(1, at=at, labels=FALSE, lwd=-1, lwd.ticks=lwd, tck=0.25)
+      graphics::axis(3, at=at, labels=FALSE, lwd=-1, lwd.ticks=lwd, tck=0.25)
     }
     graphics::box(lwd=lwd)
   }
@@ -115,8 +111,10 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL,
   }
 
   graphics::axis(1, at=at, labels=labels, lwd=-1, lwd.ticks=-1,
-                 cex.axis=cex, padj=0, mgp=c(3, 0, 0))
+                 padj=-0.5, mgp=c(3, 0.1, 0), cex.axis=0.7)
 
   if (!is.null(explanation))
-    graphics::mtext(explanation, side=3, line=0.6, padj=1, adj=0, cex=cex)
+    graphics::mtext(explanation, side=3, line=0.1, padj=0, adj=0, cex=0.7)
+
+  invisible()
 }

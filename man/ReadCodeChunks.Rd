@@ -37,11 +37,10 @@ chunks[["show-off"]]
 eval(parse(text = unlist(chunks[c("show-off", "graphics")])))
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link[knitr]{read_chunk}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{utilities}
-

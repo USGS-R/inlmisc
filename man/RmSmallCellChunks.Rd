@@ -29,11 +29,10 @@ r.new <- RmSmallCellChunks(r)
 raster::plot(r.new, zlim = range(r[], na.rm = TRUE))
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{clump}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{utilities}
-

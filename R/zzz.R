@@ -2,10 +2,6 @@
   if (interactive()) {
     ver <- read.dcf(file.path(lib, pkg, "DESCRIPTION"), "Version")
     packageStartupMessage(pkg, ": version: ", ver)
-
-    s <- paste(" Type 'citation(\"", pkg, "\")' for citing this R package in publications.", sep="")
-    packageStartupMessage(s)
-
     if (ver < 1 || grepl("\\.9000$", ver)) {
       s <- paste("This information is preliminary or provisional and is subject to revision.",
                  "It is being provided to meet the need for timely best science.",

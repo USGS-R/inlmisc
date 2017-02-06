@@ -24,7 +24,9 @@ Vector of length 2 giving the title for the 1st and 2nd-\emph{y} axes.
 The title for the 2nd-\emph{y} axis is optional and requires \code{conversion.factor} be specified.}
 
 \item{asp}{numeric.
-The \emph{y/x} aspect ratio for spatial axes.}
+The \emph{y/x} aspect ratio for spatial axes.
+Defaults to 1 (one unit on the \emph{x}-axis equals one unit on the \emph{y}-axis) when \code{r} is projected,
+otherwise, a calculated value based on axes limits is used.}
 
 \item{xlim}{numeric or Date.
 Vector of length 2 giving the minimum and maximum values for the \emph{x}-axis.}
@@ -116,11 +118,10 @@ legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
 graphics.off()
 
 }
-\author{
-J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-}
 \seealso{
 \code{\link{matplot}}, \code{\link{boxplot}}
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
 \keyword{hplot}
-
