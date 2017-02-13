@@ -220,7 +220,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   } else {
     w <- max.dev.dim[1]
     repeat {
-      y2 <- (w - mai2[2] - mai2[4]) * (diff(ylim) / diff(xlim)) * asp
+      y2 <- (w - mai2[2] - mai2[4]) * (diff(ylim * asp) / diff(xlim))
       h2 <- y2 + mai2[1] + mai2[3]
       h1 <- y1 + mai1[1] + mai1[3]
       h <- h1 + h2
