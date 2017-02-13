@@ -279,7 +279,7 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
     default.yl <- range(pretty(yran))
   } else {
     if (reg.axs) {
-      aspect <- ifelse(is.null(asp), (diff(yran) / diff(xran)), asp)
+      aspect <- ifelse(is.null(asp), (diff(xran) / diff(yran)), asp)
       xbuf <- diff(xran) * 0.04
       ybuf <- xbuf / aspect
       default.xl <- c(xran[1] - xbuf, xran[2] + xbuf)
@@ -322,7 +322,7 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
     h <- h1 + h2
   } else {
     w <- max.dev.dim[1]
-    aspect <- ifelse(is.null(asp), (diff(yl) / diff(xl)), asp)
+    aspect <- ifelse(is.null(asp), (diff(xl) / diff(yl)), asp)
     repeat {
       x2 <- w - mai2[2] - mai2[4]
       y2 <- x2 * (diff(yl * aspect) / diff(xl))
