@@ -111,7 +111,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
   }
 
   graphics::axis(1, at=at, labels=labels, lwd=-1, lwd.ticks=-1,
-                 padj=-0.5, mgp=c(3, 0.1, 0), cex.axis=0.7)
+                 padj=-0.3, mgp=c(3, 0.1, 0), cex.axis=0.7)
 
   if (!is.null(explanation))
     graphics::mtext(explanation, side=3, line=0.1, padj=0, adj=0, cex=0.7)

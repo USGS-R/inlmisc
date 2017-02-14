@@ -279,10 +279,11 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
     default.yl <- range(pretty(yran))
   } else {
     if (reg.axs) {
-      buf <- diff(xran) * 0.04
       aspect <- ifelse(is.null(asp), (diff(xran) / diff(yran)), asp)
-      default.xl <- c(xran[1] - buf, xran[2] + buf)
-      default.yl <- c(yran[1] - (buf * aspect), yran[2] + (buf * aspect))
+      xbuf <- diff(xran) * 0.04
+      ybuf <- xbuf / aspect
+      default.xl <- c(xran[1] - xbuf, xran[2] + xbuf)
+      default.yl <- c(yran[1] - ybuf, yran[2] + ybuf)
     } else {
       default.xl <- range(xran)
       default.yl <- range(yran)
@@ -323,7 +324,8 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
     w <- max.dev.dim[1]
     aspect <- ifelse(is.null(asp), (diff(xl) / diff(yl)), asp)
     repeat {
-      y2 <- (w - mai2[2] - mai2[4]) * (diff(yl) / diff(xl)) * aspect
+      x2 <- w - mai2[2] - mai2[4]
+      y2 <- x2 * (diff(yl * aspect) / diff(xl))
       h2 <- y2 + mai2[1] + mai2[3]
       h1 <- y1 + mai1[1] + mai1[3]
       h <- h1 + h2
@@ -539,9 +541,9 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
                    tcl=tcl, cex.axis=cex, las=1, mgp=c(3, 1.1, 0))
   else
     graphics::axis(2, at=at2[[2]], labels=ylabs, lwd=-1, lwd.ticks=lwd,
-                   tcl=tcl, cex.axis=cex, mgp=c(3, 0.1, 0))
+                   tcl=tcl, cex.axis=cex, mgp=c(3, 0.2, 0))
   graphics::axis(3, at=at2[[3]], labels=xlabs, lwd=-1, lwd.ticks=lwd,
-                 tcl=tcl, cex.axis=cex, mgp=c(3, 0.1, 0))
+                 tcl=tcl, cex.axis=cex, mgp=c(3, 0.2, 0))
   graphics::axis(4, at=at2[[4]], labels=FALSE, lwd=-1, lwd.ticks=lwd, tcl=tcl,
                  cex.axis=cex)
   graphics::box(lwd=lwd)
