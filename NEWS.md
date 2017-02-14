@@ -1,6 +1,6 @@
 # inlmisc 0.2.4.9000
 
-- ...
+- Add [AppVeyor](https://www.appveyor.com/) to package.
 
 # inlmisc 0.2.4
 
