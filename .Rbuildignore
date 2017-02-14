@@ -4,3 +4,4 @@
 ^\.Rhistory$
 ^Makefile$
 ^\.travis\.yml$
+^appveyor\.yml$

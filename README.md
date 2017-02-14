@@ -1,6 +1,7 @@
 # inlmisc
 
 [![Travis-CI Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/USGS-R/inlmisc?branch=master&svg=true)](https://ci.appveyor.com/project/jfisher-usgs/inlmisc)
 [![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
 
