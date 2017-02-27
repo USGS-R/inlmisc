@@ -2,13 +2,13 @@
 
 - Change legend format for binned point data from `[#, )` to `># to #`.
 
-- Fix bug that resulted in an error when plotting a single point location using the `AddPoints` function.
+- Fix bug that resulted in error when plotting a single point location using the `AddPoints` function.
 
 - Add [AppVeyor](https://www.appveyor.com/) to package.
 
 # inlmisc 0.2.4
 
-- Fix bug that was resulting in incorrect dimensions for saved graphics.
+- Fix bug that resulted in incorrect dimensions for saved graphics.
 
 # inlmisc 0.2.3
 
