@@ -1,14 +1,15 @@
 # inlmisc
 
-[![Travis-CI Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/USGS-R/inlmisc?branch=master&svg=true)](https://ci.appveyor.com/project/jfisher-usgs/inlmisc)
+[![Travis Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/pvcq1jsgabqx61ah?svg=true)](https://ci.appveyor.com/project/jfisher-usgs/inlmisc)
 [![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
+[![CC0](https://img.shields.io/badge/license-CC0--1.0-brightgreen.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
 
 ## Overview
 
 The [R](https://www.r-project.org/) package **inlmisc** is a collection of functions for creating high-level graphics,
-performing raster-based analysis, processing MODFLOW-based models, and overlaying multi-polygon objects.
+performing raster-based analysis, processing [MODFLOW](https://water.usgs.gov/ogw/modflow/)-based models, and overlaying multi-polygon objects.
 Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
 [Idaho National Laboratory Project Office](http://id.water.usgs.gov/INL/ "INL Project Office").
 
@@ -42,5 +43,3 @@ is made by the USGS or the U.S. Government as to the accuracy and functioning of
 and no responsibility is assumed by the USGS in connection therewith.
 
 This software is provided "AS IS."
-
-[![CC0](https://i.creativecommons.org/p/zero/1.0/88x31.png)](https://creativecommons.org/publicdomain/zero/1.0/)
