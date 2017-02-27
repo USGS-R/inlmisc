@@ -1,6 +1,6 @@
 # inlmisc 0.2.4.9000
 
-- Legend format for binned point data has changed from `[#, )` to `># to #`.
+- Change legend format for binned point data from `[#, )` to `># to #`.
 
 - Fix bug that resulted in an error when plotting a single point location using the `AddPoints` function.
 
