@@ -4,7 +4,7 @@
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/pvcq1jsgabqx61ah?svg=true)](https://ci.appveyor.com/project/jfisher-usgs/inlmisc)
 [![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
-[![CC0](https://img.shields.io/badge/license-CC0%201.0-brightgreen.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
+[![CC0](https://img.shields.io/badge/license-CC0--1.0-brightgreen.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
 
 ## Overview
 
