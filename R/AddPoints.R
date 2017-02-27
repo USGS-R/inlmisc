@@ -170,9 +170,12 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     if (is.na(zlim[2])) zlim[2] <- zran[2]
     z[z < zlim[1] | z > zlim[2]] <- NA
   }
+
   is <- !is.na(z)
-  xran <- grDevices::extendrange(x[is])
-  yran <- grDevices::extendrange(y[is])
+  if (!any(is)) stop("no fintie data to plot")
+
+  xran <- if (length(x) == 1) c(x - 1, x + 1) else grDevices::extendrange(x[is])
+  yran <- if (length(y) == 1) c(y - 1, y + 1) else grDevices::extendrange(y[is])
   if (is.numeric(xlim)) {
     if (is.na(xlim[1])) xlim[1] <- xran[1]
     if (is.na(xlim[2])) xlim[2] <- xran[2]
@@ -203,17 +206,12 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     }
     make.intervals <- FALSE
   } else if (make.intervals) {
-    interval <- findInterval(z, breaks, rightmost.closed=TRUE)
+    interval <- findInterval(z, breaks, rightmost.closed=FALSE)
     s <- formatC(breaks, format=NULL, big.mark=",")
-    ss <- sprintf("[%s, %s)", head(s, -1), tail(s, -1))
-    if (any(interval == 0)) ss[1] <- sprintf("(-Inf, %s)", s[1])
-    n <- length(breaks)
-    if (any(interval == n)) {
-      if (any(z == max(breaks)))
-        ss[length(ss)] <- sub(")$", "]", ss[length(ss)])
-      else
-        ss[length(ss)] <- sprintf("[%s, Inf)", s[length(s) - 1L])
-    }
+    ss <- sprintf(">%s to %s", head(s, -1), tail(s, -1))
+    ss[1] <- sub("^>", "", ss[1])
+    if (any(z < min(breaks))) ss[1] <- sprintf("-Inf to %s", s[1])
+    if (any(z > max(breaks))) ss[length(ss)] <- sprintf(">%s to +Inf", s[length(s) - 1L])
     if (is.null(break.labels)) break.labels <- ss
     interval <- findInterval(z, breaks, all.inside=TRUE)
     breaks <- (head(breaks, -1) + tail(breaks, -1)) / 2

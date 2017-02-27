@@ -191,8 +191,7 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   if (inherits(r, "CRS")) {
     is.lim <- is.numeric(xlim) && length(xlim) == 2 && all(!is.na(xlim)) &&
               is.numeric(ylim) && length(ylim) == 2 && all(!is.na(ylim))
-    if (!is.lim && is.null(bg.image))
-      stop("spatial limits must be specified")
+    if (!is.lim && is.null(bg.image)) stop("spatial limits must be specified")
     e <- extent(if (is.lim) c(xlim, ylim) else bg.image)
     r <- raster(e, crs=r)
     r[] <- NA
