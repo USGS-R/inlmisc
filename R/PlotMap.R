@@ -41,7 +41,7 @@
 #' @param bg.lines logical.
 #'   If true, grids or graticules are drawn in back of the raster layer using white lines and a grey background.
 #' @param bg.image RasterLayer.
-#'   An image to drawn in back of the main raster layer \code{r}.
+#'   An image to drawn in back of the main raster layer \code{r}, image colors derived from vector of gray levels.
 #' @param bg.image.alpha numeric.
 #'   Opacity of the background image from 0 to 1.
 #' @param pal function.
