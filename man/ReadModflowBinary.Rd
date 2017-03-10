@@ -12,11 +12,11 @@ Path name of the binary file.}
 
 \item{data.type}{character.
 Description of how the data were saved.
-Specify \code{"array"} for array data (such as hydraulic heads) and
-\code{"flow"} for cell-by-cell flow data.}
+Specify \code{"array"} for array data (such as hydraulic heads or drawdowns) and
+\code{"flow"} for cell-by-cell flow/budget data.}
 
 \item{rm.totim.0}{logical.
-If true, stress-periods at time zero are removed.}
+If true, data associated with stress period at time zero are removed.}
 }
 \value{
 Returns a \code{list} object of length equal to the
@@ -24,38 +24,40 @@ Returns a \code{list} object of length equal to the
   The following list components are returned:
   \describe{
     \item{d}{matrix of values.
-      The format typically coincides with a layer in the model grid.
-      The one exception is for flow data (\code{data.type = "flow"}) in a
-      cell-by-cell budget file saved using the \emph{"COMPACT BUDGET"} output option;
-      for this case, matrix columns are cell index (\code{"icell"}),
-      model-grid layer (\code{"layer"}), model-grid row (\code{"row"}),
-      model-grid column (\code{"column"}), cell-by-cell flow (\code{"flow"}),
-      and any auxiliary variables saved using the \emph{"AUXILIARY"} output option.}
+      The matrix dimensions typically coincide with the horizontal model grid.
+      The exception is for flow data (\code{data.type = "flow"}) when the
+      cell-by-cell budget file is saved using the \emph{\bold{"COMPACT BUDGET"}} output option;
+      for this case, matrix columns are: cell index (\code{"icell"}),
+      model-grid layer (\code{"layer"}), row (\code{"row"}),
+      column (\code{"column"}), cell-by-cell flow (\code{"flow"}),
+      and any auxiliary variables saved using the \emph{\bold{"AUXILIARY"}} output option.}
     \item{kstp}{time step}
     \item{kper}{stress period}
     \item{desc}{description of data-type, such as "wells".}
-    \item{ilay}{model-grid layer index}
-    \item{delt}{length of the current time step.}
-    \item{pertim}{time in the stress period.}
+    \item{layer}{model-grid layer}
+    \item{delt}{time-step size}
+    \item{pertim}{elapsed time in the current stress period.}
     \item{totim}{total elapsed time}
   }
-  The layer index (ilay) and elapsed time (delt, pertim, totim) are only available
-  when the cell-by-cell budget file is saved using the
-  \emph{"COMPACT BUDGET"} output option.
+  The layer component (layer) and time components (delt, pertim, totim) are only available
+  for flow data when the cell-by-cell budget file is saved using the
+  \emph{\bold{"COMPACT BUDGET"}} output option.
 }
 \description{
 This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW},
 a U.S. Geological Survey groundwater-flow model.
 It reads data from binary files produced by MODFLOW.
 }
-\details{
-This function reads hydraulic head, drawdown,
-  and cell budget files produced by MODFLOW.
-}
 \examples{
-path <- system.file("extdata", "ex3D.hds", package = "inlmisc")
+path <- system.file("extdata", "ex.hds", package = "inlmisc")
 hds <- ReadModflowBinary(path, "array")
 image(hds[[1]]$d)
+
+path <- system.file("extdata", "ex.bud", package = "inlmisc")
+bud <- ReadModflowBinary(path, "flow")
+image(bud[[1]]$d)
+str(bud[[1]])
+str(bud[[11]])
 
 }
 \seealso{

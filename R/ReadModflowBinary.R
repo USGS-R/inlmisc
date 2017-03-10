@@ -8,37 +8,34 @@
 #'   Path name of the binary file.
 #' @param data.type character.
 #'    Description of how the data were saved.
-#'    Specify \code{"array"} for array data (such as hydraulic heads) and
-#'    \code{"flow"} for cell-by-cell flow data.
+#'    Specify \code{"array"} for array data (such as hydraulic heads or drawdowns) and
+#'    \code{"flow"} for cell-by-cell flow/budget data.
 #' @param rm.totim.0 logical.
-#'    If true, stress-periods at time zero are removed.
-#'
-#' @details This function reads hydraulic head, drawdown,
-#'   and cell budget files produced by MODFLOW.
+#'    If true, data associated with stress period at time zero are removed.
 #'
 #' @return Returns a \code{list} object of length equal to the
 #'   number of times the data types are written to the binary file.
 #'   The following list components are returned:
 #'   \describe{
 #'     \item{d}{matrix of values.
-#'       The format typically coincides with a layer in the model grid.
-#'       The one exception is for flow data (\code{data.type = "flow"}) in a
-#'       cell-by-cell budget file saved using the \emph{"COMPACT BUDGET"} output option;
-#'       for this case, matrix columns are cell index (\code{"icell"}),
-#'       model-grid layer (\code{"layer"}), model-grid row (\code{"row"}),
-#'       model-grid column (\code{"column"}), cell-by-cell flow (\code{"flow"}),
-#'       and any auxiliary variables saved using the \emph{"AUXILIARY"} output option.}
+#'       The matrix dimensions typically coincide with the horizontal model grid.
+#'       The exception is for flow data (\code{data.type = "flow"}) when the
+#'       cell-by-cell budget file is saved using the \emph{\bold{"COMPACT BUDGET"}} output option;
+#'       for this case, matrix columns are: cell index (\code{"icell"}),
+#'       model-grid layer (\code{"layer"}), row (\code{"row"}),
+#'       column (\code{"column"}), cell-by-cell flow (\code{"flow"}),
+#'       and any auxiliary variables saved using the \emph{\bold{"AUXILIARY"}} output option.}
 #'     \item{kstp}{time step}
 #'     \item{kper}{stress period}
 #'     \item{desc}{description of data-type, such as "wells".}
-#'     \item{ilay}{model-grid layer index}
-#'     \item{delt}{length of the current time step.}
-#'     \item{pertim}{time in the stress period.}
+#'     \item{layer}{model-grid layer}
+#'     \item{delt}{time-step size}
+#'     \item{pertim}{elapsed time in the current stress period.}
 #'     \item{totim}{total elapsed time}
 #'   }
-#'   The layer index (ilay) and elapsed time (delt, pertim, totim) are only available
-#'   when the cell-by-cell budget file is saved using the
-#'   \emph{"COMPACT BUDGET"} output option.
+#'   The layer component (layer) and time components (delt, pertim, totim) are only available
+#'   for flow data when the cell-by-cell budget file is saved using the
+#'   \emph{\bold{"COMPACT BUDGET"}} output option.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -49,9 +46,16 @@
 #' @export
 #'
 #' @examples
-#' path <- system.file("extdata", "ex3D.hds", package = "inlmisc")
+#' path <- system.file("extdata", "ex.hds", package = "inlmisc")
 #' hds <- ReadModflowBinary(path, "array")
 #' image(hds[[1]]$d)
+#'
+
+#' path <- system.file("extdata", "ex.bud", package = "inlmisc")
+#' bud <- ReadModflowBinary(path, "flow")
+#' image(bud[[1]]$d)
+#' str(bud[[1]])
+#' str(bud[[11]])
 #'
 
 ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FALSE) {
@@ -76,7 +80,7 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FAL
   ## ncol:   number of columns in the model grid
   ## nrow:   number of rows in the model grid
   ## nlay:   number of layers in the model grid
-  ## ilay:   single layer number
+  ## layer:  single layer number
   ## itype:  data storage type
   ## delt:   length of time step
   ## nval:   number of values for each cell
@@ -107,13 +111,13 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FAL
       desc   <- readBin(readBin(con, "raw", n=16L, size=1L), "character", n=1L)
       desc <- .TidyDescription(desc)
       if (!desc %in% valid.desc) break
-      ncol   <- readBin(con, "integer", n=1L, size=4L)
-      nrow   <- readBin(con, "integer", n=1L, size=4L)
-      ilay   <- readBin(con, "integer", n=1L, size=4L)
-      v      <- readBin(con, "numeric", n=nrow * ncol, size=nbytes)
+      ncol  <- readBin(con, "integer", n=1L, size=4L)
+      nrow  <- readBin(con, "integer", n=1L, size=4L)
+      layer <- readBin(con, "integer", n=1L, size=4L)
+      v     <- readBin(con, "numeric", n=nrow * ncol, size=nbytes)
       d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
       lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                     ilay=ilay, pertim=pertim, totim=totim)
+                                     layer=layer, pertim=pertim, totim=totim)
 
     } else if (data.type == "flow") {
       desc <- readBin(readBin(con, "raw", n=16L, size=1L), "character", n=1L)
@@ -126,7 +130,7 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FAL
       if (nlay > 0) {
         x <- .Read3dArray(con, nrow, ncol, nlay, nbytes)
         for (i in seq_len(nlay)) {
-          lst[[length(lst) + 1]] <- list(d=x[[i]], kstp=kstp, kper=kper, desc=desc, ilay=i)
+          lst[[length(lst) + 1]] <- list(d=x[[i]], kstp=kstp, kper=kper, desc=desc, layer=i)
         }
 
       } else {  # compact form is used
@@ -153,7 +157,7 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FAL
           d <- .Read3dArray(con, nrow, ncol, nlay, nbytes)
           for (i in seq_along(d)) {
             lst[[length(lst) + 1]] <- list(d=d[[i]], kstp=kstp, kper=kper, desc=desc,
-                                           ilay=i, delt=delt, pertim=pertim, totim=totim)
+                                           layer=i, delt=delt, pertim=pertim, totim=totim)
           }
 
         } else if (itype %in% c(2L, 5L)) {
@@ -182,18 +186,18 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FAL
             v <- values[layers == i]
             d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
             lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                           ilay=i, delt=delt, pertim=pertim, totim=totim)
+                                           layer=i, delt=delt, pertim=pertim, totim=totim)
           }
 
         } else if (itype == 4L) {
           v <- readBin(con, "numeric", n=nrow * ncol, size=nbytes)
           d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
           lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                         ilay=1L, delt=delt, pertim=pertim, totim=totim)
+                                         layer=1L, delt=delt, pertim=pertim, totim=totim)
           d[, ] <- 0
           for (i in seq_len(nlay)[-1]) {
             lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                           ilay=i, delt=delt, pertim=pertim, totim=totim)
+                                           layer=i, delt=delt, pertim=pertim, totim=totim)
           }
 
         } else {
