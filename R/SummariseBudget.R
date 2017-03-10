@@ -3,26 +3,26 @@
 #' This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}.
 #' It summarizes volumetric flow rates by boundary condition types.
 #' That is, it splits the MODFLOW water-budget data into subsets,
-#' computes summary statistics for each, and
-#' returns the result in a summary table.
+#' computes summary statistics for each, and returns the resulting summary table.
 #'
 #' @param budget character or list.
-#'   Either a description of the path to the MODFLOW Budget File or
-#'   the returned results from a call to the \code{\link{ReadModflowBinary}} function.
+#'   Either the path to a MODFLOW cell-by-cell budget file or
+#'   the value returned from the \code{\link{ReadModflowBinary}} function.
 #' @param desc character.
-#'    Vector of MODFLOW package identifiers.
-#'    Data of this package type is included in the summary table.
+#'    Vector of data type descriptors, such as \code{c("wells", "drains")}.
+#' @param id character.
+#'    Name of auxiliary variable, additional values associated with each cell.
 #'
-#' @details The \code{budget[[i]]$d} data table component must contain a numeric \code{id} field.
-#'   Subsets are grouped by the MODFLOW package identifier (\code{desc}), stress period
-#'   (\code{kper}), time step (\code{kstp}), and location identifier (\code{id}).
+#' @details Subsets are grouped by the data type (\code{"desc"}), stress period
+#'   (\code{"kper"}), time step (\code{"kstp"}), and optional auxiliary variable.
+#'   The MODFLOW cell-by-cell budget file must be produced using the "COMPACT BUDGET" output option.
 #'
-#' @return Returns a data.frame object with the following variables:
+#' @return Returns a 'data.frame' object with the following variables:
 #'   \describe{
-#'     \item{desc}{MODFLOW package identifier}
+#'     \item{desc}{data type description, such as "wells"}
 #'     \item{kper}{stress period}
 #'     \item{kstp}{time step}
-#'     \item{id}{location identifier}
+#'     \item{id}{auxiliary variable name}
 #'     \item{delt}{length of the current time step.}
 #'     \item{pertim}{time in the stress period.}
 #'     \item{totim}{total elapsed time}
@@ -30,7 +30,7 @@
 #'     \item{flow.sum}{total volumetric flow rate}
 #'     \item{flow.mean}{mean volumetric flow rate}
 #'     \item{flow.median}{median volumetric flow rate}
-#'     \item{flow.sd}{tandard deviation of the volumetric flow rate.}
+#'     \item{flow.sd}{standard deviation of volumetric flow rate.}
 #'     \item{flow.dir}{flow direction where "in" and "out" indicate
 #'       water entering and leaving the groundwater system, respectively.}
 #'   }
@@ -45,13 +45,11 @@
 #'
 #' @examples
 #' \dontrun{
-#'   d <- SummariseBudget("modflow.bud")
+#'   bud <- SummariseBudget("modflow.bud", c("wells", "drains", "river leakage"), "id")
 #' }
 #'
 
-SummariseBudget <- function(budget,
-                            desc=c("wells", "drains", "river leakage")) {
-
+SummariseBudget <- function(budget, desc, id=NULL) {
   if (!inherits(budget, "list")) {
     budget <- budget[1]
     if (is.character(budget) & file.access(budget) == 0)
@@ -59,52 +57,51 @@ SummariseBudget <- function(budget,
     else
       stop("problem with 'budget' argument")
   }
-  desc <- match.arg(desc, several.ok=TRUE)
 
   budget.desc <- as.factor(vapply(budget, function(i) i$desc, ""))
   is.desc.not.included <- !desc %in% levels(budget.desc)
-  if (any(is.desc.not.included ))
+  if (any(is.desc.not.included))
     warning(paste("missing flow variable(s) in budget file:",
                   paste(desc[is.desc.not.included], collapse=", ")))
   budget <- budget[budget.desc %in% desc]
-  if (length(budget) == 0)
-    stop("flow variable(s) can not be found in the budget file")
-
-  descs <- vapply(budget, function(i) make.names(i$desc), "")
-
-  .Summarise <- function(b, desc) {
-    FUN <- function(j) {
-      d <- data.frame(desc=j$desc, kper=j$kper, kstp=j$kstp, id=NA,
-                      flow=j$d[, make.names(j$desc)], delt=j$delt,
-                      pertim=j$pertim, totim=j$totim, stringsAsFactors=FALSE)
-      if ("id" %in% colnames(j$d)) d$id <- as.integer(j$d[, "id"])
-      return(d)
-    }
-    d <- dplyr::bind_rows(lapply(desc, function(i) dplyr::bind_rows(lapply(b[desc == i], FUN))))
-    d$desc <- as.factor(d$desc)
-    d <- dplyr::summarise_(dplyr::group_by_(d, "desc", "kper", "kstp", "id"),
-                           delt="delt[1]", pertim="pertim[1]", totim="totim[1]",
-                           count="length(flow)",
-                           flow.sum="sum(flow)",
-                           flow.mean="mean(flow)",
-                           flow.median="stats::median(flow)",
-                           flow.sd="sd(flow)")
-    return(d)
-  }
+  if (length(budget) == 0) stop("flow variable(s) can not be found in the budget file")
 
   b <- budget
-  for (i in seq_along(b)) {
-    b[[i]]$d[b[[i]]$d[, descs[i]] < 0, descs[i]] <- 0
-  }
-  d <- dplyr::mutate(.Summarise(b, desc), flow.dir="in")
+  for (i in seq_along(b)) b[[i]]$d[b[[i]]$d[, "flow"] < 0, "flow"] <- 0
+  d <- dplyr::mutate(.Summarise(b, desc, id), flow.dir="in")
 
   b <- budget
-  for (i in seq_along(b)) {
-    b[[i]]$d[b[[i]]$d[, descs[i]] > 0, descs[i]] <- 0
-  }
-  d <- dplyr::bind_rows(d, dplyr::mutate(.Summarise(b, desc), flow.dir="out"))
+  for (i in seq_along(b)) b[[i]]$d[b[[i]]$d[, "flow"] > 0, "flow"] <- 0
+  d <- dplyr::bind_rows(d, dplyr::mutate(.Summarise(b, desc, id), flow.dir="out"))
 
   d$flow.dir <- as.factor(d$flow.dir)
 
+  return(d)
+}
+
+
+.Summarise <- function(b, desc, id) {
+  FUN <- function(j) {
+    d <- data.frame(desc=j$desc, kper=j$kper, kstp=j$kstp, id=NA,
+                    flow=j$d[, "flow"], delt=j$delt,
+                    pertim=j$pertim, totim=j$totim, stringsAsFactors=FALSE)
+    if (!is.null(id) && id %in% colnames(j$d)) d$id <- j$d[, id]
+    return(d)
+  }
+  d <- dplyr::bind_rows(lapply(desc, function(i) dplyr::bind_rows(lapply(b[desc == i], FUN))))
+  d$desc <- as.factor(d$desc)
+  if ("id" %in% colnames(d))
+    grps <- dplyr::group_by_(d, "desc", "kper", "kstp", "id")
+  else
+    grps <- dplyr::group_by_(d, "desc", "kper", "kstp")
+  d <- dplyr::summarise_(grps,
+                         delt="delt[1]",
+                         pertim="pertim[1]",
+                         totim="totim[1]",
+                         count="length(flow)",
+                         flow.sum="sum(flow)",
+                         flow.mean="mean(flow)",
+                         flow.median="stats::median(flow)",
+                         flow.sd="sd(flow)")
   return(d)
 }

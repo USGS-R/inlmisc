@@ -67,7 +67,7 @@ If true and \code{r} is projected, the axes tickmarks are specified in degrees, 
 If true, grids or graticules are drawn in back of the raster layer using white lines and a grey background.}
 
 \item{bg.image}{RasterLayer.
-An image to drawn in back of the main raster layer \code{r}.}
+An image to drawn in back of the main raster layer \code{r}, image colors derived from vector of gray levels.}
 
 \item{bg.image.alpha}{numeric.
 Opacity of the background image from 0 to 1.}
