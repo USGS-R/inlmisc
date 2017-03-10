@@ -4,24 +4,26 @@
 \alias{SummariseBudget}
 \title{Summarize MODFLOW Water Budget}
 \usage{
-SummariseBudget(budget, desc = c("wells", "drains", "river leakage"))
+SummariseBudget(budget, desc, id = NULL)
 }
 \arguments{
 \item{budget}{character or list.
-Either a description of the path to the MODFLOW Budget File or
-the returned results from a call to the \code{\link{ReadModflowBinary}} function.}
+Either the path to a MODFLOW cell-by-cell budget file or
+the value returned from the \code{\link{ReadModflowBinary}} function.}
 
 \item{desc}{character.
-Vector of MODFLOW package identifiers.
-Data of this package type is included in the summary table.}
+Vector of data type descriptors, such as \code{c("wells", "drains")}.}
+
+\item{id}{character.
+Name of auxiliary variable, additional values associated with each cell.}
 }
 \value{
-Returns a data.frame object with the following variables:
+Returns a 'data.frame' object with the following variables:
   \describe{
-    \item{desc}{MODFLOW package identifier}
+    \item{desc}{data type description, such as "wells"}
     \item{kper}{stress period}
     \item{kstp}{time step}
-    \item{id}{location identifier}
+    \item{id}{auxiliary variable name}
     \item{delt}{length of the current time step.}
     \item{pertim}{time in the stress period.}
     \item{totim}{total elapsed time}
@@ -29,7 +31,7 @@ Returns a data.frame object with the following variables:
     \item{flow.sum}{total volumetric flow rate}
     \item{flow.mean}{mean volumetric flow rate}
     \item{flow.median}{median volumetric flow rate}
-    \item{flow.sd}{tandard deviation of the volumetric flow rate.}
+    \item{flow.sd}{standard deviation of volumetric flow rate.}
     \item{flow.dir}{flow direction where "in" and "out" indicate
       water entering and leaving the groundwater system, respectively.}
   }
@@ -38,17 +40,16 @@ Returns a data.frame object with the following variables:
 This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}.
 It summarizes volumetric flow rates by boundary condition types.
 That is, it splits the MODFLOW water-budget data into subsets,
-computes summary statistics for each, and
-returns the result in a summary table.
+computes summary statistics for each, and returns the resulting summary table.
 }
 \details{
-The \code{budget[[i]]$d} data table component must contain a numeric \code{id} field.
-  Subsets are grouped by the MODFLOW package identifier (\code{desc}), stress period
-  (\code{kper}), time step (\code{kstp}), and location identifier (\code{id}).
+Subsets are grouped by the data type (\code{"desc"}), stress period
+  (\code{"kper"}), time step (\code{"kstp"}), and optional auxiliary variable.
+  The MODFLOW cell-by-cell budget file must be produced using the "COMPACT BUDGET" output option.
 }
 \examples{
 \dontrun{
-  d <- SummariseBudget("modflow.bud")
+  bud <- SummariseBudget("modflow.bud", c("wells", "drains", "river leakage"), "id")
 }
 
 }

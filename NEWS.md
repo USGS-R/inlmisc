@@ -1,5 +1,10 @@
 # inlmisc 0.2.4.9000
 
+- In `SummariseBudget` function, remove default for `desc` argument and add `id` argument,
+  the auxiliary variable name.
+
+- In `ReadModflowBinary` function, enable cell-by-cell budget files to be read when they are not in compact form.
+
 - Change legend format for binned point data from `[#, )` to `># to #`.
 
 - Fix bug that resulted in error when plotting a single point location using the `AddPoints` function.
