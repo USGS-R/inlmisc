@@ -16,8 +16,8 @@
 #'
 #' @details Subsets are grouped by the data type (\code{"desc"}), stress period
 #'   (\code{"kper"}), time step (\code{"kstp"}), and optional auxiliary variable.
-#'   The MODFLOW cell-by-cell budget file must be produced using the
-#'   \emph{"COMPACT BUDGET"} output option.
+#'   The MODFLOW cell-by-cell budget file must be saved using the
+#'   \emph{\bold{"COMPACT BUDGET"}} output option.
 #'
 #' @return Returns a 'data.frame' object with the following variables:
 #'   \describe{
@@ -46,9 +46,9 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'   bud <- SummariseBudget("modflow.bud", c("wells", "drains", "river leakage"), "id")
-#' }
+#' path <- system.file("extdata", "ex.bud", package = "inlmisc")
+#' bud <- SummariseBudget(path, "river leakage", "iface")
+#' print(bud)
 #'
 
 SummariseBudget <- function(budget, desc, id=NULL) {
