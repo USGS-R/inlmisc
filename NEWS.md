@@ -1,5 +1,8 @@
 # inlmisc 0.2.4.9000
 
+- In `SummariseBudget` function, the `desc` argument no longer needs to be specified.
+  If missing, all data types are summarized.
+
 - In `SummariseBudget` function, remove default for `desc` argument and add `id` argument,
   the auxiliary variable name.
 

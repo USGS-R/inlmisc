@@ -8,7 +8,7 @@ ReadModflowBinary(path, data.type = c("array", "flow"), rm.totim.0 = FALSE)
 }
 \arguments{
 \item{path}{character.
-Path name of the binary file.}
+Path to a MODFLOW binary file.}
 
 \item{data.type}{character.
 Description of how the data were saved.
@@ -44,20 +44,21 @@ Returns a \code{list} object of length equal to the
   \emph{\bold{"COMPACT BUDGET"}} output option.
 }
 \description{
-This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW},
-a U.S. Geological Survey groundwater-flow model.
+This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}-based models,
+the U.S. Geological Survey's three-dimensional finite-difference groundwater model.
 It reads data from binary files produced by MODFLOW.
 }
 \examples{
 path <- system.file("extdata", "ex.hds", package = "inlmisc")
-hds <- ReadModflowBinary(path, "array")
-image(hds[[1]]$d)
+heads <- ReadModflowBinary(path, "array")
+image(heads[[1]]$d)
+str(heads[[1]])
 
 path <- system.file("extdata", "ex.bud", package = "inlmisc")
-bud <- ReadModflowBinary(path, "flow")
-image(bud[[1]]$d)
-str(bud[[1]])
-str(bud[[11]])
+budget <- ReadModflowBinary(path, "flow")
+image(budget[[1]]$d)
+str(budget[[1]])
+str(budget[[11]])
 
 }
 \seealso{

@@ -1,11 +1,11 @@
 #' Read MODFLOW Binary File
 #'
-#' This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW},
-#' a U.S. Geological Survey groundwater-flow model.
+#' This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}-based models,
+#' the U.S. Geological Survey's three-dimensional finite-difference groundwater model.
 #' It reads data from binary files produced by MODFLOW.
 #'
 #' @param path character.
-#'   Path name of the binary file.
+#'   Path to a MODFLOW binary file.
 #' @param data.type character.
 #'    Description of how the data were saved.
 #'    Specify \code{"array"} for array data (such as hydraulic heads or drawdowns) and
@@ -47,15 +47,15 @@
 #'
 #' @examples
 #' path <- system.file("extdata", "ex.hds", package = "inlmisc")
-#' hds <- ReadModflowBinary(path, "array")
-#' image(hds[[1]]$d)
+#' heads <- ReadModflowBinary(path, "array")
+#' image(heads[[1]]$d)
+#' str(heads[[1]])
 #'
-
 #' path <- system.file("extdata", "ex.bud", package = "inlmisc")
-#' bud <- ReadModflowBinary(path, "flow")
-#' image(bud[[1]]$d)
-#' str(bud[[1]])
-#' str(bud[[11]])
+#' budget <- ReadModflowBinary(path, "flow")
+#' image(budget[[1]]$d)
+#' str(budget[[1]])
+#' str(budget[[11]])
 #'
 
 ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FALSE) {
@@ -72,20 +72,20 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FAL
   con <- file(path, open="rb", encoding="bytes")
   on.exit(close(con, type="rb"))
 
-  ## kstp:   time step number
-  ## kper:   stress period number
-  ## pertim: time in current stress period
-  ## totim:  total elapsed time
-  ## desc:   data-type description
-  ## ncol:   number of columns in the model grid
-  ## nrow:   number of rows in the model grid
-  ## nlay:   number of layers in the model grid
-  ## layer:  single layer number
-  ## itype:  data storage type
-  ## delt:   length of time step
-  ## nval:   number of values for each cell
-  ## ctmp:   description of additional values
-  ## nlist:  number of cells for which values will be stored
+  # kstp:   time step number
+  # kper:   stress period number
+  # pertim: time in current stress period
+  # totim:  total elapsed time
+  # desc:   data-type description
+  # ncol:   number of columns in the model grid
+  # nrow:   number of rows in the model grid
+  # nlay:   number of layers in the model grid
+  # layer:  single layer number
+  # itype:  data storage type
+  # delt:   length of time step
+  # nval:   number of values for each cell
+  # ctmp:   description of additional values
+  # nlist:  number of cells for which values will be stored
 
   if (data.type == "array")
     valid.desc <- c("head", "drawdown", "subsidence", "compaction",
