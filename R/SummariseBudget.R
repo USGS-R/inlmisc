@@ -1,7 +1,7 @@
 #' Summarize MODFLOW Water Budget
 #'
-#' This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW},
-#' a U.S. Geological Survey groundwater-flow model.
+#' This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}-based models,
+#' the U.S. Geological Survey's three-dimensional finite-difference groundwater model.
 #' It summarizes volumetric flow rates by boundary condition types.
 #' That is, it splits the MODFLOW cell-by-cell budget data into subsets,
 #' computes summary statistics for each, and returns the resulting summary table.
@@ -10,13 +10,14 @@
 #'   Either the path to a MODFLOW cell-by-cell budget file or
 #'   the object returned from the \code{\link{ReadModflowBinary}} function.
 #' @param desc character.
-#'    Vector of data type descriptors, such as \code{c("wells", "drains")}.
+#'    Vector of data-type descriptors, such as \code{c("wells", "drains")}.
+#'    If missing, all data types are summarized.
 #' @param id character.
 #'    Name of auxiliary variable, additional values associated with each cell.
 #'
-#' @details Subsets are grouped by the data type (\code{"desc"}), stress period
+#' @details Subsets are grouped by data type (\code{"desc"}), stress period
 #'   (\code{"kper"}), time step (\code{"kstp"}), and optional auxiliary variable.
-#'   The MODFLOW cell-by-cell budget file must be saved using the
+#'   Data in the MODFLOW cell-by-cell budget file must be saved using the
 #'   \emph{\bold{"COMPACT BUDGET"}} output option.
 #'
 #' @return Returns a 'data.frame' object with the following variables:
@@ -47,8 +48,8 @@
 #'
 #' @examples
 #' path <- system.file("extdata", "ex.bud", package = "inlmisc")
-#' bud <- SummariseBudget(path, "river leakage", "iface")
-#' print(bud)
+#' budget.summary <- SummariseBudget(path, "river leakage", "iface")
+#' print(budget.summary)
 #'
 
 SummariseBudget <- function(budget, desc, id=NULL) {
@@ -60,13 +61,19 @@ SummariseBudget <- function(budget, desc, id=NULL) {
       stop("problem with 'budget' argument")
   }
 
-  budget.desc <- as.factor(vapply(budget, function(i) i$desc, ""))
-  is.desc.not.included <- !desc %in% levels(budget.desc)
-  if (any(is.desc.not.included))
-    warning(paste("missing flow variable(s) in budget file:",
-                  paste(desc[is.desc.not.included], collapse=", ")))
-  budget <- budget[budget.desc %in% desc]
-  if (length(budget) == 0) stop("flow variable(s) can not be found in the budget file")
+  if (!missing(desc)) {
+    budget.desc <- as.factor(vapply(budget, function(i) i$desc, ""))
+    is.desc.not.included <- !desc %in% levels(budget.desc)
+    if (any(is.desc.not.included))
+      warning(paste("missing flow variable(s) in budget file:",
+                    paste(desc[is.desc.not.included], collapse=", ")))
+    budget <- budget[budget.desc %in% desc]
+    if (length(budget) == 0) stop("flow variable(s) can not be found in the budget file")
+  }
+
+  is.compact <- vapply(budget, function(i) !is.null(colnames(i$d)), FALSE)
+  budget <- budget[is.compact]
+  if (length(budget) == 0) stop("none of the selected data was saved using the compact form")
 
   b <- budget
   for (i in seq_along(b)) b[[i]]$d[b[[i]]$d[, "flow"] < 0, "flow"] <- 0

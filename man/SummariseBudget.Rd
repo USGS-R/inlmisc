@@ -12,7 +12,8 @@ Either the path to a MODFLOW cell-by-cell budget file or
 the object returned from the \code{\link{ReadModflowBinary}} function.}
 
 \item{desc}{character.
-Vector of data type descriptors, such as \code{c("wells", "drains")}.}
+Vector of data-type descriptors, such as \code{c("wells", "drains")}.
+If missing, all data types are summarized.}
 
 \item{id}{character.
 Name of auxiliary variable, additional values associated with each cell.}
@@ -37,22 +38,22 @@ Returns a 'data.frame' object with the following variables:
   }
 }
 \description{
-This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW},
-a U.S. Geological Survey groundwater-flow model.
+This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}-based models,
+the U.S. Geological Survey's three-dimensional finite-difference groundwater model.
 It summarizes volumetric flow rates by boundary condition types.
 That is, it splits the MODFLOW cell-by-cell budget data into subsets,
 computes summary statistics for each, and returns the resulting summary table.
 }
 \details{
-Subsets are grouped by the data type (\code{"desc"}), stress period
+Subsets are grouped by data type (\code{"desc"}), stress period
   (\code{"kper"}), time step (\code{"kstp"}), and optional auxiliary variable.
-  The MODFLOW cell-by-cell budget file must be saved using the
+  Data in the MODFLOW cell-by-cell budget file must be saved using the
   \emph{\bold{"COMPACT BUDGET"}} output option.
 }
 \examples{
 path <- system.file("extdata", "ex.bud", package = "inlmisc")
-bud <- SummariseBudget(path, "river leakage", "iface")
-print(bud)
+budget.summary <- SummariseBudget(path, "river leakage", "iface")
+print(budget.summary)
 
 }
 \seealso{
