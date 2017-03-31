@@ -480,7 +480,7 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   if (is.list(rivers)) {
     river <- spTransform(rivers[["x"]], r@crs)
     river <- crop(river, extent(e))
-    if (!is.null(rivers)) {
+    if (!is.null(river)) {
       color <- as.character(rivers[["col"]])
       width <- as.numeric(rivers[["lwd"]])
       color <- ifelse(length(color) == 1 && .AreColors(color), color, "#3399CC")
@@ -490,16 +490,16 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (is.list(lakes)) {
-    lakes <- spTransform(lakes[["x"]], r@crs)
-    lakes <- crop(lakes, extent(e))
-    if (!is.null(lakes)) {
+    lake <- spTransform(lakes[["x"]], r@crs)
+    lake <- crop(lake, extent(e))
+    if (!is.null(lake)) {
       color <- as.character(lakes[["col"]])
       bordr <- as.character(lakes[["border"]])
       width <- as.numeric(lakes[["lwd"]])
       color <- ifelse(length(color) == 1 && .AreColors(color), color, "#CCFFFF")
       bordr <- ifelse(length(bordr) == 1 && .AreColors(bordr), bordr, "#3399CC")
       width <- ifelse(length(width) == 1 && !is.na(width), width, 0.5)
-      plot(lakes, col=color, border=bordr, lwd=width, add=TRUE)
+      plot(lake, col=color, border=bordr, lwd=width, add=TRUE)
     }
   }
 

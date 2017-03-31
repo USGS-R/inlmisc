@@ -3,8 +3,8 @@
 #' This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}-based models,
 #' the U.S. Geological Survey's three-dimensional finite-difference groundwater model.
 #' It summarizes volumetric flow rates by boundary condition types.
-#' That is, it splits the MODFLOW cell-by-cell budget data into subsets,
-#' computes summary statistics for each, and returns the resulting summary table.
+#' That is, it splits the MODFLOW cell-by-cell flow data into subsets,
+#' computes summary statistics for each, and returns a resulting summary table.
 #'
 #' @param budget character or list.
 #'   Either the path to a MODFLOW cell-by-cell budget file or
@@ -13,10 +13,11 @@
 #'    Vector of data-type descriptors, such as \code{c("wells", "drains")}.
 #'    If missing, all data types are summarized.
 #' @param id character.
-#'    Name of auxiliary variable, additional values associated with each cell.
+#'    Name of auxiliary variable, a variable of additional values associated with each cell
+#'    saved using the \emph{\bold{"AUXILIARY"}} output option.
 #'
-#' @details Subsets are grouped by data type (\code{"desc"}), stress period
-#'   (\code{"kper"}), time step (\code{"kstp"}), and optional auxiliary variable.
+#' @details Subsets are grouped by data type (desc), stress period
+#'   (kper), time step (kstp), and optional auxiliary variable.
 #'   Data in the MODFLOW cell-by-cell budget file must be saved using the
 #'   \emph{\bold{"COMPACT BUDGET"}} output option.
 #'

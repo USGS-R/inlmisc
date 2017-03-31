@@ -13,14 +13,14 @@ Path to a MODFLOW binary file.}
 \item{data.type}{character.
 Description of how the data were saved.
 Specify \code{"array"} for array data (such as hydraulic heads or drawdowns) and
-\code{"flow"} for cell-by-cell flow/budget data.}
+\code{"flow"} for cell-by-cell flow data (budget data).}
 
 \item{rm.totim.0}{logical.
-If true, data associated with stress period at time zero are removed.}
+If true, data associated with the stress period at time zero are removed.}
 }
 \value{
-Returns a \code{list} object of length equal to the
-  number of times the data types are written to the binary file.
+Returns a 'list' object of length equal to the
+  number of times data are written to the binary file.
   The following list components are returned:
   \describe{
     \item{d}{matrix of values.
@@ -28,8 +28,8 @@ Returns a \code{list} object of length equal to the
       The exception is for flow data (\code{data.type = "flow"}) when the
       cell-by-cell budget file is saved using the \emph{\bold{"COMPACT BUDGET"}} output option;
       for this case, matrix columns are: cell index (\code{"icell"}),
-      model-grid layer (\code{"layer"}), row (\code{"row"}),
-      column (\code{"column"}), cell-by-cell flow (\code{"flow"}),
+      model-grid layer (\code{"layer"}), model-grid row (\code{"row"}),
+      model-grid column (\code{"column"}), cell-by-cell flow (\code{"flow"}),
       and any auxiliary variables saved using the \emph{\bold{"AUXILIARY"}} output option.}
     \item{kstp}{time step}
     \item{kper}{stress period}

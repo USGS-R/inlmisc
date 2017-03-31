@@ -1,4 +1,4 @@
-# inlmisc 0.2.4.9000
+# inlmisc 0.2.5
 
 - In `SummariseBudget` function, the `desc` argument no longer needs to be specified.
   If missing, all data types are summarized.

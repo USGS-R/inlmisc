@@ -109,11 +109,11 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
 
   if (!is.na(main.label[[1]])) {
     x <- coordinates(rgeos::gUnaryUnion(p))[1, ]
-    text(x[1], x[2], cex=0.7, main.label[[1]], adj=main.label$adj, font=2)
+    text(x[1], x[2], labels=main.label[[1]], adj=main.label$adj, cex=0.7, font=2)
   }
   if (!is.na(sub.label[[1]])) {
     x <- coordinates(rgeos::gUnaryUnion(b))[1, ]
-    text(x[1], x[2], cex=0.6, sub.label[[1]], adj=sub.label$adj)
+    text(x[1], x[2], labels=sub.label[[1]], adj=sub.label$adj, cex=0.6)
   }
 
   graphics::box(lwd=0.5)
