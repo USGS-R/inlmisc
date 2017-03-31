@@ -10,6 +10,8 @@
 #'    Description of how the data were saved.
 #'    Specify \code{"array"} for array data (such as hydraulic heads or drawdowns) and
 #'    \code{"flow"} for cell-by-cell flow data (budget data).
+#' @param endian character.
+#'    The endian-ness (or byte-order) of the binary file.
 #' @param rm.totim.0 logical.
 #'    If true, data associated with the stress period at time zero are removed.
 #'
@@ -58,17 +60,20 @@
 #' str(budget[[11]])
 #'
 
-ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FALSE) {
+ReadModflowBinary <- function(path, data.type=c("array", "flow"),
+                              endian=c("little", "big"), rm.totim.0=FALSE) {
   if (!file.exists(path)) stop("binary file can not be found")
   data.type <- match.arg(data.type)
-  ans <- try(.ReadBinary(path, data.type, nbytes=4L), silent=TRUE)
-  if (inherits(ans, "try-error")) ans <- .ReadBinary(path, data.type, nbytes=8L)
+  endian <- match.arg(endian)
+  ans <- try(.ReadBinary(path, data.type, nbytes=4L, endian), silent=TRUE)
+  if (inherits(ans, "try-error"))
+    ans <- .ReadBinary(path, data.type, nbytes=8L, endian)
   if (rm.totim.0) ans <- ans[vapply(ans, function(i) i$totim, 0) != 0]
   return(ans)
 }
 
 
-.ReadBinary <- function(path, data.type, nbytes) {
+.ReadBinary <- function(path, data.type, nbytes, endian) {
   con <- file(path, open="rb", encoding="bytes")
   on.exit(close(con, type="rb"))
 
@@ -101,52 +106,55 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FAL
                     "river leakage", "lake seepage")
   lst <- list()
   repeat {
-    kstp <- readBin(con, "integer", n=1L, size=4L)
+    kstp <- readBin(con, "integer", n=1L, size=4L, endian=endian)
     if (length(kstp) == 0) break
-    kper <- readBin(con, "integer", n=1L, size=4L)
+    kper <- readBin(con, "integer", n=1L, size=4L, endian=endian)
 
     if (data.type == "array") {
-      pertim <- readBin(con, "numeric", n=1L, size=nbytes)
-      totim  <- readBin(con, "numeric", n=1L, size=nbytes)
-      desc   <- readBin(readBin(con, "raw", n=16L, size=1L), "character", n=1L)
+      pertim <- readBin(con, "numeric", n=1L, size=nbytes, endian=endian)
+      totim  <- readBin(con, "numeric", n=1L, size=nbytes, endian=endian)
+      desc   <- readBin(readBin(con, "raw", n=16L, size=1L, endian=endian),
+                        "character", n=1L, endian=endian)
       desc <- .TidyDescription(desc)
       if (!desc %in% valid.desc) break
-      ncol  <- readBin(con, "integer", n=1L, size=4L)
-      nrow  <- readBin(con, "integer", n=1L, size=4L)
-      layer <- readBin(con, "integer", n=1L, size=4L)
-      v     <- readBin(con, "numeric", n=nrow * ncol, size=nbytes)
+      ncol  <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+      nrow  <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+      layer <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+      v     <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
       d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
       lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
                                      layer=layer, pertim=pertim, totim=totim)
 
     } else if (data.type == "flow") {
-      desc <- readBin(readBin(con, "raw", n=16L, size=1L), "character", n=1L)
+      desc <- readBin(readBin(con, "raw", n=16L, size=1L, endian=endian),
+                              "character", n=1L, endian=endian)
       desc <- .TidyDescription(desc)
       if (!desc %in% valid.desc) break
-      ncol <- readBin(con, "integer", n=1L, size=4L)
-      nrow <- readBin(con, "integer", n=1L, size=4L)
-      nlay <- readBin(con, "integer", n=1L, size=4L)
+      ncol <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+      nrow <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+      nlay <- readBin(con, "integer", n=1L, size=4L, endian=endian)
 
       if (nlay > 0) {
-        x <- .Read3dArray(con, nrow, ncol, nlay, nbytes)
+        x <- .Read3dArray(con, nrow, ncol, nlay, nbytes, endian)
         for (i in seq_len(nlay)) {
           lst[[length(lst) + 1]] <- list(d=x[[i]], kstp=kstp, kper=kper, desc=desc, layer=i)
         }
 
       } else {  # compact form is used
         nlay <- abs(nlay)
-        itype  <- readBin(con, "integer", n=1L, size=4L)
-        delt   <- readBin(con, "numeric", n=1L, size=nbytes)
-        pertim <- readBin(con, "numeric", n=1L, size=nbytes)
-        totim  <- readBin(con, "numeric", n=1L, size=nbytes)
+        itype  <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+        delt   <- readBin(con, "numeric", n=1L, size=nbytes, endian=endian)
+        pertim <- readBin(con, "numeric", n=1L, size=nbytes, endian=endian)
+        totim  <- readBin(con, "numeric", n=1L, size=nbytes, endian=endian)
 
         if (itype == 5L)
-          nval <- readBin(con, "integer", n=1L, size=4L)
+          nval <- readBin(con, "integer", n=1L, size=4L, endian=endian)
         else
           nval <- 1L
         if (nval > 100) stop("more than one-hundred varaiables for each cell")
         if (nval > 1) {
-          ctmp <- readBin(readBin(con, "raw", n=16L, size=1L), "character", n=nval - 1)
+          ctmp <- readBin(readBin(con, "raw", n=16L, size=1L, endian=endian),
+                          "character", n=nval - 1, endian=endian)
           ctmp <- .TidyDescription(ctmp)
         } else {
           ctmp <- NULL
@@ -154,22 +162,22 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FAL
 
         if (itype %in% c(0L, 1L)) {
           nvalues <- ncol * nrow * nlay
-          d <- .Read3dArray(con, nrow, ncol, nlay, nbytes)
+          d <- .Read3dArray(con, nrow, ncol, nlay, nbytes, endian)
           for (i in seq_along(d)) {
             lst[[length(lst) + 1]] <- list(d=d[[i]], kstp=kstp, kper=kper, desc=desc,
                                            layer=i, delt=delt, pertim=pertim, totim=totim)
           }
 
         } else if (itype %in% c(2L, 5L)) {
-            nlist <- readBin(con, "integer", n=1L, size=4L)
+            nlist <- readBin(con, "integer", n=1L, size=4L, endian=endian)
             if (nlist > (nrow * ncol * nlay))
               stop("large number of cells for which values will be stored")
             if (nlist > 0) {
               d <- matrix(0, nrow=nlist, ncol=nval + 4)
               colnames(d) <- make.names(c("icell", "layer", "row", "column", "flow", ctmp), unique=TRUE)
               for (i in seq_len(nlist)) {
-                d[i, 1] <- readBin(con, "integer", n=1L, size=4L)
-                d[i, seq_len(nval) + 4] <- readBin(con, "numeric", n=nval, size=nbytes)
+                d[i, 1] <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+                d[i, seq_len(nval) + 4] <- readBin(con, "numeric", n=nval, size=nbytes, endian=endian)
               }
               nrc <- nrow * ncol
               d[, "layer"] <- as.integer((d[, "icell"] - 1L) / nrc + 1L)
@@ -180,8 +188,8 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FAL
             }
 
         } else if (itype == 3L) {
-          layers <- readBin(con, "integer", n=nrow * ncol, size=4L)
-          values <- readBin(con, "numeric", n=nrow * ncol, size=nbytes)
+          layers <- readBin(con, "integer", n=nrow * ncol, size=4L, endian=endian)
+          values <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
           for (i in sort(unique(layers))) {
             v <- values[layers == i]
             d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
@@ -190,7 +198,7 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FAL
           }
 
         } else if (itype == 4L) {
-          v <- readBin(con, "numeric", n=nrow * ncol, size=nbytes)
+          v <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
           d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
           lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
                                          layer=1L, delt=delt, pertim=pertim, totim=totim)
@@ -210,9 +218,9 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"), rm.totim.0=FAL
 }
 
 
-.Read3dArray <- function(con, nrow, ncol, nlay, nbytes) {
+.Read3dArray <- function(con, nrow, ncol, nlay, nbytes, endian) {
   FUN <- function(i) {
-    v <- readBin(con, "numeric", n=nrow * ncol, size=nbytes)
+    v <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
     return(matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE))
   }
   return(lapply(seq_len(nlay), FUN))
