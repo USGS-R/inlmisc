@@ -1,3 +1,7 @@
+# inlmisc 0.2.6.9000
+
+- ...
+
 # inlmisc 0.2.6
 
 - Add `endian` argument to `ReadModflowBinary` function.
