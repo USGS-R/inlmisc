@@ -1,6 +1,7 @@
 # inlmisc 0.2.5.9000
 
-- ...
+- Add a `endian` argument in the `ReadModflowBinary` function.
+  Argument describes the endian-ness (or byte-order) of the binary file.
 
 # inlmisc 0.2.5
 
