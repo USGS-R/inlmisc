@@ -15,6 +15,7 @@ Imports:
     graphics,
     igraph,
     knitr,
+    leaflet,
     methods,
     sp,
     stats,

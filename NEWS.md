@@ -1,6 +1,6 @@
 # inlmisc 0.2.6.9000
 
-- ...
+- Add `CreateWebMap` function, creates a Leaflet map widget using The National Map services.
 
 # inlmisc 0.2.6
 
