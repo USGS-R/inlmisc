@@ -29,9 +29,9 @@ A number of \href{https://viewer.nationalmap.gov/services/}{map services} are of
 \examples{
 map <- CreateWebMap()
 
-lng <- c(-112.049705, -122.171257, -77.367458)
-lat <- c(43.517810, 37.456526, 38.947206)
-map <- leaflet::addMarkers(map, lng, lat, popup = c("ID", "CA", "VA"))
+lng <- c(-112.049705, -122.171257, -77.367458, -149.803565, -80.248344)
+lat <- c(43.517810, 37.456526, 38.947206, 61.187905, 26.080860)
+map <- leaflet::addMarkers(map, lng, lat, popup = c("ID", "CA", "VA", "AK", "FL"))
 
 map
 
