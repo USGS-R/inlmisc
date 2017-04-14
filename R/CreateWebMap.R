@@ -28,12 +28,10 @@
 #' @examples
 #' map <- CreateWebMap()
 #'
-#' # add marker layer
 #' lng <- c(-112.049705, -122.171257, -77.367458)
 #' lat <- c(43.517810, 37.456526, 38.947206)
-#' map <- leaflet::addMarkers(map, lng, lat, popup = c("INL", "CA", "VA"))
+#' map <- leaflet::addMarkers(map, lng, lat, popup = c("ID", "CA", "VA"))
 #'
-#' # render map in web browser
 #' map
 #'
 
