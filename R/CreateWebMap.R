@@ -46,16 +46,19 @@ CreateWebMap <- function(...) {
                "<a href='https://www.usgs.gov/laws/policies_notices.html'>Policies</a>")
 
   # add tiled basemaps
-  basemap <- c("USGS Topo", "USGS Imagery Only", "USGS Imagery Topo", "USGS Shaded Relief Only")
+  basemap <- c("USGS Topo", "USGS Imagery Only", "USGS Imagery Topo",
+               "USGS Shaded Relief Only")
   url <- .GetURL(basemap)
+  opt <- leaflet::WMSTileOptions(version="1.3.0")
   for (i in seq_along(basemap)) {
-    map <- leaflet::addWMSTiles(map, url[i], group=basemap[i], attribution=att, layers="0")
+    map <- leaflet::addWMSTiles(map, url[i], group=basemap[i], attribution=att,
+                                options=opt, layers="0")
   }
 
   # add tiled overlay
   overlay <- c("USGS Hydro Cached")
   url <- .GetURL(overlay)
-  opt <- leaflet::WMSTileOptions(format="image/png", transparent=TRUE)
+  opt <- leaflet::WMSTileOptions(version="1.3.0", format="image/png", transparent=TRUE)
   for (i in seq_along(overlay)) {
     map <- leaflet::addWMSTiles(map, url[i], group=overlay[i], options=opt, layers="0")
     map <- leaflet::hideGroup(map, overlay[i])
@@ -63,7 +66,8 @@ CreateWebMap <- function(...) {
 
   # add control feature
   opt <- leaflet::layersControlOptions(collapsed=FALSE)
-  map <- leaflet::addLayersControl(map, baseGroups=basemap, overlayGroups=overlay, options=opt)
+  map <- leaflet::addLayersControl(map, baseGroups=basemap,
+                                   overlayGroups=overlay, options=opt)
 
   return(map)
 }
