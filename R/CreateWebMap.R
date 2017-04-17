@@ -38,6 +38,13 @@
 
 CreateWebMap <- function(...) {
 
+  # establish layers
+  basemap <- c("Topo"         = "USGSTopo",
+               "Imagery"      = "USGSImageryOnly",
+               "Imagery Topo" = "USGSImageryTopo",
+               "Hydro-NHD"    = "USGSHydroNHD",
+               "Hill Shade"   = "USGSShadedReliefOnly")
+
   # initialize map widget
   map <- leaflet::leaflet(options=leaflet::leafletOptions(...))
 
@@ -46,34 +53,25 @@ CreateWebMap <- function(...) {
                "<a href='https://www.usgs.gov/laws/policies_notices.html'>Policies</a>")
 
   # add tiled basemaps
-  basemap <- c("USGS Topo", "USGS Imagery Only", "USGS Imagery Topo",
-               "USGS Shaded Relief Only")
   url <- .GetURL(basemap)
-  opt <- leaflet::WMSTileOptions(version="1.3.0")
+  opt <- leaflet::WMSTileOptions(version="1.3.0", maxNativeZoom=15)
   for (i in seq_along(basemap)) {
-    map <- leaflet::addWMSTiles(map, url[i], group=basemap[i], attribution=att,
+    map <- leaflet::addWMSTiles(map, url[i], group=names(basemap)[i], attribution=att,
                                 options=opt, layers="0")
-  }
-
-  # add tiled overlay
-  overlay <- c("USGS Hydro Cached")
-  url <- .GetURL(overlay)
-  opt <- leaflet::WMSTileOptions(version="1.3.0", format="image/png", transparent=TRUE)
-  for (i in seq_along(overlay)) {
-    map <- leaflet::addWMSTiles(map, url[i], group=overlay[i], options=opt, layers="0")
-    map <- leaflet::hideGroup(map, overlay[i])
   }
 
   # add control feature
   opt <- leaflet::layersControlOptions(collapsed=FALSE)
-  map <- leaflet::addLayersControl(map, baseGroups=basemap,
-                                   overlayGroups=overlay, options=opt)
+  map <- leaflet::addLayersControl(map, baseGroups=names(basemap), options=opt)
 
+  # add scale bar
+  map <- leaflet::addScaleBar(map, position="bottomleft")
+
+  # return html widget
   return(map)
 }
 
 
-.GetURL <- function(x, host="basemap.nationalmap.gov") {
-  service <- gsub("[[:space:]]", "", x)
-  sprintf("https://%s/arcgis/services/%s/MapServer/WmsServer", host, service)
+.GetURL <- function(service, host="basemap.nationalmap.gov") {
+  sprintf("https://%s/arcgis/services/%s/MapServer/WmsServer?", host, service)
 }
