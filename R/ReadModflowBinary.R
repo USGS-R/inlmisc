@@ -127,7 +127,7 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
 
     } else if (data.type == "flow") {
       desc <- readBin(readBin(con, "raw", n=16L, size=1L, endian=endian),
-                              "character", n=1L, endian=endian)
+                      "character", n=1L, endian=endian)
       desc <- .TidyDescription(desc)
       if (!desc %in% valid.desc) break
       ncol <- readBin(con, "integer", n=1L, size=4L, endian=endian)
