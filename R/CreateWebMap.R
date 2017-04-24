@@ -42,8 +42,8 @@ CreateWebMap <- function(...) {
   basemap <- c("Topo"         = "USGSTopo",
                "Imagery"      = "USGSImageryOnly",
                "Imagery Topo" = "USGSImageryTopo",
-               "Hydro-NHD"    = "USGSHydroNHD",
-               "Hill Shade"   = "USGSShadedReliefOnly")
+               "Hill Shade"   = "USGSShadedReliefOnly",
+               "Hydrography"  = "USGSHydroCached")
 
   # initialize map widget
   map <- leaflet::leaflet(options=leaflet::leafletOptions(...))
