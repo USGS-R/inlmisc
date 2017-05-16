@@ -7,6 +7,8 @@
 #'
 #' @param ...
 #'   Leaflet options to be passed to the \code{\link[leaflet]{leafletOptions}} function.
+#' @param collapsed 'logical'.
+#'   If true, the layers control will be rendered as an icon that expands when hovered over.
 #'
 #' @details A number of \href{https://viewer.nationalmap.gov/services/}{map services} are offered through TNM.
 #'   There are no use restrictions on these services.
@@ -36,7 +38,7 @@
 #' map
 #'
 
-CreateWebMap <- function(...) {
+CreateWebMap <- function(..., collapsed=FALSE) {
 
   # establish layers
   basemap <- c("Topo"          = "USGSTopo",
@@ -61,7 +63,7 @@ CreateWebMap <- function(...) {
   }
 
   # add control feature
-  opt <- leaflet::layersControlOptions(collapsed=FALSE)
+  opt <- leaflet::layersControlOptions(collapsed=collapsed)
   map <- leaflet::addLayersControl(map, baseGroups=names(basemap), options=opt)
 
   # add scale bar

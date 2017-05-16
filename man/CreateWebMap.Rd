@@ -4,10 +4,13 @@
 \alias{CreateWebMap}
 \title{Create a Web Map Using The National Map Services}
 \usage{
-CreateWebMap(...)
+CreateWebMap(..., collapsed = FALSE)
 }
 \arguments{
 \item{...}{Leaflet options to be passed to the \code{\link[leaflet]{leafletOptions}} function.}
+
+\item{collapsed}{'logical'.
+If true, the layers control will be rendered as an icon that expands when hovered over.}
 }
 \value{
 Returns a 'leaflet' Hypertext Markup Language (HTML) widget object with TNM base maps.
