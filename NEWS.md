@@ -1,6 +1,6 @@
 # inlmisc 0.2.6.9000
 
-- Add `facilities` and `inl` datasets.
+- Add `facilities`, `inl`, and `projargs` datasets.
 
 - In `PlotGraph` function: Add option for plotting interval censored data by specifying `type = "i"`.
   Change `type = "box"` to `type = "w"` to draw box-and-whisker plot.
