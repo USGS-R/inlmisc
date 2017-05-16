@@ -2,32 +2,32 @@
 #'
 #' This function can be used to add a color key to a plot.
 #'
-#' @param mai numeric.
+#' @param mai 'numeric'.
 #'   Vector of the form \code{c(bottom, left, top, right)} which gives the margin size specified in inches (optional).
-#' @param is.categorical logical.
+#' @param is.categorical 'logical'.
 #'   If true, color-key values represent categorical data;
 #'   otherwise, these data values are assumed continuous.
-#' @param breaks numeric.
+#' @param breaks 'numeric'.
 #'   Set of finite numeric breakpoints for the colors:
 #'   must have one more breakpoint than color and be in increasing order.
-#' @param col character.
+#' @param col 'character'.
 #'   Vector of colors to be used in the plot.
 #'   This argument requires \code{breaks} specification for continuous data.
 #'   For continuous data there should be one less color than breaks; whereas,
 #'   categorical data require a color for each category.
-#' @param at numeric.
+#' @param at 'numeric'.
 #'   The points at which tick-marks and labels are to be drawn,
 #'   only applicable for continuous data.
 #'   The tick-marks will be located at the color breaks if the length of \code{at} is greater than or equal to one minus the length of \code{breaks}.
-#' @param labels logical or character.
+#' @param labels 'logical' or 'character'.
 #'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
 #'   or a character or expression vector of labels to be placed at the tickpoints.
-#' @param scientific logical.
+#' @param scientific 'logical'.
 #'   Indicates if axes labels should be formatted for scientific notation,
 #'   see \code{\link{ToScientific}} for details.
-#' @param explanation character.
+#' @param explanation 'character'.
 #'   Label that describes the data values.
-#' @param padx numeric.
+#' @param padx 'numeric'.
 #'   Inner padding for the left and right margins specified in inches.
 #'
 #' @return Used for the side-effect of a color key drawn on the current graphics device.

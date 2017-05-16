@@ -4,115 +4,115 @@
 #' A key showing how the colors map to raster values is shown below the map.
 #' The width and height of the graphics region will be automagically determined in some cases.
 #'
-#' @param r Raster*, SpatialGridDataFrame, or CRS.
+#' @param r 'Raster*', 'SpatialGridDataFrame', or 'CRS'.
 #'   An object that can be converted to a raster layer, or a coordinate reference system (CRS).
-#' @param p SpatialPointsDataFrame.
+#' @param p 'SpatialPointsDataFrame'.
 #'   Spatial point data to be plotted.
 #' @param ...
 #'   Graphics parameters to be passed to \code{\link{AddPoints}}.
 #'   Unused if \code{p = NULL}.
-#' @param layer integer.
+#' @param layer 'integer'.
 #'   Layer to extract from if \code{r} is of class RasterStack/Brick or SpatialGridDataFrame.
 #' @param att integer or character.
 #'   The levels attribute to use in the Raster Attribute Table (RAT);
 #'   requires \code{r} values of class factor.
-#' @param n integer.
+#' @param n 'integer'.
 #'   Desired number of intervals to partition the range of raster values (or \code{zlim} if specified) (optional).
-#' @param breaks numeric.
+#' @param breaks 'numeric'.
 #'   Vector of break points used to partition the colors representing numeric raster values (optional).
-#' @param xlim numeric.
+#' @param xlim 'numeric'.
 #'   Vector of length 2 giving the minimum and maximum values for the \emph{x}-axis.
-#' @param ylim numeric.
+#' @param ylim 'numeric'.
 #'   Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.
-#' @param zlim numeric.
+#' @param zlim 'numeric'.
 #'   Vector of length 2 giving the minimum and maximum raster values for which colors should be plotted.
-#' @param asp numeric.
-#'   The \emph{y/x} aspect ratio for spatial axes.
+#' @param asp 'numeric'.
+#'   \emph{y/x} aspect ratio for spatial axes.
 #'   Defaults to 1 (one unit on the \emph{x}-axis equals one unit on the \emph{y}-axis) when \code{r} is projected,
 #'   otherwise, a calculated value based on axes limits is used.
-#' @param extend.xy logical.
+#' @param extend.xy 'logical'.
 #'   If true, the spatial limits will be extended to the next tick mark on the axes beyond the grid extent.
-#' @param extend.z logical.
+#' @param extend.z 'logical'.
 #'   If true, the raster value limits will be extended to the next tick mark on the color key beyond the measured range.
-#' @param reg.axs logical.
+#' @param reg.axs 'logical'.
 #'   If true, the spatial data range is extended.
-#' @param dms.tick logical.
+#' @param dms.tick 'logical'.
 #'   If true and \code{r} is projected, the axes tickmarks are specified in degrees, minutes, and decimal seconds (DMS).
-#' @param bg.lines logical.
+#' @param bg.lines 'logical'.
 #'   If true, grids or graticules are drawn in back of the raster layer using white lines and a grey background.
-#' @param bg.image RasterLayer.
+#' @param bg.image 'RasterLayer'.
 #'   An image to drawn in back of the main raster layer \code{r}, image colors derived from vector of gray levels.
-#' @param bg.image.alpha numeric.
+#' @param bg.image.alpha 'numeric'.
 #'   Opacity of the background image from 0 to 1.
-#' @param pal function.
+#' @param pal 'function'.
 #'   Color palette to be used to assign colors in the plot, rainbow by default.
-#' @param col character.
+#' @param col 'character'.
 #'   Vector of colors to be used in the plot.
 #'   This argument requires \code{breaks} specification for numeric values of \code{r} and
 #'   overrides any palette function specification.
 #'   For numeric values there should be one less color than breaks.
 #'   Factors require a color for each level.
-#' @param max.dev.dim numeric.
+#' @param max.dev.dim 'numeric'.
 #'   Vector of length 2 giving the maximum width and height for the graphics device in picas, respectively.
 #'   Suggested dimensions for single-column, double-column, and sidetitle figures are
 #'   \code{c(21, 56)}, \code{c(43, 56)}, and \code{c(56, 43)}, respectively.
 #'   This argument is only applicable when the \code{file} argument is specified.
-#' @param labels list.
+#' @param labels 'list'.
 #'   Describes the location and values of labels in the color key.
 #'   This list may include components \code{at} and \code{labels}.
-#' @param scale.loc character.
+#' @param scale.loc 'character'.
 #'   Position of the scale bar:
 #'   "bottomleft", "topleft", "topright", or "bottomright" to denote scale location.
-#' @param arrow.loc character.
+#' @param arrow.loc 'character'.
 #'   Position of the north arrow:
 #'   "bottomleft", "topleft", "topright", or "bottomright" to denote arrow location.
-#' @param explanation character.
+#' @param explanation 'character'.
 #'   Label explaining the raster cell value.
-#' @param credit character.
+#' @param credit 'character'.
 #'   Label crediting the base map.
-#' @param shade list.
+#' @param shade 'list'.
 #'   If specified, a semi-transparent shade layer is drawn on top of the raster layer.
 #'   This layer is described using a list of arguments supplied to \code{raster::hillShade} function.
 #'   Passed arguments include \code{"angle"} and \code{"direction"}.
 #'   Additional arguments also may be passed that control the vertical aspect ratio
 #'   (\code{"z.factor"}) and color opacity (\code{"alpha"}).
-#' @param contour.lines list.
+#' @param contour.lines 'list'.
 #'   If specified, contour lines are drawn.
 #'   The contours are described using a list of arguments supplied to \code{contour}.
 #'   Passed arguments include \code{"drawlables"}, \code{"method"}, and \code{"col"}.
-#' @param rivers list.
+#' @param rivers 'list'.
 #'   If specified, lines are drawn.
 #'   The lines are described using a list of arguments supplied to the plot method for SpatialLines.
 #'   Passed arguments include \code{"x"}, \code{"col"}, and \code{"lwd"}.
-#' @param lakes list.
+#' @param lakes 'list'.
 #'   If specified, polygons are drawn.
 #'   The polygons are described using a list of arguments supplied to the plot method for SpatialPolygons.
 #'   Passed arguments include \code{"x"}, \code{"col"}, \code{"border"}, and \code{"lwd"}.
 #'   Bitmap images require a regular grid.
-#' @param roads list.
+#' @param roads 'list'.
 #'   If specified, lines are drawn.
 #'   The lines are described using a list of arguments supplied to the plot method for SpatialLines.
 #'   Passed arguments include \code{"x"}, \code{"col"}, and \code{"lwd"}.
-#' @param draw.key logical.
+#' @param draw.key 'logical'.
 #'   If true, a color key should be drawn.
 #' @param draw.raster logical.
 #'   If true, the raster image is drawn.
-#' @param file character.
+#' @param file 'character'.
 #'   Name of the output file.
 #'   Specifying this argument will start a graphics device driver for producing a
 #'   PDF or PNG file format---the file extension determines the format type.
 #'   The width and height of the graphics region will be automagically determined and
 #'   included with the function's returned values, see "Value" section for details;
 #'   these device dimensions can be useful when creating similar map layouts in dynamic reports.
-#' @param close.file logical.
+#' @param close.file 'logical'.
 #'   If true, the graphics device driver is shut down when the function exits.
 #'   Unused if \code{file = NULL}
-#' @param useRaster logical.
+#' @param useRaster 'logical'.
 #'   If true, a bitmap raster is used to plot \code{r} instead of using polygons.
 #'   If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.
 #'
 #' @return Used for the side-effect of a new plot generated.
-#'   Returns a \code{list} object with the following graphical parameters:
+#'   Returns a 'list' object with the following graphical parameters:
 #'   \describe{
 #'     \item{din}{device dimensions \code{(width, height)}, in inches.}
 #'     \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}

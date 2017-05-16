@@ -3,14 +3,14 @@
 #' This function writes a raster-stack, a collection of raster layers,
 #' to local directories using multiple file formats.
 #'
-#' @param rs RasterStack.
+#' @param rs 'RasterStack'.
 #'   A collection of \code{\linkS4class{RasterLayer}} objects with the same extent and resolution.
-#' @param path character.
+#' @param path 'character'.
 #'   Path name to write raster stack.
-#' @param zip character.
+#' @param zip 'character'.
 #'   If there is no zip program on your path (on windows),
 #'   you can supply the full path to a \file{zip.exe} here, in order to make a KMZ file.
-#' @param col character.
+#' @param col 'character'.
 #'   Vector of colors
 #'
 #' @details Five local directories are created under \code{path} and named after their intended file formats:

@@ -3,12 +3,12 @@
 #' This function decreases stage values in river cells if they are implausible
 #' with respect to water always flowing downhill.
 #'
-#' @param r RasterLayer.
+#' @param r 'RasterLayer'.
 #'   Numeric cell values represent river stages.
-#' @param outlets SpatialPoints*, SpatialLines*, SpatialPolygons* or Extent.
+#' @param outlets 'SpatialPoints*', 'SpatialLines*', 'SpatialPolygons*' or 'Extent'.
 #'   Designates the location of discharge outlets.
 #'   The \code{\link{rasterize}} function is used to locate outlet cells in the raster grid \code{r}.
-#' @param min.drop numeric.
+#' @param min.drop 'numeric'.
 #'   Minimum drop in stage between adjacent river cells.
 #'
 #' @details The \href{https://en.wikipedia.org/wiki/Lee_algorithm}{Lee algorithm} (Lee, 1961)
@@ -17,7 +17,7 @@
 #'   that are obstructing downhill surface-water flow.
 #'   Stage values for these problematic cells are then lowered to an acceptable elevation.
 #'
-#' @return Returns a RasterLayer with cell values representing the vertical change in stream stage.
+#' @return Returns a 'RasterLayer' with cell values representing the vertical change in stream stage.
 #'   These changes can be added to \code{r} to ensure that water always flows downhill.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

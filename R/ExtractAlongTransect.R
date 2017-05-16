@@ -2,15 +2,15 @@
 #'
 #' This function extracts values from raster layer(s) along a user defined transect line.
 #'
-#' @param transect SpatialPoints or SpatialLines.
+#' @param transect 'SpatialPoints' or 'SpatialLines'.
 #'   Transect line or its vertices.
-#' @param r RasterLayer, RasterStack, or RasterBrick.
+#' @param r 'RasterLayer', 'RasterStack', or 'RasterBrick'.
 #'   Raster layer(s)
 #'
 #' @details The transect line is described using a simple polygonal chain.
 #'   The transect line and raster layer(s) must be specified in a coordinate reference system.
 #'
-#' @return A \code{list} is returned with components of class SpatialPointsDataFrame.
+#' @return A 'list' is returned with components of class 'SpatialPointsDataFrame'.
 #'   These components represent continuous piecewise line segments along the transect.
 #'   The following variables are specified for each coordinate point in the line segment:
 #'   \describe{

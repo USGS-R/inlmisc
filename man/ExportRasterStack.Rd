@@ -8,17 +8,17 @@ ExportRasterStack(rs, path, zip = "", col = grDevices::rainbow(250, start =
   0, end = 0.8))
 }
 \arguments{
-\item{rs}{RasterStack.
+\item{rs}{'RasterStack'.
 A collection of \code{\linkS4class{RasterLayer}} objects with the same extent and resolution.}
 
-\item{path}{character.
+\item{path}{'character'.
 Path name to write raster stack.}
 
-\item{zip}{character.
+\item{zip}{'character'.
 If there is no zip program on your path (on windows),
 you can supply the full path to a \file{zip.exe} here, in order to make a KMZ file.}
 
-\item{col}{character.
+\item{col}{'character'.
 Vector of colors}
 }
 \value{

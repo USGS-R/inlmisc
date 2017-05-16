@@ -8,23 +8,23 @@ ToScientific(x, digits = format.info(as.numeric(x))[2],
   lab.type = c("latex", "plotmath"))
 }
 \arguments{
-\item{x}{numeric.
+\item{x}{'numeric'.
 Vector of numbers}
 
-\item{digits}{integer.
+\item{digits}{'integer'.
 Number of digits after the decimal point for the mantissa.}
 
-\item{lab.type}{character.
+\item{lab.type}{'character'.
 By default, LaTeX formatted strings for labels are returned.
 Alternatively, \code{lab.type = "plotmath"} returns plotmath-compatible expressions.}
 }
 \value{
-For the default \code{lab.type = "latex"}, a \code{character} vector of the same length as argument \code{x}.
+For the default \code{lab.type = "latex"}, a 'character' vector of the same length as argument \code{x}.
   And for \code{lab.type = "plotmath"}, an expression of the same length as \code{x},
   typically with elements of the form \code{m x 10^n}.
   In order to comply with \href{https://www.section508.gov}{Section 508},
-  an \dQuote{\code{x}} is used as the label separator for the \code{plotmath} type---rather than
-  the more common \dQuote{\code{\%*\%}} seperator.
+  an "x" is used as the label separator for the \code{plotmath} type---rather than
+  the more common "\%*\%" seperator.
 }
 \description{
 This function formats numbers in scientific notation \eqn{m \times 10^{n}}.

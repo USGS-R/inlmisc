@@ -10,28 +10,28 @@ AddInsetMap(p, col = c("#D8D8D8", "#BFA76F"), main.label = list(label = NA,
   width = NULL)
 }
 \arguments{
-\item{p}{SpatialPolygons.
+\item{p}{'SpatialPolygons'.
 Polygon describing the large map.}
 
-\item{col}{list.
+\item{col}{'list'.
 Vector of length 2 giving the colors for filling the large map polygon \code{p} and the smaller plot extent rectangle.}
 
-\item{main.label}{list.
+\item{main.label}{'list'.
 List with components \code{label} and \code{adj}.
 The text label and position (x and y adjustment of the label) for the large map, respectively.}
 
-\item{sub.label}{list.
+\item{sub.label}{'list'.
 Identical to the \code{main.label} argument but for the plot extent rectangle.}
 
-\item{loc}{character.
+\item{loc}{'character'.
 Position of the inset map in the main plot region:
 "bottomleft", "topleft", "topright", or "bottomright" to denote scale location.}
 
-\item{inset}{numeric.
+\item{inset}{'numeric'.
 Inset distance from the margins as a fraction of the main plot region.
 Defaults to 2 percent of the axis range.}
 
-\item{width}{numeric.
+\item{width}{'numeric'.
 Width of the inset map in inches.}
 }
 \value{

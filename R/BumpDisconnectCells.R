@@ -3,13 +3,13 @@
 #' This function decreases model cell values (such as land-surface elevations)
 #' in the lower raster layer if they violate a minimum vertical overlap between adjacent cells.
 #'
-#' @param rs RasterStack.
+#' @param rs 'RasterStack'.
 #'   A collection of two raster layers, the first and second layers represent the top and bottom of a model layer.
-#' @param min.overlap numeric.
+#' @param min.overlap 'numeric'.
 #'   Minimum vertical overlap between adjacent cells.
-#' @param bump.by numeric.
+#' @param bump.by 'numeric'.
 #'   Amount to decrease a cell value by during each iteration of the algorithm.
-#' @param max.itr numeric.
+#' @param max.itr 'numeric'.
 #'   Maximum number of iterations.
 #'
 #' @details During each iteration of the algorithm:
@@ -19,7 +19,7 @@
 #'   (2) For cells violating the minimum vertical overlap, lower raster layer (\code{rs[[2]]}) values are
 #'       decreased by the value specified in the \code{bump.by} argument.
 #'
-#' @return Returns a raster layer that can be added to \code{rs[[2]]} to ensure connectivity between cells.
+#' @return Returns a 'RasterLayer' that can be added to \code{rs[[2]]} to ensure connectivity between cells.
 #'   Cell values in the returned raster grid represent vertical adjustments.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

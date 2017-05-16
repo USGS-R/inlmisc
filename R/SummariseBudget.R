@@ -6,13 +6,13 @@
 #' That is, it splits the MODFLOW cell-by-cell flow data into subsets,
 #' computes summary statistics for each, and returns a resulting summary table.
 #'
-#' @param budget character or list.
+#' @param budget 'character' or 'list'.
 #'   Either the path to a MODFLOW cell-by-cell budget file or
 #'   the object returned from the \code{\link{ReadModflowBinary}} function.
-#' @param desc character.
+#' @param desc 'character'.
 #'    Vector of data-type descriptors, such as \code{c("wells", "drains")}.
 #'    If missing, all data types are summarized.
-#' @param id character.
+#' @param id 'character'.
 #'    Name of auxiliary variable, a variable of additional values associated with each cell
 #'    saved using the \emph{\bold{"AUXILIARY"}} output option.
 #'

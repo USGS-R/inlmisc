@@ -7,18 +7,18 @@
 BumpRiverStage(r, outlets, min.drop = 1e-06)
 }
 \arguments{
-\item{r}{RasterLayer.
+\item{r}{'RasterLayer'.
 Numeric cell values represent river stages.}
 
-\item{outlets}{SpatialPoints*, SpatialLines*, SpatialPolygons* or Extent.
+\item{outlets}{'SpatialPoints*', 'SpatialLines*', 'SpatialPolygons*' or 'Extent'.
 Designates the location of discharge outlets.
 The \code{\link{rasterize}} function is used to locate outlet cells in the raster grid \code{r}.}
 
-\item{min.drop}{numeric.
+\item{min.drop}{'numeric'.
 Minimum drop in stage between adjacent river cells.}
 }
 \value{
-Returns a RasterLayer with cell values representing the vertical change in stream stage.
+Returns a 'RasterLayer' with cell values representing the vertical change in stream stage.
   These changes can be added to \code{r} to ensure that water always flows downhill.
 }
 \description{

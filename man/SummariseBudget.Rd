@@ -7,15 +7,15 @@
 SummariseBudget(budget, desc, id = NULL)
 }
 \arguments{
-\item{budget}{character or list.
+\item{budget}{'character' or 'list'.
 Either the path to a MODFLOW cell-by-cell budget file or
 the object returned from the \code{\link{ReadModflowBinary}} function.}
 
-\item{desc}{character.
+\item{desc}{'character'.
 Vector of data-type descriptors, such as \code{c("wells", "drains")}.
 If missing, all data types are summarized.}
 
-\item{id}{character.
+\item{id}{'character'.
 Name of auxiliary variable, a variable of additional values associated with each cell
 saved using the \emph{\bold{"AUXILIARY"}} output option.}
 }

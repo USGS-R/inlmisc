@@ -7,10 +7,10 @@
 ReplaceInTemplate(text, replacement)
 }
 \arguments{
-\item{text}{character.
+\item{text}{'character'.
 Vector of character strings, that is the template text.}
 
-\item{replacement}{list.
+\item{replacement}{'list'.
 Values to replace in \code{text}.}
 }
 \value{

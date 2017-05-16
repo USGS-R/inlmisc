@@ -7,14 +7,14 @@
 ExtractAlongTransect(transect, r)
 }
 \arguments{
-\item{transect}{SpatialPoints or SpatialLines.
+\item{transect}{'SpatialPoints' or 'SpatialLines'.
 Transect line or its vertices.}
 
-\item{r}{RasterLayer, RasterStack, or RasterBrick.
+\item{r}{'RasterLayer', 'RasterStack', or 'RasterBrick'.
 Raster layer(s)}
 }
 \value{
-A \code{list} is returned with components of class SpatialPointsDataFrame.
+A 'list' is returned with components of class 'SpatialPointsDataFrame'.
   These components represent continuous piecewise line segments along the transect.
   The following variables are specified for each coordinate point in the line segment:
   \describe{

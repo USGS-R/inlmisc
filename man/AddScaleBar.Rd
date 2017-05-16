@@ -9,22 +9,23 @@ AddScaleBar(asp = 1, unit = NULL, is.lonlat = FALSE,
   0), lab.vert.exag = NULL)
 }
 \arguments{
-\item{asp}{numeric.
-The \emph{y/x} aspect ratio for spatial axes.}
+\item{asp}{'numeric'.
+\emph{y/x} aspect ratio for spatial axes.}
 
-\item{unit}{character.
+\item{unit}{'character'.
 Axis unit of measurement, for example "METERS".}
 
-\item{is.lonlat}{logical.
+\item{is.lonlat}{'logical'.
 If true, plot coordinates are in longitude and latitude.}
 
-\item{loc}{character. Position of the scale bar in the plot region:
+\item{loc}{'character'.
+Position of the scale bar in the plot region:
 "bottomleft", "topleft", "topright", or "bottomright" to denote scale location.}
 
-\item{offset}{numeric.
+\item{offset}{'numeric'.
 The x and y adjustments of the scale bar, in inches.}
 
-\item{lab.vert.exag}{logical.
+\item{lab.vert.exag}{'logical'.
 If true, a label is drawn specifying the vertical exaggeration.}
 }
 \value{
