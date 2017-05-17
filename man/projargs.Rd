@@ -13,7 +13,7 @@ Projection arguments that define a custom coordinate reference system (CRS) used
 U.S. Geological Survey Idaho National Laboratory Project Office.
 The CRS consists of all the following components:
 Albers Equal-Area Conic projection;
-latitude of fist and second standard parallels is 42.83 and 44.16, respectively;
+latitude of first and second standard parallels is 42.83 and 44.16, respectively;
 latitude of origin is 41.5;
 central meridian is -113;
 false easting and northing is 200,000 and 0 meters, respectively;
