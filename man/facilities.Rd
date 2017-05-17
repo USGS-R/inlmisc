@@ -4,11 +4,8 @@
 \name{facilities}
 \alias{facilities}
 \title{Idaho National Laboratory Facilities}
-\format{A 'SpatialPolygonsDataFrame' with 7 features and 1 variable.
-  Geographic coordinates are in units of meters, in conformance with the
-  North American Datum of 1927 (NAD 27), and placed in the
-  Albers Equal-Area Conic projection; standard parallels 42.83, 44.16; central meridian -113.00,
-  false easting 200,000 meters; false northing 0.}
+\format{A 'SpatialPolygonsDataFrame' object with 7 features and 1 variable.
+  See \code{\link{projargs}} dataset for coordinate reference system.}
 \source{
 U.S. Geological Survey INL Project Office: \url{https://id.water.usgs.gov/INL/}
 }

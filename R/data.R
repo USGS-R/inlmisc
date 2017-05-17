@@ -2,11 +2,8 @@
 #'
 #' Federal research facilities at the Idaho National Laboratory (\href{https://www.inl.gov/}{INL}).
 #'
-#' @format A 'SpatialPolygonsDataFrame' with 7 features and 1 variable.
-#'   Geographic coordinates are in units of meters, in conformance with the
-#'   North American Datum of 1927 (NAD 27), and placed in the
-#'   Albers Equal-Area Conic projection; standard parallels 42.83, 44.16; central meridian -113.00,
-#'   false easting 200,000 meters; false northing 0.
+#' @format A 'SpatialPolygonsDataFrame' object with 7 features and 1 variable.
+#'   See \code{\link{projargs}} dataset for coordinate reference system.
 #'
 #' @source U.S. Geological Survey INL Project Office: \url{https://id.water.usgs.gov/INL/}
 #'
@@ -35,11 +32,8 @@
 #'
 #' The political boundary of the Idaho National Laboratory (\href{https://www.inl.gov/}{INL}).
 #'
-#' @format A 'SpatialPolygonsDataFrame' with 1 feature and 4 variables.
-#'   Geographic coordinates are in units of meters, in conformance with the
-#'   North American Datum of 1927 (NAD 27), and placed in the
-#'   Albers Equal-Area Conic projection; standard parallels 42.83, 44.16; central meridian -113.00,
-#'   false easting 200,000 meters; false northing 0.
+#' @format A 'SpatialPolygonsDataFrame' object with 1 feature and 4 variables.
+#'   See \code{\link{projargs}} dataset for coordinate reference system.
 #'
 #' @source U.S. Geological Survey INL Project Office: \url{https://id.water.usgs.gov/INL/}
 #'
@@ -64,14 +58,19 @@
 
 #' Projection Arguments
 #'
-#' Projection arguments that define a custom coordinate reference system (CRS) sometimes used by the
+#' Projection arguments that define a custom coordinate reference system (CRS) used by the
 #' U.S. Geological Survey Idaho National Laboratory Project Office.
-#' Geographic coordinates are in units of meters, in conformance with the
-#' North American Datum of 1927 (NAD 27), and placed in the
-#' Albers Equal-Area Conic projection; standard parallels 42.83, 44.16; central meridian -113.00,
-#' false easting 200,000 meters; false northing 0.
+#' The CRS consists of all the following components:
+#' Albers Equal-Area Conic projection;
+#' latitude of first and second standard parallels is 42.83 and 44.16, respectively;
+#' latitude of origin is 41.5;
+#' central meridian is -113;
+#' false easting and northing is 200,000 and 0 meters, respectively;
+#' Clarke (1966) reference ellipsoid;
+#' North American Datum of 1927; and
+#' units of meters.
 #'
-#' @format A 'character' string with arguments specified as in the PROJ.4 documentation.
+#' @format A 'character' string with projection arguments in PROJ.4 format.
 #'
 #' @keywords datasets
 #' @examples
