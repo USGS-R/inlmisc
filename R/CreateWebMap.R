@@ -38,7 +38,7 @@
 #' map
 #'
 
-CreateWebMap <- function(..., collapsed=FALSE) {
+CreateWebMap <- function(..., collapsed=TRUE) {
 
   # establish layers
   basemap <- c("Topo"          = "USGSTopo",

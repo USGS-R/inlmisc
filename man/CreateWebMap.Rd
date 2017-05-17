@@ -4,7 +4,7 @@
 \alias{CreateWebMap}
 \title{Create a Web Map Using The National Map Services}
 \usage{
-CreateWebMap(..., collapsed = FALSE)
+CreateWebMap(..., collapsed = TRUE)
 }
 \arguments{
 \item{...}{Leaflet options to be passed to the \code{\link[leaflet]{leafletOptions}} function.}
