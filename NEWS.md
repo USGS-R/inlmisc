@@ -1,8 +1,9 @@
 # inlmisc 0.2.6.9000
 
-- In `PlotGraph` function: Add option for plotting interval censored data by specifying `type = "i"`.
-  Change `type = "box"` to `type = "w"` to draw box-and-whisker plot.
-  Improve default value for `seq.date.by` argument, change from `"year"` to `NULL`.
+- Changes in `PlotGraph` function inlclude:
+  Add option for plotting interval censored data by specifying `type = "i"`.
+  Select box-and-whisker plot using `type = "w"`, previously was `type = "box"`.
+  Default for `seq.date.by` argument changed from `"year"` to `NULL`.
 
 - Add `CreateWebMap` function, creates a Leaflet map widget using [The National Map](https://nationalmap.gov/) services.
 
