@@ -2,7 +2,7 @@
 
 - Changes in `PlotGraph` function inlclude:
   Add option for plotting interval censored data by specifying `type = "i"`.
-  Select box-and-whisker plot using `type = "w"`, previously was `type = "box"`.
+  Select box-and-whisker plot using `type = "w"`, was previously `type = "box"`.
   Default for `seq.date.by` argument changed from `"year"` to `NULL`.
 
 - Add `CreateWebMap` function, creates a Leaflet map widget using [The National Map](https://nationalmap.gov/) services.
