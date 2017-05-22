@@ -320,7 +320,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
   y <- y[is.x, , drop=FALSE]
   y[y < ylim[1] & y > ylim[2]] <- NA
 
-  if (type == "w") {  # box-and-whisker plot
+  if (type %in% c("w", "box")) {  # box-and-whisker plot
     boxplot(y, xaxt="n", yaxt="n", range=0, varwidth=TRUE, boxwex=boxwex,
             col=col, border="#333333", add=TRUE, at=x)
 
