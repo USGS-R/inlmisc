@@ -26,7 +26,7 @@
 #'     \item "b" for \bold{b}oth points and lines,
 #'     \item "s" for stair \bold{s}teps (default),
 #'     \item "w" for box-and-\bold{w}hisker,
-#'     \item "i" for \bold{i}nterval censored data, see "Details" section below, and
+#'     \item "i" for \bold{i}nterval-censored data, see "Details" section below, and
 #'     \item "n" for \bold{n}o plotting.
 #'   }
 #'   Characters in \code{type} are cycled through; such as, "pl" alternately plots points and lines.
