@@ -41,9 +41,9 @@
 #'   Point or line color, see \code{\link{par}} function for all possible ways this can be specified.
 #'   Colors are used cyclically.
 #' @param bg 'character'.
-#'   Vector of background colors for the open plot symbols given by \code{pch=21:25} as in \code{\link{points}}.
+#'   Vector of background colors for the open plot symbols given by \code{pch = 21:25} as in \code{\link{points}}.
 #' @param fill 'character'.
-#'   Vector of fill colors for areas beneath (or above, direction towards 0) lines of \code{type="l"} or \code{type="s"}.
+#'   Vector of fill colors for areas beneath (or above, direction towards 0) lines of \code{type = "l"} or \code{type = "s"}.
 #' @param pt.cex 'numeric'.
 #'   Expansion factor for the points.
 #' @param seq.date.by 'character', 'numeric', or 'difftime'.
@@ -64,7 +64,7 @@
 #'   Passed arguments include \code{"x"} and \code{"col"}.
 #' @inheritParams PlotMap
 #'
-#' @details Interval censored data (\code{type="i"}) requires \code{y} be matrix of 2 columns.
+#' @details Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 columns.
 #'   The first column contains the starting values, the second the ending values.
 #'   Observations are represented using
 #'     (-Inf, t) for left censored,

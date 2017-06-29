@@ -68,10 +68,10 @@ Point or line color, see \code{\link{par}} function for all possible ways this c
 Colors are used cyclically.}
 
 \item{bg}{'character'.
-Vector of background colors for the open plot symbols given by \code{pch=21:25} as in \code{\link{points}}.}
+Vector of background colors for the open plot symbols given by \code{pch = 21:25} as in \code{\link{points}}.}
 
 \item{fill}{'character'.
-Vector of fill colors for areas beneath (or above, direction towards 0) lines of \code{type="l"} or \code{type="s"}.}
+Vector of fill colors for areas beneath (or above, direction towards 0) lines of \code{type = "l"} or \code{type = "s"}.}
 
 \item{pt.cex}{'numeric'.
 Expansion factor for the points.}
@@ -106,7 +106,7 @@ This function draws a sequence of points, lines, or
 box-and-whiskers using specified coordinates.
 }
 \details{
-Interval censored data (\code{type="i"}) requires \code{y} be matrix of 2 columns.
+Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 columns.
   The first column contains the starting values, the second the ending values.
   Observations are represented using
     (-Inf, t) for left censored,
