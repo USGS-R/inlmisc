@@ -12,20 +12,22 @@ FormatPval(x, digits = max(1, getOption("digits") - 2),
 Vector of p-values.}
 
 \item{digits}{'integer'.
-Number of signigicant digits to be used.}
+Number of significant digits to be used.}
 
 \item{eps}{'numeric'.
-Numerical tolerance}
+Numerical tolerance;
+values less than \code{eps} are formatted as \code{"< [eps]"}.}
 
 \item{na.form}{'character'.
 Value used for missing values.}
 
 \item{scientific}{'logical'.
-Indicates whether values should be encoded in scientific format.}
+Indicates whether values should be encoded in scientific format.
+A missing value lets \R decide whether fixed or scientific notation is used.}
 }
 \description{
 This function is intended for formatting p-values.
-LaTeX formatting is used for scientific notation.
+Scientific notation is written with LaTeX commands.
 }
 \examples{
 x <- c(stats::runif(5), pi^-100, NA)

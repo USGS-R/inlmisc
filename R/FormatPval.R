@@ -1,18 +1,20 @@
 #' Format P Values
 #'
 #' This function is intended for formatting p-values.
-#' LaTeX formatting is used for scientific notation.
+#' Scientific notation is written with LaTeX commands.
 #'
 #' @param x 'numeric'.
 #'   Vector of p-values.
 #' @param digits 'integer'.
-#'   Number of signigicant digits to be used.
+#'   Number of significant digits to be used.
 #' @param eps 'numeric'.
-#'   Numerical tolerance
+#'   Numerical tolerance;
+#'   values less than \code{eps} are formatted as \code{"< [eps]"}.
 #' @param na.form 'character'.
 #'   Value used for missing values.
 #' @param scientific 'logical'.
 #'   Indicates whether values should be encoded in scientific format.
+#'   A missing value lets \R decide whether fixed or scientific notation is used.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -44,11 +46,10 @@ FormatPval <- function(x, digits=max(1, getOption("digits") - 2),
   is <- if (is.na(scientific)) grepl("e", formatC(x)) else rep(scientific, length(x))
   p[is] <- ToScientific(x[is], 0)
 
-  is <- grepl("e", formatC(eps))
-  lim <- ifelse(is, ToScientific(eps, 0), format(eps))
+  lim <- ifelse(grepl("e", formatC(eps)), ToScientific(eps, 0), format(eps))
   p[x < eps] <- sprintf("< %s", lim)
 
-  p[is.na(x)] <- na.form
+  p[is.na(x)] <- as.character(na.form)
 
   return(p)
 }
