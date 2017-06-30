@@ -1,5 +1,9 @@
 # inlmisc 0.2.6.9000
 
+- Add function `FormatPval`, used to format *p*-values.
+
+- Add **bm** package to LaTeX preamble.
+
 - Changes in `PlotGraph` function inlclude:
   Add option for plotting interval censored data by specifying `type = "i"`.
   Select box-and-whisker plot using `type = "w"`, was previously `type = "box"`.
