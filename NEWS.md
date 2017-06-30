@@ -2,7 +2,7 @@
 
 - Add function `FormatPval`, used to format *p*-values.
 
-- Add **bm** package to LaTeX preamble.
+- Add **bm** and **makecell** packages to LaTeX preamble.
 
 - Changes in `PlotGraph` function inlclude:
   Add option for plotting interval censored data by specifying `type = "i"`.
