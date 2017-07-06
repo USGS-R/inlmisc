@@ -1,5 +1,7 @@
 # inlmisc 0.2.6.9000
 
+- Add function `RecreateLibrary`, used to recreate an existing library on a new installation of R.
+
 - Add function `FormatPval`, used to format *p*-values.
 
 - Add **bm** and **makecell** packages to LaTeX preamble.
