@@ -10,11 +10,11 @@ RecreateLibrary(current_version = c("old", "new"), file = "packagelist.txt",
 \arguments{
 \item{current_version}{'character'.
 Current version of the \R installation.
-Set to \code{"old"} in the older installation,
+Specify as \code{"old"} when running in the older installation,
 and \code{"new"} in the freshly installed version.}
 
 \item{file}{'character'.
-Name of the file for reading or writing the list of package names.}
+Name of the file for writing (or reading) the list of package names.}
 
 \item{repos}{'character'.
 Vector of base URL(s) of the repositories to use;
@@ -24,13 +24,20 @@ only required if \code{current_version = "new"}.}
 This function can be used to recreate an existing library on a new installation of \R.
 }
 \examples{
-# run on old version of R
+# Run on old version of R
 RecreateLibrary()
 
-# run on new version of R (assumes working directory has not changed)
+\dontrun{
+# Run on new version of R (assumes working directory has not changed)
 RecreateLibrary("new", repos = c(CRAN = "https://cloud.r-project.org/",
                                  GRAN = "https://owi.usgs.gov/R"))
+}
 
+unlink("packagelist.txt")
+
+}
+\seealso{
+\code{\link[utils]{update.packages}}, \code{\link[utils]{install.packages}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

@@ -31,7 +31,7 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link{writeRaster}}
+#' @seealso \code{\link[raster]{writeRaster}}
 #'
 #' @keywords IO
 #'

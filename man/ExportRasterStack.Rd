@@ -52,7 +52,7 @@ Five local directories are created under \code{path} and named after their inten
 
 }
 \seealso{
-\code{\link{writeRaster}}
+\code{\link[raster]{writeRaster}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

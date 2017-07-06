@@ -4,27 +4,33 @@
 #'
 #' @param current_version 'character'.
 #'   Current version of the \R installation.
-#'   Set to \code{"old"} in the older installation,
+#'   Specify as \code{"old"} when running in the older installation,
 #'   and \code{"new"} in the freshly installed version.
 #' @param file 'character'.
-#'   Name of the file for reading or writing the list of package names.
+#'   Name of the file for writing (or reading) the list of package names.
 #' @param repos 'character'.
 #'   Vector of base URL(s) of the repositories to use;
 #'   only required if \code{current_version = "new"}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
+#' @seealso \code{\link[utils]{update.packages}}, \code{\link[utils]{install.packages}}
+#'
 #' @keywords utilities
 #'
 #' @export
 #'
 #' @examples
-#' # run on old version of R
+#' # Run on old version of R
 #' RecreateLibrary()
 #'
-#' # run on new version of R (assumes working directory has not changed)
+#' \dontrun{
+#' # Run on new version of R (assumes working directory has not changed)
 #' RecreateLibrary("new", repos = c(CRAN = "https://cloud.r-project.org/",
 #'                                  GRAN = "https://owi.usgs.gov/R"))
+#' }
+#'
+#' unlink("packagelist.txt")
 #'
 
 RecreateLibrary <- function(current_version=c("old", "new"), file="packagelist.txt",
@@ -35,20 +41,26 @@ RecreateLibrary <- function(current_version=c("old", "new"), file="packagelist.t
   if (current_version == "old") {
     pkgs <- utils::installed.packages()[, 1]
     writeLines(pkgs, file)
+    sprintf("List of package names written to: %s\n", file)
 
   } else {
-    utils::update.packages(ask=FALSE, repos=repos)
-    pkgs <- readLines(file)
+    if(!file.exists(file)) stop("package-list file not found")
+    type <- ifelse(Sys.info()["sysname"] == "Windows", "win.binary", "source")
+    utils::update.packages(ask=FALSE, repos=repos, type=type)
+    pkgs <- unique(readLines(file))
     pkgs <- pkgs[!pkgs %in% utils::installed.packages()[, "Package"]]
-    if (length(pkgs) > 0) {
-      contriburl <- utils::contrib.url(repos=repos, type=getOption("pkgType"))
-      repos_pkgs <- utils::available.packages(contriburl)
-      pkgs <- pkgs[pkgs %in% repos_pkgs]
-      if (length(pkgs) > 0) {
-        type <- ifelse(Sys.info()["sysname"] == "Windows", "win.binary", "source")
-        utils::install.packages(pkgs, repos=repos, type=type)
-      }
+    if (length(pkgs) == 0) return()
+    contriburl <- utils::contrib.url(repos=repos, type=getOption("pkgType"))
+
+    is <- pkgs %in% utils::available.packages(contriburl, type=type)
+    if (length(pkgs[!is]) > 0) {
+      msg <- sprintf("The following packages are missing from the repositories:\n  %s\n",
+                     paste(pkgs[!is], collapse=", "))
+      warning(msg)
     }
+    pkgs <- pkgs[is]
+    if (length(pkgs) == 0) return()
+    utils::install.packages(pkgs, repos=repos, type=type)
   }
 
   invisible(NULL)
