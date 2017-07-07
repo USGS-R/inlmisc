@@ -4,28 +4,40 @@
 \alias{RecreateLibrary}
 \title{Recreate R Library}
 \usage{
-RecreateLibrary(current_version = c("old", "new"), file = "packagelist.txt",
-  repos = getOption("repos"))
+RecreateLibrary(desc = c("old", "new"), file = "packagelist.txt",
+  lib = NULL, repos = getOption("repos"))
 }
 \arguments{
-\item{current_version}{'character'.
-Current version of the \R installation.
-Specify as \code{"old"} when running in the older installation,
-and \code{"new"} in the freshly installed version.}
+\item{desc}{'character'.
+Description of current \R installation.
+Specify as \code{"old"} when running on an older installation,
+and \code{"new"} when on a newer installation.}
 
 \item{file}{'character'.
 Name of the file for writing (or reading) the list of package names.}
 
+\item{lib}{'character'.
+If \code{desc = "old"}, the library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}});
+otherwise, it is the library directory to install packages.}
+
 \item{repos}{'character'.
-Vector of base URL(s) of the repositories to use;
-only required if \code{current_version = "new"}.}
+Vector of base URL(s) of the repositories to use when installing packages.
+For example, the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.}
 }
 \description{
 This function can be used to recreate an existing library on a new installation of \R.
 }
+\details{
+A typical workflow is as follows:
+Run the \code{RecreateLibrary("old")} command on an older version of \R
+to print to a text file a complete list of names for packages located under your current \R library tree(s).
+If desired, uninstall the older version of \R.
+On a freshly installed version of \R, with the \pkg{inlmisc} package available,
+run the \code{RecreateLibrary("new")} command to download and install the packages listed in the package-list text file.
+}
 \examples{
 # Run on old version of R
-RecreateLibrary()
+RecreateLibrary("old")
 
 \dontrun{
 # Run on new version of R (assumes working directory has not changed)
