@@ -52,9 +52,9 @@ RecreateLibrary <- function(desc=c("old", "new"), file="packagelist.txt", lib=NU
   if (desc == "old") {
     pkgs <- utils::installed.packages(lib, noCache=TRUE)[, 1, drop=FALSE]
     meta <- c(sprintf("# Date modified: %s %s", Sys.time(), Sys.timezone()),
+              sprintf("# Running under: %s", utils::sessionInfo()$running),
               with(R.version, sprintf("# R version: %s.%s (%s-%s-%s)", major, minor, year, month, day)),
               sprintf("# Platform: %s", R.version$platform),
-              sprintf("# Running under: %s", utils::sessionInfo()$running),
               sprintf("# User: %s", Sys.info()["user"]))
     m <- rbind(matrix(meta), pkgs)
     utils::write.table(m, file, quote=FALSE, row.names=FALSE, col.names=FALSE)
@@ -69,7 +69,6 @@ RecreateLibrary <- function(desc=c("old", "new"), file="packagelist.txt", lib=NU
     pkgs <- pkgs[!pkgs %in% installed_pkgs]
     if (length(pkgs) == 0) return()
     contriburl <- utils::contrib.url(repos=repos, type=getOption("pkgType"))
-
     available_pkgs <- utils::available.packages(contriburl, type=type)
     is <- pkgs %in% available_pkgs
     if (length(pkgs[!is]) > 0) {
