@@ -2,20 +2,20 @@
 #'
 #' This function formats numbers in scientific notation \eqn{m \times 10^{n}}.
 #'
-#' @param x numeric.
+#' @param x 'numeric'.
 #'   Vector of numbers
-#' @param digits integer.
+#' @param digits 'integer'.
 #'   Number of digits after the decimal point for the mantissa.
-#' @param lab.type character.
+#' @param lab.type 'character'.
 #'   By default, LaTeX formatted strings for labels are returned.
 #'   Alternatively, \code{lab.type = "plotmath"} returns plotmath-compatible expressions.
 #'
-#' @return For the default \code{lab.type = "latex"}, a \code{character} vector of the same length as argument \code{x}.
+#' @return For the default \code{lab.type = "latex"}, a 'character' vector of the same length as argument \code{x}.
 #'   And for \code{lab.type = "plotmath"}, an expression of the same length as \code{x},
 #'   typically with elements of the form \code{m x 10^n}.
 #'   In order to comply with \href{https://www.section508.gov}{Section 508},
-#'   an \dQuote{\code{x}} is used as the label separator for the \code{plotmath} type---rather than
-#'   the more common \dQuote{\code{\%*\%}} seperator.
+#'   an "x" is used as the label separator for the \code{plotmath} type---rather than
+#'   the more common "\%*\%" seperator.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

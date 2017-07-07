@@ -13,100 +13,100 @@ PlotCrossSection(transect, rs, geo.lays = names(rs), val.lays = NULL,
   bg.col = "#E1E1E1", wt.col = "#FFFFFFD8", file = NULL)
 }
 \arguments{
-\item{transect}{SpatialLines.
+\item{transect}{'SpatialLines'.
 Piecewise linear transect line.}
 
-\item{rs}{RasterStack.
+\item{rs}{'RasterStack'.
 Collection of \code{RasterLayer} objects with the same extent and resolution.}
 
-\item{geo.lays}{character.
+\item{geo.lays}{'character'.
 Vector of names in \code{rs} that specify the geometry raster layers;
 these must be given in decreasing order, that is,
 from the upper most (such as land surface) to the lowest (such as a bedrock surface).}
 
-\item{val.lays}{character.
+\item{val.lays}{'character'.
 Vector of names in \code{rs} that specify the value raster layers (optional).
 Values from the first layer are mapped as colors to the area between the first and second geometry layers;
 the second layer mapped between the second and third geometry layers, and so on.}
 
-\item{wt.lay}{character.
+\item{wt.lay}{'character'.
 The name in \code{rs} that specifies the water-table raster layer (optional).}
 
-\item{asp}{numeric.
-The \emph{y/x} aspect ratio for spatial axes.
+\item{asp}{'numeric'.
+\emph{y/x} aspect ratio for spatial axes.
 Defaults to 1 (one unit on the \emph{x}-axis equals one unit on the \emph{y}-axis) when \code{r} is projected,
 otherwise, a calculated value based on axes limits is used.}
 
-\item{ylim}{numeric.
+\item{ylim}{'numeric'.
 Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.}
 
-\item{max.dev.dim}{numeric.
+\item{max.dev.dim}{'numeric'.
 Vector of length 2 giving the maximum width and height for the graphics device in picas, respectively.
 Suggested dimensions for single-column, double-column, and sidetitle figures are
 \code{c(21, 56)}, \code{c(43, 56)}, and \code{c(56, 43)}, respectively.
 This argument is only applicable when the \code{file} argument is specified.}
 
-\item{n}{integer.
+\item{n}{'integer'.
 Desired number of intervals to partition the range of raster values (optional).}
 
-\item{breaks}{numeric.
+\item{breaks}{'numeric'.
 Vector of break points used to partition the colors representing numeric raster values (optional).}
 
-\item{pal}{function.
+\item{pal}{'function'.
 Color palette to be used to assign colors in the plot, rainbow by default.}
 
-\item{col}{character.
+\item{col}{'character'.
 Vector of colors to be used in the plot.
 This argument requires \code{breaks} specification for numeric raster values and overrides any palette function specification.
 For numeric values there should be one less color than breaks.
 Categorical data require a color for each category.}
 
-\item{ylab}{character.
+\item{ylab}{'character'.
 Label for the \emph{y} axis.}
 
-\item{unit}{character.
+\item{unit}{'character'.
 Label for the measurement unit of the \emph{x}- and \emph{y}-axes.}
 
-\item{id}{character.
+\item{id}{'character'.
 Vector of length 2 giving the labels for the end points of the transect line,
 defaults to \emph{A--A'}.}
 
-\item{labels}{list.
+\item{labels}{'list'.
 Describes the location and values of labels in the color key.
 This list may include components \code{at} and \code{labels}.}
 
-\item{explanation}{character.
+\item{explanation}{'character'.
 Label explaining the raster cell value.}
 
-\item{features}{SpatialGridDataFrame.
+\item{features}{'SpatialGridDataFrame'.
 Point features adjacent to the transect line that are used as reference labels for the upper geometry layer.}
 
-\item{max.feature.dist}{numeric.
+\item{max.feature.dist}{'numeric'.
 Maximum distance from a point feature to the transect line,
 specified in the units of the \code{rs} projection.}
 
-\item{draw.key}{logical.
+\item{draw.key}{'logical'.
 If true, a color key should be drawn.}
 
-\item{draw.sep}{logical.
+\item{draw.sep}{'logical'.
 If true, lines separating geometry layers are drawn.}
 
-\item{is.categorical}{logical.
+\item{is.categorical}{'logical'.
 If true, cell values in \code{val.lays} represent categorical data;
 otherwise, these data values are assumed continuous.}
 
-\item{contour.lines}{list.
+\item{contour.lines}{'list'.
 If specified, contour lines are drawn.
 The contours are described using a list of arguments supplied to \code{contour}.
 Passed arguments include \code{"drawlables"}, \code{"method"}, and \code{"col"}.}
 
-\item{bg.col}{character.
+\item{bg.col}{'character'.
 Color used for the background of the area below the upper geometry raster layer.}
 
-\item{wt.col}{character.
+\item{wt.col}{'character'.
 Color used for the water-table line.}
 
-\item{file}{character.
+\item{file}{'character'.
 Name of the output file.
 Specifying this argument will start a graphics device driver for producing a
 PDF or PNG file format---the file extension determines the format type.
@@ -116,7 +116,7 @@ these device dimensions can be useful when creating similar map layouts in dynam
 }
 \value{
 Used for the side-effect of a new plot generated.
-  Returns a list object with the following graphical parameters:
+  Returns a 'list' object with the following graphical parameters:
   \describe{
     \item{din}{device dimensions \code{(width, height)}, in inches.}
     \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}

@@ -7,21 +7,21 @@
 POSIXct2Character(x, fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3")
 }
 \arguments{
-\item{x}{POSIXct.
+\item{x}{'POSIXct'.
 Vector of calendar dates and times.}
 
-\item{fmt}{character.
+\item{fmt}{'character'.
 Conversion specification format}
 }
 \value{
-Returns a character vector representing time.
+Returns a 'character' vector representing time.
 }
 \description{
-This function converts objects from \code{\link{POSIXct}} to \code{\link{character}} class.
+This function converts objects from '\link{POSIXct}' to '\link{character}' class.
 }
 \note{
-R incorrectly formats objects of calss \code{\link{POSIXct}} with fractional seconds.
-For example, a POSIXct time with fractional part \code{.3} seconds (stored as \code{0.29999})
+R incorrectly formats objects of calss '\link{POSIXct}' with fractional seconds.
+For example, a 'POSIXct' time with fractional part \code{.3} seconds (stored as \code{0.29999})
 is printed as \code{.2} when represented with one decimal digit.
 Note that the fractional part on outputs is not rounded.
 Decimal precision is down to milliseconds on Windows,

@@ -1,6 +1,6 @@
 Package: inlmisc
 Title: Miscellaneous Functions for the USGS INL Project Office
-Version: 0.2.6
+Version: 0.2.7
 Authors@R: person(given=c("Jason", "C."), family="Fisher", role=c("aut", "cre"), email="jfisher@usgs.gov")
 Description: A collection of functions for creating high-level graphics,
     performing raster-based analysis, processing MODFLOW-based models, and
@@ -15,6 +15,7 @@ Imports:
     graphics,
     igraph,
     knitr,
+    leaflet,
     methods,
     sp,
     stats,
@@ -24,6 +25,7 @@ Imports:
 Suggests:
     colorspace,
     maptools,
+    roxygen2,
     testthat
 License: CC0
 Copyright: This software is in the public domain because it contains materials
@@ -34,4 +36,5 @@ URL: https://github.com/USGS-R/inlmisc
 BugReports: https://github.com/USGS-R/inlmisc/issues
 Encoding: UTF-8
 LazyData: true
+LazyDataCompression: xz
 RoxygenNote: 6.0.1

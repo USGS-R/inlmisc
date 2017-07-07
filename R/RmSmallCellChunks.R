@@ -4,10 +4,10 @@
 #' where a cell chunk is defined as a group of connected cells with non-missing values.
 #' The cell chunk with the largest surface area is preserved and all others removed.
 #'
-#' @param r RasterLayer.
+#' @param r 'RasterLayer'.
 #'   A raster grid layer with cell values.
 #'
-#' @return The raster grid layer \code{r} with cell values in the smaller cell chunks set to \code{NA}.
+#' @return Returns a 'RasterLayer' object, \code{r} with cell values in the smaller cell chunks set to \code{NA}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

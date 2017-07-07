@@ -8,24 +8,24 @@ SetPolygons(x, y, cmd = c("gIntersection", "gDifference"),
   buffer.width = NA)
 }
 \arguments{
-\item{x}{SpatialPolygons*.
+\item{x}{'SpatialPolygons*'.
 Multi-polygon object}
 
-\item{y}{SpatialPolygons* or Extent.
+\item{y}{'SpatialPolygons*' or 'Extent'.
 Multi-polygon object}
 
-\item{cmd}{character.
+\item{cmd}{'character'.
 Specifying "gIntersection", the default, cuts out portions of the \code{x} polygons
 that overlay the \code{y} polygons.
 If "gDifference" is specified, only those portions of the \code{x} polygons
 falling outside the \code{y} polygons are copied to the output polygons.}
 
-\item{buffer.width}{numeric.
+\item{buffer.width}{'numeric'.
 Expands or contracts the geometry of \code{y} to include the area within the specified width, see \code{gBuffer}.
 Specifying \code{NA}, the default, indicates no buffer.}
 }
 \value{
-Returns an object of SpatialPolygons* class.
+Returns an object of 'SpatialPolygons*' class.
 }
 \description{
 Determines the intersection or difference between two multi-polygon objects.

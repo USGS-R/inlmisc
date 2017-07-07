@@ -3,57 +3,75 @@
 #' This function draws a sequence of points, lines, or
 #' box-and-whiskers using specified coordinates.
 #'
-#' @param x,y Date, numeric, matrix, or data.frame.
+#' @param x,y 'Date', 'numeric', 'matrix', or 'data.frame'.
 #'   Vectors or matrices of data for plotting.
 #'   The vector length or number of rows should match.
-#'   If \code{y} is missing, then \code{x = x[, 1]} and \code{y = x[, 2:n]}.
-#' @param xlab character.
+#'   If \code{y} is missing, then \code{x = x[, 1]} and \code{y = x[, -1]}.
+#' @param xlab 'character'.
 #'   Title for \emph{x} axis.
-#' @param ylab character.
+#' @param ylab 'character'.
 #'   Vector of length 2 giving the title for the 1st and 2nd-\emph{y} axes.
 #'   The title for the 2nd-\emph{y} axis is optional and requires \code{conversion.factor} be specified.
-#' @param xlim numeric or Date.
+#' @param xlim 'numeric' or 'Date'.
 #'   Vector of length 2 giving the minimum and maximum values for the \emph{x}-axis.
-#' @param xn,yn integer.
+#' @param xn,yn 'integer'.
 #'   Desired number of intervals between tick-marks on the \emph{x}- and \emph{y}-axis, respectively.
-#' @param ylog logical.
+#' @param ylog 'logical'.
 #'   If true, a logarithm scale is used for the \emph{y} axis.
-#' @param type character.
-#'   The type of plot for each column of \code{y}, see \code{plot} function for possible types.
-#'   A box-and-whisker plot is drawn when \code{type = "box"}, with whiskers extending to the data extremes.
-#' @param lty integer.
-#'   The line type, see \code{par} function for all possible types.
+#' @param type 'character'.
+#'   Plot type, possible types are
+#'   \itemize{
+#'     \item "p" for \bold{p}oints,
+#'     \item "l" for \bold{l}ines,
+#'     \item "b" for \bold{b}oth points and lines,
+#'     \item "s" for stair \bold{s}teps (default),
+#'     \item "w" for box-and-\bold{w}hisker,
+#'     \item "i" for \bold{i}nterval-censored data, see "Details" section below, and
+#'     \item "n" for \bold{n}o plotting.
+#'   }
+#'   Characters in \code{type} are cycled through; such as, "pl" alternately plots points and lines.
+#' @param lty 'integer'.
+#'   Line type, see \code{\link{par}} function for all possible types.
 #'   Line types are used cyclically.
-#' @param lwd numeric.
+#' @param lwd 'numeric'.
 #'   Line width
-#' @param pch integer.
-#'   Point type, see \code{points} function for all possible types.
+#' @param pch 'integer'.
+#'   Point type, see \code{\link{points}} function for all possible types.
 #' @param col character or function.
-#'   Point or line color, see \code{par} function for all possible ways this can be specified.
+#'   Point or line color, see \code{\link{par}} function for all possible ways this can be specified.
 #'   Colors are used cyclically.
-#' @param bg character.
-#'   Vector of background colors for the open plot symbols given by \code{pch = 21:25} as in \code{points}.
-#' @param fill character.
-#'   Vector of fill colors for areas beneath (or above, direction towards 0) lines of type "l" or "s".
-#' @param pt.cex numeric.
+#' @param bg 'character'.
+#'   Vector of background colors for the open plot symbols given by \code{pch = 21:25} as in \code{\link{points}}.
+#' @param fill 'character'.
+#'   Vector of fill colors for areas beneath (or above, direction towards 0) lines of \code{type = "l"} or \code{type = "s"}.
+#' @param pt.cex 'numeric'.
 #'   Expansion factor for the points.
-#' @param seq.date.by character, numeric, or difftime.
-#'   The increment of the date sequence, see \code{seq.Date} function for all possible ways this can be specified.
-#' @param scientific logical.
+#' @param seq.date.by 'character', 'numeric', or 'difftime'.
+#'   The increment of the date sequence, see the \code{by} argument in the \code{\link{seq.Date}} function for all possible ways this can be specified.
+#' @param scientific 'logical'.
 #'   Vector of length 3 that indicates if axes labels should be encoded in nice scientific format.
 #'   Vector elements correspond to the \emph{x}-axis, \code{y}-axis, and second \emph{y}-axis labels.
 #'   Values are recycled as necessary.
-#' @param conversion.factor numeric.
+#' @param conversion.factor 'numeric'.
 #'   A conversion factor for the 2nd-\emph{y} axis.
-#' @param boxwex numeric.
+#' @param boxwex 'numeric'.
 #'   A scale factor to be applied to all boxes, only applicable for box-and-whisker plots.
-#' @param center.date.labels logical.
+#' @param center.date.labels 'logical'.
 #'   If true, date labels are horizontally centered between \emph{x}-axis tickmarks.
-#' @param bg.polygon list.
+#' @param bg.polygon 'list'.
 #'   If specified, a background polygon is drawn.
-#'   The polygon is described using a list of arguments supplied to the \code{polygon} function.
+#'   The polygon is described using a list of arguments supplied to the \code{\link{polygon}} function.
 #'   Passed arguments include \code{"x"} and \code{"col"}.
 #' @inheritParams PlotMap
+#'
+#' @details Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 columns.
+#'   The first column contains the starting values, the second the ending values.
+#'   Observations are represented using
+#'     (-Inf, t) for left censored,
+#'     (t, Inf) for right censored,
+#'     (t, t) for exact, and
+#'     (t1, t2) for an interval.
+#'   Where infinity is represented as \code{Inf} or \code{NA}, and t is a numeric value.
 #'
 #' @return Used for the side-effect of a new plot generated.
 #'
@@ -69,12 +87,12 @@
 #' n <- 50L
 #' x <- as.Date("2008-07-12") + 1:n
 #' y <- sample.int(n, replace = TRUE)
-#' PlotGraph(x, y, ylab = paste("Random number in", c("meters", "feet")), type = "p",
-#'           pch = 16, seq.date.by = "weeks", scientific = FALSE, conversion.factor = 3.28)
+#' PlotGraph(x, y, ylab = paste("Random number in", c("meters", "feet")),
+#'           type = "p", pch = 16, scientific = FALSE, conversion.factor = 3.28)
 #'
 #' y <- data.frame(lapply(1:3, function(i) sample(n, replace = TRUE)))
-#' PlotGraph(x, y, ylab = "Random number", type = "s", pch = 1, seq.date.by = "days",
-#'           scientific=TRUE)
+#' PlotGraph(x, y, ylab = "Random number", pch = 1, seq.date.by = "days",
+#'           scientific = TRUE)
 #'
 #' y <- sapply(1:3, function(i) sample((1:100) + i * 100, n, replace = TRUE))
 #' m <- cbind(as.numeric(x), y)
@@ -84,13 +102,18 @@
 #' legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
 #'        pt.cex = 0.9, cex = 0.8, bg = "white")
 #'
+#' d <- data.frame(x = as.Date("2008-07-12") + 1:8 * 1000,
+#'                 y0 = c(NA, NA, 1, 3, 1, 4, 2, pi),
+#'                 y1 = c(1, 2, NA, NA, 4, 3, 2, pi))
+#' PlotGraph(d, type = "i", ylim = c(0, 5))
+#'
 #' graphics.off()
 #'
 
 PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
                       xn=5L, yn=5L, ylog=FALSE, type="s", lty=1, lwd=1,
                       pch=NULL, col=NULL, bg=NA, fill=NULL, pt.cex=1,
-                      seq.date.by="year", scientific=NA,
+                      seq.date.by=NULL, scientific=NA,
                       conversion.factor=NULL, boxwex=0.8,
                       center.date.labels=FALSE, bg.polygon=NULL) {
 
@@ -99,14 +122,22 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
 
   if (inherits(x, c("data.frame", "matrix"))) {
     if (inherits(x, "tbl_df")) x <- as.data.frame(x)
-    if (missing(y)) y <- x[, -1, drop=FALSE]
+    if (missing(y)) y <- x[, -1]
     x <- x[, 1]
   }
   y <- as.matrix(y)
 
+  if (type == "i") {
+    if (ncol(y) != 2) stop("interval censored data requires 2 columns for argument y")
+    y[!is.finite(y)] <- NA
+  }
+
   if (inherits(x, "Date")) {
     if (!inherits(xlim, "Date")) xlim <- grDevices::extendrange(x)
-    xat <- seq(xlim[1], xlim[2], seq.date.by)
+    if (is.null(seq.date.by))
+      xat <- seq(xlim[1], xlim[2], length.out=xn)
+    else
+      xat <- seq(xlim[1], xlim[2], seq.date.by)
 
   } else if (inherits(x, c("character", "factor"))) {
     x <- seq_along(x)
@@ -121,6 +152,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
       xlim <- range(xat)
     }
   }
+
   if (is.numeric(ylim)) {
     if (ylog)
       yat <- grDevices::axisTicks(log10(ylim), TRUE, nint=yn)
@@ -134,7 +166,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
     ylim <- range(yat)
   }
 
-  n <- ncol(y)
+  n <- ifelse(type == "i", 1, ncol(y))
   if (!is.character(col) && !is.logical(col))
     col <- if (is.function(col)) col(n) else grDevices::rainbow(n, start=0.0, end=0.8)
   lty <- rep_len(lty, length.out=n)
@@ -288,32 +320,61 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
   y <- y[is.x, , drop=FALSE]
   y[y < ylim[1] & y > ylim[2]] <- NA
 
-  if (type == "box") {
+  if (type %in% c("w", "box")) {  # box-and-whisker plot
     boxplot(y, xaxt="n", yaxt="n", range=0, varwidth=TRUE, boxwex=boxwex,
             col=col, border="#333333", add=TRUE, at=x)
-  } else {
-    if (type == "s") {
-      for (i in seq_len(ncol(y))) {
-        xx <- as.numeric(x)
-        yy <- as.numeric(y[, i])
-        grp <- .GetSegmentGroup(yy)
-        for (j in unique(stats::na.omit(grp))) {
-          idxs <- which(grp %in% j)
-          xxx <- sort(c(xx[idxs], tail(xx[idxs], -1)), decreasing=is.decreasing)
-          yyy <- head(rep(yy[idxs], each=2), -1)
-          max.idx <- max(idxs)
-          if (max.idx < length(xx)) {
-            xxx <- c(xxx, xx[max.idx + 1L])
-            yyy <- c(yyy, tail(yyy, 1))
-          }
-          lines(xxx, yyy, lty=lty[i], lwd=lwd[i], col=col[i])
-        }
-      }
-    } else {
-      graphics::matplot(x, y, xaxt="n", yaxt="n", type=type, lty=lty, lwd=lwd,
-                        pch=pch, col=col, bg=bg, cex=pt.cex, add=TRUE,
-                        verbose=FALSE)
+
+  } else if (type == "i") {  # interval censored plot
+    arg <- list(length=0.015, angle=90, lwd=lwd, col=col)
+    is <- is.na(y[, 1]) & !is.na(y[, 2])  # left censored
+    if (any(is)) {
+      x0 <- x[is]
+      y0 <- y[is, 2]
+      y1 <- rep(graphics::par("usr")[3], sum(is))
+      do.call(graphics::arrows, c(list(x0=x0, y0=y0, x1=x0, y1=y1, code=1), arg))
     }
+    is <- !is.na(y[, 1]) & is.na(y[, 2])  # right censored
+    if (any(is)) {
+      x0 <- x[is]
+      y0 <- y[is, 1]
+      y1 <- rep(graphics::par("usr")[4], sum(is))
+      do.call(graphics::arrows, c(list(x0=x0, y0=y0, x1=x0, y1=y1, code=1), arg))
+    }
+    is <- !is.na(y[, 1]) & !is.na(y[, 2]) & y[, 1] != y[, 2] # interval
+    if (any(is)) {
+      x0 <- x[is]
+      y0 <- y[is, 1]
+      y1 <- y[is, 2]
+      do.call(graphics::arrows, c(list(x0=x0, y0=y0, x1=x0, y1=y1, code=3), arg))
+    }
+    is <- !is.na(y[, 1]) & !is.na(y[, 2]) & y[, 1] == y[, 2] # exact
+    if (any(is)) {
+      x0 <- x[is]
+      y0 <- y[is, 1]
+      graphics::points(x0, y0, pch=pch, col=col, bg=bg, cex=pt.cex)
+    }
+
+  } else if (type == "s") {  # stair steps plot
+    for (i in seq_len(ncol(y))) {
+      xx <- as.numeric(x)
+      yy <- as.numeric(y[, i])
+      grp <- .GetSegmentGroup(yy)
+      for (j in unique(stats::na.omit(grp))) {
+        idxs <- which(grp %in% j)
+        xxx <- sort(c(xx[idxs], tail(xx[idxs], -1)), decreasing=is.decreasing)
+        yyy <- head(rep(yy[idxs], each=2), -1)
+        max.idx <- max(idxs)
+        if (max.idx < length(xx)) {
+          xxx <- c(xxx, xx[max.idx + 1L])
+          yyy <- c(yyy, tail(yyy, 1))
+        }
+        graphics::lines(xxx, yyy, lty=lty[i], lwd=lwd[i], col=col[i])
+      }
+    }
+
+  } else {
+    graphics::matplot(x, y, xaxt="n", yaxt="n", type=type, lty=lty, lwd=lwd,
+                      pch=pch, col=col, bg=bg, cex=pt.cex, add=TRUE, verbose=FALSE)
   }
 
   invisible(NULL)

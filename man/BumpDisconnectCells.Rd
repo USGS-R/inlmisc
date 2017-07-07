@@ -7,20 +7,20 @@
 BumpDisconnectCells(rs, min.overlap = 2, bump.by = 0.1, max.itr = 10000)
 }
 \arguments{
-\item{rs}{RasterStack.
+\item{rs}{'RasterStack'.
 A collection of two raster layers, the first and second layers represent the top and bottom of a model layer.}
 
-\item{min.overlap}{numeric.
+\item{min.overlap}{'numeric'.
 Minimum vertical overlap between adjacent cells.}
 
-\item{bump.by}{numeric.
+\item{bump.by}{'numeric'.
 Amount to decrease a cell value by during each iteration of the algorithm.}
 
-\item{max.itr}{numeric.
+\item{max.itr}{'numeric'.
 Maximum number of iterations.}
 }
 \value{
-Returns a raster layer that can be added to \code{rs[[2]]} to ensure connectivity between cells.
+Returns a 'RasterLayer' that can be added to \code{rs[[2]]} to ensure connectivity between cells.
   Cell values in the returned raster grid represent vertical adjustments.
 }
 \description{

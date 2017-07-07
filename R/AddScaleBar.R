@@ -3,17 +3,18 @@
 #'
 #' This function can be used to add a scale bar to a plot.
 #'
-#' @param asp numeric.
-#'   The \emph{y/x} aspect ratio for spatial axes.
-#' @param unit character.
+#' @param asp 'numeric'.
+#'   \emph{y/x} aspect ratio for spatial axes.
+#' @param unit 'character'.
 #'   Axis unit of measurement, for example "METERS".
-#' @param is.lonlat logical.
+#' @param is.lonlat 'logical'.
 #'   If true, plot coordinates are in longitude and latitude.
-#' @param loc character. Position of the scale bar in the plot region:
+#' @param loc 'character'.
+#'   Position of the scale bar in the plot region:
 #'   "bottomleft", "topleft", "topright", or "bottomright" to denote scale location.
-#' @param offset numeric.
+#' @param offset 'numeric'.
 #'   The x and y adjustments of the scale bar, in inches.
-#' @param lab.vert.exag logical.
+#' @param lab.vert.exag 'logical'.
 #'   If true, a label is drawn specifying the vertical exaggeration.
 #'
 #' @return Used for the side-effect of a scale bar drawn on the current graphics device.

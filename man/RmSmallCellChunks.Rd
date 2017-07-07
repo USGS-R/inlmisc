@@ -7,11 +7,11 @@
 RmSmallCellChunks(r)
 }
 \arguments{
-\item{r}{RasterLayer.
+\item{r}{'RasterLayer'.
 A raster grid layer with cell values.}
 }
 \value{
-The raster grid layer \code{r} with cell values in the smaller cell chunks set to \code{NA}.
+Returns a 'RasterLayer' object, \code{r} with cell values in the smaller cell chunks set to \code{NA}.
 }
 \description{
 This function identifies cell chunks in a single raster grid layer,

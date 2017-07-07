@@ -13,92 +13,92 @@ AddPoints(x, y = NULL, z = NULL, zcol = 1, crs = NULL, xlim = NULL,
   title = NULL, subtitle = NULL, add = TRUE, ...)
 }
 \arguments{
-\item{x, y}{numeric or SpatialPoints*.
+\item{x, y}{numeric or 'SpatialPoints*'.
 The x and y coordinates for the centers of the circle symbols.
 If numeric, can be specified in any way which is accepted by \code{\link{xy.coords}}.}
 
-\item{z}{numeric, integer, or factor.
+\item{z}{'numeric', 'integer', or 'factor'.
 Attribute variable.
 For objects of class factor, a fixed radius is used for circle symbols,
 see \code{inches} argument description.}
 
-\item{zcol}{integer or character.
+\item{zcol}{'integer' or 'character'.
 Attribute name or column number to extract from if \code{x} is of class SpatialGridDataFrame.}
 
-\item{crs}{character or CRS.
+\item{crs}{'character' or 'CRS'.
 Coordinate reference system arguments}
 
-\item{xlim}{numeric.
+\item{xlim}{'numeric'.
 Vector of length 2 giving the x limits for the plot.}
 
-\item{ylim}{numeric.
+\item{ylim}{'numeric'.
 Vector of length 2 giving the y limits for the plot.}
 
-\item{zlim}{numeric.
+\item{zlim}{'numeric'.
 Vector of length 2 giving the z limits for the plot.}
 
-\item{inches}{numeric.
+\item{inches}{'numeric'.
 Vector of length 2 giving the radii limits for the drawn circle symbol.
 Alternatively, a single number can be given resulting in a fixed radius being used for all circle symbols;
 this overrides proportional circles and the function behaves like the \code{\link{points}} function.}
 
-\item{scaling}{character.
+\item{scaling}{'character'.
 Selects the proportional symbol mapping algorithm to be used;
 either "perceptual" or "mathematical" scaling (Tanimura and others, 2006).}
 
-\item{bg}{character or function.
+\item{bg}{'character' or 'function'.
 Fill color(s) for circle symbols.
 A color palette also may be specified.}
 
-\item{bg.neg}{character or function.
+\item{bg.neg}{'character' or 'function'.
 Fill color(s) for circle symbols corresponding to negative \code{z} values.
 A color palette also may be specified.
 For circle symbols corresponding to positive \code{z} values,
 the \code{bg} argument is used for color(s).}
 
-\item{fg}{character.
+\item{fg}{'character'.
 Outer-line color for circle symbols.
 Specify a value of \code{NA} to remove the symbols outer line, and
 \code{NULL} to match the outer-line color with the symbols fill color.}
 
-\item{lwd}{numeric.
+\item{lwd}{'numeric'.
 Line width for drawing circle symbols.}
 
-\item{cex}{character.
+\item{cex}{'character'.
 Character expansion factor for legend labels.}
 
-\item{format}{character.
+\item{format}{'character'.
 Formatting for legend values, see \code{\link{formatC}} for options.}
 
-\item{legend.loc}{character.
+\item{legend.loc}{'character'.
 Position of the legend in the main plot region:
 "bottomleft", "topleft", "topright", or "bottomright" to denote legend location.}
 
-\item{inset}{numeric.
+\item{inset}{'numeric'.
 Inset distance of the legend from the margins as a fraction of the main plot region.
 Defaults to 2 percent of the axis range.}
 
-\item{breaks}{numeric.
+\item{breaks}{'numeric'.
 Set of finite breakpoints for the legend circle symbols.}
 
-\item{break.labels}{character.
+\item{break.labels}{'character'.
 Vector of break labels with length equal to \code{breaks}.}
 
-\item{quantile.breaks}{logical.
+\item{quantile.breaks}{'logical'.
 If true, \code{breaks} are set to the sample quantiles of \code{z}.}
 
-\item{make.intervals}{logical.
+\item{make.intervals}{'logical'.
 If true, represent \code{z} within intervals.
 See \code{\link{findInterval}} function for details.
 Unused if \code{quantile.breaks} is true.}
 
-\item{title}{character.
+\item{title}{'character'.
 Main title to be placed at the top of the legend.}
 
-\item{subtitle}{character.
+\item{subtitle}{'character'.
 Legend subtitle to be placed below the main title.}
 
-\item{add}{logical.
+\item{add}{'logical'.
 If true, circle symbols (and an optional legend) are added to an existing plot.}
 
 \item{...}{Graphics parameters to be passed to \code{\link{PlotMap}}.

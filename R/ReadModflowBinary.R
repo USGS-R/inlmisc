@@ -4,15 +4,15 @@
 #' the U.S. Geological Survey's three-dimensional finite-difference groundwater model.
 #' It reads data from binary files produced by MODFLOW.
 #'
-#' @param path character.
+#' @param path 'character'.
 #'   Path to a MODFLOW binary file.
-#' @param data.type character.
+#' @param data.type 'character'.
 #'    Description of how the data were saved.
 #'    Specify \code{"array"} for array data (such as hydraulic heads or drawdowns) and
 #'    \code{"flow"} for cell-by-cell flow data (budget data).
-#' @param endian character.
+#' @param endian 'character'.
 #'    The endian-ness (or byte-order) of the binary file.
-#' @param rm.totim.0 logical.
+#' @param rm.totim.0 'logical'.
 #'    If true, data associated with the stress period at time zero are removed.
 #'
 #' @return Returns a 'list' object of length equal to the
@@ -127,7 +127,7 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
 
     } else if (data.type == "flow") {
       desc <- readBin(readBin(con, "raw", n=16L, size=1L, endian=endian),
-                              "character", n=1L, endian=endian)
+                      "character", n=1L, endian=endian)
       desc <- .TidyDescription(desc)
       if (!desc %in% valid.desc) break
       ncol <- readBin(con, "integer", n=1L, size=4L, endian=endian)

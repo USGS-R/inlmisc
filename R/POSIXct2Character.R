@@ -1,16 +1,16 @@
 #' Convert class from POSIXct to Character
 #'
-#' This function converts objects from \code{\link{POSIXct}} to \code{\link{character}} class.
+#' This function converts objects from '\link{POSIXct}' to '\link{character}' class.
 #'
-#' @param x POSIXct.
+#' @param x 'POSIXct'.
 #'   Vector of calendar dates and times.
-#' @param fmt character.
+#' @param fmt 'character'.
 #'   Conversion specification format
 #'
-#' @return Returns a character vector representing time.
+#' @return Returns a 'character' vector representing time.
 #'
-#' @note R incorrectly formats objects of calss \code{\link{POSIXct}} with fractional seconds.
-#' For example, a POSIXct time with fractional part \code{.3} seconds (stored as \code{0.29999})
+#' @note R incorrectly formats objects of calss '\link{POSIXct}' with fractional seconds.
+#' For example, a 'POSIXct' time with fractional part \code{.3} seconds (stored as \code{0.29999})
 #' is printed as \code{.2} when represented with one decimal digit.
 #' Note that the fractional part on outputs is not rounded.
 #' Decimal precision is down to milliseconds on Windows,

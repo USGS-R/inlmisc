@@ -7,11 +7,11 @@
 GetDaysInMonth(x)
 }
 \arguments{
-\item{x}{integer.
+\item{x}{'integer'.
 Vector of year and month values, with a required date format of \code{YYYYMM}.}
 }
 \value{
-Returns an integer vector indicating the number of days
+Returns an 'integer' vector indicating the number of days
   in each year and month value specified in \code{x}.
 }
 \description{

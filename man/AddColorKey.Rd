@@ -8,40 +8,40 @@ AddColorKey(mai, is.categorical, breaks, col, at = NULL, labels = TRUE,
   scientific = FALSE, explanation = NULL, padx = 0.2)
 }
 \arguments{
-\item{mai}{numeric.
+\item{mai}{'numeric'.
 Vector of the form \code{c(bottom, left, top, right)} which gives the margin size specified in inches (optional).}
 
-\item{is.categorical}{logical.
+\item{is.categorical}{'logical'.
 If true, color-key values represent categorical data;
 otherwise, these data values are assumed continuous.}
 
-\item{breaks}{numeric.
+\item{breaks}{'numeric'.
 Set of finite numeric breakpoints for the colors:
 must have one more breakpoint than color and be in increasing order.}
 
-\item{col}{character.
+\item{col}{'character'.
 Vector of colors to be used in the plot.
 This argument requires \code{breaks} specification for continuous data.
 For continuous data there should be one less color than breaks; whereas,
 categorical data require a color for each category.}
 
-\item{at}{numeric.
+\item{at}{'numeric'.
 The points at which tick-marks and labels are to be drawn,
 only applicable for continuous data.
 The tick-marks will be located at the color breaks if the length of \code{at} is greater than or equal to one minus the length of \code{breaks}.}
 
-\item{labels}{logical or character.
+\item{labels}{'logical' or 'character'.
 Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
 or a character or expression vector of labels to be placed at the tickpoints.}
 
-\item{scientific}{logical.
+\item{scientific}{'logical'.
 Indicates if axes labels should be formatted for scientific notation,
 see \code{\link{ToScientific}} for details.}
 
-\item{explanation}{character.
+\item{explanation}{'character'.
 Label that describes the data values.}
 
-\item{padx}{numeric.
+\item{padx}{'numeric'.
 Inner padding for the left and right margins specified in inches.}
 }
 \value{

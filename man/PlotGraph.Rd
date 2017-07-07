@@ -6,87 +6,96 @@
 \usage{
 PlotGraph(x, y, xlab, ylab, asp = NA, xlim = NULL, ylim = NULL, xn = 5L,
   yn = 5L, ylog = FALSE, type = "s", lty = 1, lwd = 1, pch = NULL,
-  col = NULL, bg = NA, fill = NULL, pt.cex = 1, seq.date.by = "year",
+  col = NULL, bg = NA, fill = NULL, pt.cex = 1, seq.date.by = NULL,
   scientific = NA, conversion.factor = NULL, boxwex = 0.8,
   center.date.labels = FALSE, bg.polygon = NULL)
 }
 \arguments{
-\item{x, y}{Date, numeric, matrix, or data.frame.
+\item{x, y}{'Date', 'numeric', 'matrix', or 'data.frame'.
 Vectors or matrices of data for plotting.
 The vector length or number of rows should match.
-If \code{y} is missing, then \code{x = x[, 1]} and \code{y = x[, 2:n]}.}
+If \code{y} is missing, then \code{x = x[, 1]} and \code{y = x[, -1]}.}
 
-\item{xlab}{character.
+\item{xlab}{'character'.
 Title for \emph{x} axis.}
 
-\item{ylab}{character.
+\item{ylab}{'character'.
 Vector of length 2 giving the title for the 1st and 2nd-\emph{y} axes.
 The title for the 2nd-\emph{y} axis is optional and requires \code{conversion.factor} be specified.}
 
-\item{asp}{numeric.
-The \emph{y/x} aspect ratio for spatial axes.
+\item{asp}{'numeric'.
+\emph{y/x} aspect ratio for spatial axes.
 Defaults to 1 (one unit on the \emph{x}-axis equals one unit on the \emph{y}-axis) when \code{r} is projected,
 otherwise, a calculated value based on axes limits is used.}
 
-\item{xlim}{numeric or Date.
+\item{xlim}{'numeric' or 'Date'.
 Vector of length 2 giving the minimum and maximum values for the \emph{x}-axis.}
 
-\item{ylim}{numeric.
+\item{ylim}{'numeric'.
 Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.}
 
-\item{xn, yn}{integer.
+\item{xn, yn}{'integer'.
 Desired number of intervals between tick-marks on the \emph{x}- and \emph{y}-axis, respectively.}
 
-\item{ylog}{logical.
+\item{ylog}{'logical'.
 If true, a logarithm scale is used for the \emph{y} axis.}
 
-\item{type}{character.
-The type of plot for each column of \code{y}, see \code{plot} function for possible types.
-A box-and-whisker plot is drawn when \code{type = "box"}, with whiskers extending to the data extremes.}
+\item{type}{'character'.
+Plot type, possible types are
+\itemize{
+  \item "p" for \bold{p}oints,
+  \item "l" for \bold{l}ines,
+  \item "b" for \bold{b}oth points and lines,
+  \item "s" for stair \bold{s}teps (default),
+  \item "w" for box-and-\bold{w}hisker,
+  \item "i" for \bold{i}nterval-censored data, see "Details" section below, and
+  \item "n" for \bold{n}o plotting.
+}
+Characters in \code{type} are cycled through; such as, "pl" alternately plots points and lines.}
 
-\item{lty}{integer.
-The line type, see \code{par} function for all possible types.
+\item{lty}{'integer'.
+Line type, see \code{\link{par}} function for all possible types.
 Line types are used cyclically.}
 
-\item{lwd}{numeric.
+\item{lwd}{'numeric'.
 Line width}
 
-\item{pch}{integer.
-Point type, see \code{points} function for all possible types.}
+\item{pch}{'integer'.
+Point type, see \code{\link{points}} function for all possible types.}
 
 \item{col}{character or function.
-Point or line color, see \code{par} function for all possible ways this can be specified.
+Point or line color, see \code{\link{par}} function for all possible ways this can be specified.
 Colors are used cyclically.}
 
-\item{bg}{character.
-Vector of background colors for the open plot symbols given by \code{pch = 21:25} as in \code{points}.}
+\item{bg}{'character'.
+Vector of background colors for the open plot symbols given by \code{pch = 21:25} as in \code{\link{points}}.}
 
-\item{fill}{character.
-Vector of fill colors for areas beneath (or above, direction towards 0) lines of type "l" or "s".}
+\item{fill}{'character'.
+Vector of fill colors for areas beneath (or above, direction towards 0) lines of \code{type = "l"} or \code{type = "s"}.}
 
-\item{pt.cex}{numeric.
+\item{pt.cex}{'numeric'.
 Expansion factor for the points.}
 
-\item{seq.date.by}{character, numeric, or difftime.
-The increment of the date sequence, see \code{seq.Date} function for all possible ways this can be specified.}
+\item{seq.date.by}{'character', 'numeric', or 'difftime'.
+The increment of the date sequence, see the \code{by} argument in the \code{\link{seq.Date}} function for all possible ways this can be specified.}
 
-\item{scientific}{logical.
+\item{scientific}{'logical'.
 Vector of length 3 that indicates if axes labels should be encoded in nice scientific format.
 Vector elements correspond to the \emph{x}-axis, \code{y}-axis, and second \emph{y}-axis labels.
 Values are recycled as necessary.}
 
-\item{conversion.factor}{numeric.
+\item{conversion.factor}{'numeric'.
 A conversion factor for the 2nd-\emph{y} axis.}
 
-\item{boxwex}{numeric.
+\item{boxwex}{'numeric'.
 A scale factor to be applied to all boxes, only applicable for box-and-whisker plots.}
 
-\item{center.date.labels}{logical.
+\item{center.date.labels}{'logical'.
 If true, date labels are horizontally centered between \emph{x}-axis tickmarks.}
 
-\item{bg.polygon}{list.
+\item{bg.polygon}{'list'.
 If specified, a background polygon is drawn.
-The polygon is described using a list of arguments supplied to the \code{polygon} function.
+The polygon is described using a list of arguments supplied to the \code{\link{polygon}} function.
 Passed arguments include \code{"x"} and \code{"col"}.}
 }
 \value{
@@ -96,16 +105,26 @@ Used for the side-effect of a new plot generated.
 This function draws a sequence of points, lines, or
 box-and-whiskers using specified coordinates.
 }
+\details{
+Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 columns.
+  The first column contains the starting values, the second the ending values.
+  Observations are represented using
+    (-Inf, t) for left censored,
+    (t, Inf) for right censored,
+    (t, t) for exact, and
+    (t1, t2) for an interval.
+  Where infinity is represented as \code{Inf} or \code{NA}, and t is a numeric value.
+}
 \examples{
 n <- 50L
 x <- as.Date("2008-07-12") + 1:n
 y <- sample.int(n, replace = TRUE)
-PlotGraph(x, y, ylab = paste("Random number in", c("meters", "feet")), type = "p",
-          pch = 16, seq.date.by = "weeks", scientific = FALSE, conversion.factor = 3.28)
+PlotGraph(x, y, ylab = paste("Random number in", c("meters", "feet")),
+          type = "p", pch = 16, scientific = FALSE, conversion.factor = 3.28)
 
 y <- data.frame(lapply(1:3, function(i) sample(n, replace = TRUE)))
-PlotGraph(x, y, ylab = "Random number", type = "s", pch = 1, seq.date.by = "days",
-          scientific=TRUE)
+PlotGraph(x, y, ylab = "Random number", pch = 1, seq.date.by = "days",
+          scientific = TRUE)
 
 y <- sapply(1:3, function(i) sample((1:100) + i * 100, n, replace = TRUE))
 m <- cbind(as.numeric(x), y)
@@ -114,6 +133,11 @@ PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b", pch = 15:17,
           col = col, pt.cex = 0.9)
 legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
        pt.cex = 0.9, cex = 0.8, bg = "white")
+
+d <- data.frame(x = as.Date("2008-07-12") + 1:8 * 1000,
+                y0 = c(NA, NA, 1, 3, 1, 4, 2, pi),
+                y1 = c(1, 2, NA, NA, 4, 3, 2, pi))
+PlotGraph(d, type = "i", ylim = c(0, 5))
 
 graphics.off()
 

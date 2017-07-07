@@ -2,22 +2,22 @@
 #'
 #' This function can be used to add an inset map to a plot.
 #'
-#' @param p SpatialPolygons.
+#' @param p 'SpatialPolygons'.
 #'   Polygon describing the large map.
-#' @param col list.
+#' @param col 'list'.
 #'   Vector of length 2 giving the colors for filling the large map polygon \code{p} and the smaller plot extent rectangle.
-#' @param main.label list.
+#' @param main.label 'list'.
 #'   List with components \code{label} and \code{adj}.
 #'   The text label and position (x and y adjustment of the label) for the large map, respectively.
-#' @param sub.label list.
+#' @param sub.label 'list'.
 #'   Identical to the \code{main.label} argument but for the plot extent rectangle.
-#' @param loc character.
+#' @param loc 'character'.
 #'   Position of the inset map in the main plot region:
 #'   "bottomleft", "topleft", "topright", or "bottomright" to denote scale location.
-#' @param inset numeric.
+#' @param inset 'numeric'.
 #'   Inset distance from the margins as a fraction of the main plot region.
 #'   Defaults to 2 percent of the axis range.
-#' @param width numeric.
+#' @param width 'numeric'.
 #'   Width of the inset map in inches.
 #'
 #' @details The smaller axis-aligned rectangle (relative to the larger map polygon) is defined by

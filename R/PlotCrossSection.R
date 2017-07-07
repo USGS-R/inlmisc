@@ -4,54 +4,54 @@
 #' A key showing how the colors map to raster values is shown below the map.
 #' The width and height of the graphics region will be automagically determined in some cases.
 #'
-#' @param transect SpatialLines.
+#' @param transect 'SpatialLines'.
 #'   Piecewise linear transect line.
-#' @param rs RasterStack.
+#' @param rs 'RasterStack'.
 #'   Collection of \code{RasterLayer} objects with the same extent and resolution.
-#' @param geo.lays character.
+#' @param geo.lays 'character'.
 #'   Vector of names in \code{rs} that specify the geometry raster layers;
 #'   these must be given in decreasing order, that is,
 #'   from the upper most (such as land surface) to the lowest (such as a bedrock surface).
-#' @param val.lays character.
+#' @param val.lays 'character'.
 #'   Vector of names in \code{rs} that specify the value raster layers (optional).
 #'   Values from the first layer are mapped as colors to the area between the first and second geometry layers;
 #'   the second layer mapped between the second and third geometry layers, and so on.
-#' @param wt.lay character.
+#' @param wt.lay 'character'.
 #'   The name in \code{rs} that specifies the water-table raster layer (optional).
-#' @param n integer.
+#' @param n 'integer'.
 #'   Desired number of intervals to partition the range of raster values (optional).
-#' @param breaks numeric.
+#' @param breaks 'numeric'.
 #'   Vector of break points used to partition the colors representing numeric raster values (optional).
-#' @param col character.
+#' @param col 'character'.
 #'   Vector of colors to be used in the plot.
 #'   This argument requires \code{breaks} specification for numeric raster values and overrides any palette function specification.
 #'   For numeric values there should be one less color than breaks.
 #'   Categorical data require a color for each category.
-#' @param ylab character.
+#' @param ylab 'character'.
 #'   Label for the \emph{y} axis.
-#' @param unit character.
+#' @param unit 'character'.
 #'   Label for the measurement unit of the \emph{x}- and \emph{y}-axes.
-#' @param id character.
+#' @param id 'character'.
 #'   Vector of length 2 giving the labels for the end points of the transect line,
 #'   defaults to \emph{A--A'}.
-#' @param features SpatialGridDataFrame.
+#' @param features 'SpatialGridDataFrame'.
 #'   Point features adjacent to the transect line that are used as reference labels for the upper geometry layer.
-#' @param max.feature.dist numeric.
+#' @param max.feature.dist 'numeric'.
 #'   Maximum distance from a point feature to the transect line,
 #'   specified in the units of the \code{rs} projection.
-#' @param draw.sep logical.
+#' @param draw.sep 'logical'.
 #'   If true, lines separating geometry layers are drawn.
-#' @param is.categorical logical.
+#' @param is.categorical 'logical'.
 #'   If true, cell values in \code{val.lays} represent categorical data;
 #'   otherwise, these data values are assumed continuous.
-#' @param bg.col character.
+#' @param bg.col 'character'.
 #'   Color used for the background of the area below the upper geometry raster layer.
-#' @param wt.col character.
+#' @param wt.col 'character'.
 #'   Color used for the water-table line.
 #' @inheritParams PlotMap
 #'
 #' @return Used for the side-effect of a new plot generated.
-#'   Returns a list object with the following graphical parameters:
+#'   Returns a 'list' object with the following graphical parameters:
 #'   \describe{
 #'     \item{din}{device dimensions \code{(width, height)}, in inches.}
 #'     \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}

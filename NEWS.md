@@ -1,3 +1,20 @@
+# inlmisc 0.2.7
+
+- Add function `RecreateLibrary`, used to recreate an existing library on a new installation of R.
+
+- Add function `FormatPval`, used to format *p*-values.
+
+- Add **bm** and **makecell** packages to LaTeX preamble.
+
+- Changes in `PlotGraph` function inlclude:
+  Add option for plotting interval censored data by specifying `type = "i"`.
+  Select box-and-whisker plot using `type = "w"`, was previously `type = "box"`.
+  Default for `seq.date.by` argument changed from `"year"` to `NULL`.
+
+- Add `CreateWebMap` function, creates a Leaflet map widget using [The National Map](https://nationalmap.gov/) services.
+
+- Tidy help documentation for functions.
+
 # inlmisc 0.2.6
 
 - Add `endian` argument to `ReadModflowBinary` function.

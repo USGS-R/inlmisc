@@ -8,18 +8,18 @@ ReadModflowBinary(path, data.type = c("array", "flow"), endian = c("little",
   "big"), rm.totim.0 = FALSE)
 }
 \arguments{
-\item{path}{character.
+\item{path}{'character'.
 Path to a MODFLOW binary file.}
 
-\item{data.type}{character.
+\item{data.type}{'character'.
 Description of how the data were saved.
 Specify \code{"array"} for array data (such as hydraulic heads or drawdowns) and
 \code{"flow"} for cell-by-cell flow data (budget data).}
 
-\item{endian}{character.
+\item{endian}{'character'.
 The endian-ness (or byte-order) of the binary file.}
 
-\item{rm.totim.0}{logical.
+\item{rm.totim.0}{'logical'.
 If true, data associated with the stress period at time zero are removed.}
 }
 \value{
