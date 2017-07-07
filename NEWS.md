@@ -1,4 +1,4 @@
-# inlmisc 0.2.6.9000
+# inlmisc 0.2.7
 
 - Add function `RecreateLibrary`, used to recreate an existing library on a new installation of R.
 
