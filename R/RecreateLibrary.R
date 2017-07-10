@@ -36,7 +36,7 @@
 #'
 #' unlink("packagelist.txt")
 #'
-#' @rdname SavePackageNames
+#' @rdname RecreateLibrary
 #' @export
 
 SavePackageNames <- function(file="packagelist.txt", lib=NULL) {
@@ -56,7 +56,7 @@ SavePackageNames <- function(file="packagelist.txt", lib=NULL) {
   invisible(NULL)
 }
 
-#' @rdname SavePackageNames
+#' @rdname RecreateLibrary
 #' @export
 
 RecreateLibrary <- function(file="packagelist.txt", lib=NULL, repos=getOption("repos")) {
