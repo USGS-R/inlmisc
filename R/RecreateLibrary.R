@@ -19,7 +19,7 @@
 #' Uninstall the older version of \R if it is no longer needed.
 #' On a freshly installed version of \R, with the \pkg{inlmisc} package available,
 #' run the \code{RecreateLibrary()} command to download and install
-#' the packages listed in the package-list text file.
+#' the packages listed in the package-names text file.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -29,20 +29,20 @@
 #'
 #' @examples
 #' # Run on old version of R
-#' SavePackageNames("package-list.txt")
+#' SavePackageNames()
 #'
 #' \dontrun{
 #' # Run on new version of R, and ensure inlmisc package is available.
 #' repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
 #' if (!"inlmisc" %in% rownames(utils::installed.packages()))
 #'   utils::install.packages("inlmisc", repos = repos["CRAN"])
-#' inlmisc::RecreateLibrary("package-list.txt", repos = repos)
+#' inlmisc::RecreateLibrary(repos = repos)
 #' }
 #'
 #' @rdname RecreateLibrary
 #' @export
 
-SavePackageNames <- function(file="package-list.txt", lib=NULL) {
+SavePackageNames <- function(file="package-names.txt", lib=NULL) {
 
   if (is.null(lib)) lib <- .libPaths()
 
@@ -63,12 +63,12 @@ SavePackageNames <- function(file="package-list.txt", lib=NULL) {
 #' @rdname RecreateLibrary
 #' @export
 
-RecreateLibrary <- function(file="package-list.txt", lib=NULL, repos=getOption("repos")) {
+RecreateLibrary <- function(file="package-names.txt", lib=NULL, repos=getOption("repos")) {
 
   if (is.null(lib)) lib <- .libPaths()[1]
 
   if (!file.exists(file)) {
-    msg <- sprintf("Can't find package-list file: ", normalizePath(path.expand(file)))
+    msg <- sprintf("Can't find package-names file: ", normalizePath(path.expand(file)))
     stop(msg)
   }
   type <- ifelse(Sys.info()["sysname"] == "Windows", "win.binary", "source")
