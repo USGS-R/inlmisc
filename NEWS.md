@@ -1,6 +1,7 @@
 # inlmisc 0.2.7.9000
 
-- ...
+- Remove `current_version` argument from `RecreateLibrary` function;
+  account for this change by adding the `SavePackageNames` function.
 
 # inlmisc 0.2.7
 

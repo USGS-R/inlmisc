@@ -29,7 +29,7 @@ These functions can be used to recreate an existing library on a new installatio
 A typical workflow is as follows:
 Run the \code{SavePackageNames()} command on an older version of \R
 to print to a text file a complete list of names for packages located under your current \R library tree(s).
-If desired, uninstall the older version of \R.
+Uninstall the older version of \R if it is no longer needed.
 On a freshly installed version of \R, with the \pkg{inlmisc} package available,
 run the \code{RecreateLibrary()} command to download and install the packages listed in the package-list text file.
 }
