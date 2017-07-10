@@ -5,14 +5,16 @@
 \alias{RecreateLibrary}
 \title{Recreate R Library}
 \usage{
-SavePackageNames(file = "packagelist.txt", lib = NULL)
+SavePackageNames(file = "package-list.txt", lib = NULL)
 
-RecreateLibrary(file = "packagelist.txt", lib = NULL,
+RecreateLibrary(file = "package-list.txt", lib = NULL,
   repos = getOption("repos"))
 }
 \arguments{
 \item{file}{'character'.
-Name of the file for writing (or reading) the list of package names.}
+Name of the file for writing (or reading) the list of package names.
+If the name does not contain an absolute path,
+the file name is relative to the current working directory, see \code{\link{getwd}()} command.}
 
 \item{lib}{'character'.
 The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}})
@@ -31,23 +33,24 @@ Run the \code{SavePackageNames()} command on an older version of \R
 to print to a text file a complete list of names for packages located under your current \R library tree(s).
 Uninstall the older version of \R if it is no longer needed.
 On a freshly installed version of \R, with the \pkg{inlmisc} package available,
-run the \code{RecreateLibrary()} command to download and install the packages listed in the package-list text file.
+run the \code{RecreateLibrary()} command to download and install
+the packages listed in the package-list text file.
 }
 \examples{
 # Run on old version of R
-SavePackageNames()
+SavePackageNames("package-list.txt")
 
 \dontrun{
-# Run on new version of R (assumes working directory has not changed)
-RecreateLibrary(repos = c(CRAN = "https://cloud.r-project.org/",
-                          GRAN = "https://owi.usgs.gov/R"))
+# Run on new version of R, and ensure inlmisc package is available.
+repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
+if (!"inlmisc" \%in\% rownames(utils::installed.packages()))
+  utils::install.packages("inlmisc", repos = repos["CRAN"])
+inlmisc::RecreateLibrary("package-list.txt", repos = repos)
 }
-
-unlink("packagelist.txt")
 
 }
 \seealso{
-\code{\link[utils]{update.packages}}, \code{\link[utils]{install.packages}}
+\code{\link[utils]{installed.packages}}, \code{\link[utils]{install.packages}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
