@@ -13,6 +13,7 @@ Imports:
     dplyr,
     grDevices,
     graphics,
+    htmlwidgets,
     igraph,
     knitr,
     leaflet,
