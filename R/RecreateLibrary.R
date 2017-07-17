@@ -3,11 +3,11 @@
 #' These functions can be used to recreate an existing library on a new installation of \R.
 #'
 #' @param file 'character'.
-#'   Name of the file for writing (or reading) the list of package names.
-#'   If the name does not contain an absolute path,
-#'   the file name is relative to the current working directory, see \code{\link{getwd}()} command.
+#'   Name of the file for reading (or writing) the list of package names.
+#'   For file names that do not contain an absolute path,
+#'   the name is assumed relative to the current working directory, see \code{\link{getwd}()} command.
 #' @param lib 'character'.
-#'   The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}})
+#'   The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}}),
 #'   or the library directory where to install packages.
 #' @param repos 'character'.
 #'   Vector of base URL(s) of the repositories to use when installing packages.
@@ -16,7 +16,7 @@
 #' @details A typical workflow is as follows:
 #' Run the \code{SavePackageNames()} command on an older version of \R
 #' to print to a text file a complete list of names for packages located under your current \R library tree(s).
-#' Uninstall the older version of \R if it is no longer needed.
+#' If it is no longer needed, uninstall the older version of \R.
 #' On a freshly installed version of \R, with the \pkg{inlmisc} package available,
 #' run the \code{RecreateLibrary()} command to download and install
 #' the packages listed in the package-names text file.
@@ -39,27 +39,6 @@
 #' inlmisc::RecreateLibrary(repos = repos)
 #' }
 #'
-#' @rdname RecreateLibrary
-#' @export
-
-SavePackageNames <- function(file="package-names.txt", lib=NULL) {
-
-  if (is.null(lib)) lib <- .libPaths()
-
-  pkgs <- utils::installed.packages(lib, noCache=TRUE)[, 1]
-  pkgs <- sort(unique(pkgs))
-  meta <- c(sprintf("# Date modified: %s UTC", format(Sys.time(), tz="GMT")),
-            sprintf("# Running under: %s", utils::sessionInfo()$running),
-            with(R.version, sprintf("# R version: %s.%s (%s-%s-%s)", major, minor, year, month, day)),
-            sprintf("# Platform: %s", R.version$platform),
-            sprintf("# User: %s", Sys.info()["user"]))
-  m <- matrix(c(meta, pkgs), ncol=1)
-  utils::write.table(m, file, quote=FALSE, row.names=FALSE, col.names=FALSE)
-  cat(sprintf("Package list written to: \"%s\"\n", normalizePath(path.expand(file))))
-
-  invisible(NULL)
-}
-
 #' @rdname RecreateLibrary
 #' @export
 
@@ -87,6 +66,27 @@ RecreateLibrary <- function(file="package-names.txt", lib=NULL, repos=getOption(
   pkgs <- pkgs[is]
   if (length(pkgs) == 0) return(invisible(NULL))
   utils::install.packages(pkgs, lib[1], repos=repos, type=type)
+
+  invisible(NULL)
+}
+
+#' @rdname RecreateLibrary
+#' @export
+
+SavePackageNames <- function(file="package-names.txt", lib=NULL) {
+
+  if (is.null(lib)) lib <- .libPaths()
+
+  pkgs <- utils::installed.packages(lib, noCache=TRUE)[, 1]
+  pkgs <- sort(unique(pkgs))
+  meta <- c(sprintf("# Date modified: %s UTC", format(Sys.time(), tz="GMT")),
+            sprintf("# Running under: %s", utils::sessionInfo()$running),
+            with(R.version, sprintf("# R version: %s.%s (%s-%s-%s)", major, minor, year, month, day)),
+            sprintf("# Platform: %s", R.version$platform),
+            sprintf("# User: %s", Sys.info()["user"]))
+  m <- matrix(c(meta, pkgs), ncol=1)
+  utils::write.table(m, file, quote=FALSE, row.names=FALSE, col.names=FALSE)
+  cat(sprintf("Package list written to: \"%s\"\n", normalizePath(path.expand(file))))
 
   invisible(NULL)
 }
