@@ -5,7 +5,7 @@
 #' @param file 'character'.
 #'   Name of the file for reading (or writing) the list of package names.
 #'   For file names that do not contain an absolute path,
-#'   the name is assumed relative to the current working directory, see \code{\link{getwd}()} command.
+#'   the name is assumed relative to the current working directory (see \code{\link{getwd}()} command).
 #' @param lib 'character'.
 #'   The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}}),
 #'   or the library directory where to install packages.
@@ -14,12 +14,12 @@
 #'   For example, the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.
 #'
 #' @details A typical workflow is as follows:
-#' Run the \code{SavePackageNames()} command on an older version of \R
-#' to print to a text file a complete list of names for packages located under your current \R library tree(s).
-#' If it is no longer needed, uninstall the older version of \R.
+#' Run the \code{SavePackageNames()} command on an older version of \R.
+#' It will print to a text file a complete list of names for packages located under your current \R library tree(s).
+#' If no longer needed, uninstall the older version of \R.
 #' On a freshly installed version of \R, with the \pkg{inlmisc} package available,
-#' run the \code{RecreateLibrary()} command to download and install
-#' the packages listed in the package-names text file.
+#' run the \code{RecreateLibrary()} command.
+#' It will download and install the packages listed in the package-names text file.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
