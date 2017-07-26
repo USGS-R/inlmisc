@@ -28,7 +28,7 @@ Position of the inset map in the main plot region:
 "bottomleft", "topleft", "topright", or "bottomright" to denote scale location.}
 
 \item{inset}{'numeric'.
-Inset distance from the margins as a fraction of the main plot region.
+Inset distance(s) from the margins as a fraction of the main plot region.
 Defaults to 2 percent of the axis range.}
 
 \item{width}{'numeric'.

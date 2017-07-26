@@ -4,7 +4,7 @@
 #' A key showing how the colors map to raster values is shown below the map.
 #' The width and height of the graphics region will be automagically determined in some cases.
 #'
-#' @param r 'Raster*', 'SpatialGridDataFrame', or 'CRS'.
+#' @param r 'Raster*', 'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'CRS'.
 #'   An object that can be converted to a raster layer, or a coordinate reference system (CRS).
 #' @param p 'SpatialPointsDataFrame'.
 #'   Spatial point data to be plotted.
@@ -197,15 +197,15 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
     r[] <- NA
   }
 
+  if (inherits(r, c("RasterStack", "RasterBrick", "SpatialGrid", "SpatialPixelsDataFrame")))
+    r <- raster(r, layer=layer)
+  if (!inherits(r, "RasterLayer")) stop("raster layer is the incorrect class")
+
   if (!is.null(p)) try(p <- spTransform(p, r@crs), silent=TRUE)
 
   if (is.null(asp) && !is.na(rgdal::CRSargs(raster::crs(r)))) asp <- 1
 
   is.dms <- dms.tick && !is.na(CRSargs(r@crs))
-
-  if (inherits(r, c("RasterStack", "RasterBrick", "SpatialGrid")))
-    r <- raster(r, layer=layer)
-  if (!inherits(r, "RasterLayer")) stop("raster layer is the incorrect class")
 
   if (raster::is.factor(r)) {
     att.tbl <- raster::levels(r)[[1]]
@@ -543,8 +543,7 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
                    tcl=tcl, cex.axis=cex, mgp=c(3, 0.2, 0))
   graphics::axis(3, at=at2[[3]], labels=xlabs, lwd=-1, lwd.ticks=lwd,
                  tcl=tcl, cex.axis=cex, mgp=c(3, 0.2, 0))
-  graphics::axis(4, at=at2[[4]], labels=FALSE, lwd=-1, lwd.ticks=lwd, tcl=tcl,
-                 cex.axis=cex)
+  graphics::axis(4, at=at2[[4]], labels=FALSE, lwd=-1, lwd.ticks=lwd, tcl=tcl, cex.axis=cex)
   graphics::box(lwd=lwd)
 
   if (is.character(credit)) {

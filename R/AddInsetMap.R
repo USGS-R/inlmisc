@@ -15,7 +15,7 @@
 #'   Position of the inset map in the main plot region:
 #'   "bottomleft", "topleft", "topright", or "bottomright" to denote scale location.
 #' @param inset 'numeric'.
-#'   Inset distance from the margins as a fraction of the main plot region.
+#'   Inset distance(s) from the margins as a fraction of the main plot region.
 #'   Defaults to 2 percent of the axis range.
 #' @param width 'numeric'.
 #'   Width of the inset map in inches.
@@ -80,8 +80,9 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
   }
   dy <- dx * (diff(ext[3:4]) / diff(ext[1:2]))
 
-  padx <- inset * diff(usr[1:2])
-  pady <- inset * diff(usr[3:4])
+  if (length(inset) == 1) inset <- rep(inset, 2)
+  padx <- inset[1] * diff(usr[1:2])
+  pady <- inset[2] * diff(usr[3:4])
 
   if (loc == "bottomleft") {
     loc <- c(usr[1] + padx, usr[3] + pady)

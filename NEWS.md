@@ -1,13 +1,15 @@
 # inlmisc 0.2.7.9000
 
+- Add `AddGradientLegend` function, used to add a continuous color gradient legend strip to a plot.
+
 - Remove `current_version` argument from `RecreateLibrary` function;
   account for this change by adding the `SavePackageNames` function.
 
 # inlmisc 0.2.7
 
-- Add function `RecreateLibrary`, used to recreate an existing library on a new installation of R.
+- Add `RecreateLibrary` function, used to recreate an existing library on a new installation of R.
 
-- Add function `FormatPval`, used to format *p*-values.
+- Add `FormatPval` function, used to format *p*-values.
 
 - Add **bm** and **makecell** packages to LaTeX preamble.
 
