@@ -1,6 +1,6 @@
 # inlmisc 0.2.7.9000
 
-- In `ToScientific` function, improve default value for digits argument.
+- In `ToScientific` function, improve default value for `digits` argument.
 
 - Add `AddGradientLegend` function, used to add a continuous color gradient legend strip to a plot.
 
