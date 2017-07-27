@@ -4,9 +4,9 @@
 \alias{AddGradientLegend}
 \title{Add Color Gradient Legend to Plot}
 \usage{
-AddGradientLegend(breaks, pal, at = NULL, labels = TRUE, title = NULL,
-  loc = c("bottomleft", "topleft", "topright", "bottomright"), inset = 0,
-  strip.dim = c(2, 8))
+AddGradientLegend(breaks, pal, at = NULL, labels = TRUE,
+  scientific = FALSE, title = NULL, loc = c("bottomleft", "topleft",
+  "topright", "bottomright"), inset = 0, strip.dim = c(2, 8))
 }
 \arguments{
 \item{breaks}{'numeric'.
@@ -21,6 +21,10 @@ Vector of points at which tick-marks and labels are to be drawn.}
 \item{labels}{'logical' or 'character'.
 Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
 or a character or expression vector of labels to be placed at the tickpoints.}
+
+\item{scientific}{'logical'.
+Indicates if labels should be formatted for scientific notation,
+see \code{\link{ToScientific}} for details.}
 
 \item{title}{'character'.
 Title to be placed at the top of the legend.}
@@ -42,13 +46,15 @@ Used for the side-effect of a legend drawn on the current graphics device.
 This function can be used to add a continuous color gradient legend strip to a plot.
 }
 \examples{
-plot(NA, xlim = c(0, 100), ylim = c(-10, 10), xlab = "x", ylab = "y")
+plot(NA, xlim = c(0, 100), ylim = c(-10, 10), xlab = "", ylab = "")
 breaks <- 0:200
 AddGradientLegend(breaks, rainbow, title = "Title")
 AddGradientLegend(breaks, rainbow, title = "Title", inset = c(0.2, 0.1))
+breaks <- seq(0, 2e+06, length.out = 5)
 AddGradientLegend(breaks, rainbow, loc = "topright", inset = 0.1)
-AddGradientLegend(breaks, rainbow, loc = "bottomright",
-                  inset = c(0.2, 0.1), strip.dim = c(1, 14))
+pal <- function(...) rev(rainbow(...))  # reverse colors in palette
+AddGradientLegend(breaks, pal, loc = "bottomright", inset = c(0.2, 0.1),
+                  scientific = TRUE, strip.dim = c(1, 14))
 
 }
 \seealso{
