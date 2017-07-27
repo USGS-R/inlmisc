@@ -12,6 +12,12 @@
 #' @param repos 'character'.
 #'   Vector of base URL(s) of the repositories to use when installing packages.
 #'   For example, the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.
+#' @param mran 'logical', 'character' or 'Date'.
+#'   Calendar date for the Comprehensive R Archive Network (CRAN) snapshot in time,
+#'   see \href{https://mran.microsoft.com/timemachine/}{MRAN} for details.
+#'   If true, the snapshot date is read from the first line of \code{file}.
+#'   A snapshot date may also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
+#'   Specifying this argument will mask all CRAN mirrors in \code{repos}.
 #'
 #' @details A typical workflow is as follows:
 #' Run the \code{SavePackageNames()} command on an older version of \R.
@@ -42,14 +48,34 @@
 #' @rdname RecreateLibrary
 #' @export
 
-RecreateLibrary <- function(file="package-names.txt", lib=NULL, repos=getOption("repos")) {
+RecreateLibrary <- function(file="package-names.txt", lib=NULL,
+                            repos=getOption("repos"), mran=FALSE) {
 
   if (is.null(lib)) lib <- .libPaths()[1]
 
+  repos <- unique(repos)
+
   if (!file.exists(file)) {
-    msg <- sprintf("Can't find package-names file: ", normalizePath(path.expand(file)))
+    msg <- paste("Can't find package-names file:", normalizePath(path.expand(file)))
     stop(msg)
   }
+
+  if (is.character(mran)) {
+    snapshot <- as.Date(mran, tz="GMT")
+  } else if (is.logical(mran) && mran) {
+    txt <- readLines(file, n=1)
+    fmt <- "# Date modified: %Y-%m-%d %H:%M:%S"
+    snapshot <- as.Date(strptime(txt, fmt, tz="GMT"))
+  } else {
+    snapshot <- NULL
+  }
+  if (inherits(snapshot, "Date") && !is.na(snapshot)) {
+    cran_mirrors <- utils::getCRANmirrors(all=TRUE)$URL
+    repos <- repos[!repos %in% cran_mirrors]
+    mran <- sprintf("https://mran.revolutionanalytics.com/snapshot/%s", snapshot)
+    repos <- c(repos, mran=mran)
+  }
+
   type <- ifelse(Sys.info()["sysname"] == "Windows", "win.binary", "source")
   utils::update.packages(ask=FALSE, repos=repos, type=type)
   pkgs <- unique(utils::read.table(file, colClasses="character", flush=TRUE)[, 1])

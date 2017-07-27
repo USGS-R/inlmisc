@@ -6,7 +6,7 @@
 \title{Recreate R Library}
 \usage{
 RecreateLibrary(file = "package-names.txt", lib = NULL,
-  repos = getOption("repos"))
+  repos = getOption("repos"), mran = FALSE)
 
 SavePackageNames(file = "package-names.txt", lib = NULL)
 }
@@ -23,6 +23,13 @@ or the library directory where to install packages.}
 \item{repos}{'character'.
 Vector of base URL(s) of the repositories to use when installing packages.
 For example, the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.}
+
+\item{mran}{'logical', 'character' or 'Date'.
+Calendar date for the Comprehensive R Archive Network (CRAN) snapshot in time,
+see \href{https://mran.microsoft.com/timemachine/}{MRAN} for details.
+If true, the snapshot date is read from the first line of \code{file}.
+A snapshot date may also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
+Specifying this argument will mask all CRAN mirrors in \code{repos}.}
 }
 \description{
 These functions can be used to recreate an existing library on a new installation of \R.
