@@ -5,10 +5,10 @@
 \alias{SavePackageNames}
 \title{Recreate R Library}
 \usage{
-RecreateLibrary(file = "package-names.txt", lib = NULL,
-  repos = getOption("repos"), mran = FALSE)
+RecreateLibrary(file = "pkg-names.txt", lib = NULL,
+  repos = getOption("repos"), snapshot = FALSE)
 
-SavePackageNames(file = "package-names.txt", lib = NULL)
+SavePackageNames(file = "pkg-names.txt", lib = NULL, pkg = NULL)
 }
 \arguments{
 \item{file}{'character'.
@@ -24,12 +24,18 @@ or the library directory where to install packages.}
 Vector of base URL(s) of the repositories to use when installing packages.
 For example, the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.}
 
-\item{mran}{'logical', 'character' or 'Date'.
+\item{snapshot}{'logical', 'character', or 'Date'.
 Calendar date for the Comprehensive R Archive Network (CRAN) snapshot in time,
-see \href{https://mran.microsoft.com/timemachine/}{MRAN} for details.
+see the Microsoft R Application Network
+(\href{https://mran.microsoft.com/timemachine/}{MRAN}) website for details.
 If true, the snapshot date is read from the first line of \code{file}.
-A snapshot date may also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
-Specifying this argument will mask all CRAN mirrors in \code{repos}.}
+A snapshot date can also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
+This argument masks all CRAN mirrors in \code{repos}.}
+
+\item{pkg}{'character'.
+The name of an installed package.
+Only packages that \code{pkg} depend on/link to/import/suggest are included in the package-names file;
+\code{pkg} is also included in this list.}
 }
 \description{
 These functions can be used to recreate an existing library on a new installation of \R.
@@ -42,6 +48,14 @@ If no longer needed, uninstall the older version of \R.
 On a freshly installed version of \R, with the \pkg{inlmisc} package available,
 run the \code{RecreateLibrary()} command.
 It will download and install the packages listed in the package-names text file.
+
+To achieve reproducibility, daily snapshots of CRAN are stored on MRAN
+and available as far back as September 17, 2014.
+Use the \code{snapshot} argument to install packages from a daily snapshot.
+Note that newer versions of \R may not be compatible with older versions of packages.
+To avoid any installation issues with packages,
+install the version \R that was available from CRAN on the
+\href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 }
 \examples{
 # Run on old version of R

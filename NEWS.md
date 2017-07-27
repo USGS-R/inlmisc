@@ -1,5 +1,9 @@
 # inlmisc 0.2.7.9000
 
+- In `RecreateLibrary` function, add `snapshot` argument.
+
+- In `SavePackageNames` function, add `pkg` argument.
+
 - In `ToScientific` function, improve default value for `digits` argument.
 
 - Add `AddGradientLegend` function, used to add a continuous color gradient legend strip to a plot.
