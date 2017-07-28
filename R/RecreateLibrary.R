@@ -32,12 +32,11 @@
 #' run the \code{RecreateLibrary()} command.
 #' It will download and install the packages listed in the package-names text file.
 #'
-#' To achieve reproducibility, daily snapshots of CRAN are stored on MRAN
-#' and available as far back as September 17, 2014.
-#' Use the \code{snapshot} argument to install packages from a daily snapshot.
+#' Daily snapshots of CRAN are stored on MRAN and available as far back as September 17, 2014.
+#' Use the \code{snapshot} argument to install packages from a daily snapshot of CRAN.
 #' Note that newer versions of \R may not be compatible with older versions of packages.
 #' To avoid any installation issues with packages,
-#' install the version \R that was available from CRAN on the
+#' install the \R version that was available from CRAN on the
 #' \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
