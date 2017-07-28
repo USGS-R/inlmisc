@@ -62,7 +62,7 @@ install the version \R that was available from CRAN on the
 SavePackageNames()
 
 \dontrun{
-# Run on new version of R, and ensure inlmisc package is available.
+# Run on new version of R, and ensure 'inlmisc' package is available.
 repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
 if (!"inlmisc" \%in\% rownames(utils::installed.packages()))
   utils::install.packages("inlmisc", repos = repos["CRAN"])

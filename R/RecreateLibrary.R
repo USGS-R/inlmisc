@@ -51,7 +51,7 @@
 #' SavePackageNames()
 #'
 #' \dontrun{
-#' # Run on new version of R, and ensure inlmisc package is available.
+#' # Run on new version of R, and ensure 'inlmisc' package is available.
 #' repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
 #' if (!"inlmisc" %in% rownames(utils::installed.packages()))
 #'   utils::install.packages("inlmisc", repos = repos["CRAN"])
@@ -145,9 +145,13 @@ SavePackageNames <- function(file="package-names.txt", lib=NULL, pkg=NULL) {
   pkgs <- utils::installed.packages(lib, noCache=TRUE)[, 1]
   if (!is.null(pkg) && pkg %in% pkgs) {
     desc <- utils::packageDescription(pkg, lib)
-    x <- gsub("\\n", " ", with(desc, paste(Depends, Imports, Suggests, sep=", ")))
+    x <- c(desc$Depends, desc$LinkingTo, desc$Imports, desc$Suggests)
+    x <- paste(x, collapse=", ")
+    x <- gsub("\\n", " ", x)
+    x <- gsub("\\s*\\([^\\)]+\\)", "", x)
     x <- strsplit(x, ", ")[[1]]
-    pkgs <- c(x[x %in% pkgs], pkg)
+    x <- x[x %in% pkgs]
+    pkgs <- c(x, pkg)
   }
 
   pkgs <- pkgs[!duplicated(pkgs)]
