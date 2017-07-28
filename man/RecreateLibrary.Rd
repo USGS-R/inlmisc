@@ -5,10 +5,10 @@
 \alias{SavePackageNames}
 \title{Recreate R Library}
 \usage{
-RecreateLibrary(file = "pkg-names.txt", lib = NULL,
+RecreateLibrary(file = "package-names.txt", lib = NULL,
   repos = getOption("repos"), snapshot = FALSE)
 
-SavePackageNames(file = "pkg-names.txt", lib = NULL, pkg = NULL)
+SavePackageNames(file = "package-names.txt", lib = NULL, pkg = NULL)
 }
 \arguments{
 \item{file}{'character'.
@@ -33,9 +33,9 @@ A snapshot date can also be specified directly using the required date format, \
 This argument masks all CRAN mirrors in \code{repos}.}
 
 \item{pkg}{'character'.
-The name of an installed package.
+Name of an installed package.
 Only packages that \code{pkg} depend on/link to/import/suggest are included in the package-names file;
-\code{pkg} is also included in this list.}
+also included is \code{pkg}.}
 }
 \description{
 These functions can be used to recreate an existing library on a new installation of \R.

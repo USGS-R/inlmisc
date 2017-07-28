@@ -20,9 +20,9 @@
 #'   A snapshot date can also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
 #'   This argument masks all CRAN mirrors in \code{repos}.
 #' @param pkg 'character'.
-#'   The name of an installed package.
+#'   Name of an installed package.
 #'   Only packages that \code{pkg} depend on/link to/import/suggest are included in the package-names file;
-#'   \code{pkg} is also included in this list.
+#'   also included is \code{pkg}.
 #'
 #' @details A typical workflow is as follows:
 #' Run the \code{SavePackageNames()} command on an older version of \R.
@@ -61,7 +61,7 @@
 #' @rdname RecreateLibrary
 #' @export
 
-RecreateLibrary <- function(file="pkg-names.txt", lib=NULL,
+RecreateLibrary <- function(file="package-names.txt", lib=NULL,
                             repos=getOption("repos"), snapshot=FALSE) {
 
   if (is.null(lib)) lib <- .libPaths()[1]
@@ -138,7 +138,7 @@ RecreateLibrary <- function(file="pkg-names.txt", lib=NULL,
 #' @rdname RecreateLibrary
 #' @export
 
-SavePackageNames <- function(file="pkg-names.txt", lib=NULL, pkg=NULL) {
+SavePackageNames <- function(file="package-names.txt", lib=NULL, pkg=NULL) {
 
   if (is.null(lib)) lib <- .libPaths()
 
