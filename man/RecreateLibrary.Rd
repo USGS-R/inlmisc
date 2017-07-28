@@ -5,10 +5,10 @@
 \alias{SavePackageNames}
 \title{Recreate R Library}
 \usage{
-RecreateLibrary(file = "package-names.txt", lib = NULL,
-  repos = getOption("repos"), snapshot = FALSE)
+RecreateLibrary(file = "R-packages.txt", lib = NULL,
+  repos = getOption("repos"), snapshot = FALSE, github = FALSE)
 
-SavePackageNames(file = "package-names.txt", lib = NULL, pkg = NULL)
+SavePackageNames(file = "R-packages.txt", lib = NULL, pkg = NULL)
 }
 \arguments{
 \item{file}{'character'.
@@ -21,21 +21,27 @@ The library tree(s) to search through when locating installed packages (see \cod
 or the library directory where to install packages.}
 
 \item{repos}{'character'.
-Vector of base URL(s) of the repositories to use when installing packages.
+Vector of base URL(s) of the CRAN-like repositories to use when installing packages.
 For example, the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.}
 
 \item{snapshot}{'logical', 'character', or 'Date'.
-Calendar date for the Comprehensive R Archive Network (CRAN) snapshot in time,
+Calendar date for the CRAN snapshot in time,
 see the Microsoft R Application Network
 (\href{https://mran.microsoft.com/timemachine/}{MRAN}) website for details.
 If true, the snapshot date is read from the first line of \code{file}.
 A snapshot date can also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
 This argument masks all CRAN mirrors in \code{repos}.}
 
+\item{github}{'logical'.
+If true, an attempt is made to install select packages from \href{https://github.com/}{GitHub}.
+Only applies to packages missing from the CRAN-like repositories (\code{repos}).
+Requires that the \pkg{githubinstall} package is available,
+see \code{\link[githubinstall]{gh_install_packages}} function for details.}
+
 \item{pkg}{'character'.
-Name of an installed package.
-Only packages that \code{pkg} depend on/link to/import/suggest are included in the package-names file;
-also included is \code{pkg}.}
+One or more names of packages located under \code{lib}.
+Only packages in \code{pkg}, and the packages that \code{pkg} depend on/link to/import/suggest,
+are included in the package-list file.}
 }
 \description{
 These functions can be used to recreate an existing library on a new installation of \R.
@@ -47,7 +53,7 @@ It will print to a text file a complete list of names for packages located under
 If no longer needed, uninstall the older version of \R.
 On a freshly installed version of \R, with the \pkg{inlmisc} package available,
 run the \code{RecreateLibrary()} command.
-It will download and install the packages listed in the package-names text file.
+It will download and install the packages listed in the text file (\code{file}).
 
 Daily snapshots of CRAN are stored on MRAN and available as far back as September 17, 2014.
 Use the \code{snapshot} argument to install packages from a daily snapshot of CRAN.
@@ -63,8 +69,8 @@ SavePackageNames()
 \dontrun{
 # Run on new version of R, and ensure 'inlmisc' package is available.
 repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
-if (!"inlmisc" \%in\% rownames(utils::installed.packages()))
-  utils::install.packages("inlmisc", repos = repos["CRAN"])
+if (requireNamespace("inlmisc", quietly = TRUE))
+  utils::install.packages("inlmisc", repos = repos["CRAN"], dependencies = TRUE)
 inlmisc::RecreateLibrary(repos = repos)
 }
 
