@@ -72,8 +72,11 @@ To avoid any installation issues with packages,
 install the \R version that was available from CRAN on the
 \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 
-If you are installing a package that contains compiled code,
-you'll need to have an R development environment installed.
+The type of package to download and install is \emph{binary} on Windows and some macOS builds,
+and \emph{source} on all others.
+If a package is installed from source and it contains code that needs compiling,
+you will need to have installed the Rtools collection as described in the \sQuote{R for Windows FAQ}
+and you must have the PATH environment variable set up as required by Rtools.
 }
 \examples{
 # Run on old version of R

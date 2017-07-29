@@ -51,8 +51,11 @@
 #' install the \R version that was available from CRAN on the
 #' \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 #'
-#' If you are installing a package that contains compiled code,
-#' you'll need to have an R development environment installed.
+#' The type of package to download and install is \emph{binary} on Windows and some macOS builds,
+#' and \emph{source} on all others.
+#' If a package is installed from source and it contains code that needs compiling,
+#' you will need to have installed the Rtools collection as described in the \sQuote{R for Windows FAQ}
+#' and you must have the PATH environment variable set up as required by Rtools.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -136,11 +139,13 @@ RecreateLibrary <- function(file="R-packages.txt", lib=NULL,
   }
 
   # set the type of package to download and install
-  type <- ifelse(Sys.info()["sysname"] == "Windows", "win.binary", "source")
+  if (.Platform$OS.type == "windows")
+    type <- "win.binary"
+  else
+    type <- ifelse(Sys.info()["sysname"] == "Darwin", "mac.binary.el-capitan", "source")
 
   # update packages
-  if (is.null(snapshot) && !versions)
-    utils::update.packages(repos=repos, ask=FALSE, type=type)
+  if (!versions) utils::update.packages(repos=repos, ask=FALSE, type=type)
 
   # read package list
   pkgs <- utils::read.table(file, header=TRUE, sep="\t", colClasses="character",
