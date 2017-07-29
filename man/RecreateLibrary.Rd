@@ -34,15 +34,14 @@ A snapshot date can also be specified directly using the required date format, \
 This argument masks all CRAN mirrors in \code{repos}.}
 
 \item{versions}{'logical'.
-If true, package versions will be identical to versions stored in \code{file}.
-Only applies to packages from CRAN-like repositories.
+If true, installed package versions will be identical to version numbers stored in \code{file}.
+Only applies to packages from CRAN-like repositories and packages not already available under \code{lib}.
 Requires the \pkg{devtools} package is available,
 see \code{\link[devtools]{install_version}} function for details.}
 
 \item{github}{'logical'.
 If true, an attempt is made to install a subset packages from \href{https://github.com/}{GitHub}.
-Only applies to packages missing from the CRAN-like repositories (\code{repos}),
-and not alrady under \code{lib}.
+Only applies to packages missing from the CRAN-like repositories (\code{repos}).
 Requires the \pkg{githubinstall} package is available,
 see \code{\link[githubinstall]{gh_install_packages}} function for details.
 If you are installing a package that contains compiled code,
