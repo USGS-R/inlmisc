@@ -34,16 +34,19 @@ A snapshot date can also be specified directly using the required date format, \
 This argument masks all CRAN mirrors in \code{repos}.}
 
 \item{versions}{'logical'.
-If true, packages versions will be identical to the versions stored in \code{file}.
-Only applies to packages from CRAN-like reposoitories.
-Requires that the \pkg{devtools} package is available,
+If true, package versions will be identical to versions stored in \code{file}.
+Only applies to packages from CRAN-like repositories.
+Requires the \pkg{devtools} package is available,
 see \code{\link[devtools]{install_version}} function for details.}
 
 \item{github}{'logical'.
 If true, an attempt is made to install a subset packages from \href{https://github.com/}{GitHub}.
-Only applies to packages missing from the CRAN-like repositories (\code{repos}).
-Requires that the \pkg{githubinstall} package is available,
-see \code{\link[githubinstall]{gh_install_packages}} function for details.}
+Only applies to packages missing from the CRAN-like repositories (\code{repos}),
+and not alrady under \code{lib}.
+Requires the \pkg{githubinstall} package is available,
+see \code{\link[githubinstall]{gh_install_packages}} function for details.
+If you are installing a package that contains compiled code,
+you will need to have an R development environment installed.}
 
 \item{pkg}{'character'.
 One or more names of packages located under \code{lib}.
