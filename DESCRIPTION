@@ -25,6 +25,7 @@ Imports:
     rgeos
 Suggests:
     colorspace,
+    devtools,
     githubinstall,
     maptools,
     roxygen2,

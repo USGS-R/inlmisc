@@ -6,7 +6,8 @@
 \title{Recreate R Library}
 \usage{
 RecreateLibrary(file = "R-packages.txt", lib = NULL,
-  repos = getOption("repos"), snapshot = FALSE, github = FALSE)
+  repos = getOption("repos"), snapshot = FALSE, versions = FALSE,
+  github = FALSE)
 
 SavePackageNames(file = "R-packages.txt", lib = NULL, pkg = NULL)
 }
@@ -32,8 +33,14 @@ If true, the snapshot date is read from the first line of \code{file}.
 A snapshot date can also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
 This argument masks all CRAN mirrors in \code{repos}.}
 
+\item{versions}{'logical'.
+If true, packages versions will be identical to the versions stored in \code{file}.
+Only applies to packages from CRAN-like reposoitories.
+Requires that the \pkg{devtools} package is available,
+see \code{\link[devtools]{install_version}} function for details.}
+
 \item{github}{'logical'.
-If true, an attempt is made to install select packages from \href{https://github.com/}{GitHub}.
+If true, an attempt is made to install a subset packages from \href{https://github.com/}{GitHub}.
 Only applies to packages missing from the CRAN-like repositories (\code{repos}).
 Requires that the \pkg{githubinstall} package is available,
 see \code{\link[githubinstall]{gh_install_packages}} function for details.}

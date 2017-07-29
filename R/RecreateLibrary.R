@@ -19,8 +19,13 @@
 #'   If true, the snapshot date is read from the first line of \code{file}.
 #'   A snapshot date can also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
 #'   This argument masks all CRAN mirrors in \code{repos}.
+#' @param versions 'logical'.
+#'   If true, packages versions will be identical to the versions stored in \code{file}.
+#'   Only applies to packages from CRAN-like reposoitories.
+#'   Requires that the \pkg{devtools} package is available,
+#'   see \code{\link[devtools]{install_version}} function for details.
 #' @param github 'logical'.
-#'   If true, an attempt is made to install select packages from \href{https://github.com/}{GitHub}.
+#'   If true, an attempt is made to install a subset packages from \href{https://github.com/}{GitHub}.
 #'   Only applies to packages missing from the CRAN-like repositories (\code{repos}).
 #'   Requires that the \pkg{githubinstall} package is available,
 #'   see \code{\link[githubinstall]{gh_install_packages}} function for details.
@@ -67,7 +72,7 @@
 
 RecreateLibrary <- function(file="R-packages.txt", lib=NULL,
                             repos=getOption("repos"), snapshot=FALSE,
-                            github=FALSE) {
+                            versions=FALSE, github=FALSE) {
 
   if (is.null(lib)) lib <- .libPaths()[1]
 
@@ -145,8 +150,19 @@ RecreateLibrary <- function(file="R-packages.txt", lib=NULL,
   is_on_repos <- pkgs$Package %in% available_pkgs
 
   # install packages from cran-like repositories
-  if (any(is_on_repos))
-    utils::install.packages(pkgs$Package[is_on_repos], lib[1], repos=repos, type=type)
+  if (any(is_on_repos)) {
+    if (versions && requireNamespace("devtools", quietly=TRUE)) {
+      for (i in which(is_on_repos)) {
+        ans <- try(devtools::install_version(pkgs$Package[i], pkgs$Version[i], type=type), silent=TRUE)
+        if (inherits(ans, "try-error")) {
+          is_on_repos[i] <- FALSE
+          next
+        }
+      }
+    } else {
+      utils::install.packages(pkgs$Package[is_on_repos], lib[1], repos=repos, type=type)
+    }
+  }
 
   # install packages from github
   if (any(!is_on_repos) && github && requireNamespace("githubinstall", quietly=TRUE))
