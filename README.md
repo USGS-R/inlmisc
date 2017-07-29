@@ -19,7 +19,7 @@ Used to support packages and scripts written by researchers at the United States
 You can install the stable version from [CRAN](https://CRAN.R-project.org/package=inlmisc) using the following command:
 
 ```r
-install.packages("inlmisc")
+install.packages("inlmisc", dependencies = TRUE)
 ```
 
 Or use **devtools** to install the development version from GitHub.

@@ -5,7 +5,7 @@
 #' @param file 'character'.
 #'   Name of the file for reading (or writing) the list of package names.
 #'   For file names that do not contain an absolute path,
-#'   the name is assumed relative to the current working directory (see \code{\link{getwd}()} command).
+#'   the name is assumed relative to the current working directory [see \code{\link{getwd}()} command].
 #' @param lib 'character'.
 #'   The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}}),
 #'   or the library directory where to install packages.
@@ -29,8 +29,8 @@
 #'   Only applies to packages missing from the CRAN-like repositories (\code{repos}).
 #'   Requires that the \pkg{githubinstall} package is available,
 #'   see \code{\link[githubinstall]{gh_install_packages}} function.
-#'   If you are installing a package that contains compiled code,
-#'   you will need to have an R development environment installed.
+#' @param quiet 'logical'.
+#'   If true, reduce the amount of output.
 #' @param pkg 'character'.
 #'   One or more names of packages located under \code{lib}.
 #'   Only packages in \code{pkg}, and the packages that \code{pkg} depend on/link to/import/suggest,
@@ -51,6 +51,9 @@
 #' install the \R version that was available from CRAN on the
 #' \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 #'
+#' If you are installing a package that contains compiled code,
+#' you'll need to have an R development environment installed.
+#'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
 #' @seealso \code{\link[utils]{installed.packages}}, \code{\link[utils]{install.packages}}
@@ -64,7 +67,7 @@
 #' \dontrun{
 #' # Run on new version of R, and ensure 'inlmisc' package is available.
 #' repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
-#' if (requireNamespace("inlmisc", quietly = TRUE))
+#' if (!requireNamespace("inlmisc", quietly = TRUE))
 #'   utils::install.packages("inlmisc", repos = repos["CRAN"], dependencies = TRUE)
 #' inlmisc::RecreateLibrary(repos = repos)
 #' }
@@ -74,7 +77,7 @@
 
 RecreateLibrary <- function(file="R-packages.txt", lib=NULL,
                             repos=getOption("repos"), snapshot=FALSE,
-                            versions=FALSE, github=FALSE) {
+                            versions=FALSE, github=FALSE, quiet=FALSE) {
 
   if (is.null(lib)) lib <- .libPaths()[1]
 
@@ -90,7 +93,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=NULL,
   }
 
   # read meta data
-  meta <- readLines(file)
+  meta <- readLines(file, n=5)
   meta <- meta[substr(meta, 1, 2) == "# "]
   meta <- sub("# ", "", meta)
 
@@ -132,9 +135,12 @@ RecreateLibrary <- function(file="R-packages.txt", lib=NULL,
     repos <- c(repos, MRAN=url)
   }
 
-  # update packages
+  # set the type of package to download and install
   type <- ifelse(Sys.info()["sysname"] == "Windows", "win.binary", "source")
-  utils::update.packages(ask=FALSE, repos=repos, type=type)
+
+  # update packages
+  if (is.null(snapshot) && !versions)
+    utils::update.packages(repos=repos, ask=FALSE, type=type)
 
   # read package list
   pkgs <- utils::read.table(file, header=TRUE, sep="\t", colClasses="character",
@@ -155,20 +161,24 @@ RecreateLibrary <- function(file="R-packages.txt", lib=NULL,
   if (any(is_on_repos)) {
     if (versions && requireNamespace("devtools", quietly=TRUE)) {
       for (i in which(is_on_repos)) {
-        ans <- try(devtools::install_version(pkgs$Package[i], pkgs$Version[i], type=type), silent=TRUE)
+        if (pkgs$Package[i] %in% utils::installed.packages()[, "Package"])
+          next
+        ans <- try(devtools::install_version(pkgs$Package[i], pkgs$Version[i],
+                                             type=type, quiet=quiet), silent=TRUE)
         if (inherits(ans, "try-error")) {
           is_on_repos[i] <- FALSE
           next
         }
       }
     } else {
-      utils::install.packages(pkgs$Package[is_on_repos], lib[1], repos=repos, type=type)
+      utils::install.packages(pkgs$Package[is_on_repos], lib[1], repos=repos,
+                              type=type, quiet=quiet)
     }
   }
 
   # install packages from github
   if (any(!is_on_repos) && github && requireNamespace("githubinstall", quietly=TRUE))
-    githubinstall::gh_install_packages(pkgs$Package[!is_on_repos], lib=lib[1])
+    githubinstall::gh_install_packages(pkgs$Package[!is_on_repos], quiet=quiet, lib=lib[1])
 
   # warn about packages that could not be installed
   is <- !pkgs$Package %in% utils::installed.packages(lib, noCache=TRUE)[, "Package"]
@@ -227,7 +237,8 @@ SavePackageNames <- function(file="R-packages.txt", lib=NULL, pkg=NULL) {
 
   # write package list
   pkgs <- as.data.frame(pkgs, stringsAsFactors=FALSE)
-  suppressWarnings(utils::write.table(pkgs, file, append=TRUE, quote=FALSE, sep="\t", row.names=FALSE))
+  suppressWarnings(utils::write.table(pkgs, file, append=TRUE, quote=FALSE,
+                                      sep="\t", row.names=FALSE))
 
   cat(sprintf("Package list written to: \"%s\"\n", normalizePath(path.expand(file))))
 

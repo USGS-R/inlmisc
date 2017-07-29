@@ -7,7 +7,7 @@
 \usage{
 RecreateLibrary(file = "R-packages.txt", lib = NULL,
   repos = getOption("repos"), snapshot = FALSE, versions = FALSE,
-  github = FALSE)
+  github = FALSE, quiet = FALSE)
 
 SavePackageNames(file = "R-packages.txt", lib = NULL, pkg = NULL)
 }
@@ -15,7 +15,7 @@ SavePackageNames(file = "R-packages.txt", lib = NULL, pkg = NULL)
 \item{file}{'character'.
 Name of the file for reading (or writing) the list of package names.
 For file names that do not contain an absolute path,
-the name is assumed relative to the current working directory (see \code{\link{getwd}()} command).}
+the name is assumed relative to the current working directory [see \code{\link{getwd}()} command].}
 
 \item{lib}{'character'.
 The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}}),
@@ -43,9 +43,10 @@ see \code{\link[devtools]{install_version}} function.}
 If true, an attempt is made to install a subset packages from \href{https://github.com/}{GitHub}.
 Only applies to packages missing from the CRAN-like repositories (\code{repos}).
 Requires that the \pkg{githubinstall} package is available,
-see \code{\link[githubinstall]{gh_install_packages}} function.
-If you are installing a package that contains compiled code,
-you will need to have an R development environment installed.}
+see \code{\link[githubinstall]{gh_install_packages}} function.}
+
+\item{quiet}{'logical'.
+If true, reduce the amount of output.}
 
 \item{pkg}{'character'.
 One or more names of packages located under \code{lib}.
@@ -70,6 +71,9 @@ Note that newer versions of \R may not be compatible with older versions of pack
 To avoid any installation issues with packages,
 install the \R version that was available from CRAN on the
 \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
+
+If you are installing a package that contains compiled code,
+you'll need to have an R development environment installed.
 }
 \examples{
 # Run on old version of R
@@ -78,7 +82,7 @@ SavePackageNames()
 \dontrun{
 # Run on new version of R, and ensure 'inlmisc' package is available.
 repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
-if (requireNamespace("inlmisc", quietly = TRUE))
+if (!requireNamespace("inlmisc", quietly = TRUE))
   utils::install.packages("inlmisc", repos = repos["CRAN"], dependencies = TRUE)
 inlmisc::RecreateLibrary(repos = repos)
 }
