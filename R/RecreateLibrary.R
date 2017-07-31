@@ -13,7 +13,7 @@
 #'   Vector of base URL(s) of the CRAN-like repositories to use when installing packages.
 #'   For example, the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.
 #' @param snapshot 'logical', 'character', or 'Date'.
-#'   Calendar date for the CRAN snapshot in time,
+#'   Calendar date for a CRAN snapshot in time,
 #'   see the Microsoft R Application Network
 #'   (\href{https://mran.microsoft.com/timemachine/}{MRAN}) website for details.
 #'   If true, the snapshot date is read from the first line of \code{file}.
@@ -25,7 +25,7 @@
 #'   Requires that the \pkg{devtools} package is available,
 #'   see \code{\link[devtools]{install_version}} function.
 #' @param github 'logical'.
-#'   If true, an attempt is made to install a subset packages from \href{https://github.com/}{GitHub}.
+#'   If true, an attempt is made to install a subset packages from GitHub.
 #'   Only applies to packages missing from the CRAN-like repositories (\code{repos}).
 #'   Requires that the \pkg{githubinstall} package is available,
 #'   see \code{\link[githubinstall]{gh_install_packages}} function.
@@ -78,16 +78,9 @@
 #' @rdname RecreateLibrary
 #' @export
 
-RecreateLibrary <- function(file="R-packages.txt", lib=NULL,
+RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
                             repos=getOption("repos"), snapshot=FALSE,
                             versions=FALSE, github=FALSE, quiet=FALSE) {
-
-  if (is.null(lib)) lib <- .libPaths()[1]
-
-  # tidy url's for package repositories
-  is <- substr(repos, nchar(repos), nchar(repos)) != "/"
-  repos[is] <- paste0(repos[is], "/")
-  repos <- repos[!duplicated(repos)]
 
   # confirm file exists
   if (!file.exists(file)) {
@@ -119,6 +112,11 @@ RecreateLibrary <- function(file="R-packages.txt", lib=NULL,
       if (tolower(substr(ans, 1, 1)) == "n") return(invisible(NULL))
     }
   }
+
+  # tidy url's for package repositories
+  is <- substr(repos, nchar(repos), nchar(repos)) != "/"
+  repos[is] <- paste0(repos[is], "/")
+  repos <- repos[!duplicated(repos)]
 
   # configure repositories if snapshot date is specified
   if (is.character(snapshot)) {
@@ -198,9 +196,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=NULL,
 #' @rdname RecreateLibrary
 #' @export
 
-SavePackageNames <- function(file="R-packages.txt", lib=NULL, pkg=NULL) {
-
-  if (is.null(lib)) lib <- .libPaths()
+SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
 
   # get names of all packages under library tree(s)
   pkgs <- utils::installed.packages(lib, noCache=TRUE)

@@ -5,11 +5,11 @@
 \alias{SavePackageNames}
 \title{Recreate R Library}
 \usage{
-RecreateLibrary(file = "R-packages.txt", lib = NULL,
+RecreateLibrary(file = "R-packages.txt", lib = .libPaths()[1],
   repos = getOption("repos"), snapshot = FALSE, versions = FALSE,
   github = FALSE, quiet = FALSE)
 
-SavePackageNames(file = "R-packages.txt", lib = NULL, pkg = NULL)
+SavePackageNames(file = "R-packages.txt", lib = .libPaths(), pkg = NULL)
 }
 \arguments{
 \item{file}{'character'.
@@ -26,7 +26,7 @@ Vector of base URL(s) of the CRAN-like repositories to use when installing packa
 For example, the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.}
 
 \item{snapshot}{'logical', 'character', or 'Date'.
-Calendar date for the CRAN snapshot in time,
+Calendar date for a CRAN snapshot in time,
 see the Microsoft R Application Network
 (\href{https://mran.microsoft.com/timemachine/}{MRAN}) website for details.
 If true, the snapshot date is read from the first line of \code{file}.
@@ -40,7 +40,7 @@ Requires that the \pkg{devtools} package is available,
 see \code{\link[devtools]{install_version}} function.}
 
 \item{github}{'logical'.
-If true, an attempt is made to install a subset packages from \href{https://github.com/}{GitHub}.
+If true, an attempt is made to install a subset packages from GitHub.
 Only applies to packages missing from the CRAN-like repositories (\code{repos}).
 Requires that the \pkg{githubinstall} package is available,
 see \code{\link[githubinstall]{gh_install_packages}} function.}
