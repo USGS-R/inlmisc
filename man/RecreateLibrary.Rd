@@ -78,6 +78,12 @@ If a package is installed from source and it contains code that needs compiling,
 you will need to have installed the Rtools collection as described in the \sQuote{R for Windows FAQ}
 and you must have the PATH environment variable set up as required by Rtools.
 }
+\note{
+As an alternative to this function, see the
+\pkg{\href{https://CRAN.R-project.org/package=checkpoint}{checkpoint}} and
+\pkg{\href{https://CRAN.R-project.org/package=packrat}{packrat}} packages,
+both provide useful tools for dependency management in \R.
+}
 \examples{
 # Run on old version of R
 SavePackageNames()

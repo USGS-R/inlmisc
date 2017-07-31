@@ -57,6 +57,11 @@
 #' you will need to have installed the Rtools collection as described in the \sQuote{R for Windows FAQ}
 #' and you must have the PATH environment variable set up as required by Rtools.
 #'
+#' @note As an alternative to this function, see the
+#' \pkg{\href{https://CRAN.R-project.org/package=checkpoint}{checkpoint}} and
+#' \pkg{\href{https://CRAN.R-project.org/package=packrat}{packrat}} packages,
+#' both provide useful tools for dependency management in \R.
+#'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
 #' @seealso \code{\link[utils]{installed.packages}}, \code{\link[utils]{install.packages}}
