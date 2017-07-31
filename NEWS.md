@@ -1,5 +1,7 @@
 # inlmisc 0.2.7.9000
 
+- Add `Grid2Polygons` function from the **Grid2Polygons** package.
+
 - Total revision of the `RecreateLibrary` and `SavePackageNames` functions.
 
 - In `ToScientific` function, improve default value for `digits` argument.
