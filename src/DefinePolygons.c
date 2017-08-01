@@ -4,11 +4,11 @@
  * Defines polygon rings within a single level
  *
  * Arguments:
- * a: integer; array of start-nodes for each segment
- * b: integer; array of end-nodes for each segment
+ * a: 'integer'. Vector of start-nodes for each segment
+ * b: 'integer'. Vector of end-nodes for each segment
  *
  * Returns:
- * ans: integer; polygon rings defined by nodes and ring index
+ * c: 'integer'. Polygon rings defined by vector of nodes and ring
  */
 
 #include <R.h>

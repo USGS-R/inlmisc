@@ -1,4 +1,4 @@
-# inlmisc 0.2.7.9000
+# inlmisc 0.3.0
 
 - Add `Grid2Polygons` function from the **Grid2Polygons** package.
 

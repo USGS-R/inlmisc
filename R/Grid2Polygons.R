@@ -1,6 +1,6 @@
 #' Convert Spatial Grids to Polygons
 #'
-#' Converts \pkg{sp} spatial objects from class '\code{\link{SpatialGridDataFrame}}' to '\code{\link{SpatialPolygonsDataFrame}}'.
+#' This function converts \pkg{sp} spatial objects from class '\code{\link{SpatialGridDataFrame}}' to '\code{\link{SpatialPolygonsDataFrame}}'.
 #' Spatial polygons can then be transformed to a different projection or datum with \code{spTransform} in package \pkg{rgdal}.
 #' Image files created with spatial polygons are reduced in size and result in a much "cleaner" version of your image.
 #'
@@ -36,6 +36,9 @@
 #'   spatial polygons (\code{\link{SpatialPolygons-class}}), see \code{\link{polypath}} for more details.
 #'   The Trellis graphics model appears to rely on the traditional method so
 #'   use caution when plotting with \code{\link[sp]{spplot}}.
+#'
+#' @note As an alternative, consider using the \code{\link[raster]{rasterToPolygons}} function
+#'   in the \pkg{raster} package setting \code{dissolve = TRUE}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
