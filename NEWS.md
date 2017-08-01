@@ -1,8 +1,18 @@
+# inlmisc 0.3.0
+
+- Add `Grid2Polygons` function from the **Grid2Polygons** package.
+
+- Total revision of the `RecreateLibrary` and `SavePackageNames` functions.
+
+- In `ToScientific` function, improve default value for `digits` argument.
+
+- Add `AddGradientLegend` function, used to add a continuous color gradient legend strip to a plot.
+
 # inlmisc 0.2.7
 
-- Add function `RecreateLibrary`, used to recreate an existing library on a new installation of R.
+- Add `RecreateLibrary` function, used to recreate an existing library on a new installation of R.
 
-- Add function `FormatPval`, used to format *p*-values.
+- Add `FormatPval` function, used to format *p*-values.
 
 - Add **bm** and **makecell** packages to LaTeX preamble.
 

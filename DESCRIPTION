@@ -1,11 +1,11 @@
 Package: inlmisc
 Title: Miscellaneous Functions for the USGS INL Project Office
-Version: 0.2.7
+Version: 0.3.0
 Authors@R: person(given=c("Jason", "C."), family="Fisher", role=c("aut", "cre"), email="jfisher@usgs.gov")
 Description: A collection of functions for creating high-level graphics,
-    performing raster-based analysis, processing MODFLOW-based models, and
-    overlaying multi-polygon objects. Used to support packages and scripts written
-    by researchers at the United States Geological Survey (USGS)
+    performing raster-based analysis, processing MODFLOW-based models, etc.
+    Used to support packages and scripts written by researchers at the
+    United States Geological Survey (USGS)
     Idaho National Laboratory (INL) Project Office.
 Depends:
     R (>= 3.2.0)
@@ -13,6 +13,7 @@ Imports:
     dplyr,
     grDevices,
     graphics,
+    htmlwidgets,
     igraph,
     knitr,
     leaflet,
@@ -24,6 +25,8 @@ Imports:
     rgeos
 Suggests:
     colorspace,
+    devtools,
+    githubinstall,
     maptools,
     roxygen2,
     testthat

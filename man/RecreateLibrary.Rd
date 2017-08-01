@@ -2,42 +2,101 @@
 % Please edit documentation in R/RecreateLibrary.R
 \name{RecreateLibrary}
 \alias{RecreateLibrary}
+\alias{SavePackageNames}
 \title{Recreate R Library}
 \usage{
-RecreateLibrary(current_version = c("old", "new"), file = "packagelist.txt",
-  repos = getOption("repos"))
+RecreateLibrary(file = "R-packages.txt", lib = .libPaths()[1],
+  repos = getOption("repos"), snapshot = FALSE, versions = FALSE,
+  github = FALSE, quiet = FALSE)
+
+SavePackageNames(file = "R-packages.txt", lib = .libPaths(), pkg = NULL)
 }
 \arguments{
-\item{current_version}{'character'.
-Current version of the \R installation.
-Specify as \code{"old"} when running in the older installation,
-and \code{"new"} in the freshly installed version.}
-
 \item{file}{'character'.
-Name of the file for writing (or reading) the list of package names.}
+Name of the file for reading (or writing) the list of package names.
+For file names that do not contain an absolute path,
+the name is assumed relative to the current working directory [see \code{\link{getwd}()} command].}
+
+\item{lib}{'character'.
+The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}}),
+or the library directory where to install packages.}
 
 \item{repos}{'character'.
-Vector of base URL(s) of the repositories to use;
-only required if \code{current_version = "new"}.}
+Vector of base URL(s) of the CRAN-like repositories to use when installing packages.
+For example, the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.}
+
+\item{snapshot}{'logical', 'character', or 'Date'.
+Calendar date for a CRAN snapshot in time,
+see the Microsoft R Application Network
+(\href{https://mran.microsoft.com/timemachine/}{MRAN}) website for details.
+If true, the snapshot date is read from the first line of \code{file}.
+A snapshot date can also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
+This argument masks all CRAN mirrors in \code{repos}.}
+
+\item{versions}{'logical'.
+If true, installed package versions will be identical to version numbers stored in \code{file}.
+Only applies to packages from CRAN-like repositories and packages not already available under \code{lib}.
+Requires that the \pkg{devtools} package is available,
+see \code{\link[devtools]{install_version}} function.}
+
+\item{github}{'logical'.
+If true, an attempt is made to install a subset packages from GitHub.
+Only applies to packages missing from the CRAN-like repositories (\code{repos}).
+Requires that the \pkg{githubinstall} package is available,
+see \code{\link[githubinstall]{gh_install_packages}} function.}
+
+\item{quiet}{'logical'.
+If true, reduce the amount of output.}
+
+\item{pkg}{'character'.
+One or more names of packages located under \code{lib}.
+Only packages in \code{pkg}, and the packages that \code{pkg} depend on/link to/import/suggest,
+are included in the package-list file.}
 }
 \description{
-This function can be used to recreate an existing library on a new installation of \R.
+These functions can be used to recreate an existing library on a new installation of \R.
+}
+\details{
+A typical workflow is as follows:
+Run the \code{SavePackageNames()} command on an older version of \R.
+It will print to a text file a complete list of names for packages located under your current \R library tree(s).
+If no longer needed, uninstall the older version of \R.
+On a freshly installed version of \R, with the \pkg{inlmisc} package available,
+run the \code{RecreateLibrary()} command.
+It will download and install the packages listed in the text file (\code{file}).
+
+Daily snapshots of CRAN are stored on MRAN and available as far back as September 17, 2014.
+Use the \code{snapshot} argument to install packages from a daily snapshot of CRAN.
+Note that newer versions of \R may not be compatible with older versions of packages.
+To avoid any installation issues with packages,
+install the \R version that was available from CRAN on the
+\href{https://mran.microsoft.com/snapshot/}{snapshot date}.
+
+The type of package to download and install is \emph{binary} on Windows and some macOS builds,
+and \emph{source} on all others.
+If a package is installed from source and it contains code that needs compiling,
+you will need to have installed the Rtools collection as described in the \sQuote{R for Windows FAQ}
+and you must have the PATH environment variable set up as required by Rtools.
+}
+\note{
+As an alternative to this function, see the \pkg{checkpoint} and \pkg{packrat} packages,
+both provide useful tools for dependency management in \R.
 }
 \examples{
 # Run on old version of R
-RecreateLibrary()
+SavePackageNames()
 
 \dontrun{
-# Run on new version of R (assumes working directory has not changed)
-RecreateLibrary("new", repos = c(CRAN = "https://cloud.r-project.org/",
-                                 GRAN = "https://owi.usgs.gov/R"))
+# Run on new version of R, and ensure 'inlmisc' package is available.
+repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
+if (!requireNamespace("inlmisc", quietly = TRUE))
+  utils::install.packages("inlmisc", repos = repos["CRAN"], dependencies = TRUE)
+inlmisc::RecreateLibrary(repos = repos)
 }
-
-unlink("packagelist.txt")
 
 }
 \seealso{
-\code{\link[utils]{update.packages}}, \code{\link[utils]{install.packages}}
+\code{\link[utils]{installed.packages}}, \code{\link[utils]{install.packages}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

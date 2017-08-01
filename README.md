@@ -6,11 +6,12 @@
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
 [![](https://cranlogs.r-pkg.org/badges/inlmisc?color=brightgreen)](https://CRAN.R-project.org/package=inlmisc)
 [![CC0](https://img.shields.io/badge/license-CC0--1.0-brightgreen.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
+[![USGS Category](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
 
 ## Overview
 
 The [R](https://www.r-project.org/) package **inlmisc** is a collection of functions for creating high-level graphics,
-performing raster-based analysis, processing [MODFLOW](https://water.usgs.gov/ogw/modflow/)-based models, and overlaying multi-polygon objects.
+performing raster-based analysis, processing [MODFLOW](https://water.usgs.gov/ogw/modflow/)-based models, etc.
 Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
 [Idaho National Laboratory Project Office](http://id.water.usgs.gov/INL/ "INL Project Office").
 
@@ -19,7 +20,7 @@ Used to support packages and scripts written by researchers at the United States
 You can install the stable version from [CRAN](https://CRAN.R-project.org/package=inlmisc) using the following command:
 
 ```r
-install.packages("inlmisc")
+install.packages("inlmisc", dependencies = TRUE)
 ```
 
 Or use **devtools** to install the development version from GitHub.

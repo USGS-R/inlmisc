@@ -16,7 +16,7 @@ build:
 
 install: build
 	cd ..;\
-	R CMD INSTALL $(PKGNAME)_$(PKGVERS).tar.gz;\
+	R CMD INSTALL --build $(PKGNAME)_$(PKGVERS).tar.gz;\
 
 check:
 	cd ..;\

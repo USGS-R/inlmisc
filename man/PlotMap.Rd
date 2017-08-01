@@ -15,7 +15,7 @@ PlotMap(r, p = NULL, ..., layer = 1, att = NULL, n = NULL,
   useRaster)
 }
 \arguments{
-\item{r}{'Raster*', 'SpatialGridDataFrame', or 'CRS'.
+\item{r}{'Raster*', 'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'CRS'.
 An object that can be converted to a raster layer, or a coordinate reference system (CRS).}
 
 \item{p}{'SpatialPointsDataFrame'.

@@ -4,8 +4,7 @@
 \alias{ToScientific}
 \title{Format for Scientific Notation}
 \usage{
-ToScientific(x, digits = format.info(as.numeric(x))[2],
-  lab.type = c("latex", "plotmath"))
+ToScientific(x, digits = NULL, lab.type = c("latex", "plotmath"))
 }
 \arguments{
 \item{x}{'numeric'.
@@ -33,6 +32,9 @@ This function formats numbers in scientific notation \eqn{m \times 10^{n}}.
 x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
 ToScientific(x, digits = 2)
 ToScientific(x, digits = 2, lab.type = "plotmath")
+
+x <- seq(0, 2e+06, length.out = 5)
+ToScientific(x)
 
 }
 \author{

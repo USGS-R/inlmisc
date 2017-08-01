@@ -28,9 +28,11 @@
 #' ToScientific(x, digits = 2)
 #' ToScientific(x, digits = 2, lab.type = "plotmath")
 #'
+#' x <- seq(0, 2e+06, length.out = 5)
+#' ToScientific(x)
+#'
 
-ToScientific <- function(x, digits=format.info(as.numeric(x))[2],
-                         lab.type=c("latex", "plotmath")) {
+ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath")) {
 
   lab.type <- match.arg(lab.type)
   x[is.zero <- x == 0] <- NA
@@ -39,7 +41,11 @@ ToScientific <- function(x, digits=format.info(as.numeric(x))[2],
   m <- rep(NA, length(x))
   n <- m
   n[idxs] <- floor(log(abs(x[idxs]), 10))
-  m[idxs] <- sprintf("%0.*f", digits, x[idxs] / 10^n[idxs])
+  m[idxs] <- x[idxs] / 10^n[idxs]
+
+  if (is.null(digits)) digits <- format.info(m[idxs])[2]
+
+  m[idxs] <- sprintf("%0.*f", digits, m[idxs])
   if (lab.type == "latex") {
     s <- rep(NA, length(x))
     s[idxs] <- sprintf("$%s \\times 10^{%d}$", m[idxs], n[idxs])

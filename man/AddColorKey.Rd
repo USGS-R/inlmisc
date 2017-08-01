@@ -61,6 +61,8 @@ AddColorKey(is.categorical = FALSE, breaks = seq(0.5, 10.5, by = 1), at = 1:10)
 AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
 AddColorKey(is.categorical = TRUE, col = terrain.colors(5))
 
+dev.off()
+
 }
 \seealso{
 \code{\link{PlotCrossSection}}, \code{\link{PlotMap}}

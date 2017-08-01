@@ -51,6 +51,8 @@
 #' AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
 #' AddColorKey(is.categorical = TRUE, col = terrain.colors(5))
 #'
+#' dev.off()
+#'
 
 AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
                         scientific=FALSE, explanation=NULL, padx=0.2) {
