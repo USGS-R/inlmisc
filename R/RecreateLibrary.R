@@ -37,7 +37,7 @@
 #'   are included in the package-list file.
 #'
 #' @details A typical workflow is as follows:
-#' Run the \code{SavePackageNames()} command on an older version of \R.
+#' Run the \code{SavePackageInfo()} command on an older version of \R.
 #' It will print to a text file a complete list of names for packages located under your current \R library tree(s).
 #' If no longer needed, uninstall the older version of \R.
 #' On a freshly installed version of \R, with the \pkg{inlmisc} package available,
@@ -68,7 +68,7 @@
 #'
 #' @examples
 #' # Run on old version of R
-#' SavePackageNames()
+#' SavePackageInfo()
 #'
 #' \dontrun{
 #' # Run on new version of R, and ensure 'inlmisc' package is available.
@@ -199,7 +199,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
 #' @rdname RecreateLibrary
 #' @export
 
-SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
+SavePackageInfo <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
 
   # get names of all packages under library tree(s)
   pkgs <- utils::installed.packages(lib, noCache=TRUE)

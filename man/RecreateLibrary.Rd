@@ -2,14 +2,14 @@
 % Please edit documentation in R/RecreateLibrary.R
 \name{RecreateLibrary}
 \alias{RecreateLibrary}
-\alias{SavePackageNames}
+\alias{SavePackageInfo}
 \title{Recreate R Library}
 \usage{
 RecreateLibrary(file = "R-packages.txt", lib = .libPaths()[1],
   repos = getOption("repos"), snapshot = FALSE, versions = FALSE,
   github = FALSE, quiet = FALSE)
 
-SavePackageNames(file = "R-packages.txt", lib = .libPaths(), pkg = NULL)
+SavePackageInfo(file = "R-packages.txt", lib = .libPaths(), pkg = NULL)
 }
 \arguments{
 \item{file}{'character'.
@@ -58,7 +58,7 @@ These functions can be used to recreate an existing library on a new installatio
 }
 \details{
 A typical workflow is as follows:
-Run the \code{SavePackageNames()} command on an older version of \R.
+Run the \code{SavePackageInfo()} command on an older version of \R.
 It will print to a text file a complete list of names for packages located under your current \R library tree(s).
 If no longer needed, uninstall the older version of \R.
 On a freshly installed version of \R, with the \pkg{inlmisc} package available,
@@ -84,7 +84,7 @@ both provide useful tools for dependency management in \R.
 }
 \examples{
 # Run on old version of R
-SavePackageNames()
+SavePackageInfo()
 
 \dontrun{
 # Run on new version of R, and ensure 'inlmisc' package is available.
