@@ -1,6 +1,6 @@
 # inlmisc 0.3.0.9000
 
-- ...
+- In `AddGradientLegend` function, add `n` argument, the desired number of tick-marks to be drawn.
 
 # inlmisc 0.3.0
 
