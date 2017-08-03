@@ -47,7 +47,7 @@
 #' Daily snapshots of CRAN are stored on MRAN and available as far back as September 17, 2014.
 #' Use the \code{snapshot} argument to install packages from a daily snapshot of CRAN.
 #' Newer versions of \R may not be compatible with older versions of packages.
-#' To avoid any installation issues with packages,
+#' To avoid any package installation issues,
 #' install the \R version that was available from CRAN on the
 #' \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 #'
