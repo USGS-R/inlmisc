@@ -34,11 +34,10 @@ A snapshot date can also be specified directly using the required date format, \
 This argument masks all CRAN mirrors in \code{repos}.}
 
 \item{local}{'character'.
-Vector of directories to install from local files.
-These are files containing binary builds of packages,
-\file{.zip} files on Windows and \file{.tgz} on macOS.
-Source files (\file{.tar.gz}) may also be installed, but may need suitable tools installed,
-see \sQuote{Details} section.}
+Vector of paths to local directories.
+Packages are installed from local files in these directories.
+Files can contain binary builds of packages (\file{.zip} on Windows and \file{.tgz} on macOS)
+or be source packages (\file{.tar.gz}).}
 
 \item{versions}{'logical'.
 If true, installed package versions will be identical to version numbers stored in \code{file}.
