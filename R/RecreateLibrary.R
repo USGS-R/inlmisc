@@ -20,7 +20,8 @@
 #'   A snapshot date can also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
 #'   This argument masks all CRAN mirrors in \code{repos}.
 #' @param local 'character'.
-#'   Vector of local file paths of files containing binary builds of packages,
+#'   Vector of directories to install from local files.
+#'   These are files containing binary builds of packages,
 #'   \file{.zip} files on Windows and \file{.tgz} on macOS.
 #'   Source files (\file{.tar.gz}) may also be installed, but may need suitable tools installed,
 #'   see \sQuote{Details} section.
@@ -165,49 +166,42 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
 
   # install packages from local files
   if (!is.null(local)) {
-
-    if (!all(is <- (file.info(local)$isdir %in% TRUE))) {
-      msg <- sprintf("The following local directories do not exist:\n %s",
-                     paste(local[!is], collapse="\n "))
-      warning(msg)
-      local <- local[is]
+    if (!all(is <- (file.info(local)$isdir %in% TRUE)))
+      stop(sprintf("The following local directories do not exist:\n %s",
+                   paste(local[!is], collapse="\n ")))
+    ext <- "tar.gz"
+    if (.Platform$OS.type == "windows") {
+      ext <- c(ext, "zip")
+    } else if (Sys.info()["sysname"] == "Darwin") {
+      ext <- c(ext, "tgz")
     }
-    if (length(local) > 0) {
+    path <- normalizePath(list.files(local, full.names=TRUE), winslash="/")
+    path <- path[grepl(paste(sprintf("\\.%s$", ext), collapse="|"), path)]
+    path <- path[grepl("_[0-9]", basename(path))]
+    name <- basename(tools::file_path_sans_ext(path, compression=TRUE))
+    if (versions) {
+      path <- path[name %in% sprintf("%s_%s", pkgs$Package, pkgs$Version)]
+      path <- path[order(basename(path), decreasing=TRUE)]
+      nam <- unlist(lapply(strsplit(basename(path), "_"), function(x) x[1]))
+      path <- path[!duplicated(nam)]
+    } else {
+      txt <- strsplit(name, "_")
+      nam <- unlist(lapply(txt, function(x) x[1]))
+      ver <- unlist(lapply(txt, function(x) x[2]))
+      ext <- tools::file_ext(path)
+      path <- path[order(nam, ver, ext, decreasing=TRUE)]
+      nam <- unlist(lapply(strsplit(basename(path), "_"), function(x) x[1]))
+      path <- path[!duplicated(nam) & nam %in% pkgs$Package]
+    }
+    if (length(path) == 0) {
+      stop("No package-installation files were found under local directories.")
+    } else {
+      utils::install.packages(path, lib[1], repos=NULL, quiet=quiet)
 
-      # file paths for packages in local directories
-      ext <- "tar.gz"
-      if (.Platform$OS.type == "windows") {
-        ext <- c(ext, "zip")
-      } else if (Sys.info()["sysname"] == "Darwin") {
-        ext <- c(ext, "tgz")
-      }
-      path <- normalizePath(list.files(local, full.names=TRUE), winslash="/")
-      path <- path[grepl(paste(sprintf("\\.%s$", ext), collapse="|"), path)]
-      path <- path[grepl("_[0-9]", basename(path))]
-      name <- basename(tools::file_path_sans_ext(path, compression=TRUE))
-      if (versions) {
-        path <- path[name %in% sprintf("%s_%s", pkgs$Package, pkgs$Version)]
-        path <- path[order(basename(path), decreasing=TRUE)]
-        nam <- unlist(lapply(strsplit(basename(path), "_"), function(x) x[1]))
-        path <- path[!duplicated(nam)]
-      } else {
-        txt <- strsplit(name, "_")
-        nam <- unlist(lapply(txt, function(x) x[1]))
-        ver <- unlist(lapply(txt, function(x) x[2]))
-        ext <- tools::file_ext(path)
-        path <- path[order(nam, ver, ext, decreasing=TRUE)]
-        nam <- unlist(lapply(strsplit(basename(path), "_"), function(x) x[1]))
-        path <- path[!duplicated(nam) & nam %in% pkgs$Package]
-      }
-      if (length(path) > 0) {
-
-        utils::install.packages(path, lib[1], repos=NULL, quiet=quiet)
-
-        # filter out packages that were installed from local files
-        installed_pkgs <- utils::installed.packages(lib, noCache=TRUE)[, "Package"]
-        pkgs <- pkgs[!pkgs$Package %in% installed_pkgs, , drop=FALSE]
-        if (nrow(pkgs) == 0) return(invisible(NULL))
-      }
+      # filter out packages that were installed from local files
+      installed_pkgs <- utils::installed.packages(lib, noCache=TRUE)[, "Package"]
+      pkgs <- pkgs[!pkgs$Package %in% installed_pkgs, , drop=FALSE]
+      if (nrow(pkgs) == 0) return(invisible(NULL))
     }
   }
 
