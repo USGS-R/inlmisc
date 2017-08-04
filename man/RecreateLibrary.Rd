@@ -6,8 +6,8 @@
 \title{Recreate R Library}
 \usage{
 RecreateLibrary(file = "R-packages.txt", lib = .libPaths()[1],
-  repos = getOption("repos"), snapshot = FALSE, versions = FALSE,
-  github = FALSE, quiet = FALSE)
+  repos = getOption("repos"), snapshot = FALSE, local = NULL,
+  versions = FALSE, github = FALSE, quiet = FALSE)
 
 SavePackageNames(file = "R-packages.txt", lib = .libPaths(), pkg = NULL)
 }
@@ -33,15 +33,21 @@ If true, the snapshot date is read from the first line of \code{file}.
 A snapshot date can also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
 This argument masks all CRAN mirrors in \code{repos}.}
 
+\item{local}{'character'.
+Vector of local file paths of files containing binary builds of packages,
+\file{.zip} files on Windows and \file{.tgz} on macOS.
+Source files (\file{.tar.gz}) may also be installed, but may need suitable tools installed,
+see \sQuote{Details} section.}
+
 \item{versions}{'logical'.
 If true, installed package versions will be identical to version numbers stored in \code{file}.
-Only applies to packages from CRAN-like repositories and packages not already available under \code{lib}.
+Only applies to packages from CRAN-like repositories and local files.
 Requires that the \pkg{devtools} package is available,
 see \code{\link[devtools]{install_version}} function.}
 
 \item{github}{'logical'.
 If true, an attempt is made to install a subset packages from GitHub.
-Only applies to packages missing from the CRAN-like repositories (\code{repos}).
+Only applies to packages missing from the CRAN-like repositories, see \code{repos} argument.
 Requires that the \pkg{githubinstall} package is available,
 see \code{\link[githubinstall]{gh_install_packages}} function.}
 
