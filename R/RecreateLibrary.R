@@ -36,6 +36,8 @@
 #'   Only applies to packages missing from the CRAN-like repositories, see \code{repos} argument.
 #'   Requires that the \pkg{githubinstall} package is available,
 #'   see \code{\link[githubinstall]{gh_install_packages}} function.
+#'   Locating \R packages hosted on GitHub using only the package name can be difficult.
+#'   The user will be prompted with suggested repository names to identify the correct package to install.
 #' @param quiet 'logical'.
 #'   If true, reduce the amount of output.
 #' @param pkg 'character'.
@@ -64,7 +66,9 @@
 #' you will need to have installed the Rtools collection as described in the \sQuote{R for Windows FAQ}
 #' and you must have the PATH environment variable set up as required by Rtools.
 #'
-#' @note As an alternative to this function, see the \pkg{checkpoint} and \pkg{packrat} packages,
+#' @note This method does not offer 100 percent reproducibility of existing \R libraries.
+#' Two alternative methods that offer better reproducibility are available using the
+#' \pkg{checkpoint} and \pkg{packrat} packages,
 #' both provide useful tools for dependency management in \R.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
