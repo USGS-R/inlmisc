@@ -1,6 +1,8 @@
 #' Recreate R Library
 #'
 #' These functions can be used to recreate an existing library on a new installation of \R.
+#' The \code{SavePackageNames} function writes the details of installed packages to a file.
+#' And the \code{RecreateLibrary} function reads this file and installs any \sQuote{missing} packages.
 #'
 #' @param file 'character'.
 #'   Name of the file for reading (or writing) the list of package names.

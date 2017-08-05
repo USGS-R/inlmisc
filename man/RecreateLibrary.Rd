@@ -61,6 +61,8 @@ are included in the package-list file.}
 }
 \description{
 These functions can be used to recreate an existing library on a new installation of \R.
+The \code{SavePackageNames} function writes the details of installed packages to a file.
+And the \code{RecreateLibrary} function reads this file and installs any \sQuote{missing} packages.
 }
 \details{
 A typical workflow is as follows:
