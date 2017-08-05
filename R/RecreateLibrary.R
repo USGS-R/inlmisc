@@ -69,7 +69,7 @@
 #' @note This method does not offer 100 percent reproducibility of existing \R libraries.
 #' Two alternative methods that offer better reproducibility are available using the
 #' \pkg{checkpoint} and \pkg{packrat} packages,
-#' both provide useful tools for dependency management in \R.
+#' both provide tools for dependency management in \R.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

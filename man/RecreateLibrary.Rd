@@ -92,7 +92,7 @@ and you must have the PATH environment variable set up as required by Rtools.
 This method does not offer 100 percent reproducibility of existing \R libraries.
 Two alternative methods that offer better reproducibility are available using the
 \pkg{checkpoint} and \pkg{packrat} packages,
-both provide useful tools for dependency management in \R.
+both provide tools for dependency management in \R.
 }
 \examples{
 # Run on old version of R
