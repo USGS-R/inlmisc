@@ -93,8 +93,8 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
 
   # confirm file exists
   if (!file.exists(file)) {
-    msg <- paste("Can't find package-list file:", normalizePath(path.expand(file)))
-    stop(msg)
+    msg <- sprintf("Can't find package-list file:\n %s", normalizePath(path.expand(file)))
+    stop(msg, call.=FALSE)
   }
 
   # read meta data
@@ -137,9 +137,9 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
   }
   if (inherits(snapshot, "Date")) {
     if (is.na(snapshot))
-      stop("Problem with snapshot date format.")
+      stop("Problem with snapshot date format.", call.=FALSE)
     if (snapshot < as.Date("2014-09-17"))
-      stop("Daily CRAN snapshots only go back as far as September 17, 2014.")
+      stop("Daily CRAN snapshots only go back as far as September 17, 2014.", call.=FALSE)
     repos <- repos[!repos %in% utils::getCRANmirrors(all=TRUE)$URL]
     url <- sprintf("https://mran.revolutionanalytics.com/snapshot/%s/", snapshot)
     repos <- c(repos, MRAN=url)
@@ -165,9 +165,11 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
 
   # install packages from local files
   if (!is.null(local)) {
-    if (!all(is <- (file.info(local)$isdir %in% TRUE)))
-      stop(sprintf("The following local directories do not exist:\n %s",
-                   paste(local[!is], collapse="\n ")))
+    if (!all(is <- (file.info(local)$isdir %in% TRUE))) {
+      msg <- sprintf("The following local directories do not exist:\n %s",
+                     paste(local[!is], collapse="\n "))
+      stop(msg, call.=FALSE)
+    }
     ext <- "tar.gz"
     if (.Platform$OS.type == "windows") {
       ext <- c(ext, "zip")
@@ -192,9 +194,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
       nam <- unlist(lapply(strsplit(basename(path), "_"), function(x) x[1]))
       path <- path[!duplicated(nam) & nam %in% pkgs$Package]
     }
-    if (length(path) == 0) {
-      stop("No package-installation files were found under local directories.")
-    } else {
+    if (length(path) > 0) {
       utils::install.packages(path, lib[1], repos=NULL, quiet=quiet)
 
       # filter out packages that were installed from local files
@@ -235,8 +235,9 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
   # warn about packages that could not be installed
   is <- !pkgs$Package %in% utils::installed.packages(lib, noCache=TRUE)[, "Package"]
   if (any(is)) {
-    fmt <- "\nThe following packages could not be installed:\n    %s\n"
-    warning(sprintf(fmt, paste(pkgs$Package[is], collapse=", ")))
+    msg <- sprintf("The following packages could not be installed:\n %s\n",
+                   paste(pkgs$Package[is], collapse=", "))
+    warning(msg, call.=FALSE)
   }
 
   invisible(NULL)
@@ -259,9 +260,8 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
   # subset packages based on specified package(s)
   if (!is.null(pkg)) {
     if(any(is <- !pkg %in% pkgs[, "Package"])) {
-      fmt <- "Missing 'pkg' values in library: %s"
-      msg <- sprintf(fmt, paste(pkg[is], collapse=", "))
-      stop(msg)
+      msg <- sprintf("Missing 'pkg' values in library: %s", paste(pkg[is], collapse=", "))
+      stop(msg, call.=FALSE)
     }
     FUN <- function(i) {
       x <- utils::packageDescription(i, lib)
@@ -290,7 +290,8 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
   suppressWarnings(utils::write.table(pkgs, file, append=TRUE, quote=FALSE,
                                       sep="\t", row.names=FALSE))
 
-  cat(sprintf("Package list written to: \"%s\"\n", normalizePath(path.expand(file))))
+  msg <- sprintf("Package list written to:\n %s", normalizePath(path.expand(file)))
+  message(msg)
 
   invisible(NULL)
 }
