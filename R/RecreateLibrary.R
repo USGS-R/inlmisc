@@ -159,8 +159,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
                             stringsAsFactors=FALSE)
 
   # filter out packages that are already installed
-  installed_pkgs <- utils::installed.packages(lib, noCache=TRUE)[, "Package"]
-  pkgs <- pkgs[!pkgs$Package %in% installed_pkgs, , drop=FALSE]
+  pkgs <- pkgs[!.IsPackageInstalled(pkgs$Package, lib), , drop=FALSE]
   if (nrow(pkgs) == 0) return(invisible(NULL))
 
   # install packages from local files
@@ -198,8 +197,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
       utils::install.packages(path, lib[1], repos=NULL, quiet=quiet)
 
       # filter out packages that were installed from local files
-      installed_pkgs <- utils::installed.packages(lib, noCache=TRUE)[, "Package"]
-      pkgs <- pkgs[!pkgs$Package %in% installed_pkgs, , drop=FALSE]
+      pkgs <- pkgs[!.IsPackageInstalled(pkgs$Package, lib), , drop=FALSE]
       if (nrow(pkgs) == 0) return(invisible(NULL))
     }
   }
@@ -213,8 +211,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
   if (any(is_on_repos)) {
     if (versions && requireNamespace("devtools", quietly=TRUE)) {
       for (i in which(is_on_repos)) {
-        if (pkgs$Package[i] %in% utils::installed.packages()[, "Package"])
-          next
+        if (.IsPackageInstalled(pkgs$Package[i], lib)) next
         ans <- try(devtools::install_version(pkgs$Package[i], pkgs$Version[i],
                                              type=type, quiet=quiet), silent=TRUE)
         if (inherits(ans, "try-error")) {
@@ -233,8 +230,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
     githubinstall::gh_install_packages(pkgs$Package[!is_on_repos], quiet=quiet, lib=lib[1])
 
   # warn about packages that could not be installed
-  is <- !pkgs$Package %in% utils::installed.packages(lib, noCache=TRUE)[, "Package"]
-  if (any(is)) {
+  if (any(is <- !.IsPackageInstalled(pkgs$Package, lib))) {
     msg <- sprintf("The following packages could not be installed:\n %s\n",
                    paste(pkgs$Package[is], collapse=", "))
     warning(msg, call.=FALSE)
@@ -294,4 +290,19 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
   message(msg)
 
   invisible(NULL)
+}
+
+#' Check whether Package is Installed
+#'
+#' @param x 'character'.
+#'   Vector of package names
+#' @param lib 'character'.
+#'   Vector of library tree(s)
+#'
+#' @return A 'logical' vector
+#'
+
+.IsPackageInstalled <- function(x, lib) {
+  FUN <- function(i) {system.file(package=i, lib.loc=lib) != ""}
+  return(vapply(x, FUN, TRUE))
 }
