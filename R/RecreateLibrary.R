@@ -71,9 +71,9 @@
 #' \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 #'
 #' @note This method does not offer 100 percent reproducibility of existing \R libraries.
-#' Two alternative methods that offer better reproducibility are available using the
-#' \pkg{checkpoint} and \pkg{packrat} packages,
-#' both provide tools for dependency management in \R.
+#' Alternative methods, that offer better reproducibility, are available using the
+#' \pkg{checkpoint} and \pkg{packrat} packages;
+#' both of which provide robust tools for dependency management in \R.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

@@ -94,9 +94,9 @@ install the \R version that was available from CRAN on the
 }
 \note{
 This method does not offer 100 percent reproducibility of existing \R libraries.
-Two alternative methods that offer better reproducibility are available using the
-\pkg{checkpoint} and \pkg{packrat} packages,
-both provide tools for dependency management in \R.
+Alternative methods, that offer better reproducibility, are available using the
+\pkg{checkpoint} and \pkg{packrat} packages;
+both of which provide robust tools for dependency management in \R.
 }
 \examples{
 # Run on old version of R
