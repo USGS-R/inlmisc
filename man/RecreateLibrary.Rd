@@ -75,18 +75,22 @@ On a freshly installed version of \R, with the \pkg{inlmisc} package available,
 run the \code{RecreateLibrary()} command.
 It will download and install the packages listed in the text file (\code{file}).
 
+The type of package to download and install from CRAN-like repositories is
+\emph{binary} on Windows and some macOS builds, and \emph{source} on all others.
+Package installation from a GitHub repository or local \file{.tar.gz} file is always a source installation.
+If a package is installed from source, and it contains code that needs compiling,
+you must have a working development environment.
+On Windows, install the \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} collection
+and have the PATH environment variable set up as required by Rtools.
+On macOS, install Xcode from the Mac App Store.
+And on Linux, install a compiler and various development libraries.
+
 Daily snapshots of CRAN are stored on MRAN and available as far back as September 17, 2014.
 Use the \code{snapshot} argument to install packages from a daily snapshot of CRAN.
 Newer versions of \R may not be compatible with older versions of packages.
 To avoid any package installation issues,
 install the \R version that was available from CRAN on the
 \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
-
-The type of package to download and install is \emph{binary} on Windows and some macOS builds,
-and \emph{source} on all others.
-If a package is installed from source and it contains code that needs compiling,
-you will need to have installed the Rtools collection as described in the \sQuote{R for Windows FAQ}
-and you must have the PATH environment variable set up as required by Rtools.
 }
 \note{
 This method does not offer 100 percent reproducibility of existing \R libraries.
