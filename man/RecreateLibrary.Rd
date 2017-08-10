@@ -51,7 +51,8 @@ Only applies to packages missing from the CRAN-like repositories, see \code{repo
 Requires that the \pkg{githubinstall} package is available,
 see \code{\link[githubinstall]{gh_install_packages}} function.
 Locating \R packages hosted on GitHub using only the package name can be difficult.
-The user will be prompted with suggested repository names to identify the correct package to install.}
+The user will be prompted with suggested repository names to identify the correct package to install.
+Package vignettes are not built using this option.}
 
 \item{quiet}{'logical'.
 If true, reduce the amount of output.}
@@ -93,10 +94,18 @@ install the \R version that was available from CRAN on the
 \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 }
 \note{
-This method does not offer 100 percent reproducibility of existing \R libraries.
+This package-installation method does not offer 100 percent reproducibility of existing \R libraries.
 Alternative methods, that offer better reproducibility, are available using the
 \pkg{checkpoint} and \pkg{packrat} packages;
 both of which provide robust tools for dependency management in \R.
+
+If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
+"Installation failed: Peer certificate cannot be authenticated with given CA certificates."
+The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
+A workaround for this error is to download the DOI certificate file
+\file{\href{http:://sslhelp.doi.net/docs/DOIRootCA2.cer}{DOIRootCA2.cer}}
+to your working directory [see \code{\link{getwd}()} command].
+Then run the following command: \code{httr::set_config(httr::config(cainfo = "~/DOIRootCA2.cer"))}.
 }
 \examples{
 # Run on old version of R

@@ -1,5 +1,7 @@
 # inlmisc 0.3.0.9000
 
+- Make **httr** a suggested package.
+
 - In `RecreateLibrary` function, add `local` argument, file paths of files containing builds of packages.
 
 - In `AddGradientLegend` function, add `n` argument, the desired number of tick-marks to be drawn.

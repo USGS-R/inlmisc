@@ -27,6 +27,7 @@ Suggests:
     colorspace,
     devtools,
     githubinstall,
+    httr,
     maptools,
     roxygen2,
     testthat
