@@ -101,11 +101,8 @@ both of which provide robust tools for dependency management in \R.
 
 If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
 "Installation failed: Peer certificate cannot be authenticated with given CA certificates."
-The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
-A workaround for this error is to download the DOI certificate file
-\file{\href{http:://sslhelp.doi.net/docs/DOIRootCA2.cer}{DOIRootCA2.cer}}
-to your working directory [see \code{\link{getwd}()} command].
-Then run the following command: \code{httr::set_config(httr::config(cainfo = "~/DOIRootCA2.cer"))}.
+This error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
+A workaround for this error is to run the \code{\link{AddCertificate}()} command.
 }
 \examples{
 # Run on old version of R

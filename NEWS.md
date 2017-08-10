@@ -1,5 +1,7 @@
 # inlmisc 0.3.0.9000
 
+- Add `AddCertificate` function, used to add a X.509 certificate to your CA bundle.
+
 - Make **httr** a suggested package.
 
 - In `RecreateLibrary` function, add `local` argument, file paths of files containing builds of packages.
