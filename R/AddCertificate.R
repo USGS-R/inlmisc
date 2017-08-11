@@ -7,11 +7,8 @@
 #'
 #' @param file 'character'.
 #'   Path of file containing the X.509 certificate.
-#'   Its default is the path to the U.S. Department of Interior (DOI) certificate file;
-#'   you must be affiliated with the DOI to access this file.
 #' @param header 'character'.
-#'   Header line(s) to identify the certificate (optional);
-#'   specify as \code{NULL} to exclude this metadata.
+#'   Header line to identify the certificate (optional).
 #'
 #' @note This function must be used on Windows and requires access to the \pkg{httr} package.
 #'
@@ -22,42 +19,43 @@
 #' @export
 #'
 #' @examples
+#' # Add the U.S. Department of Interior (DOI) certificate:
 #' \dontrun{
-#' AddCertificate()
+#' AddCertificate(file = "http://sslhelp.doi.net/docs/DOIRootCA2.cer",
+#'                header = "DOI Root CA 2")
 #' }
 #'
 
-AddCertificate <- function(file="http://sslhelp.doi.net/docs/DOIRootCA2.cer",
-                           header="DOI Root CA 2") {
+AddCertificate <- function(file, header=NULL) {
 
   if (.Platform$OS.type != "windows")
-    stop("Only implemented on Windows", call.=FALSE)
+    stop("Only implemented on Windows operating system.", call.=FALSE)
 
   if (!requireNamespace("httr", quietly=TRUE))
     stop("Requires access to the 'httr' package.", call.=FALSE)
 
   if (!file.exists(file) || httr::http_error(file))
-    stop("Invalid certificate file or access denied.", call.=FALSE)
+    stop("Invalid certificate or access denied.", call.=FALSE)
 
-  text <- readLines(file)
+  certificate <- readLines(file)
 
   env <- Sys.getenv("CURL_CA_BUNDLE")
   if (env == "")
-    certificates <- system.file("cacert.pem", package="openssl", mustWork=TRUE)
+    bundle <- system.file("cacert.pem", package="openssl", mustWork=TRUE)
   else
-    certificates <- env
-  if (!file.exists(certificates))
+    bundle <- env
+  if (!file.exists(bundle))
     stop("Can not locate certificates bundle.", call.=FALSE)
 
-  if (all(text %in% readLines(certificates))) {
-    message("Certificate already appended")
+  if (all(certificate %in% readLines(bundle))) {
+    message("Certificate already added to CA bundle.")
   } else {
     if (!is.null(header))
       header <- c(header, paste(rep("=", nchar(header)), collapse=""))
-    text <- c("", header, text)
-    cat(text, file=certificates, sep="\n", append=TRUE)
+    certificate <- c("", header, certificate)
+    cat(certificate, file=bundle, sep="\n", append=TRUE)
     message("Certificate added to the CA bundle:\n ",
-            normalizePath(certificates))
+            normalizePath(bundle))
   }
 
   invisible(NULL)
