@@ -7,9 +7,11 @@
 #'
 #' @param file 'character'.
 #'   Path of file containing the X.509 certificate.
-#'   Its default value is for the U.S. Department of Interior (DOI) certificate.
+#'   Its default is the path to the U.S. Department of Interior (DOI) certificate file.
+#'   To access this file you must be affiliated with the DOI.
 #' @param header 'character'.
-#'   Header line for certificate, neglected if \code{NULL}.
+#'   Header line(s) to identify the certificate (optional);
+#'   specify as \code{NULL} to exclude this metadata.
 #'
 #' @note This function must be used on Windows and requires access to the \pkg{httr} package.
 #'
@@ -34,8 +36,8 @@ AddCertificate <- function(file="http://sslhelp.doi.net/docs/DOIRootCA2.cer",
   if (!requireNamespace("httr", quietly=TRUE))
     stop("Requires access to the 'httr' package.", call.=FALSE)
 
-  if (!file.exists(file) && httr::http_error(file))
-    stop("Can not access certificate file.", call.=FALSE)
+  if (!file.exists(file) || httr::http_error(file))
+    stop("Invalid certificate file or access denied.", call.=FALSE)
 
   text <- readLines(file)
 
@@ -45,7 +47,7 @@ AddCertificate <- function(file="http://sslhelp.doi.net/docs/DOIRootCA2.cer",
   else
     certificates <- env
   if (!file.exists(certificates))
-    stop("Can not access certificates bundle.", call.=FALSE)
+    stop("Can not locate certificates bundle.", call.=FALSE)
 
   if (all(text %in% readLines(certificates))) {
     message("Certificate already appended")
