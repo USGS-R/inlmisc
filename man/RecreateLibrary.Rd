@@ -23,7 +23,8 @@ or the library directory where to install packages.}
 
 \item{repos}{'character'.
 Vector of base URL(s) of the CRAN-like repositories to use when installing packages.
-For example, the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.}
+For example, the URL of the RStudio sponsored CRAN mirror is \code{"https://cloud.r-project.org/"}.
+And the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.}
 
 \item{snapshot}{'logical', 'character', or 'Date'.
 Calendar date for a CRAN snapshot in time,
@@ -34,10 +35,10 @@ A snapshot date can also be specified directly using the required date format, \
 This argument masks all CRAN mirrors in \code{repos}.}
 
 \item{local}{'character'.
-Vector of paths to local directories.
+Vector of paths to local repositories.
 Packages are installed from local files in these directories.
-Files can contain binary builds of packages (\file{.zip} on Windows and \file{.tgz} on macOS)
-or be source packages (\file{.tar.gz}).}
+Files can contain \emph{binary} builds of packages (\file{.zip} on Windows and \file{.tgz} on macOS)
+or be \emph{source} packages (\file{.tar.gz}).}
 
 \item{versions}{'logical'.
 If true, installed package versions will be identical to version numbers stored in \code{file}.
@@ -46,12 +47,14 @@ Requires that the \pkg{devtools} package is available,
 see \code{\link[devtools]{install_version}} function.}
 
 \item{github}{'logical'.
-If true, an attempt is made to install a subset of packages from GitHub.
-Only applies to packages missing from the CRAN-like repositories, see \code{repos} argument.
+If true, an attempt is made to install a subset of packages from GitHub repositories.
+Only applies to packages missing from the CRAN-like repositories (see \code{repos} argument).
 Requires that the \pkg{githubinstall} package is available,
 see \code{\link[githubinstall]{gh_install_packages}} function.
-Locating \R packages hosted on GitHub using only the package name can be difficult.
+Note that locating \R packages hosted on GitHub using nothing but the package name can be difficult.
 The user will be prompted with suggested repository names to identify the correct package to install.
+An example of an \R package that is only available on GitHub is \pkg{AnomalyDetection},
+located at \href{https://github.com/twitter/AnomalyDetection}{twitter/AnomalyDetection}.
 Package vignettes are not built using this option.}
 
 \item{quiet}{'logical'.
@@ -65,16 +68,18 @@ are included in the package-list file.}
 \description{
 These functions can be used to recreate an existing library on a new installation of \R.
 The \code{SavePackageNames} function writes the details of installed packages to a file.
-And the \code{RecreateLibrary} function reads this file and installs any \sQuote{missing} packages.
+And the \code{RecreateLibrary} function reads this file and downloads and installs any
+\sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),
+CRAN-like repositories, GitHub and local repositories.
 }
 \details{
 A typical workflow is as follows:
 Run the \code{SavePackageNames()} command on an older version of \R.
 It will print to a text file a complete list of names for packages located under your current \R library tree(s).
-If no longer needed, uninstall the older version of \R.
-On a freshly installed version of \R, with the \pkg{inlmisc} package available,
+Uninstall the older version of \R if no longer needed.
+Then on a freshly installed version of \R, with the \pkg{inlmisc} package available,
 run the \code{RecreateLibrary()} command.
-It will download and install the packages listed in the text file (\code{file}).
+It will download and install the packages listed in the text file (see \code{file} argument).
 
 The type of package to download and install from CRAN-like repositories is
 \emph{binary} on Windows and some macOS builds, and \emph{source} on all others.
@@ -87,14 +92,14 @@ On macOS, install Xcode from the Mac App Store.
 And on Linux, install a compiler and various development libraries.
 
 Daily snapshots of CRAN are stored on MRAN and available as far back as September 17, 2014.
-Use the \code{snapshot} argument to install packages from a daily snapshot of CRAN.
-Newer versions of \R may not be compatible with older versions of packages.
+Use the \code{snapshot} argument to install older package versions from a daily snapshot of CRAN.
+Note that newer versions of \R may not be compatible with older versions of packages.
 To avoid any package installation issues,
 install the \R version that was available from CRAN on the
 \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 }
 \note{
-This package-installation method does not offer 100 percent reproducibility of existing \R libraries.
+This package-installation method does not offer one-hundred percent reproducibility of existing \R libraries.
 Alternative methods, that offer better reproducibility, are available using the
 \pkg{checkpoint} and \pkg{packrat} packages;
 both of which provide robust tools for dependency management in \R.

@@ -14,8 +14,8 @@ Path of file containing the X.509 certificate.}
 Header line to identify the certificate (optional).}
 }
 \description{
-This function adds a \href{https://en.wikipedia.org/wiki/X.509}{X.509}
-certificate to your certificate authority (CA) bundle.
+This function adds a \href{https://en.wikipedia.org/wiki/X.509}{X.509} certificate
+to your bundle of certificate authority root certificates (CA bundle).
 The X.509 certificate is used to authenticate clients and servers.
 And the CA bundle is a file that contains root and intermediate certificates.
 }

@@ -1,7 +1,7 @@
 #' Add X.509 Certificate
 #'
-#' This function adds a \href{https://en.wikipedia.org/wiki/X.509}{X.509}
-#' certificate to your certificate authority (CA) bundle.
+#' This function adds a \href{https://en.wikipedia.org/wiki/X.509}{X.509} certificate
+#' to your bundle of certificate authority root certificates (CA bundle).
 #' The X.509 certificate is used to authenticate clients and servers.
 #' And the CA bundle is a file that contains root and intermediate certificates.
 #'
@@ -35,27 +35,24 @@ AddCertificate <- function(file, header=NULL) {
     stop("Requires access to the 'httr' package.", call.=FALSE)
 
   if (!file.exists(file) || httr::http_error(file))
-    stop("Invalid certificate or access denied.", call.=FALSE)
+    stop("Certificate file doesn't exist or access is denied.", call.=FALSE)
 
   certificate <- readLines(file)
 
-  env <- Sys.getenv("CURL_CA_BUNDLE")
-  if (env == "")
+  bundle <- Sys.getenv("CURL_CA_BUNDLE")
+  if (bundle == "")
     bundle <- system.file("cacert.pem", package="openssl", mustWork=TRUE)
-  else
-    bundle <- env
   if (!file.exists(bundle))
-    stop("Can not locate certificates bundle.", call.=FALSE)
+    stop("Can't locate CA bundle file.", call.=FALSE)
 
   if (all(certificate %in% readLines(bundle))) {
-    message("Certificate already added to CA bundle.")
+    message("Certificate has already been added to CA bundle.")
   } else {
     if (!is.null(header))
       header <- c(header, paste(rep("=", nchar(header)), collapse=""))
     certificate <- c("", header, certificate)
     cat(certificate, file=bundle, sep="\n", append=TRUE)
-    message("Certificate added to the CA bundle:\n ",
-            normalizePath(bundle))
+    message("Certificate added to CA bundle:\n ", normalizePath(bundle))
   }
 
   invisible(NULL)
