@@ -46,7 +46,7 @@ Requires that the \pkg{devtools} package is available,
 see \code{\link[devtools]{install_version}} function.}
 
 \item{github}{'logical'.
-If true, an attempt is made to install a subset packages from GitHub.
+If true, an attempt is made to install a subset of packages from GitHub.
 Only applies to packages missing from the CRAN-like repositories, see \code{repos} argument.
 Requires that the \pkg{githubinstall} package is available,
 see \code{\link[githubinstall]{gh_install_packages}} function.
@@ -113,7 +113,7 @@ SavePackageNames()
 repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
 if (!requireNamespace("inlmisc", quietly = TRUE))
   utils::install.packages("inlmisc", repos = repos["CRAN"], dependencies = TRUE)
-inlmisc::RecreateLibrary(repos = repos)
+inlmisc::RecreateLibrary(repos = repos, github = TRUE)
 }
 
 }
