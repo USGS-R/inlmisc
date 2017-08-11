@@ -82,9 +82,13 @@
 #' both of which provide robust tools for dependency management in \R.
 #'
 #' If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
-#' "Installation failed: Peer certificate cannot be authenticated with given CA certificates."
+#' "SSL certificate problem: unable to get local issuer certificate".
 #' The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
 #' A workaround for this error is provided by the \code{\link{AddCertificate}} function.
+#'
+#' @reutrns The `SavePackageNames` function returns the 32-byte MD5 checksum of the \code{file}.
+#'   Any changes in the file content will produce a different MD5 checksum.
+#'   Use the \code{\link[tools]{md5sum}} function to check the MD5 checksum.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -111,6 +115,12 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
                             repos=getOption("repos"), snapshot=FALSE,
                             local=NULL, versions=FALSE, github=FALSE,
                             quiet=FALSE) {
+
+  # set environment variable for certificates path
+  if (.Platform$OS.type != "windows" && Sys.getenv("CURL_CA_BUNDLE") == "") {
+    bundle <- system.file("cacert.pem", package="openssl")
+    if (file.exists(bundle)) Sys.setenv(CURL_CA_BUNDLE=bundle)
+  }
 
   # confirm file exists
   if (!file.exists(file)) {
@@ -297,28 +307,40 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
     pkgs <- pkgs[pkgs[, "Package"] %in% p, , drop=FALSE]
   }
 
-  # prompt before overwriting
-  if (file.exists(file)) {
-    ans <- readline("File already exists. Do you want to overwrite it (Y/n)? ")
-    if (tolower(substr(ans, 1, 1)) == "n") return(invisible(NULL))
-  }
+  # save to temporary file
+  f <- tempfile()
 
   # write meta data
   meta <- c(sprintf("# Date modified: %s UTC", format(Sys.time(), tz="GMT")),
             sprintf("# %s", R.version$version.string),
             sprintf("# Running under: %s", utils::sessionInfo()$running),
             sprintf("# Platform: %s", R.version$platform))
-  writeLines(meta, file)
+  writeLines(meta, f)
 
   # write package list
   pkgs <- as.data.frame(pkgs, stringsAsFactors=FALSE)
-  suppressWarnings(utils::write.table(pkgs, file, append=TRUE, quote=FALSE,
+  suppressWarnings(utils::write.table(pkgs, f, append=TRUE, quote=FALSE,
                                       sep="\t", row.names=FALSE))
+
+  # prompt before overwriting
+  if (file.exists(file)) {
+    ans <- readline("File already exists. Do you want to overwrite it (Y/n)? ")
+    if (tolower(substr(ans, 1, 1)) == "n") return(invisible(NULL))
+  }
+
+  # rename temporary file
+  if (!file.rename(f, file)) {
+    msg <- "Problem saving file, perhaps it's a permissions issue."
+    stop(msg, call.=FALSE)
+  }
 
   msg <- sprintf("Package list written to:\n %s", normalizePath(path.expand(file)))
   message(msg)
+  md5 <- tools::md5sum(file)
+  msg <- sprintf("MD5 checksum: \"%s\"", md5)
+  message(msg)
 
-  invisible(NULL)
+  invisible(md5)
 }
 
 #' Check whether Package is Installed

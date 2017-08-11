@@ -105,7 +105,7 @@ Alternative methods, that offer better reproducibility, are available using the
 both of which provide robust tools for dependency management in \R.
 
 If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
-"Installation failed: Peer certificate cannot be authenticated with given CA certificates."
+"SSL certificate problem: unable to get local issuer certificate".
 The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
 A workaround for this error is provided by the \code{\link{AddCertificate}} function.
 }

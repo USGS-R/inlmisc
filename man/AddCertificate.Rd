@@ -23,7 +23,7 @@ And the CA bundle is a file that contains root and intermediate certificates.
 This function must be used on Windows and requires access to the \pkg{httr} package.
 }
 \examples{
-# Add the U.S. Department of Interior (DOI) certificate:
+# Install U.S. Department of Interior (DOI) certificate:
 \dontrun{
 AddCertificate(file = "http://sslhelp.doi.net/docs/DOIRootCA2.cer",
                header = "DOI Root CA 2")
