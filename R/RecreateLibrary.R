@@ -1,6 +1,10 @@
 #' Recreate R Library
 #'
 #' These functions can be used to recreate an existing library on a new installation of \R.
+#' The \code{SavePackageNames} function writes the details of installed packages to a file.
+#' And the \code{RecreateLibrary} function reads this file and downloads and installs any
+#' \sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),
+#' CRAN-like repositories, GitHub and local repositories.
 #'
 #' @param file 'character'.
 #'   Name of the file for reading (or writing) the list of package names.
@@ -11,7 +15,8 @@
 #'   or the library directory where to install packages.
 #' @param repos 'character'.
 #'   Vector of base URL(s) of the CRAN-like repositories to use when installing packages.
-#'   For example, the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.
+#'   For example, the URL of the RStudio sponsored CRAN mirror is \code{"https://cloud.r-project.org/"}.
+#'   And the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.
 #' @param snapshot 'logical', 'character', or 'Date'.
 #'   Calendar date for a CRAN snapshot in time,
 #'   see the Microsoft R Application Network
@@ -19,16 +24,26 @@
 #'   If true, the snapshot date is read from the first line of \code{file}.
 #'   A snapshot date can also be specified directly using the required date format, \code{"\%Y-\%m-\%d"}.
 #'   This argument masks all CRAN mirrors in \code{repos}.
+#' @param local 'character'.
+#'   Vector of paths to local repositories.
+#'   Packages are installed from local files in these directories.
+#'   Files can contain \emph{binary} builds of packages (\file{.zip} on Windows and \file{.tgz} on macOS)
+#'   or be \emph{source} packages (\file{.tar.gz}).
 #' @param versions 'logical'.
 #'   If true, installed package versions will be identical to version numbers stored in \code{file}.
-#'   Only applies to packages from CRAN-like repositories and packages not already available under \code{lib}.
+#'   Only applies to packages from CRAN-like repositories and local files.
 #'   Requires that the \pkg{devtools} package is available,
 #'   see \code{\link[devtools]{install_version}} function.
 #' @param github 'logical'.
-#'   If true, an attempt is made to install a subset packages from GitHub.
-#'   Only applies to packages missing from the CRAN-like repositories (\code{repos}).
+#'   If true, an attempt is made to install a subset of packages from GitHub repositories.
+#'   Only applies to packages missing from the CRAN-like repositories (see \code{repos} argument).
 #'   Requires that the \pkg{githubinstall} package is available,
 #'   see \code{\link[githubinstall]{gh_install_packages}} function.
+#'   Note that locating \R packages hosted on GitHub using nothing but the package name can be difficult.
+#'   The user will be prompted with suggested repository names to identify the correct package to install.
+#'   An example of an \R package that is only available on GitHub is \pkg{AnomalyDetection},
+#'   located at \href{https://github.com/twitter/AnomalyDetection}{twitter/AnomalyDetection}.
+#'   Package vignettes are not built using this option.
 #' @param quiet 'logical'.
 #'   If true, reduce the amount of output.
 #' @param pkg 'character'.
@@ -39,26 +54,37 @@
 #' @details A typical workflow is as follows:
 #' Run the \code{SavePackageNames()} command on an older version of \R.
 #' It will print to a text file a complete list of names for packages located under your current \R library tree(s).
-#' If no longer needed, uninstall the older version of \R.
-#' On a freshly installed version of \R, with the \pkg{inlmisc} package available,
+#' Uninstall the older version of \R if no longer needed.
+#' Then on a freshly installed version of \R, with the \pkg{inlmisc} package available,
 #' run the \code{RecreateLibrary()} command.
-#' It will download and install the packages listed in the text file (\code{file}).
+#' It will download and install the packages listed in the text file (see \code{file} argument).
+#'
+#' The type of package to download and install from CRAN-like repositories is
+#' \emph{binary} on Windows and some macOS builds, and \emph{source} on all others.
+#' Package installation from a GitHub repository or local \file{.tar.gz} file is always a source installation.
+#' If a package is installed from source, and it contains code that needs compiling,
+#' you must have a working development environment.
+#' On Windows, install the \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} collection
+#' and have the PATH environment variable set up as required by Rtools.
+#' On macOS, install Xcode from the Mac App Store.
+#' And on Linux, install a compiler and various development libraries.
 #'
 #' Daily snapshots of CRAN are stored on MRAN and available as far back as September 17, 2014.
-#' Use the \code{snapshot} argument to install packages from a daily snapshot of CRAN.
+#' Use the \code{snapshot} argument to install older package versions from a daily snapshot of CRAN.
 #' Note that newer versions of \R may not be compatible with older versions of packages.
-#' To avoid any installation issues with packages,
+#' To avoid any package installation issues,
 #' install the \R version that was available from CRAN on the
 #' \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 #'
-#' The type of package to download and install is \emph{binary} on Windows and some macOS builds,
-#' and \emph{source} on all others.
-#' If a package is installed from source and it contains code that needs compiling,
-#' you will need to have installed the Rtools collection as described in the \sQuote{R for Windows FAQ}
-#' and you must have the PATH environment variable set up as required by Rtools.
+#' @note This package-installation method does not offer one-hundred percent reproducibility of existing \R libraries.
+#' Alternative methods, that offer better reproducibility, are available using the
+#' \pkg{checkpoint} and \pkg{packrat} packages;
+#' both of which provide robust tools for dependency management in \R.
 #'
-#' @note As an alternative to this function, see the \pkg{checkpoint} and \pkg{packrat} packages,
-#' both provide useful tools for dependency management in \R.
+#' If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
+#' "Installation failed: Peer certificate cannot be authenticated with given CA certificates."
+#' The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
+#' A workaround for this error is provided by the \code{\link{AddCertificate}} function.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -75,7 +101,7 @@
 #' repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
 #' if (!requireNamespace("inlmisc", quietly = TRUE))
 #'   utils::install.packages("inlmisc", repos = repos["CRAN"], dependencies = TRUE)
-#' inlmisc::RecreateLibrary(repos = repos)
+#' inlmisc::RecreateLibrary(repos = repos, github = TRUE)
 #' }
 #'
 #' @rdname RecreateLibrary
@@ -83,12 +109,13 @@
 
 RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
                             repos=getOption("repos"), snapshot=FALSE,
-                            versions=FALSE, github=FALSE, quiet=FALSE) {
+                            local=NULL, versions=FALSE, github=FALSE,
+                            quiet=FALSE) {
 
   # confirm file exists
   if (!file.exists(file)) {
-    msg <- paste("Can't find package-list file:", normalizePath(path.expand(file)))
-    stop(msg)
+    msg <- sprintf("Can't find package-list file:\n %s", normalizePath(path.expand(file)))
+    stop(msg, call.=FALSE)
   }
 
   # read meta data
@@ -111,7 +138,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
                    "If compatiblity is an issue, consider installing %s.")
       msg <- sprintf(fmt, r_ver_new, r_ver_old)
       message(paste(strwrap(msg), collapse="\n"))
-      ans <- readline("Would you like to continue (y/n)? ")
+      ans <- readline("Would you like to continue (Y/n)? ")
       if (tolower(substr(ans, 1, 1)) == "n") return(invisible(NULL))
     }
   }
@@ -131,9 +158,9 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
   }
   if (inherits(snapshot, "Date")) {
     if (is.na(snapshot))
-      stop("Problem with snapshot date format.")
+      stop("Problem with snapshot date format.", call.=FALSE)
     if (snapshot < as.Date("2014-09-17"))
-      stop("Daily CRAN snapshots only go back as far as September 17, 2014.")
+      stop("Daily CRAN snapshots only go back as far as September 17, 2014.", call.=FALSE)
     repos <- repos[!repos %in% utils::getCRANmirrors(all=TRUE)$URL]
     url <- sprintf("https://mran.revolutionanalytics.com/snapshot/%s/", snapshot)
     repos <- c(repos, MRAN=url)
@@ -153,10 +180,48 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
                             stringsAsFactors=FALSE)
 
   # filter out packages that are already installed
-  installed_pkgs <- utils::installed.packages(lib, noCache=TRUE)[, "Package"]
-  is <- !pkgs$Package %in% installed_pkgs
-  pkgs <- pkgs[is, , drop=FALSE]
+  pkgs <- pkgs[!.IsPackageInstalled(pkgs$Package, lib), , drop=FALSE]
   if (nrow(pkgs) == 0) return(invisible(NULL))
+
+  # install packages from local files
+  if (!is.null(local)) {
+    if (!all(is <- (file.info(local)$isdir %in% TRUE))) {
+      msg <- sprintf("The following local directories do not exist:\n %s",
+                     paste(local[!is], collapse="\n "))
+      stop(msg, call.=FALSE)
+    }
+    ext <- "tar.gz"
+    if (.Platform$OS.type == "windows") {
+      ext <- c(ext, "zip")
+    } else if (Sys.info()["sysname"] == "Darwin") {
+      ext <- c(ext, "tgz")
+    }
+    path <- normalizePath(list.files(local, full.names=TRUE), winslash="/")
+    path <- path[grepl(paste(sprintf("\\.%s$", ext), collapse="|"), path)]
+    path <- path[grepl("_[0-9]", basename(path))]
+    name <- basename(tools::file_path_sans_ext(path, compression=TRUE))
+    if (versions) {
+      path <- path[name %in% sprintf("%s_%s", pkgs$Package, pkgs$Version)]
+      path <- path[order(basename(path), decreasing=TRUE)]
+      nam <- unlist(lapply(strsplit(basename(path), "_"), function(x) x[1]))
+      path <- path[!duplicated(nam)]
+    } else {
+      txt <- strsplit(name, "_")
+      nam <- unlist(lapply(txt, function(x) x[1]))
+      ver <- unlist(lapply(txt, function(x) x[2]))
+      ext <- tools::file_ext(path)
+      path <- path[order(nam, ver, ext, decreasing=TRUE)]
+      nam <- unlist(lapply(strsplit(basename(path), "_"), function(x) x[1]))
+      path <- path[!duplicated(nam) & nam %in% pkgs$Package]
+    }
+    if (length(path) > 0) {
+      utils::install.packages(path, lib[1], repos=NULL, quiet=quiet)
+
+      # filter out packages that were installed from local files
+      pkgs <- pkgs[!.IsPackageInstalled(pkgs$Package, lib), , drop=FALSE]
+      if (nrow(pkgs) == 0) return(invisible(NULL))
+    }
+  }
 
   # identify packages that are available on repositories
   contriburl <- utils::contrib.url(repos=repos, type=getOption("pkgType"))
@@ -167,8 +232,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
   if (any(is_on_repos)) {
     if (versions && requireNamespace("devtools", quietly=TRUE)) {
       for (i in which(is_on_repos)) {
-        if (pkgs$Package[i] %in% utils::installed.packages()[, "Package"])
-          next
+        if (.IsPackageInstalled(pkgs$Package[i], lib)) next
         ans <- try(devtools::install_version(pkgs$Package[i], pkgs$Version[i],
                                              type=type, quiet=quiet), silent=TRUE)
         if (inherits(ans, "try-error")) {
@@ -187,10 +251,10 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
     githubinstall::gh_install_packages(pkgs$Package[!is_on_repos], quiet=quiet, lib=lib[1])
 
   # warn about packages that could not be installed
-  is <- !pkgs$Package %in% utils::installed.packages(lib, noCache=TRUE)[, "Package"]
-  if (any(is)) {
-    fmt <- "\nThe following packages could not be installed:\n    %s\n"
-    warning(sprintf(fmt, paste(pkgs$Package[is], collapse=", ")))
+  if (any(is <- !.IsPackageInstalled(pkgs$Package, lib))) {
+    msg <- sprintf("The following packages could not be installed:\n %s\n",
+                   paste(pkgs$Package[is], collapse=", "))
+    warning(msg, call.=FALSE)
   }
 
   invisible(NULL)
@@ -204,6 +268,9 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
   # get names of all packages under library tree(s)
   pkgs <- utils::installed.packages(lib, noCache=TRUE)
 
+  # remove library-path column
+  pkgs <- pkgs[, colnames(pkgs) != "LibPath"]
+
   # remove newlines from table elements
   pkgs <- apply(pkgs, 2, function(i) gsub("[\r\n]", "", i))
 
@@ -213,9 +280,8 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
   # subset packages based on specified package(s)
   if (!is.null(pkg)) {
     if(any(is <- !pkg %in% pkgs[, "Package"])) {
-      fmt <- "Missing 'pkg' values in library: %s"
-      msg <- sprintf(fmt, paste(pkg[is], collapse=", "))
-      stop(msg)
+      msg <- sprintf("Missing 'pkg' values in library: %s", paste(pkg[is], collapse=", "))
+      stop(msg, call.=FALSE)
     }
     FUN <- function(i) {
       x <- utils::packageDescription(i, lib)
@@ -231,12 +297,17 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
     pkgs <- pkgs[pkgs[, "Package"] %in% p, , drop=FALSE]
   }
 
+  # prompt before overwriting
+  if (file.exists(file)) {
+    ans <- readline("File already exists. Do you want to overwrite it (Y/n)? ")
+    if (tolower(substr(ans, 1, 1)) == "n") return(invisible(NULL))
+  }
+
   # write meta data
   meta <- c(sprintf("# Date modified: %s UTC", format(Sys.time(), tz="GMT")),
             sprintf("# %s", R.version$version.string),
             sprintf("# Running under: %s", utils::sessionInfo()$running),
-            sprintf("# Platform: %s", R.version$platform),
-            sprintf("# User: %s", Sys.info()["user"]))
+            sprintf("# Platform: %s", R.version$platform))
   writeLines(meta, file)
 
   # write package list
@@ -244,7 +315,23 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
   suppressWarnings(utils::write.table(pkgs, file, append=TRUE, quote=FALSE,
                                       sep="\t", row.names=FALSE))
 
-  cat(sprintf("Package list written to: \"%s\"\n", normalizePath(path.expand(file))))
+  msg <- sprintf("Package list written to:\n %s", normalizePath(path.expand(file)))
+  message(msg)
 
   invisible(NULL)
+}
+
+#' Check whether Package is Installed
+#'
+#' @param x 'character'.
+#'   Vector of package names
+#' @param lib 'character'.
+#'   Vector of library tree(s)
+#'
+#' @return A 'logical' vector
+#'
+
+.IsPackageInstalled <- function(x, lib) {
+  FUN <- function(i) {system.file(package=i, lib.loc=lib) != ""}
+  return(vapply(x, FUN, TRUE))
 }

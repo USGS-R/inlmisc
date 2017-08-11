@@ -8,6 +8,9 @@
 #'   Color palette
 #' @param at 'numeric'.
 #'   Vector of points at which tick-marks and labels are to be drawn.
+#' @param n 'integer'.
+#'   Desired number of tick-marks to be drawn.
+#'   Unused if \code{at} argument is specified.
 #' @param labels 'logical' or 'character'.
 #'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
 #'   or a character or expression vector of labels to be placed at the tickpoints.
@@ -46,7 +49,7 @@
 #'                   scientific = TRUE, strip.dim = c(1, 14))
 #'
 
-AddGradientLegend <- function(breaks, pal, at=NULL, labels=TRUE,
+AddGradientLegend <- function(breaks, pal, at=NULL, n=5L, labels=TRUE,
                               scientific=FALSE, title=NULL,
                               loc=c("bottomleft", "topleft", "topright", "bottomright"),
                               inset=0, strip.dim=c(2, 8)) {
@@ -59,7 +62,7 @@ AddGradientLegend <- function(breaks, pal, at=NULL, labels=TRUE,
   lwd <- 0.25
   cex <- 0.7
 
-  if (is.null(at)) at <- pretty(breaks)
+  if (is.null(at)) at <- if (n > 2) pretty(breaks, n=n) else range(breaks)
   if (is.character(labels) && length(labels) != length(at))
     stop("Arguments 'labels' and 'at' should be the same length.")
   if (is.logical(labels) && labels) {

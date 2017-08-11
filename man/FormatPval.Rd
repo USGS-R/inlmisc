@@ -25,8 +25,11 @@ Value used for missing values.}
 Indicates whether values should be encoded in scientific format.
 A missing value lets \R decide whether fixed or scientific notation is used.}
 }
+\value{
+A 'character' vector of formatted \emph{p}-values.
+}
 \description{
-This function is intended for formatting p-values.
+This function is intended for formatting \emph{p}-values.
 Scientific notation is written with LaTeX commands.
 }
 \examples{

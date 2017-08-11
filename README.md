@@ -13,7 +13,7 @@
 The [R](https://www.r-project.org/) package **inlmisc** is a collection of functions for creating high-level graphics,
 performing raster-based analysis, processing [MODFLOW](https://water.usgs.gov/ogw/modflow/)-based models, etc.
 Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
-[Idaho National Laboratory Project Office](http://id.water.usgs.gov/INL/ "INL Project Office").
+Idaho National Laboratory (INL) [Project Office](http://id.water.usgs.gov/INL/ "USGS INL Project Office").
 
 ## Install
 
@@ -35,13 +35,16 @@ Please consider reporting bugs and asking questions on the [Issues page](https:/
 
 ## Disclaimer
 
-This software is in the public domain because it contains materials that originally came from the USGS,
-an agency of the United States Department of Interior.
-For more information, see the
-[official USGS copyright policy](https://www2.usgs.gov/visual-id/credit_usgs.html "official USGS copyright policy").
+This information is preliminary or provisional and is subject to revision.
+It is being provided to meet the need for timely best science.
+The information has not received final approval by the U.S. Geological Survey (USGS) and
+is provided on the condition that neither the USGS nor the U.S. Government shall be
+held liable for any damages resulting from the authorized or unauthorized use of the information.
 
-Although this software program has been used by the USGS, no warranty, expressed or implied,
-is made by the USGS or the U.S. Government as to the accuracy and functioning of the program and related program material nor shall the fact of distribution constitute any such warranty,
-and no responsibility is assumed by the USGS in connection therewith.
+Although this software program has been used by the U.S. Geological Survey (USGS),
+no warranty, expressed or implied, is made by the USGS or the U.S. Government as to
+the accuracy and functioning of the program and related program material nor shall
+the fact of distribution constitute any such warranty, and no responsibility is
+assumed by the USGS in connection therewith.
 
 This software is provided "AS IS."

@@ -1,6 +1,6 @@
 #' Format P Values
 #'
-#' This function is intended for formatting p-values.
+#' This function is intended for formatting \emph{p}-values.
 #' Scientific notation is written with LaTeX commands.
 #'
 #' @param x 'numeric'.
@@ -15,6 +15,8 @@
 #' @param scientific 'logical'.
 #'   Indicates whether values should be encoded in scientific format.
 #'   A missing value lets \R decide whether fixed or scientific notation is used.
+#'
+#' @return A 'character' vector of formatted \emph{p}-values.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

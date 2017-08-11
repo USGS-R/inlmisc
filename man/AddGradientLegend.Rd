@@ -4,7 +4,7 @@
 \alias{AddGradientLegend}
 \title{Add Color Gradient Legend to Plot}
 \usage{
-AddGradientLegend(breaks, pal, at = NULL, labels = TRUE,
+AddGradientLegend(breaks, pal, at = NULL, n = 5L, labels = TRUE,
   scientific = FALSE, title = NULL, loc = c("bottomleft", "topleft",
   "topright", "bottomright"), inset = 0, strip.dim = c(2, 8))
 }
@@ -17,6 +17,10 @@ Color palette}
 
 \item{at}{'numeric'.
 Vector of points at which tick-marks and labels are to be drawn.}
+
+\item{n}{'integer'.
+Desired number of tick-marks to be drawn.
+Unused if \code{at} argument is specified.}
 
 \item{labels}{'logical' or 'character'.
 Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
