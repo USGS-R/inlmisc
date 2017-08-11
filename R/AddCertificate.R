@@ -7,8 +7,8 @@
 #'
 #' @param file 'character'.
 #'   Path of file containing the X.509 certificate.
-#'   Its default is the path to the U.S. Department of Interior (DOI) certificate file.
-#'   To access this file you must be affiliated with the DOI.
+#'   Its default is the path to the U.S. Department of Interior (DOI) certificate file;
+#'   you must be affiliated with the DOI to access this file.
 #' @param header 'character'.
 #'   Header line(s) to identify the certificate (optional);
 #'   specify as \code{NULL} to exclude this metadata.

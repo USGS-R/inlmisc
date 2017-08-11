@@ -10,8 +10,8 @@ AddCertificate(file = "http://sslhelp.doi.net/docs/DOIRootCA2.cer",
 \arguments{
 \item{file}{'character'.
 Path of file containing the X.509 certificate.
-Its default is the path to the U.S. Department of Interior (DOI) certificate file.
-To access this file you must be affiliated with the DOI.}
+Its default is the path to the U.S. Department of Interior (DOI) certificate file;
+you must be affiliated with the DOI to access this file.}
 
 \item{header}{'character'.
 Header line(s) to identify the certificate (optional);
