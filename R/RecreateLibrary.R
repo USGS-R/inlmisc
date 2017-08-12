@@ -76,6 +76,10 @@
 #' install the \R version that was available from CRAN on the
 #' \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 #'
+#' @return The \code{SavePackageNames} function returns the 32-byte MD5 checksum of the \code{file} content.
+#'   Any changes in the file content will produce a different MD5 checksum.
+#'   Use the \code{\link[tools]{md5sum}} function to verify that the file has not been tampered with.
+#'
 #' @note This package-installation method does not offer one-hundred percent reproducibility of existing \R libraries.
 #' Alternative methods, that offer better reproducibility, are available using the
 #' \pkg{checkpoint} and \pkg{packrat} packages;
@@ -85,10 +89,6 @@
 #' "SSL certificate problem: unable to get local issuer certificate".
 #' The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
 #' A workaround for this error is provided by the \code{\link{AddCertificate}} function.
-#'
-#' @reutrns The `SavePackageNames` function returns the 32-byte MD5 checksum of the \code{file}.
-#'   Any changes in the file content will produce a different MD5 checksum.
-#'   Use the \code{\link[tools]{md5sum}} function to check the MD5 checksum.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -117,14 +117,15 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
                             quiet=FALSE) {
 
   # set environment variable for certificates path
-  if (.Platform$OS.type != "windows" && Sys.getenv("CURL_CA_BUNDLE") == "") {
+  if (.Platform$OS.type == "windows" && Sys.getenv("CURL_CA_BUNDLE") == "") {
     bundle <- system.file("cacert.pem", package="openssl")
     if (file.exists(bundle)) Sys.setenv(CURL_CA_BUNDLE=bundle)
   }
 
   # confirm file exists
   if (!file.exists(file)) {
-    msg <- sprintf("Can't find package-list file:\n %s", normalizePath(path.expand(file)))
+    msg <- sprintf("Can't find package-list file:\n %s",
+                   normalizePath(path.expand(file)))
     stop(msg, call.=FALSE)
   }
 
@@ -169,8 +170,10 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
   if (inherits(snapshot, "Date")) {
     if (is.na(snapshot))
       stop("Problem with snapshot date format.", call.=FALSE)
-    if (snapshot < as.Date("2014-09-17"))
-      stop("Daily CRAN snapshots only go back as far as September 17, 2014.", call.=FALSE)
+    if (snapshot < as.Date("2014-09-17")) {
+      msg <- "Daily CRAN snapshots only go back as far as September 17, 2014."
+      stop(msg, call.=FALSE)
+    }
     repos <- repos[!repos %in% utils::getCRANmirrors(all=TRUE)$URL]
     url <- sprintf("https://mran.revolutionanalytics.com/snapshot/%s/", snapshot)
     repos <- c(repos, MRAN=url)
@@ -180,7 +183,8 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
   if (.Platform$OS.type == "windows")
     type <- "win.binary"
   else
-    type <- ifelse(Sys.info()["sysname"] == "Darwin", "mac.binary.el-capitan", "source")
+    type <- ifelse(Sys.info()["sysname"] == "Darwin",
+                              "mac.binary.el-capitan", "source")
 
   # update packages
   if (!versions) utils::update.packages(repos=repos, ask=FALSE, type=type)
@@ -258,7 +262,8 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
 
   # install packages from github
   if (any(!is_on_repos) && github && requireNamespace("githubinstall", quietly=TRUE))
-    githubinstall::gh_install_packages(pkgs$Package[!is_on_repos], quiet=quiet, lib=lib[1])
+    githubinstall::gh_install_packages(pkgs$Package[!is_on_repos],
+                                       quiet=quiet, lib=lib[1])
 
   # warn about packages that could not be installed
   if (any(is <- !.IsPackageInstalled(pkgs$Package, lib))) {
@@ -290,7 +295,8 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
   # subset packages based on specified package(s)
   if (!is.null(pkg)) {
     if(any(is <- !pkg %in% pkgs[, "Package"])) {
-      msg <- sprintf("Missing 'pkg' values in library: %s", paste(pkg[is], collapse=", "))
+      msg <- sprintf("Missing 'pkg' values in library: %s",
+                     paste(pkg[is], collapse=", "))
       stop(msg, call.=FALSE)
     }
     FUN <- function(i) {
