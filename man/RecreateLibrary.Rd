@@ -65,6 +65,11 @@ One or more names of packages located under \code{lib}.
 Only packages in \code{pkg}, and the packages that \code{pkg} depend on/link to/import/suggest,
 are included in the package-list file.}
 }
+\value{
+The \code{SavePackageNames} function returns the 32-byte MD5 checksum of the \code{file} content.
+  Any changes in the file content will produce a different MD5 checksum.
+  Use the \code{\link[tools]{md5sum}} function to verify that the file has not been tampered with.
+}
 \description{
 These functions can be used to recreate an existing library on a new installation of \R.
 The \code{SavePackageNames} function writes the details of installed packages to a file.
@@ -105,7 +110,7 @@ Alternative methods, that offer better reproducibility, are available using the
 both of which provide robust tools for dependency management in \R.
 
 If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
-"Installation failed: Peer certificate cannot be authenticated with given CA certificates."
+"SSL certificate problem: unable to get local issuer certificate".
 The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
 A workaround for this error is provided by the \code{\link{AddCertificate}} function.
 }

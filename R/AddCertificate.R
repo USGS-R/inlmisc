@@ -19,7 +19,7 @@
 #' @export
 #'
 #' @examples
-#' # Add the U.S. Department of Interior (DOI) certificate:
+#' # Install U.S. Department of Interior (DOI) certificate:
 #' \dontrun{
 #' AddCertificate(file = "http://sslhelp.doi.net/docs/DOIRootCA2.cer",
 #'                header = "DOI Root CA 2")
@@ -34,7 +34,7 @@ AddCertificate <- function(file, header=NULL) {
   if (!requireNamespace("httr", quietly=TRUE))
     stop("Requires access to the 'httr' package.", call.=FALSE)
 
-  if (!file.exists(file) || httr::http_error(file))
+  if (!file.exists(file) & httr::http_error(file))
     stop("Certificate file doesn't exist or access is denied.", call.=FALSE)
 
   certificate <- readLines(file)

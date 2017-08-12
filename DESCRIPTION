@@ -18,11 +18,12 @@ Imports:
     knitr,
     leaflet,
     methods,
-    sp,
-    stats,
     raster,
     rgdal,
-    rgeos
+    rgeos,
+    sp,
+    stats,
+    tools
 Suggests:
     colorspace,
     devtools,
