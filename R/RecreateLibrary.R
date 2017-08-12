@@ -88,7 +88,7 @@
 #' If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
 #' "SSL certificate problem: unable to get local issuer certificate".
 #' The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
-#' A workaround for this error is provided by the \code{\link{AddCertificate}} function.
+#' A fix for this error is provided by the \code{\link{AddCertificate}} function.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -108,10 +108,12 @@
 #' inlmisc::RecreateLibrary(repos = repos, github = TRUE)
 #' }
 #'
+#' unlink("R-packages.tsv")
+#'
 #' @rdname RecreateLibrary
 #' @export
 
-RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
+RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
                             repos=getOption("repos"), snapshot=FALSE,
                             local=NULL, versions=FALSE, github=FALSE,
                             quiet=FALSE) {
@@ -278,7 +280,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
 #' @rdname RecreateLibrary
 #' @export
 
-SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
+SavePackageNames <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL) {
 
   # get names of all packages under library tree(s)
   pkgs <- utils::installed.packages(lib, noCache=TRUE)
@@ -340,10 +342,10 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
     stop(msg, call.=FALSE)
   }
 
-  msg <- sprintf("Package list written to:\n %s", normalizePath(path.expand(file)))
+  msg <- sprintf("File path:\n %s", normalizePath(path.expand(file)))
   message(msg)
   md5 <- tools::md5sum(file)
-  msg <- sprintf("MD5 checksum: \"%s\"", md5)
+  msg <- sprintf("MD5 checksum:\n %s", md5)
   message(msg)
 
   invisible(md5)

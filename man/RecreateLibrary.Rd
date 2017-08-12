@@ -5,11 +5,11 @@
 \alias{SavePackageNames}
 \title{Recreate R Library}
 \usage{
-RecreateLibrary(file = "R-packages.txt", lib = .libPaths()[1],
+RecreateLibrary(file = "R-packages.tsv", lib = .libPaths()[1],
   repos = getOption("repos"), snapshot = FALSE, local = NULL,
   versions = FALSE, github = FALSE, quiet = FALSE)
 
-SavePackageNames(file = "R-packages.txt", lib = .libPaths(), pkg = NULL)
+SavePackageNames(file = "R-packages.tsv", lib = .libPaths(), pkg = NULL)
 }
 \arguments{
 \item{file}{'character'.
@@ -112,7 +112,7 @@ both of which provide robust tools for dependency management in \R.
 If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
 "SSL certificate problem: unable to get local issuer certificate".
 The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
-A workaround for this error is provided by the \code{\link{AddCertificate}} function.
+A fix for this error is provided by the \code{\link{AddCertificate}} function.
 }
 \examples{
 # Run on old version of R
@@ -125,6 +125,8 @@ if (!requireNamespace("inlmisc", quietly = TRUE))
   utils::install.packages("inlmisc", repos = repos["CRAN"], dependencies = TRUE)
 inlmisc::RecreateLibrary(repos = repos, github = TRUE)
 }
+
+unlink("R-packages.tsv")
 
 }
 \seealso{
