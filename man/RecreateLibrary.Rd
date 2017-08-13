@@ -2,19 +2,19 @@
 % Please edit documentation in R/RecreateLibrary.R
 \name{RecreateLibrary}
 \alias{RecreateLibrary}
-\alias{SavePackageNames}
+\alias{SavePackageDetails}
 \title{Recreate R Library}
 \usage{
 RecreateLibrary(file = "R-packages.tsv", lib = .libPaths()[1],
   repos = getOption("repos"), snapshot = FALSE, local = NULL,
   versions = FALSE, github = FALSE, quiet = FALSE)
 
-SavePackageNames(file = "R-packages.tsv", lib = .libPaths(), pkg = NULL)
+SavePackageDetails(file = "R-packages.tsv", lib = .libPaths(), pkg = NULL)
 }
 \arguments{
 \item{file}{'character'.
-Name of the file for reading (or writing) the list of package names.
-For file names that do not contain an absolute path,
+Name of the file for reading (or writing) the list of package details.
+For a file name that does not contain an absolute path,
 the name is assumed relative to the current working directory [see \code{\link{getwd}()} command].}
 
 \item{lib}{'character'.
@@ -66,21 +66,21 @@ Only packages in \code{pkg}, and the packages that \code{pkg} depend on/link to/
 are included in the package-list file.}
 }
 \value{
-The \code{SavePackageNames} function returns the 32-byte MD5 checksum of the \code{file} content.
+The \code{SavePackageDetails} function returns (invisibly) the MD5 checksum of the \code{file} content.
   Any changes in the file content will produce a different MD5 checksum.
   Use the \code{\link[tools]{md5sum}} function to verify that the file has not been tampered with.
 }
 \description{
 These functions can be used to recreate an existing library on a new installation of \R.
-The \code{SavePackageNames} function writes the details of installed packages to a file.
+The \code{SavePackageDetails} function writes the details of installed packages to a file.
 And the \code{RecreateLibrary} function reads this file and downloads and installs any
 \sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),
 CRAN-like repositories, GitHub and local repositories.
 }
 \details{
 A typical workflow is as follows:
-Run the \code{SavePackageNames()} command on an older version of \R.
-It will print to a text file a complete list of names for packages located under your current \R library tree(s).
+Run the \code{SavePackageDetails()} command on an older version of \R.
+It will print to a text file a complete list of details for packages located under your current \R library tree(s).
 Uninstall the older version of \R if no longer needed.
 Then on a freshly installed version of \R, with the \pkg{inlmisc} package available,
 run the \code{RecreateLibrary()} command.
@@ -102,6 +102,29 @@ Note that newer versions of \R may not be compatible with older versions of pack
 To avoid any package installation issues,
 install the \R version that was available from CRAN on the
 \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
+
+The package-details \code{file} is of the following format:
+
+# Date modified: YYYY-MM-DD HH:MM:SS UTC \cr
+# R version 9.9.9 (YYYY-MM-DD)
+\tabular{ll}{
+Package \tab Version \cr
+name \tab 9.9.9 \cr
+... \tab ...
+}
+
+The format is flexible enough to add additional extraneous metadata and table fields.
+For example,
+
+# Date modified: 2017-08-12 05:14:33 UTC \cr
+# R version 3.4.1 (2017-06-30) \cr
+# Running under: Windows 10 x64 (build 14393) \cr
+# Platform: x86_64-w64-mingw32
+\tabular{lllll}{
+Package \tab Version \tab Priority \tab Depends \tab Imports \cr
+akima \tab 0.6-2 \tab NA \tab R (>= 2.0.0) \tab sp \cr
+animation \tab 2.5 \tab NA \tab R (>= 2.14.0) \tab NA
+}
 }
 \note{
 This package-installation method does not offer one-hundred percent reproducibility of existing \R libraries.
@@ -116,7 +139,7 @@ A fix for this error is provided by the \code{\link{AddCertificate}} function.
 }
 \examples{
 # Run on old version of R
-SavePackageNames()
+SavePackageDetails()
 
 \dontrun{
 # Run on new version of R, and ensure 'inlmisc' package is available.

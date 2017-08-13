@@ -8,7 +8,7 @@ AddCertificate(file, header = NULL)
 }
 \arguments{
 \item{file}{'character'.
-Path of file containing the X.509 certificate.}
+Path (or a complete URL) to the file containing the X.509 certificate.}
 
 \item{header}{'character'.
 Header line to identify the certificate (optional).}
