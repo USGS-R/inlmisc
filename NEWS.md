@@ -1,5 +1,7 @@
 # inlmisc 0.3.0.9000
 
+- Rename `SavePackageNames` function to `SavePackageDetails`.
+
 - Add `AddCertificate` function, used to add a X.509 certificate to your CA bundle.
 
 - Make **httr** a suggested package.

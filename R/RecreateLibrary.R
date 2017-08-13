@@ -1,14 +1,14 @@
 #' Recreate R Library
 #'
 #' These functions can be used to recreate an existing library on a new installation of \R.
-#' The \code{SavePackageNames} function writes the details of installed packages to a file.
+#' The \code{SavePackageDetails} function writes the details of installed packages to a file.
 #' And the \code{RecreateLibrary} function reads this file and downloads and installs any
 #' \sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),
 #' CRAN-like repositories, GitHub and local repositories.
 #'
 #' @param file 'character'.
-#'   Name of the file for reading (or writing) the list of package names.
-#'   For file names that do not contain an absolute path,
+#'   Name of the file for reading (or writing) the list of package details.
+#'   For a file name that does not contain an absolute path,
 #'   the name is assumed relative to the current working directory [see \code{\link{getwd}()} command].
 #' @param lib 'character'.
 #'   The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}}),
@@ -52,8 +52,8 @@
 #'   are included in the package-list file.
 #'
 #' @details A typical workflow is as follows:
-#' Run the \code{SavePackageNames()} command on an older version of \R.
-#' It will print to a text file a complete list of names for packages located under your current \R library tree(s).
+#' Run the \code{SavePackageDetails()} command on an older version of \R.
+#' It will print to a text file a complete list of details for packages located under your current \R library tree(s).
 #' Uninstall the older version of \R if no longer needed.
 #' Then on a freshly installed version of \R, with the \pkg{inlmisc} package available,
 #' run the \code{RecreateLibrary()} command.
@@ -76,7 +76,30 @@
 #' install the \R version that was available from CRAN on the
 #' \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 #'
-#' @return The \code{SavePackageNames} function returns the 32-byte MD5 checksum of the \code{file} content.
+#' The package-details \code{file} is of the following format:
+#'
+#' # Date modified: YYYY-MM-DD HH:MM:SS UTC \cr
+#' # R version 9.9.9 (YYYY-MM-DD)
+#' \tabular{ll}{
+#' Package \tab Version \cr
+#' name \tab 9.9.9 \cr
+#' ... \tab ...
+#' }
+#'
+#' The format is flexible enough to add additional extraneous metadata and table fields.
+#' For example,
+#'
+#' # Date modified: 2017-08-12 05:14:33 UTC \cr
+#' # R version 3.4.1 (2017-06-30) \cr
+#' # Running under: Windows 10 x64 (build 14393) \cr
+#' # Platform: x86_64-w64-mingw32
+#' \tabular{lllll}{
+#' Package \tab Version \tab Priority \tab Depends \tab Imports \cr
+#' akima \tab 0.6-2 \tab NA \tab R (>= 2.0.0) \tab sp \cr
+#' animation \tab 2.5 \tab NA \tab R (>= 2.14.0) \tab NA
+#' }
+#'
+#' @return The \code{SavePackageDetails} function returns (invisibly) the MD5 checksum of the \code{file} content.
 #'   Any changes in the file content will produce a different MD5 checksum.
 #'   Use the \code{\link[tools]{md5sum}} function to verify that the file has not been tampered with.
 #'
@@ -88,7 +111,7 @@
 #' If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
 #' "SSL certificate problem: unable to get local issuer certificate".
 #' The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
-#' A workaround for this error is provided by the \code{\link{AddCertificate}} function.
+#' A fix for this error is provided by the \code{\link{AddCertificate}} function.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -98,7 +121,7 @@
 #'
 #' @examples
 #' # Run on old version of R
-#' SavePackageNames()
+#' SavePackageDetails()
 #'
 #' \dontrun{
 #' # Run on new version of R, and ensure 'inlmisc' package is available.
@@ -108,10 +131,12 @@
 #' inlmisc::RecreateLibrary(repos = repos, github = TRUE)
 #' }
 #'
+#' unlink("R-packages.tsv")
+#'
 #' @rdname RecreateLibrary
 #' @export
 
-RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
+RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
                             repos=getOption("repos"), snapshot=FALSE,
                             local=NULL, versions=FALSE, github=FALSE,
                             quiet=FALSE) {
@@ -130,7 +155,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
   }
 
   # read meta data
-  meta <- readLines(file, n=5)
+  meta <- readLines(file)
   meta <- meta[substr(meta, 1, 2) == "# "]
   meta <- sub("# ", "", meta)
 
@@ -278,7 +303,7 @@ RecreateLibrary <- function(file="R-packages.txt", lib=.libPaths()[1],
 #' @rdname RecreateLibrary
 #' @export
 
-SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
+SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL) {
 
   # get names of all packages under library tree(s)
   pkgs <- utils::installed.packages(lib, noCache=TRUE)
@@ -320,7 +345,8 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
   meta <- c(sprintf("# Date modified: %s UTC", format(Sys.time(), tz="GMT")),
             sprintf("# %s", R.version$version.string),
             sprintf("# Running under: %s", utils::sessionInfo()$running),
-            sprintf("# Platform: %s", R.version$platform))
+            sprintf("# Platform: %s", R.version$platform),
+            "")
   writeLines(meta, f)
 
   # write package list
@@ -340,10 +366,10 @@ SavePackageNames <- function(file="R-packages.txt", lib=.libPaths(), pkg=NULL) {
     stop(msg, call.=FALSE)
   }
 
-  msg <- sprintf("Package list written to:\n %s", normalizePath(path.expand(file)))
+  msg <- sprintf("File path:\n %s", normalizePath(path.expand(file)))
   message(msg)
   md5 <- tools::md5sum(file)
-  msg <- sprintf("MD5 checksum: \"%s\"", md5)
+  msg <- sprintf("MD5 checksum:\n %s", md5)
   message(msg)
 
   invisible(md5)

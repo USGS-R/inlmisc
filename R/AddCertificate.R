@@ -6,7 +6,7 @@
 #' And the CA bundle is a file that contains root and intermediate certificates.
 #'
 #' @param file 'character'.
-#'   Path of file containing the X.509 certificate.
+#'   Path (or a complete URL) to the file containing the X.509 certificate.
 #' @param header 'character'.
 #'   Header line to identify the certificate (optional).
 #'
@@ -19,7 +19,7 @@
 #' @export
 #'
 #' @examples
-#' # Install U.S. Department of Interior (DOI) certificate:
+#' # Install the U.S. Department of Interior (DOI) certificate:
 #' \dontrun{
 #' AddCertificate(file = "http://sslhelp.doi.net/docs/DOIRootCA2.cer",
 #'                header = "DOI Root CA 2")
