@@ -49,15 +49,15 @@
 #' @param pkg 'character'.
 #'   One or more names of packages located under \code{lib}.
 #'   Only packages in \code{pkg}, and the packages that \code{pkg} depend on/link to/import/suggest,
-#'   are included in the package-list file.
+#'   are included in the package details \code{file}.
 #'
 #' @details A typical workflow is as follows:
 #' Run the \code{SavePackageDetails()} command on an older version of \R.
 #' It will print to a text file a complete list of details for packages located under your current \R library tree(s).
 #' Uninstall the older version of \R if no longer needed.
-#' Then on a freshly installed version of \R, with the \pkg{inlmisc} package available,
+#' Then, on a freshly installed version of \R with the \pkg{inlmisc} package available,
 #' run the \code{RecreateLibrary()} command.
-#' It will download and install the packages listed in the text file (see \code{file} argument).
+#' It will download and install the packages listed in the package description \code{file}.
 #'
 #' The type of package to download and install from CRAN-like repositories is
 #' \emph{binary} on Windows and some macOS builds, and \emph{source} on all others.
@@ -70,13 +70,13 @@
 #' And on Linux, install a compiler and various development libraries.
 #'
 #' Daily snapshots of CRAN are stored on MRAN and available as far back as September 17, 2014.
-#' Use the \code{snapshot} argument to install older package versions from a daily snapshot of CRAN.
+#' Use the \code{snapshot} argument to install older package versions from MRAN.
 #' Note that newer versions of \R may not be compatible with older versions of packages.
 #' To avoid any package installation issues,
 #' install the \R version that was available from CRAN on the
 #' \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 #'
-#' The package-details \code{file} is of the following format:
+#' The package details \code{file} is of the following format:
 #'
 #' # Date modified: YYYY-MM-DD HH:MM:SS UTC \cr
 #' # R version 9.9.9 (YYYY-MM-DD)
@@ -102,6 +102,7 @@
 #' @return The \code{SavePackageDetails} function returns (invisibly) the MD5 checksum of the \code{file} content.
 #'   Any changes in the file content will produce a different MD5 checksum.
 #'   Use the \code{\link[tools]{md5sum}} function to verify that the file has not been tampered with.
+#'   The \code{RecreateLibrary} function returns (invisibly) \code{NULL}.
 #'
 #' @note This package-installation method does not offer one-hundred percent reproducibility of existing \R libraries.
 #' Alternative methods, that offer better reproducibility, are available using the
@@ -131,6 +132,7 @@
 #' inlmisc::RecreateLibrary(repos = repos, github = TRUE)
 #' }
 #'
+#' # Clean up example
 #' unlink("R-packages.tsv")
 #'
 #' @rdname RecreateLibrary
