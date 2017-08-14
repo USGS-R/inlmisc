@@ -76,7 +76,7 @@ These functions can be used to recreate an existing library on a new installatio
 The \code{SavePackageDetails} function writes the details of installed packages to a file.
 And the \code{RecreateLibrary} function reads this file and downloads and installs any
 \sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),
-CRAN-like repositories, GitHub and local repositories.
+CRAN-like and local repositories, and GitHub.
 }
 \details{
 A typical workflow is as follows:

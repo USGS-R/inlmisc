@@ -4,7 +4,7 @@
 #' The \code{SavePackageDetails} function writes the details of installed packages to a file.
 #' And the \code{RecreateLibrary} function reads this file and downloads and installs any
 #' \sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),
-#' CRAN-like repositories, GitHub and local repositories.
+#' CRAN-like and local repositories, and GitHub.
 #'
 #' @param file 'character'.
 #'   Name of the file for reading (or writing) the list of package details.

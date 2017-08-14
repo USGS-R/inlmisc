@@ -11,8 +11,8 @@ Depends:
     R (>= 3.2.0)
 Imports:
     dplyr,
-    grDevices,
     graphics,
+    grDevices,
     htmlwidgets,
     igraph,
     knitr,
