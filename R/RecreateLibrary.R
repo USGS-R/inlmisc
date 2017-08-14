@@ -52,52 +52,52 @@
 #'   are included in the package details \code{file}.
 #'
 #' @details A typical workflow is as follows:
-#' Run the \code{SavePackageDetails()} command on an older version of \R.
-#' It will print to a text file a complete list of details for packages located under your current \R library tree(s).
-#' Uninstall the older version of \R if no longer needed.
-#' Then, on a freshly installed version of \R with the \pkg{inlmisc} package available,
-#' run the \code{RecreateLibrary()} command.
-#' It will download and install the packages listed in the package description \code{file}.
+#'   Run the \code{SavePackageDetails()} command on an older version of \R.
+#'   It will print to a text file a complete list of details for packages located under your current \R library tree(s).
+#'   Uninstall the older version of \R if no longer needed.
+#'   Then, on a freshly installed version of \R with the \pkg{inlmisc} package available,
+#'   run the \code{RecreateLibrary()} command.
+#'   It will download and install the packages listed in the package description \code{file}.
 #'
-#' The type of package to download and install from CRAN-like repositories is
-#' \emph{binary} on Windows and some macOS builds, and \emph{source} on all others.
-#' Package installation from a GitHub repository or local \file{.tar.gz} file is always a source installation.
-#' If a package is installed from source, and it contains code that needs compiling,
-#' you must have a working development environment.
-#' On Windows, install the \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} collection
-#' and have the PATH environment variable set up as required by Rtools.
-#' On macOS, install Xcode from the Mac App Store.
-#' And on Linux, install a compiler and various development libraries.
+#'   The type of package to download and install from CRAN-like repositories is
+#'   \emph{binary} on Windows and some macOS builds, and \emph{source} on all others.
+#'   Package installation from a GitHub repository or local \file{.tar.gz} file is always a source installation.
+#'   If a package is installed from source, and it contains code that needs compiling,
+#'   you must have a working development environment.
+#'   On Windows, install the \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} collection
+#'   and have the PATH environment variable set up as required by Rtools.
+#'   On macOS, install Xcode from the Mac App Store.
+#'   And on Linux, install a compiler and various development libraries.
 #'
-#' Daily snapshots of CRAN are stored on MRAN and available as far back as September 17, 2014.
-#' Use the \code{snapshot} argument to install older package versions from MRAN.
-#' Note that newer versions of \R may not be compatible with older versions of packages.
-#' To avoid any package installation issues,
-#' install the \R version that was available from CRAN on the
-#' \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
+#'   Daily snapshots of CRAN are stored on MRAN and available as far back as September 17, 2014.
+#'   Use the \code{snapshot} argument to install older package versions from MRAN.
+#'   Note that newer versions of \R may not be compatible with older versions of packages.
+#'   To avoid any package installation issues,
+#'   install the \R version that was available from CRAN on the
+#'   \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 #'
-#' The package details \code{file} is of the following format:
+#'   The package details \code{file} is of the following format:
 #'
-#' # Date modified: YYYY-MM-DD HH:MM:SS UTC \cr
-#' # R version 9.9.9 (YYYY-MM-DD)
-#' \tabular{ll}{
-#' Package \tab Version \cr
-#' name \tab 9.9.9 \cr
-#' ... \tab ...
-#' }
+#'   # Date modified: YYYY-MM-DD HH:MM:SS UTC \cr
+#'   # R version 9.9.9 (YYYY-MM-DD)
+#'   \tabular{ll}{
+#'   Package \tab Version \cr
+#'   name \tab 9.9.9 \cr
+#'   ... \tab ...
+#'   }
 #'
-#' The format is flexible enough to add additional extraneous metadata and table fields.
-#' For example,
+#'   The format is flexible enough to add additional extraneous metadata and table fields.
+#'   For example,
 #'
-#' # Date modified: 2017-08-12 05:14:33 UTC \cr
-#' # R version 3.4.1 (2017-06-30) \cr
-#' # Running under: Windows 10 x64 (build 14393) \cr
-#' # Platform: x86_64-w64-mingw32
-#' \tabular{lllll}{
-#' Package \tab Version \tab Priority \tab Depends \tab Imports \cr
-#' akima \tab 0.6-2 \tab NA \tab R (>= 2.0.0) \tab sp \cr
-#' animation \tab 2.5 \tab NA \tab R (>= 2.14.0) \tab NA
-#' }
+#'   # Date modified: 2017-08-12 05:14:33 UTC \cr
+#'   # R version 3.4.1 (2017-06-30) \cr
+#'   # Running under: Windows 10 x64 (build 14393) \cr
+#'   # Platform: x86_64-w64-mingw32
+#'   \tabular{lllll}{
+#'   Package \tab Version \tab Priority \tab Depends \tab Imports \cr
+#'   akima \tab 0.6-2 \tab NA \tab R (>= 2.0.0) \tab sp \cr
+#'   animation \tab 2.5 \tab NA \tab R (>= 2.14.0) \tab NA
+#'   }
 #'
 #' @return The \code{SavePackageDetails} function returns (invisibly) the MD5 checksum of the \code{file} content.
 #'   Any changes in the file content will produce a different MD5 checksum.
@@ -105,14 +105,14 @@
 #'   The \code{RecreateLibrary} function returns (invisibly) \code{NULL}.
 #'
 #' @note This package-installation method does not offer one-hundred percent reproducibility of existing \R libraries.
-#' Alternative methods, that offer better reproducibility, are available using the
-#' \pkg{checkpoint} and \pkg{packrat} packages;
-#' both of which provide robust tools for dependency management in \R.
+#'   Alternative methods, that offer better reproducibility, are available using the
+#'   \pkg{checkpoint} and \pkg{packrat} packages;
+#'   both of which provide robust tools for dependency management in \R.
 #'
-#' If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
-#' "SSL certificate problem: unable to get local issuer certificate".
-#' The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
-#' A fix for this error is provided by the \code{\link{AddCertificate}} function.
+#'   If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
+#'   "SSL certificate problem: unable to get local issuer certificate".
+#'   The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
+#'   A fix for this error is provided by the \code{\link{AddCertificate}} function.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
