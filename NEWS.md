@@ -1,4 +1,4 @@
-# inlmisc 0.3.0.9000
+# inlmisc 0.3.1
 
 - Rename `SavePackageNames` function to `SavePackageDetails`.
 
