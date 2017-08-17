@@ -4,17 +4,18 @@
 #' The \code{SavePackageDetails} function writes the details of installed packages to a file.
 #' And the \code{RecreateLibrary} function reads this file and downloads and installs any
 #' \sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),
-#' CRAN-like repositories, GitHub and local repositories.
+#' CRAN-like and local repositories, and GitHub.
 #'
 #' @param file 'character'.
 #'   Name of the file for reading (or writing) the list of package details.
 #'   For a file name that does not contain an absolute path,
 #'   the name is assumed relative to the current working directory [see \code{\link{getwd}()} command].
+#'   A \file{.gz} file extension indicates the file is compressed by \emph{gzip}.
 #' @param lib 'character'.
 #'   The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}}),
 #'   or the library directory where to install packages.
 #' @param repos 'character'.
-#'   Vector of base URL(s) of the CRAN-like repositories to use when installing packages.
+#'   Vector of base URL(s) of the CRAN-like repositories (and including CRAN) to use when installing packages.
 #'   For example, the URL of the RStudio sponsored CRAN mirror is \code{"https://cloud.r-project.org/"}.
 #'   And the URL of the Geological Survey R Archive Network (GRAN) is \code{"https://owi.usgs.gov/R"}.
 #' @param snapshot 'logical', 'character', or 'Date'.
@@ -176,7 +177,7 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
                    "If compatiblity is an issue, consider installing %s.")
       msg <- sprintf(fmt, r_ver_new, r_ver_old)
       message(paste(strwrap(msg), collapse="\n"))
-      ans <- readline("Would you like to continue (Y/n)? ")
+      ans <- readline("Would you like to continue (y/n)? ")
       if (tolower(substr(ans, 1, 1)) == "n") return(invisible(NULL))
     }
   }
@@ -340,8 +341,18 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
     pkgs <- pkgs[pkgs[, "Package"] %in% p, , drop=FALSE]
   }
 
-  # save to temporary file
-  f <- tempfile()
+  # prompt before overwriting file
+  if (file.exists(file)) {
+    ans <- readline("File already exists. Do you want to overwrite it (y/n)? ")
+    if (tolower(substr(ans, 1, 1)) == "n") return(invisible(NULL))
+  }
+
+  # open connection to file
+  if (grepl("^.*(.gz)[[:space:]]*$", file))
+    con <- gzfile(file, "w", compression=9)
+  else
+    con <- base::file(file, "w")
+  on.exit(close(con))
 
   # write meta data
   meta <- c(sprintf("# Date modified: %s UTC", format(Sys.time(), tz="GMT")),
@@ -349,31 +360,21 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
             sprintf("# Running under: %s", utils::sessionInfo()$running),
             sprintf("# Platform: %s", R.version$platform),
             "")
-  writeLines(meta, f)
+  writeLines(meta, con)
 
-  # write package list
+  # write package details to file
   pkgs <- as.data.frame(pkgs, stringsAsFactors=FALSE)
-  suppressWarnings(utils::write.table(pkgs, f, append=TRUE, quote=FALSE,
+  suppressWarnings(utils::write.table(pkgs, con, append=TRUE, quote=FALSE,
                                       sep="\t", row.names=FALSE))
 
-  # prompt before overwriting
-  if (file.exists(file)) {
-    ans <- readline("File already exists. Do you want to overwrite it (Y/n)? ")
-    if (tolower(substr(ans, 1, 1)) == "n") return(invisible(NULL))
-  }
-
-  # rename temporary file
-  if (!file.rename(f, file)) {
-    msg <- "Problem saving file, perhaps it's a permissions issue."
-    stop(msg, call.=FALSE)
-  }
-
+  # write file path and md5 checksum to console
   msg <- sprintf("File path:\n %s", normalizePath(path.expand(file)))
   message(msg)
   md5 <- tools::md5sum(file)
   msg <- sprintf("MD5 checksum:\n %s", md5)
   message(msg)
 
+  # return md5 checksum
   invisible(md5)
 }
 
@@ -384,7 +385,7 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
 #' @param lib 'character'.
 #'   Vector of library tree(s)
 #'
-#' @return A 'logical' vector
+#' @return A 'logical' vector the length of 'x'
 #'
 
 .IsPackageInstalled <- function(x, lib) {
