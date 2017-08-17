@@ -15,7 +15,8 @@ SavePackageDetails(file = "R-packages.tsv", lib = .libPaths(), pkg = NULL)
 \item{file}{'character'.
 Name of the file for reading (or writing) the list of package details.
 For a file name that does not contain an absolute path,
-the name is assumed relative to the current working directory [see \code{\link{getwd}()} command].}
+the name is assumed relative to the current working directory [see \code{\link{getwd}()} command].
+The \file{.gz} file extension indicates the file is compressed by \emph{gzip}.}
 
 \item{lib}{'character'.
 The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}}),
