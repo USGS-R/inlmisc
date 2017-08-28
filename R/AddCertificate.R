@@ -19,7 +19,7 @@
 #' @export
 #'
 #' @examples
-#' # Install the U.S. Department of Interior (DOI) certificate:
+#' # Install the U.S. Department of Interior (DOI) certificate (employees only):
 #' \dontrun{
 #' AddCertificate(file = "http://sslhelp.doi.net/docs/DOIRootCA2.cer",
 #'                header = "DOI Root CA 2")
