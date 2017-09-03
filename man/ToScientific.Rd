@@ -4,7 +4,8 @@
 \alias{ToScientific}
 \title{Format for Scientific Notation}
 \usage{
-ToScientific(x, digits = NULL, lab.type = c("latex", "plotmath"))
+ToScientific(x, digits = NULL, lab.type = c("latex", "plotmath"),
+  inline.delimiter = "$", scipen = NULL)
 }
 \arguments{
 \item{x}{'numeric'.
@@ -16,6 +17,13 @@ Number of digits after the decimal point for the mantissa.}
 \item{lab.type}{'character'.
 By default, LaTeX formatted strings for labels are returned.
 Alternatively, \code{lab.type = "plotmath"} returns plotmath-compatible expressions.}
+
+\item{inline.delimiter}{'character'.
+Delimiter for LaTeX inline mathematical mode.}
+
+\item{scipen}{'integer'.
+A penalty to be applied when deciding to print numeric values in scientific or fixed notation.
+By default all numbers are formatted using scientific notation.}
 }
 \value{
 For the default \code{lab.type = "latex"}, a 'character' vector of the same length as argument \code{x}.
@@ -31,6 +39,7 @@ This function formats numbers in scientific notation \eqn{m \times 10^{n}}.
 \examples{
 x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
 ToScientific(x, digits = 2)
+ToScientific(x, digits = 2, scipen = 0L)
 ToScientific(x, digits = 2, lab.type = "plotmath")
 
 x <- seq(0, 2e+06, length.out = 5)

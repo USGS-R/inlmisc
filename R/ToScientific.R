@@ -9,6 +9,11 @@
 #' @param lab.type 'character'.
 #'   By default, LaTeX formatted strings for labels are returned.
 #'   Alternatively, \code{lab.type = "plotmath"} returns plotmath-compatible expressions.
+#' @param inline.delimiter 'character'.
+#'   Delimiter for LaTeX inline mathematical mode.
+#' @param scipen 'integer'.
+#'   A penalty to be applied when deciding to print numeric values in scientific or fixed notation.
+#'   By default all numbers are formatted using scientific notation.
 #'
 #' @return For the default \code{lab.type = "latex"}, a 'character' vector of the same length as argument \code{x}.
 #'   And for \code{lab.type = "plotmath"}, an expression of the same length as \code{x},
@@ -26,13 +31,15 @@
 #' @examples
 #' x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
 #' ToScientific(x, digits = 2)
+#' ToScientific(x, digits = 2, scipen = 0L)
 #' ToScientific(x, digits = 2, lab.type = "plotmath")
 #'
 #' x <- seq(0, 2e+06, length.out = 5)
 #' ToScientific(x)
 #'
 
-ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath")) {
+ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath"),
+                         inline.delimiter="$", scipen=NULL) {
 
   lab.type <- match.arg(lab.type)
   x[is.zero <- x == 0] <- NA
@@ -48,7 +55,9 @@ ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath")) {
   m[idxs] <- sprintf("%0.*f", digits, m[idxs])
   if (lab.type == "latex") {
     s <- rep(NA, length(x))
-    s[idxs] <- sprintf("$%s \\times 10^{%d}$", m[idxs], n[idxs])
+    if (!is.character(inline.delimiter)) inline.delimiter <- ""
+    s[idxs] <- sprintf("%s%s \\times 10^{%d}%s",
+                       inline.delimiter, m[idxs], n[idxs], inline.delimiter)
     s[is.zero] <- "0"
   } else {
     FUN <- function(i) {
@@ -59,5 +68,15 @@ ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath")) {
     s <- lapply(seq_along(x), FUN)
     s <- do.call("expression", s)
   }
+
+  # fixed notation
+  if (!is.null(scipen) & is.integer(scipen)) {
+    op <- options(scipen=scipen)
+    on.exit(options(op))
+    ss <- formatC(x, big.mark=",")
+    is <- !grepl("e", ss) & is.finite(x)
+    s[is] <- ss[is]
+  }
+
   return(s)
 }

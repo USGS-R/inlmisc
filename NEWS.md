@@ -1,6 +1,8 @@
 # inlmisc 0.3.2.9000
 
-- ...
+- In `ToScientific` function, add `inline.delimiter` argument, delimiter for LaTeX inline math mode.
+
+- In `ToScientific` function, add `scipen` argument, see `options("scipen")`.
 
 # inlmisc 0.3.2
 
