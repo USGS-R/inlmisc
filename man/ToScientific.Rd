@@ -5,7 +5,7 @@
 \title{Format for Scientific Notation}
 \usage{
 ToScientific(x, digits = NULL, lab.type = c("latex", "plotmath"),
-  inline.delimiter = "$", scipen = NULL, ...)
+  na = as.character(NA), inline.delimiter = "$", scipen = NULL, ...)
 }
 \arguments{
 \item{x}{'numeric'.
@@ -17,6 +17,10 @@ Number of digits after the decimal point for the mantissa.}
 \item{lab.type}{'character'.
 By default, LaTeX formatted strings for labels are returned.
 Alternatively, \code{lab.type = "plotmath"} returns plotmath-compatible expressions.}
+
+\item{na}{'character'.
+String to be used for missing values.
+By default, no character string substitution is made for missing values.}
 
 \item{inline.delimiter}{'character'.
 Delimiter for LaTeX inline mathematical mode.}
@@ -41,7 +45,7 @@ This function formats numbers in scientific notation \eqn{m \times 10^{n}}.
 }
 \examples{
 x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
-ToScientific(x, digits = 2L)
+ToScientific(x, digits = 2L, na = "---")
 ToScientific(x, digits = 2L, scipen = 0L)
 
 x <- exp(log(10) * 1:6)

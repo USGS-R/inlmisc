@@ -9,6 +9,9 @@
 #' @param lab.type 'character'.
 #'   By default, LaTeX formatted strings for labels are returned.
 #'   Alternatively, \code{lab.type = "plotmath"} returns plotmath-compatible expressions.
+#' @param na 'character'.
+#'   String to be used for missing values.
+#'   By default, no character string substitution is made for missing values.
 #' @param inline.delimiter 'character'.
 #'   Delimiter for LaTeX inline mathematical mode.
 #' @param scipen 'integer'.
@@ -33,7 +36,7 @@
 #'
 #' @examples
 #' x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
-#' ToScientific(x, digits = 2L)
+#' ToScientific(x, digits = 2L, na = "---")
 #' ToScientific(x, digits = 2L, scipen = 0L)
 #'
 #' x <- exp(log(10) * 1:6)
@@ -45,7 +48,8 @@
 #'
 
 ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath"),
-                         inline.delimiter="$", scipen=NULL, ...) {
+                         na=as.character(NA), inline.delimiter="$",
+                         scipen=NULL, ...) {
 
   lab.type <- match.arg(lab.type)
   x[is.zero <- x == 0] <- NA
@@ -69,21 +73,25 @@ ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath"),
 
   # latex formatted strings
   if (lab.type == "latex") {
-    s <- rep(NA, length(x))
-    if (!is.character(inline.delimiter)) inline.delimiter <- ""
+    s <- rep(na, length(x))
     s[idxs] <- sprintf("%s%s \\times 10^{%d}%s",
                        inline.delimiter, m[idxs], n[idxs], inline.delimiter)
     s[is.zero] <- "0"
-    if (!is.null(scipen)) s[is.fixed] <- s.fixed[is.fixed]
+    if (!is.null(scipen))
+      s[is.fixed] <- s.fixed[is.fixed]
 
   # plotmath-compatible expressions
   } else {
     FUN <- function(i) {
-      if (is.na(x[i])) return("")
-      if (i %in% which(is.zero)) return(quote(0))
-      if (!is.null(scipen) && is.fixed[i])
+      if (is.na(x[i])) {
+        return(substitute(X, list(X=na)))
+      } else if (is.zero[i]) {
+        return(quote(0))
+      } else if (!is.null(scipen) && is.fixed[i]) {
         return(substitute(X, list(X=s.fixed[i])))
-      return(substitute(paste(M, " x ", 10^N), list(M=m[i], N=n[i])))
+      } else {
+        return(substitute(paste(M, " x ", 10^N), list(M=m[i], N=n[i])))
+      }
     }
     s <- lapply(seq_along(x), FUN)
     s <- do.call("expression", s)
