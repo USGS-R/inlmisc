@@ -36,7 +36,7 @@
 #'
 #' @examples
 #' x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
-#' ToScientific(x, digits = 2L, na = "---")
+#' ToScientific(x, digits = 5L, na = "---")
 #' ToScientific(x, digits = 2L, scipen = 0L)
 #'
 #' x <- exp(log(10) * 1:6)
@@ -52,21 +52,21 @@ ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath"),
                          scipen=NULL, ...) {
 
   lab.type <- match.arg(lab.type)
-  x[is.zero <- x == 0] <- NA
-  idxs <- which(is.finite(x))
+  is.zero <- x == 0
+  x[is.zero] <- NA
+  is.num <- which(is.finite(x))
 
+  # find the exponent (n) and significand (m) for scientific notation
   m <- rep(NA, length(x))
   n <- m
-  n[idxs] <- floor(log(abs(x[idxs]), 10))
-  m[idxs] <- x[idxs] / 10^n[idxs]
+  n[is.num] <- floor(log(abs(x[is.num]), 10))
+  m[is.num] <- x[is.num] / 10^n[is.num]
+  if (is.null(digits)) digits <- format.info(m[is.num])[2]
+  m[is.num] <- sprintf("%0.*f", digits, m[is.num])
 
-  if (is.null(digits)) digits <- format.info(m[idxs])[2]
-  m[idxs] <- sprintf("%0.*f", digits, m[idxs])
-
-  # fixed format
+  # fixed notation
   if (!is.null(scipen)) {
-    op <- options(scipen=scipen)
-    on.exit(options(op))
+    op <- options(scipen=scipen); on.exit(options(op))
     s.fixed <- formatC(x, ...)
     is.fixed <- !grepl("e", s.fixed) & is.finite(x)
   }
@@ -74,11 +74,10 @@ ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath"),
   # latex formatted strings
   if (lab.type == "latex") {
     s <- rep(na, length(x))
-    s[idxs] <- sprintf("%s%s \\times 10^{%d}%s",
-                       inline.delimiter, m[idxs], n[idxs], inline.delimiter)
+    s[is.num] <- sprintf("%s%s \\times 10^{%d}%s",
+                         inline.delimiter, m[is.num], n[is.num], inline.delimiter)
     s[is.zero] <- "0"
-    if (!is.null(scipen))
-      s[is.fixed] <- s.fixed[is.fixed]
+    if (!is.null(scipen)) s[is.fixed] <- s.fixed[is.fixed]
 
   # plotmath-compatible expressions
   } else {

@@ -45,7 +45,7 @@ This function formats numbers in scientific notation \eqn{m \times 10^{n}}.
 }
 \examples{
 x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
-ToScientific(x, digits = 2L, na = "---")
+ToScientific(x, digits = 5L, na = "---")
 ToScientific(x, digits = 2L, scipen = 0L)
 
 x <- exp(log(10) * 1:6)
