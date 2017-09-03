@@ -5,7 +5,7 @@
 \title{Format for Scientific Notation}
 \usage{
 ToScientific(x, digits = NULL, lab.type = c("latex", "plotmath"),
-  inline.delimiter = "$", scipen = NULL)
+  inline.delimiter = "$", scipen = NULL, ...)
 }
 \arguments{
 \item{x}{'numeric'.
@@ -24,6 +24,9 @@ Delimiter for LaTeX inline mathematical mode.}
 \item{scipen}{'integer'.
 A penalty to be applied when deciding to print numeric values in scientific or fixed notation.
 By default all numbers are formatted using scientific notation.}
+
+\item{...}{Arguments passed to the \code{\link{formatC}} function.
+Only applies to fixed formatted values.}
 }
 \value{
 For the default \code{lab.type = "latex"}, a 'character' vector of the same length as argument \code{x}.
@@ -38,12 +41,15 @@ This function formats numbers in scientific notation \eqn{m \times 10^{n}}.
 }
 \examples{
 x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
-ToScientific(x, digits = 2)
-ToScientific(x, digits = 2, scipen = 0L)
-ToScientific(x, digits = 2, lab.type = "plotmath")
+ToScientific(x, digits = 2L)
+ToScientific(x, digits = 2L, scipen = 0L)
 
-x <- seq(0, 2e+06, length.out = 5)
-ToScientific(x)
+x <- exp(log(10) * 1:6)
+i <- seq_along(x)
+plot(i, i, type = "n", xaxt = "n", yaxt = "n", ann = FALSE)
+lab <- ToScientific(x, digits = 0L, lab.type = "plotmath", scipen = 0L, big.mark = ",")
+axis(1, i, labels = lab)
+axis(2, i, labels = lab)
 
 }
 \author{
