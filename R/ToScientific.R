@@ -1,6 +1,6 @@
 #' Format for Scientific Notation
 #'
-#' This function formats numbers in scientific notation \eqn{m \times 10^{n}}.
+#' This function formats numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.
 #'
 #' @param x 'numeric'.
 #'   Vector of numbers
@@ -8,25 +8,24 @@
 #'   Number of digits after the decimal point for the mantissa.
 #' @param lab.type 'character'.
 #'   By default, LaTeX formatted strings for labels are returned.
-#'   Alternatively, \code{lab.type = "plotmath"} returns plotmath-compatible expressions.
+#'   Alternatively, \code{lab.type = "plotmath"} returns \code{\link[grDevices]{plotmath}}-compatible expressions.
 #' @param na 'character'.
-#'   String to be used for missing values.
-#'   By default, no character string substitution is made for missing values.
+#'   String to be used for missing values (\code{NA}).
+#'   By default, no string substitution is made for missing values.
 #' @param inline.delimiter 'character'.
 #'   Delimiter for LaTeX inline mathematical mode.
 #' @param scipen 'integer'.
-#'   A penalty to be applied when deciding to print numeric values in scientific or fixed notation.
-#'   By default all numbers are formatted using scientific notation.
+#'   A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
+#'   By default all numbers, with the exception of zero, are formatted using scientific notation.
 #' @param ...
 #'   Arguments passed to the \code{\link{formatC}} function.
 #'   Only applies to fixed formatted values.
 #'
 #' @return For the default \code{lab.type = "latex"}, a 'character' vector of the same length as argument \code{x}.
-#'   And for \code{lab.type = "plotmath"}, an expression of the same length as \code{x},
-#'   typically with elements of the form \code{m x 10^n}.
-#'   In order to comply with \href{https://www.section508.gov}{Section 508},
-#'   an "x" is used as the label separator for the \code{plotmath} type---rather than
-#'   the more common "\%*\%" seperator.
+#'   And for \code{lab.type = "plotmath"}, an expression of the same length as \code{x}.
+#'   As a workaround for \href{https://www.section508.gov}{Section 508} compliance,
+#'   the letter "x" is used as the label separator in the plotmath-compatible expressions---rather
+#'   than the more common (and better looking) "\%*\%" separator.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
