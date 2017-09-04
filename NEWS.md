@@ -1,6 +1,6 @@
 # inlmisc 0.3.2.9000
 
-- ...
+- In `ToScientific` function, add arguments `scipen`, `inline.delimiter`, and `...`.
 
 # inlmisc 0.3.2
 
