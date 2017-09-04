@@ -24,7 +24,7 @@
 #' @return For the default \code{lab.type = "latex"}, a 'character' vector of the same length as argument \code{x}.
 #'   And for \code{lab.type = "plotmath"}, an expression of the same length as \code{x}.
 #'   As a workaround for \href{https://www.section508.gov}{Section 508} compliance,
-#'   the letter "x" is used as the label separator in the plotmath-compatible expressions---rather
+#'   the letter "x" is used as the times symbol in the plotmath-compatible expressions---rather
 #'   than the more common (and better looking) "\%*\%" separator.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
@@ -41,7 +41,8 @@
 #' x <- exp(log(10) * 1:6)
 #' i <- seq_along(x)
 #' plot(i, i, type = "n", xaxt = "n", yaxt = "n", ann = FALSE)
-#' lab <- ToScientific(x, digits = 0L, lab.type = "plotmath", scipen = 0L, big.mark = ",")
+#' lab <- ToScientific(x, digits = 0L, lab.type = "plotmath",
+#'                     scipen = 0L, big.mark = ",")
 #' axis(1, i, labels = lab)
 #' axis(2, i, labels = lab)
 #'
@@ -55,7 +56,7 @@ ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath"),
   x[is.zero] <- NA
   is.num <- which(is.finite(x))
 
-  # find the exponent (n) and significand (m) for scientific notation
+  # find the exponent (n) and coefficient (m) for scientific notation
   m <- rep(NA, length(x))
   n <- m
   n[is.num] <- floor(log(abs(x[is.num]), 10))

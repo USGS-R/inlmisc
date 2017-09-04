@@ -36,7 +36,7 @@ Only applies to fixed formatted values.}
 For the default \code{lab.type = "latex"}, a 'character' vector of the same length as argument \code{x}.
   And for \code{lab.type = "plotmath"}, an expression of the same length as \code{x}.
   As a workaround for \href{https://www.section508.gov}{Section 508} compliance,
-  the letter "x" is used as the label separator in the plotmath-compatible expressions---rather
+  the letter "x" is used as the times symbol in the plotmath-compatible expressions---rather
   than the more common (and better looking) "\%*\%" separator.
 }
 \description{
@@ -50,7 +50,8 @@ ToScientific(x, digits = 2L, scipen = 0L)
 x <- exp(log(10) * 1:6)
 i <- seq_along(x)
 plot(i, i, type = "n", xaxt = "n", yaxt = "n", ann = FALSE)
-lab <- ToScientific(x, digits = 0L, lab.type = "plotmath", scipen = 0L, big.mark = ",")
+lab <- ToScientific(x, digits = 0L, lab.type = "plotmath",
+                    scipen = 0L, big.mark = ",")
 axis(1, i, labels = lab)
 axis(2, i, labels = lab)
 
