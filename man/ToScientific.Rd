@@ -26,8 +26,9 @@ By default, no string substitution is made for missing values.}
 Delimiter for LaTeX inline mathematical mode.}
 
 \item{scipen}{'integer'.
-A penalty to be applied when deciding to format numeric values in scientific or fixed notation,
-see \code{\link{options}("scipen")} for details.
+A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
+Positive values bias towards fixed and negative towards scientific notation:
+fixed notation will be preferred unless it is more than \code{scipen} digits wider.
 By default, all numbers, with the exception of zero, are formatted in scientific notation.}
 
 \item{...}{Arguments passed to the \code{\link{formatC}} function.
@@ -36,12 +37,14 @@ Only applies to fixed formatted values that are not equal to zero.}
 \value{
 For \code{lab.type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
   And for \code{lab.type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
-  As a workaround for \href{https://www.section508.gov}{Section 508} compliance,
-  the letter "x" is used as the times symbol in plotmath expressions---rather
-  than the more common (and better looking) "\%*\%" separator.
 }
 \description{
 This function formats numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.
+}
+\note{
+As a workaround for \href{https://www.section508.gov}{Section 508} compliance,
+  the letter "x" is used as the times symbol in plotmath expressions---rather
+  than the more common (and better looking) times symbol produced by the \code{"\%*\%"} syntax.
 }
 \examples{
 x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
