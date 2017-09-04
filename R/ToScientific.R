@@ -7,24 +7,25 @@
 #' @param digits 'integer'.
 #'   Number of digits after the decimal point for the mantissa.
 #' @param lab.type 'character'.
-#'   By default, LaTeX formatted strings for labels are returned.
-#'   Alternatively, \code{lab.type = "plotmath"} returns \code{\link[grDevices]{plotmath}}-compatible expressions.
+#'   Specify \code{"latex"} to return numbers in the LaTeX markup language (default),
+#'   or \code{"plotmath"} to return \code{\link[grDevices]{plotmath}} expressions.
 #' @param na 'character'.
 #'   String to be used for missing values (\code{NA}).
 #'   By default, no string substitution is made for missing values.
 #' @param inline.delimiter 'character'.
 #'   Delimiter for LaTeX inline mathematical mode.
 #' @param scipen 'integer'.
-#'   A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
-#'   By default all numbers, with the exception of zero, are formatted using scientific notation.
+#'   A penalty to be applied when deciding to format numeric values in scientific or fixed notation,
+#'   see \code{\link{options}("scipen")} for details.
+#'   By default, all numbers, with the exception of zero, are formatted in scientific notation.
 #' @param ...
 #'   Arguments passed to the \code{\link{formatC}} function.
-#'   Only applies to fixed formatted values.
+#'   Only applies to fixed formatted values that are not equal to zero.
 #'
-#' @return For the default \code{lab.type = "latex"}, a 'character' vector of the same length as argument \code{x}.
-#'   And for \code{lab.type = "plotmath"}, an expression of the same length as \code{x}.
+#' @return For \code{lab.type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
+#'   And for \code{lab.type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
 #'   As a workaround for \href{https://www.section508.gov}{Section 508} compliance,
-#'   the letter "x" is used as the times symbol in the plotmath-compatible expressions---rather
+#'   the letter "x" is used as the times symbol in plotmath expressions---rather
 #'   than the more common (and better looking) "\%*\%" separator.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
@@ -71,7 +72,7 @@ ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath"),
     is.fixed <- !grepl("e", s.fixed) & is.finite(x)
   }
 
-  # latex formatted strings
+  # latex markup
   if (lab.type == "latex") {
     s <- rep(na, length(x))
     s[is.num] <- sprintf("%s%s \\times 10^{%d}%s",
@@ -79,7 +80,7 @@ ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath"),
     s[is.zero] <- "0"
     if (!is.null(scipen)) s[is.fixed] <- s.fixed[is.fixed]
 
-  # plotmath-compatible expressions
+  # plotmath expressions
   } else {
     FUN <- function(i) {
       if (is.na(x[i])) {

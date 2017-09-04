@@ -15,8 +15,8 @@ Vector of numbers}
 Number of digits after the decimal point for the mantissa.}
 
 \item{lab.type}{'character'.
-By default, LaTeX formatted strings for labels are returned.
-Alternatively, \code{lab.type = "plotmath"} returns \code{\link[grDevices]{plotmath}}-compatible expressions.}
+Specify \code{"latex"} to return numbers in the LaTeX markup language (default),
+or \code{"plotmath"} to return \code{\link[grDevices]{plotmath}} expressions.}
 
 \item{na}{'character'.
 String to be used for missing values (\code{NA}).
@@ -26,17 +26,18 @@ By default, no string substitution is made for missing values.}
 Delimiter for LaTeX inline mathematical mode.}
 
 \item{scipen}{'integer'.
-A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
-By default all numbers, with the exception of zero, are formatted using scientific notation.}
+A penalty to be applied when deciding to format numeric values in scientific or fixed notation,
+see \code{\link{options}("scipen")} for details.
+By default, all numbers, with the exception of zero, are formatted in scientific notation.}
 
 \item{...}{Arguments passed to the \code{\link{formatC}} function.
-Only applies to fixed formatted values.}
+Only applies to fixed formatted values that are not equal to zero.}
 }
 \value{
-For the default \code{lab.type = "latex"}, a 'character' vector of the same length as argument \code{x}.
-  And for \code{lab.type = "plotmath"}, an expression of the same length as \code{x}.
+For \code{lab.type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
+  And for \code{lab.type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
   As a workaround for \href{https://www.section508.gov}{Section 508} compliance,
-  the letter "x" is used as the times symbol in the plotmath-compatible expressions---rather
+  the letter "x" is used as the times symbol in plotmath expressions---rather
   than the more common (and better looking) "\%*\%" separator.
 }
 \description{
