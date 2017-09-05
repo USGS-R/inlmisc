@@ -1,7 +1,7 @@
 # inlmisc 0.3.2.9000
 
-- In `ToScientific` function, add arguments `scipen`, `delimiter`, and `...`,
-  and rename `lab.type` argument to `type`, code in place for backwards compatibility.
+- In `ToScientific` function, add arguments `scipen`, `delimiter`, and `...`; and rename `lab.type` argument to `type`.
+  Code in place for backwards compatibility.
 
 # inlmisc 0.3.2
 
