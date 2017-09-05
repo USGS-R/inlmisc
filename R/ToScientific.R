@@ -13,7 +13,7 @@
 #'   String to be used for missing values (\code{NA}).
 #'   By default, no string substitution is made for missing values.
 #' @param inline.delimiter 'character'.
-#'   Delimiter for LaTeX inline mathematical mode.
+#'   Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.
 #' @param scipen 'integer'.
 #'   A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 #'   Positive values bias towards fixed and negative towards scientific notation:
