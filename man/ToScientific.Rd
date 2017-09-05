@@ -4,7 +4,7 @@
 \alias{ToScientific}
 \title{Format for Scientific Notation}
 \usage{
-ToScientific(x, digits = NULL, lab.type = c("latex", "plotmath"),
+ToScientific(x, digits = NULL, type = c("latex", "plotmath"),
   na = as.character(NA), inline.delimiter = "$", scipen = NULL, ...)
 }
 \arguments{
@@ -12,11 +12,11 @@ ToScientific(x, digits = NULL, lab.type = c("latex", "plotmath"),
 Vector of numbers}
 
 \item{digits}{'integer'.
-Number of digits after the decimal point for the mantissa.}
+Number of digits after the decimal point for the coefficent part of a number in scientific notation.}
 
-\item{lab.type}{'character'.
+\item{type}{'character'.
 Specify \code{"latex"} to return numbers in the LaTeX markup language (default),
-or \code{"plotmath"} to return \code{\link[grDevices]{plotmath}} expressions.}
+or \code{"plotmath"} to return as \code{\link[grDevices]{plotmath}} expressions.}
 
 \item{na}{'character'.
 String to be used for missing values (\code{NA}).
@@ -35,8 +35,8 @@ By default, all numbers, with the exception of zero, are formatted in scientific
 Only applies to fixed formatted values that are not equal to zero.}
 }
 \value{
-For \code{lab.type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
-  And for \code{lab.type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
+For \code{type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
+  And for \code{type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
 }
 \description{
 This function formats numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.
@@ -54,8 +54,7 @@ ToScientific(x, digits = 2L, scipen = 0L)
 x <- exp(log(10) * 1:6)
 i <- seq_along(x)
 plot(i, i, type = "n", xaxt = "n", yaxt = "n", ann = FALSE)
-lab <- ToScientific(x, digits = 0L, lab.type = "plotmath",
-                    scipen = 0L, big.mark = ",")
+lab <- ToScientific(x, 0L, type = "plotmath", scipen = 0L, big.mark = ",")
 axis(1, i, labels = lab)
 axis(2, i, labels = lab)
 

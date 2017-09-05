@@ -5,10 +5,10 @@
 #' @param x 'numeric'.
 #'   Vector of numbers
 #' @param digits 'integer'.
-#'   Number of digits after the decimal point for the mantissa.
-#' @param lab.type 'character'.
+#'   Number of digits after the decimal point for the coefficent part of a number in scientific notation.
+#' @param type 'character'.
 #'   Specify \code{"latex"} to return numbers in the LaTeX markup language (default),
-#'   or \code{"plotmath"} to return \code{\link[grDevices]{plotmath}} expressions.
+#'   or \code{"plotmath"} to return as \code{\link[grDevices]{plotmath}} expressions.
 #' @param na 'character'.
 #'   String to be used for missing values (\code{NA}).
 #'   By default, no string substitution is made for missing values.
@@ -23,8 +23,8 @@
 #'   Arguments passed to the \code{\link{formatC}} function.
 #'   Only applies to fixed formatted values that are not equal to zero.
 #'
-#' @return For \code{lab.type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
-#'   And for \code{lab.type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
+#' @return For \code{type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
+#'   And for \code{type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
 #'
 #' @note As a workaround for \href{https://www.section508.gov}{Section 508} compliance,
 #'   the letter "x" is used as the times symbol in plotmath expressions---rather
@@ -44,22 +44,24 @@
 #' x <- exp(log(10) * 1:6)
 #' i <- seq_along(x)
 #' plot(i, i, type = "n", xaxt = "n", yaxt = "n", ann = FALSE)
-#' lab <- ToScientific(x, digits = 0L, lab.type = "plotmath",
-#'                     scipen = 0L, big.mark = ",")
+#' lab <- ToScientific(x, 0L, type = "plotmath", scipen = 0L, big.mark = ",")
 #' axis(1, i, labels = lab)
 #' axis(2, i, labels = lab)
 #'
 
-ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath"),
+ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
                          na=as.character(NA), inline.delimiter="$",
                          scipen=NULL, ...) {
 
-  lab.type <- match.arg(lab.type)
+  if (missing(type) && methods::hasArg("lab.type"))
+    type <- list(...)$lab.type  # included for backward compatibility
+  else
+    type <- match.arg(type)
   is.zero <- x == 0
   x[is.zero] <- NA
   is.num <- which(is.finite(x))
 
-  # find the exponent (n) and coefficient (m) for scientific notation
+  # find the coefficient (m) and exponent (n) parts of a number in scientific notation
   m <- rep(NA, length(x))
   n <- m
   n[is.num] <- floor(log(abs(x[is.num]), 10))
@@ -75,7 +77,7 @@ ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath"),
   }
 
   # latex markup
-  if (lab.type == "latex") {
+  if (type == "latex") {
     s <- rep(na, length(x))
     s[is.num] <- sprintf("%s%s \\times 10^{%d}%s",
                          inline.delimiter, m[is.num], n[is.num], inline.delimiter)
@@ -83,7 +85,7 @@ ToScientific <- function(x, digits=NULL, lab.type=c("latex", "plotmath"),
     if (!is.null(scipen)) s[is.fixed] <- s.fixed[is.fixed]
 
   # plotmath expressions
-  } else {
+  } else if (type == "plotmath") {
     FUN <- function(i) {
       if (is.na(x[i])) {
         return(substitute(X, list(X=na)))

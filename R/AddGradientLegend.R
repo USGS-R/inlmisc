@@ -67,7 +67,7 @@ AddGradientLegend <- function(breaks, pal, at=NULL, n=5L, labels=TRUE,
     stop("Arguments 'labels' and 'at' should be the same length.")
   if (is.logical(labels) && labels) {
     if (scientific)
-      labels <- ToScientific(at, lab.type="plotmath")
+      labels <- ToScientific(at, type="plotmath")
     else
       labels <- formatC(at, big.mark=",")
   }
