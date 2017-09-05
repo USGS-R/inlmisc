@@ -107,7 +107,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
   if (is.logical(labels) && labels) {
     labels <- if (is.null(at)) graphics::axTicks(1) else at
     if (scientific)
-      labels <- ToScientific(labels, lab.type="plotmath")
+      labels <- ToScientific(labels, type="plotmath")
     else
       labels <- formatC(labels, big.mark=",")
   }
