@@ -28,7 +28,7 @@
 #'
 #' @note As a workaround for \href{https://www.section508.gov}{Section 508} compliance,
 #'   the letter "x" is used as the times symbol in plotmath expressions---rather
-#'   than the more common (and better looking) times symbol produced by the \code{"\%*\%"} syntax.
+#'   than the noncompliant (but better looking) times symbol produced by the \code{"\%*\%"} syntax.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
