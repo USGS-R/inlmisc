@@ -1,11 +1,11 @@
 #' Convert Spatial Grids to Polygons
 #'
 #' This function converts \pkg{sp} spatial objects from class '\code{\link{SpatialGridDataFrame}}' to '\code{\link{SpatialPolygonsDataFrame}}'.
-#' Spatial polygons can then be transformed to a different projection or datum with \code{spTransform} in package \pkg{rgdal}.
+#' Spatial polygons can then be transformed to a different projection or datum with \code{\link[sp]{spTransform}}.
 #' Image files created with spatial polygons are reduced in size and result in a much "cleaner" version of your image.
 #'
-#' @param grd 'SpatialGridDataFrame'.
-#'    Spatial grid data frame
+#' @param grd 'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.
+#'    A spatial grid data frame.
 #' @param zcol 'character' or 'integer'.
 #'    Attribute name or column number in attribute table.
 #' @param level 'logical'.
@@ -38,7 +38,7 @@
 #'   use caution when plotting with \code{\link[sp]{spplot}}.
 #'
 #' @note As an alternative, consider using the \code{\link[raster]{rasterToPolygons}} function
-#'   in the \pkg{raster} package setting \code{dissolve = TRUE}.
+#'   in the \pkg{raster} package, setting \code{dissolve = TRUE}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -119,72 +119,76 @@
 Grid2Polygons <- function(grd, zcol=1, level=FALSE, at, cuts=20,
                           pretty=FALSE, xlim=NULL, ylim=NULL, ply=NULL) {
 
-  # check arguments
-  if (!inherits(grd, "SpatialGridDataFrame"))
-    stop("Grid object not of class SpatialGridDataFrame")
-  if (is.character(zcol) && !(zcol %in% names(grd)))
-    stop("Column name not in attribute table")
-  if (is.numeric(zcol) && zcol > ncol(methods::slot(grd, "data")))
-    stop("Column number outside bounds of attribute table")
-  if (!is.null(ply) && !inherits(ply, c("SpatialPolygons", "SpatialPolygonsDataFrame")))
-    stop("incorrect polygon class")
+  # check class
+  what <- c("RasterLayer", "RasterStack", "RasterBrick",
+            "SpatialPixelsDataFrame", "SpatialGridDataFrame")
+  if (!inherits(grd, what)) stop("Incorrect 'grd' class")
+  what <- c("SpatialPolygons", "SpatialPolygonsDataFrame")
+  if (!is.null(ply) && !inherits(ply, what)) stop("Incorrect 'ply' class")
 
-  # crop grid data using limit arguments
-  if (!is.null(xlim) | !is.null(ylim)) {
-    if (is.null(xlim))
-      xlim <- sp::bbox(grd)[1, ]
-    if (is.null(ylim))
-      ylim <- sp::bbox(grd)[2, ]
-    vertices <- matrix(c(xlim[1], xlim[2], xlim[2], xlim[1], xlim[1],
-                         ylim[1], ylim[1], ylim[2], ylim[2], ylim[1]),
-                         nrow=5, ncol=2)
-    ply.box <- sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(vertices, hole=FALSE)), 1)))
-    sp::proj4string(ply.box) <- sp::CRS(sp::proj4string(grd))
-    grd[[zcol]][is.na(sp::over(grd, ply.box))] <- NA
+  # convert grid to 'RasterLayer' class
+  if (!inherits(grd, "RasterLayer"))
+    grd <- raster::raster(grd, layer=zcol)
+
+  # crop grid data using polygon argument
+  if (!is.null(ply)) {
+    crs <- raster::crs(grd)
+    if (is.na(sp::proj4string(ply))) sp::proj4string(ply) <- crs
+    if (!sp::identicalCRS(grd, ply)) ply <- sp::spTransform(ply, crs)
+    grd <- raster::crop(grd, ply, snap="out")
   }
+
+  # crop grid using limit arguments
+  if (is.null(xlim)) xlim <- c(NA, NA)
+  if (is.null(ylim)) ylim <- c(NA, NA)
+  if (is.na(xlim[1])) xlim[1] <- raster::xmin(grd)
+  if (is.na(xlim[2])) xlim[2] <- raster::xmax(grd)
+  if (is.na(ylim[1])) ylim[1] <- raster::ymin(grd)
+  if (is.na(ylim[2])) ylim[2] <- raster::ymax(grd)
+  e <- raster::extent(c(xlim, ylim))
+  grd <- raster::crop(grd, e, snap="in")
 
   # determine break points
   if (level) {
     if (missing(at)) {
-      zlim <- range(grd[[zcol]], finite=TRUE)
+      zlim <- range(grd[], finite=TRUE)
       if (pretty)
         at <- pretty(zlim, cuts)
       else
         at <- seq(zlim[1], zlim[2], length.out=cuts)
     }
     zc <- at[1:(length(at) - 1L)] + diff(at) / 2
-    z <- zc[findInterval(grd[[zcol]], at, rightmost.closed=TRUE)]
+    z <- zc[findInterval(grd[], at, rightmost.closed=TRUE)]
   } else {
-    z <- grd[[zcol]]
+    z <- as.numeric(grd[])
   }
 
   # define nodes and elements
-  grd.par <- sp::gridparameters(grd)
-  n <- grd.par$cells.dim[1]
-  m <- grd.par$cells.dim[2]
-  dx <- grd.par$cellsize[1]
-  dy <- grd.par$cellsize[2]
-  xmin <- grd.par$cellcentre.offset[1] - dx / 2
-  ymin <- grd.par$cellcentre.offset[2] - dy / 2
-  xmax <- xmin + n * dx
-  ymax <- ymin + m * dy
+  m <- dim(grd)[1]
+  n <- dim(grd)[2]
+  dx <- raster::xres(grd)
+  dy <- raster::yres(grd)
+  xmin <- raster::xmin(grd)
+  xmax <- raster::xmax(grd)
+  ymin <- raster::ymin(grd)
+  ymax <- raster::ymax(grd)
   x <- seq(xmin, xmax, by=dx)
   y <- seq(ymin, ymax, by=dy)
   nnodes <- (m + 1L) * (n + 1L)
   nelems <- m * n
-  nodes <- 1L:nnodes
-  elems <- 1L:nelems
+  nodes <- 1:nnodes
+  elems <- 1:nelems
   coords <- cbind(x=rep(x, m + 1L), y=rep(rev(y), each=n + 1L))
-  n1 <- c(sapply(1L:m, function(i) seq(1L, n) + (i - 1L) * (n + 1L)))
+  n1 <- unlist(lapply(1:m, function(i) seq(1L, n) + (i - 1L) * (n + 1L)))
   n2 <- n1 + 1L
-  n4 <- c(sapply(1L:m, function(i) seq(1L, n) + i * (n + 1L)))
+  n4 <- unlist(lapply(1:m, function(i) seq(1L, n) + i * (n + 1L)))
   n3 <- n4 + 1L
   elem.nodes <- cbind(n1, n2, n3, n4)
 
   # define segments in each element
   nsegs <- nelems * 4L
   segs <- matrix(data=NA, nrow=nsegs, ncol=4,
-                 dimnames=list(1L:nsegs, c("elem", "a", "b", "z")))
+                 dimnames=list(1:nsegs, c("elem", "a", "b", "z")))
   segs[, 1] <- rep(1:nelems, each=4)
   segs[, 2] <- c(t(elem.nodes))
   segs[, 3] <- c(t(elem.nodes[, c(2, 3, 4, 1)]))
@@ -195,26 +199,26 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at, cuts=20,
   levs <- sort(unique(stats::na.omit(z)))
 
   # find polygon nodes for each level
-  fun <- function(i) .FindPolyNodes(segs[segs[, "z"] == i, c("a", "b")])
-  poly.nodes <- lapply(levs, fun)
+  FUN <- function(i) .FindPolyNodes(segs[segs[, "z"] == i, c("a", "b")])
+  poly.nodes <- lapply(levs, FUN)
 
-  # build lists of Polygon objects
-  fun <- function(i) lapply(i, function(j) sp::Polygon(coords[j, ]))
-  poly <- lapply(poly.nodes, fun)
+  # build lists of 'Polygon' objects
+  FUN <- function(i) lapply(i, function(j) sp::Polygon(coords[j, ]))
+  poly <- lapply(poly.nodes, FUN)
 
-  # build list of Polygons objects
-  ids <- make.names(1L:length(poly), unique=TRUE)
-  fun <- function(i) sp::Polygons(poly[[i]], ID=ids[i])
-  polys <- lapply(1L:length(poly), fun)
+  # build list of 'Polygons' objects
+  ids <- make.names(1:length(poly), unique=TRUE)
+  FUN <- function(i) sp::Polygons(poly[[i]], ID=ids[i])
+  polys <- lapply(1:length(poly), FUN)
 
-  # convert to SpatialPolygons object, add datum and projection
-  sp.polys <- sp::SpatialPolygons(polys, proj4string=grd@proj4string)
+  # convert to 'SpatialPolygons' object, add datum and projection
+  sp.polys <- sp::SpatialPolygons(polys, proj4string=raster::crs(grd))
 
-  # convert to SpatialPolygonsDataFrame object, add data frame of levels
+  # convert to 'SpatialPolygonsDataFrame' object, add data frame of levels
   d <- data.frame(z=levs, row.names=row.names(sp.polys))
   sp.polys.df <- sp::SpatialPolygonsDataFrame(sp.polys, data=d, match.ID=TRUE)
 
-  # crop SpatialPolygonsDataFrame object using polygon argument
+  # crop 'SpatialPolygonsDataFrame' object using polygon argument
   if (!is.null(ply)) sp.polys.df <- raster::crop(sp.polys.df, ply)
 
   return(sp.polys.df)
@@ -234,16 +238,12 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at, cuts=20,
 .FindPolyNodes <- function(s) {
 
   # remove duplicate segments
-  id <- paste(apply(s, 1, min), apply(s, 1, max), sep="")
-  duplicates <- unique(id[duplicated(id)])
-  s <- s[!id %in% duplicates, ]
-
-  # number of segments in level
-  m <- nrow(s)
+  id <- paste(apply(s, 1, min), apply(s, 1, max))
+  s <- s[!id %in% unique(id[duplicated(id)]), ]
 
   # call c program to define polygon rings
   out <- matrix(.Call(C_DefinePolygons, as.integer(s[, 1]), as.integer(s[, 2])),
-                nrow=m, ncol=2)
+                nrow=nrow(s), ncol=2)
 
   # place returned array into list object
   poly.nodes <- lapply(unique(out[, 2]), function(i) out[out[, 2] == i, 1])

@@ -8,8 +8,8 @@ Grid2Polygons(grd, zcol = 1, level = FALSE, at, cuts = 20,
   pretty = FALSE, xlim = NULL, ylim = NULL, ply = NULL)
 }
 \arguments{
-\item{grd}{'SpatialGridDataFrame'.
-Spatial grid data frame}
+\item{grd}{'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.
+A spatial grid data frame.}
 
 \item{zcol}{'character' or 'integer'.
 Attribute name or column number in attribute table.}
@@ -45,7 +45,7 @@ Returns an object of 'SpatialPolygonsDataFrame'.
 }
 \description{
 This function converts \pkg{sp} spatial objects from class '\code{\link{SpatialGridDataFrame}}' to '\code{\link{SpatialPolygonsDataFrame}}'.
-Spatial polygons can then be transformed to a different projection or datum with \code{spTransform} in package \pkg{rgdal}.
+Spatial polygons can then be transformed to a different projection or datum with \code{\link[sp]{spTransform}}.
 Image files created with spatial polygons are reduced in size and result in a much "cleaner" version of your image.
 }
 \note{
@@ -57,7 +57,7 @@ The traditional R graphics model does not draw polygon holes correctly,
   use caution when plotting with \code{\link[sp]{spplot}}.
 
 As an alternative, consider using the \code{\link[raster]{rasterToPolygons}} function
-  in the \pkg{raster} package setting \code{dissolve = TRUE}.
+  in the \pkg{raster} package, setting \code{dissolve = TRUE}.
 }
 \examples{
 # Example 1
