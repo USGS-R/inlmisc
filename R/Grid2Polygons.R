@@ -1,19 +1,20 @@
 #' Convert Spatial Grids to Polygons
 #'
-#' This function converts \pkg{sp} spatial objects from class '\code{\link{SpatialGridDataFrame}}' to '\code{\link{SpatialPolygonsDataFrame}}'.
-#' Spatial polygons can then be transformed to a different projection or datum with \code{\link[sp]{spTransform}}.
-#' Image files created with spatial polygons are reduced in size and result in a much "cleaner" version of your image.
+#' This function converts gridded spatial data to spatial polygons.
+#' Image files created with spatial polygons are reduced in size,
+#' can easily be transformed from one coordinate reference system to another,
+#' and result in much "cleaner" images when plotted.
 #'
 #' @param grd 'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.
 #'    A spatial grid data frame.
 #' @param zcol 'character' or 'integer'.
-#'    Attribute name or column number in attribute table.
+#'    The layer to extract from a multi-layer spatial grid.
 #' @param level 'logical'.
-#'    If true, a set of levels is used to partition the range of \code{z}, its default is false.
+#'    If true, a set of levels is used to partition the range of attribute values, its default is false.
 #' @param at 'numeric'.
-#'    A vector giving breakpoints along the range of \code{z}.
+#'    A vector giving breakpoints along the range of attribute values.
 #' @param cuts 'integer'.
-#'    Number of levels the range of \code{z} would be divided into.
+#'    Number of levels the range of attribute values would be divided into.
 #' @param pretty 'logical'.
 #'    Whether to use pretty cut locations.
 #' @param xlim 'numeric'.
@@ -25,8 +26,8 @@
 #'
 #' @return Returns an object of 'SpatialPolygonsDataFrame'.
 #'   The objects \code{data} slot is a data frame, number of rows equal to
-#'   the number of \code{Polygons} objects and a single column containing values of \code{z}.
-#'   If \code{level} is true, \code{z} values are set equal to the midpoint between breakpoints.
+#'   the number of \code{Polygons} objects and a single column containing attribute values.
+#'   If \code{level} is true, attribute values are set equal to the midpoint between breakpoints.
 #'   The status of the polygon as a hole or an island is taken from the ring direction,
 #'   with clockwise meaning island, and counter-clockwise meaning hole.
 #'
@@ -41,8 +42,6 @@
 #'   in the \pkg{raster} package, setting \code{dissolve = TRUE}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
-#'
-#' @seealso \code{\link{SpatialPolygons}}
 #'
 #' @references A general explanation of the algorithm provided
 #'   \href{https://stackoverflow.com/questions/643995/algorithm-to-merge-adjacent-rectangles-into-polygon}{here};
@@ -116,7 +115,7 @@
 #' par(op)
 #'
 
-Grid2Polygons <- function(grd, zcol=1, level=FALSE, at, cuts=20,
+Grid2Polygons <- function(grd, zcol=1L, level=FALSE, at, cuts=20L,
                           pretty=FALSE, xlim=NULL, ylim=NULL, ply=NULL) {
 
   # check class
