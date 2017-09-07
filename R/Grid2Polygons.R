@@ -18,9 +18,14 @@
 #' @param pretty 'logical'.
 #'    Whether to use pretty cut locations.
 #' @param xlim 'numeric'.
-#'    Vector of length 2 giving left and right limits of the spatial grid, data outside these limits is excluded.
+#'    Vector of length 2 giving left and right limits of the spatial grid,
+#'    data outside these limits is excluded.
 #' @param ylim 'numeric'.
-#'    Vector of length 2 giving lower and upper limits of the spatial grid, data outside these limits is excluded.
+#'    Vector of length 2 giving lower and upper limits of the spatial grid,
+#'    data outside these limits is excluded.
+#' @param zlim 'numeric'.
+#'    Vector of length 2 giving minimum and maximum limits of the attribute variable,
+#'    data outside these limits is excluded.
 #' @param ply 'SpatialPolygons', or 'SpatialGridDataFrame'.
 #'    Cropping polygon
 #'
@@ -117,7 +122,8 @@
 #'
 
 Grid2Polygons <- function(grd, zcol=1L, level=FALSE, at, cuts=20L,
-                          pretty=FALSE, xlim=NULL, ylim=NULL, ply=NULL) {
+                          pretty=FALSE, xlim=NULL, ylim=NULL, zlim=NULL,
+                          ply=NULL) {
 
   # check class
   what <- c("RasterLayer", "RasterStack", "RasterBrick",
@@ -138,7 +144,7 @@ Grid2Polygons <- function(grd, zcol=1L, level=FALSE, at, cuts=20L,
     grd <- raster::crop(grd, ply, snap="out")
   }
 
-  # crop grid using limit arguments
+  # crop grid using xlim and ylim
   if (is.null(xlim)) xlim <- c(NA, NA)
   if (is.null(ylim)) ylim <- c(NA, NA)
   if (is.na(xlim[1])) xlim[1] <- raster::xmin(grd)
@@ -148,10 +154,16 @@ Grid2Polygons <- function(grd, zcol=1L, level=FALSE, at, cuts=20L,
   e <- raster::extent(c(xlim, ylim))
   grd <- raster::crop(grd, e, snap="in")
 
+  # crop grid using zlim
+  if (is.null(zlim)) zlim <- c(NA, NA)
+  if (is.na(zlim[1])) zlim[1] <- min(grd[], na.rm=TRUE)
+  if (is.na(zlim[2])) zlim[2] <- max(grd[], na.rm=TRUE)
+  grd[grd[] < zlim[1] | grd[] > zlim[2]] <- NA
+  grd <- raster::trim(grd)
+
   # determine break points
   if (level) {
     if (missing(at)) {
-      zlim <- range(grd[], finite=TRUE)
       if (pretty)
         at <- pretty(zlim, cuts)
       else
@@ -227,9 +239,11 @@ Grid2Polygons <- function(grd, zcol=1L, level=FALSE, at, cuts=20L,
 
 # Find polygon nodes
 #
-#  input:  s          - matrix; 2-column table giving start- and end-node
-#                       indexes for each segment in a level
-#  output: poly.nodes - list; vector components giving node indexes for each
+#  input:  s          - 'matrix'.
+#                       A 2-column table giving start- and end-node
+#                       indexes for each segment in a level.
+#  output: poly.nodes - 'list'.
+#                       Vector components giving node indexes for each
 #                       polygon ring. The status of the polygon as a hole or
 #                       an island is taken from the ring direction, with
 #                       clockwise meaning island, and counter-clockwise

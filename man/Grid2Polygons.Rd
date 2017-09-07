@@ -5,7 +5,7 @@
 \title{Convert Spatial Grids to Polygons}
 \usage{
 Grid2Polygons(grd, zcol = 1L, level = FALSE, at, cuts = 20L,
-  pretty = FALSE, xlim = NULL, ylim = NULL, ply = NULL)
+  pretty = FALSE, xlim = NULL, ylim = NULL, zlim = NULL, ply = NULL)
 }
 \arguments{
 \item{grd}{'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.
@@ -27,10 +27,16 @@ Number of levels the range of attribute values would be divided into.}
 Whether to use pretty cut locations.}
 
 \item{xlim}{'numeric'.
-Vector of length 2 giving left and right limits of the spatial grid, data outside these limits is excluded.}
+Vector of length 2 giving left and right limits of the spatial grid,
+data outside these limits is excluded.}
 
 \item{ylim}{'numeric'.
-Vector of length 2 giving lower and upper limits of the spatial grid, data outside these limits is excluded.}
+Vector of length 2 giving lower and upper limits of the spatial grid,
+data outside these limits is excluded.}
+
+\item{zlim}{'numeric'.
+Vector of length 2 giving minimum and maximum limits of the attribute variable,
+data outside these limits is excluded.}
 
 \item{ply}{'SpatialPolygons', or 'SpatialGridDataFrame'.
 Cropping polygon}
