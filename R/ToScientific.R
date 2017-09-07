@@ -12,7 +12,7 @@
 #' @param na 'character'.
 #'   String to be used for missing values (\code{NA}).
 #'   By default, no string substitution is made for missing values.
-#' @param inline.delimiter 'character'.
+#' @param delimiter 'character'.
 #'   Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.
 #' @param scipen 'integer'.
 #'   A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
@@ -50,8 +50,7 @@
 #'
 
 ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
-                         na=as.character(NA), inline.delimiter="$",
-                         scipen=NULL, ...) {
+                         na=as.character(NA), delimiter="$", scipen=NULL, ...) {
 
   if (missing(type) && methods::hasArg("lab.type"))
     type <- list(...)$lab.type  # included for backward compatibility
@@ -80,7 +79,7 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   if (type == "latex") {
     s <- rep(na, length(x))
     s[is.num] <- sprintf("%s%s \\times 10^{%d}%s",
-                         inline.delimiter, m[is.num], n[is.num], inline.delimiter)
+                         delimiter, m[is.num], n[is.num], delimiter)
     s[is.zero] <- "0"
     if (!is.null(scipen)) s[is.fixed] <- s.fixed[is.fixed]
 

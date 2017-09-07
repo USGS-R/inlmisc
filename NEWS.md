@@ -1,7 +1,10 @@
 # inlmisc 0.3.2.9000
 
-- In `ToScientific` function, add arguments `scipen`, `inline.delimiter`, and `...`.
-  And rename `lab.type` argument to `type`, code in place to prevent issues with backwards compatibility.
+- In `Grid2Polygons` function, allow `grd` argument to be an object of class `SpatialPixelsDataFrame` or `Raster*`.
+  The coordinate reference system (CRS) of the `ply` argument will be transformed to match the CRS of the `grd` argument.
+
+- In `ToScientific` function, add arguments `scipen`, `delimiter`, and `...`; and rename `lab.type` argument to `type`.
+  Code in place for backwards compatibility.
 
 # inlmisc 0.3.2
 

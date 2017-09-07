@@ -5,3 +5,4 @@
 ^Makefile$
 ^\.travis\.yml$
 ^appveyor\.yml$
+misc/concept-grd2ply.pdf$

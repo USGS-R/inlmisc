@@ -4,24 +4,24 @@
 \alias{Grid2Polygons}
 \title{Convert Spatial Grids to Polygons}
 \usage{
-Grid2Polygons(grd, zcol = 1, level = FALSE, at, cuts = 20,
+Grid2Polygons(grd, zcol = 1L, level = FALSE, at, cuts = 20L,
   pretty = FALSE, xlim = NULL, ylim = NULL, ply = NULL)
 }
 \arguments{
-\item{grd}{'SpatialGridDataFrame'.
-Spatial grid data frame}
+\item{grd}{'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.
+Spatial grid}
 
 \item{zcol}{'character' or 'integer'.
-Attribute name or column number in attribute table.}
+Layer to extract from a multi-layer spatial grid.}
 
 \item{level}{'logical'.
-If true, a set of levels is used to partition the range of \code{z}, its default is false.}
+If true, a set of levels is used to partition the range of attribute values, its default is false.}
 
 \item{at}{'numeric'.
-A vector giving breakpoints along the range of \code{z}.}
+Vector giving breakpoints along the range of attribute values.}
 
 \item{cuts}{'integer'.
-Number of levels the range of \code{z} would be divided into.}
+Number of levels the range of attribute values would be divided into.}
 
 \item{pretty}{'logical'.
 Whether to use pretty cut locations.}
@@ -38,15 +38,16 @@ Cropping polygon}
 \value{
 Returns an object of 'SpatialPolygonsDataFrame'.
   The objects \code{data} slot is a data frame, number of rows equal to
-  the number of \code{Polygons} objects and a single column containing values of \code{z}.
-  If \code{level} is true, \code{z} values are set equal to the midpoint between breakpoints.
+  the number of \code{Polygons} objects and a single column containing attribute values.
+  If \code{level} is true, attribute values are set equal to the midpoint between breakpoints.
   The status of the polygon as a hole or an island is taken from the ring direction,
   with clockwise meaning island, and counter-clockwise meaning hole.
 }
 \description{
-This function converts \pkg{sp} spatial objects from class '\code{\link{SpatialGridDataFrame}}' to '\code{\link{SpatialPolygonsDataFrame}}'.
-Spatial polygons can then be transformed to a different projection or datum with \code{spTransform} in package \pkg{rgdal}.
-Image files created with spatial polygons are reduced in size and result in a much "cleaner" version of your image.
+This function converts gridded spatial data to spatial polygons.
+Image files created with spatial polygons are reduced in size,
+can easily be transformed from one coordinate reference system to another,
+and result in much "cleaner" images when plotted.
 }
 \note{
 The traditional R graphics model does not draw polygon holes correctly,
@@ -57,7 +58,7 @@ The traditional R graphics model does not draw polygon holes correctly,
   use caution when plotting with \code{\link[sp]{spplot}}.
 
 As an alternative, consider using the \code{\link[raster]{rasterToPolygons}} function
-  in the \pkg{raster} package setting \code{dissolve = TRUE}.
+  in the \pkg{raster} package, setting \code{dissolve = TRUE}.
 }
 \examples{
 # Example 1
@@ -81,7 +82,8 @@ image(grd, col = gray.colors(30), axes = TRUE)
 grid(col = "black", lty = 1)
 points(x = x, y = y, pch = 16)
 text(cbind(xc, yc), labels = z)
-text(cbind(x = x + 0.1, y = rev(y + 0.1)), labels = 1:((m + 1) * (n + 1)), cex = 0.6)
+text(cbind(x = x + 0.1, y = rev(y + 0.1)),
+     labels = 1:((m + 1) * (n + 1)), cex = 0.6)
 
 at <- 1:ceiling(max(z, na.rm = TRUE))
 plys <- Grid2Polygons(grd, level = TRUE, at = at)
@@ -91,12 +93,12 @@ zz <- plys[[1]]
 legend("top", legend = zz, fill = cols, bty = "n", xpd = TRUE,
        inset = c(0, -0.1), ncol = length(plys))
 
-p1 <- sp::Polygon(rbind(c(1.2, 0.5), c(5.8, 1.7), c(2.5, 5.1), c(1.2, 0.5)),
-                  hole = FALSE)
-p2 <- sp::Polygon(rbind(c(2.5, 2.5), c(3.4, 1.8), c(3.7, 3.1), c(2.5, 2.5)),
-                  hole = TRUE)
-p3 <- sp::Polygon(rbind(c(-0.3, 3.3), c(1.7, 5.1), c(-1.0, 7.0), c(-0.3, 3.3)),
-                  hole = FALSE)
+v1 <- rbind(c( 1.2, 0.5), c(5.8, 1.7), c( 2.5, 5.1), c( 1.2, 0.5))
+v2 <- rbind(c( 2.5, 2.5), c(3.4, 1.8), c( 3.7, 3.1), c( 2.5, 2.5))
+v3 <- rbind(c(-0.3, 3.3), c(1.7, 5.1), c(-1.0, 7.0), c(-0.3, 3.3))
+p1 <- sp::Polygon(v1, hole = FALSE)
+p2 <- sp::Polygon(v2, hole = TRUE)
+p3 <- sp::Polygon(v3, hole = FALSE)
 p <- sp::SpatialPolygons(list(sp::Polygons(list(p1, p2, p3), 1)))
 plys <- Grid2Polygons(grd, level = TRUE, at = at, ply = p)
 cols <- rainbow(length(zz), alpha = 0.6)[zz \%in\% plys[[1]]]
@@ -123,9 +125,6 @@ par(op)
 A general explanation of the algorithm provided
   \href{https://stackoverflow.com/questions/643995/algorithm-to-merge-adjacent-rectangles-into-polygon}{here};
   inspiration provided \href{https://menugget.blogspot.com/2012/04/create-polygons-from-matrix.html}{here}.
-}
-\seealso{
-\code{\link{SpatialPolygons}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

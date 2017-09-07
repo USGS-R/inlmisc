@@ -5,7 +5,7 @@
 \title{Format for Scientific Notation}
 \usage{
 ToScientific(x, digits = NULL, type = c("latex", "plotmath"),
-  na = as.character(NA), inline.delimiter = "$", scipen = NULL, ...)
+  na = as.character(NA), delimiter = "$", scipen = NULL, ...)
 }
 \arguments{
 \item{x}{'numeric'.
@@ -22,7 +22,7 @@ or \code{"plotmath"} to return as \code{\link[grDevices]{plotmath}} expressions.
 String to be used for missing values (\code{NA}).
 By default, no string substitution is made for missing values.}
 
-\item{inline.delimiter}{'character'.
+\item{delimiter}{'character'.
 Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.}
 
 \item{scipen}{'integer'.
