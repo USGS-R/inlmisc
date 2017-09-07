@@ -6,13 +6,13 @@
 #' and result in much "cleaner" images when plotted.
 #'
 #' @param grd 'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.
-#'    A spatial grid data frame.
+#'    Spatial grid
 #' @param zcol 'character' or 'integer'.
-#'    The layer to extract from a multi-layer spatial grid.
+#'    Layer to extract from a multi-layer spatial grid.
 #' @param level 'logical'.
 #'    If true, a set of levels is used to partition the range of attribute values, its default is false.
 #' @param at 'numeric'.
-#'    A vector giving breakpoints along the range of attribute values.
+#'    Vector giving breakpoints along the range of attribute values.
 #' @param cuts 'integer'.
 #'    Number of levels the range of attribute values would be divided into.
 #' @param pretty 'logical'.
@@ -77,7 +77,8 @@
 #' grid(col = "black", lty = 1)
 #' points(x = x, y = y, pch = 16)
 #' text(cbind(xc, yc), labels = z)
-#' text(cbind(x = x + 0.1, y = rev(y + 0.1)), labels = 1:((m + 1) * (n + 1)), cex = 0.6)
+#' text(cbind(x = x + 0.1, y = rev(y + 0.1)),
+#'      labels = 1:((m + 1) * (n + 1)), cex = 0.6)
 #'
 #' at <- 1:ceiling(max(z, na.rm = TRUE))
 #' plys <- Grid2Polygons(grd, level = TRUE, at = at)
@@ -87,12 +88,12 @@
 #' legend("top", legend = zz, fill = cols, bty = "n", xpd = TRUE,
 #'        inset = c(0, -0.1), ncol = length(plys))
 #'
-#' p1 <- sp::Polygon(rbind(c(1.2, 0.5), c(5.8, 1.7), c(2.5, 5.1), c(1.2, 0.5)),
-#'                   hole = FALSE)
-#' p2 <- sp::Polygon(rbind(c(2.5, 2.5), c(3.4, 1.8), c(3.7, 3.1), c(2.5, 2.5)),
-#'                   hole = TRUE)
-#' p3 <- sp::Polygon(rbind(c(-0.3, 3.3), c(1.7, 5.1), c(-1.0, 7.0), c(-0.3, 3.3)),
-#'                   hole = FALSE)
+#' v1 <- rbind(c( 1.2, 0.5), c(5.8, 1.7), c( 2.5, 5.1), c( 1.2, 0.5))
+#' v2 <- rbind(c( 2.5, 2.5), c(3.4, 1.8), c( 3.7, 3.1), c( 2.5, 2.5))
+#' v3 <- rbind(c(-0.3, 3.3), c(1.7, 5.1), c(-1.0, 7.0), c(-0.3, 3.3))
+#' p1 <- sp::Polygon(v1, hole = FALSE)
+#' p2 <- sp::Polygon(v2, hole = TRUE)
+#' p3 <- sp::Polygon(v3, hole = FALSE)
 #' p <- sp::SpatialPolygons(list(sp::Polygons(list(p1, p2, p3), 1)))
 #' plys <- Grid2Polygons(grd, level = TRUE, at = at, ply = p)
 #' cols <- rainbow(length(zz), alpha = 0.6)[zz %in% plys[[1]]]
