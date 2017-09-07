@@ -68,9 +68,9 @@ Only packages specified in \code{pkg}, and the packages that \code{pkg} depend o
 are included in the package-details \code{file}.}
 }
 \value{
-The \code{SavePackageDetails} function returns (invisibly) the MD5 checksum of the package-details \code{file} content.
-  Any changes in the file content will produce a different MD5 checksum.
-  Use the \code{\link[tools]{md5sum}} function to verify that a file has not been tampered with.
+The \code{SavePackageDetails} function returns (invisibly) the MD5 hash of the package-details \code{file} content.
+  Any changes in the file content will produce a different MD5 hash.
+  Use the \code{\link[tools]{md5sum}} function to verify that a file has not been changed.
   The \code{RecreateLibrary} function returns (invisibly) \code{NULL}.
 }
 \description{
@@ -107,26 +107,25 @@ A typical workflow is as follows:
   \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
 
   The package-details \code{file} is of the following format:
-
-  # Date modified: YYYY-MM-DD HH:MM:SS UTC \cr
-  # R version 9.9.9 (YYYY-MM-DD)
-  \tabular{ll}{
-  Package \tab Version \cr
-  name \tab 9.9.9 \cr
-  ... \tab ...
+  \preformatted{
+    # Date modified: YYYY-MM-DD HH:MM:SS UTC
+    # R version 9.9.9 (YYYY-MM-DD)
+    Package Version
+    name    9.9.9
+    ...     ...
   }
 
-  The format is flexible enough to add additional extraneous metadata and table fields.
-  For example,
-
-  # Date modified: 2017-08-12 05:14:33 UTC \cr
-  # R version 3.4.1 (2017-06-30) \cr
-  # Running under: Windows 10 x64 (build 14393) \cr
-  # Platform: x86_64-w64-mingw32
-  \tabular{lllll}{
-  Package \tab Version \tab Priority \tab Depends \tab Imports \cr
-  akima \tab 0.6-2 \tab NA \tab R (>= 2.0.0) \tab sp \cr
-  animation \tab 2.5 \tab NA \tab R (>= 2.14.0) \tab NA
+  Where the first two lines are reserved for the timestamp and \R-version number, respectively.
+  And package data are stored in a tabular structure, that is, data-table values are separated by a \kbd{TAB} character.
+  The data format is flexible enough to add additional extraneous metadata and table fields, for example,
+  \preformatted{
+    # Date modified: 2017-08-12 05:14:33 UTC
+    # R version 3.4.1 (2017-06-30)
+    # Running under: Windows 10 x64 (build 14393)
+    # Platform: x86_64-w64-mingw32
+    Package   Version Priority Depends       Imports
+    akima     0.6-2   NA       R (>= 2.0.0)  sp
+    animation 2.5     NA       R (>= 2.14.0) NA
   }
 }
 \note{
