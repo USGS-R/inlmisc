@@ -62,7 +62,8 @@
 #'   This list may include components \code{at} and \code{labels}.
 #' @param scale.loc 'character'.
 #'   Position of the scale bar:
-#'   \code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote scale location.
+#'   \code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote scale location,
+#'   see \code{\link{AddScaleBar}} function.
 #' @param arrow.loc 'character'.
 #'   Position of the north arrow:
 #'   \code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote arrow location.
@@ -108,12 +109,16 @@
 #'   If true, the graphics device driver is shut down when the function exits.
 #'   Unused if \code{file = NULL}
 #' @param useRaster 'logical'.
-#'   If true, a bitmap raster is used to plot \code{r} instead of using individaul polygons for each raster cell.
+#'   If true, a bitmap raster is used to plot \code{r} instead of using individual polygons for each raster cell.
 #'   If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.
 #'   Unused if \code{simplify = TRUE}.
-#' @param simplify 'logical'.
-#'   If true, converts raster \code{r} to spatial polygons prior to plotting,
+#' @param simplify 'numeric'.
+#'   Specifying this argument will convert the raster \code{r} to spatial polygons prior to plotting,
 #'   see \code{\link{Grid2Polygons}} function for details.
+#'   If \code{simplify > 0} the geometry of the spatial polygons is generalized using the
+#'   Douglas-Peucker algorithm (Douglas and Peucker, 1961);
+#'   and \code{simplify} is the numerical tolerance value to be used by the algorithm.
+#'   See \code{\link[rgeos]{gSimplify}} function for additional information.
 #'
 #' @return Used for the side-effect of a new plot generated.
 #'   Returns a 'list' object with the following graphical parameters:
@@ -125,7 +130,11 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link{AddScaleBar}}, \code{\link{AddColorKey}}
+#' @references Douglas, D., and Peucker, T., 1961,
+#'   Algorithms for the reduction of the number of points required to represent a digitized line or its caricature:
+#'   The Canadian Cartographer, v. 10, no. 2, p. 112--122.
+#'
+#' @seealso \code{\link{AddColorKey}}
 #'
 #' @keywords hplot
 #'
@@ -164,14 +173,15 @@
 #' Pal <- colorspace::rainbow_hcl
 #' breaks <- seq(0, 2000, by = 200)
 #' PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
-#'         contour.lines = list(col = "#1F1F1F"), draw.key = FALSE, simplify = TRUE)
-#' AddGradientLegend(breaks, Pal, at = breaks, title = "Elevation", loc = "topleft",
+#'         scale.loc = "bottomright", contour.lines = list(col = "#1F1F1F"),
+#'         draw.key = FALSE, simplify = 0)
+#' AddGradientLegend(breaks, Pal, at = breaks, title = "Explanation", loc = "topleft",
 #'                   inset = c(0.1, 0.1), strip.dim = c(2, 20))
 #'
-#' out <- PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, file = "Rplots1.pdf")
+#' out <- PlotMap(r, dms.tick = TRUE, file = "Rplots1.pdf")
 #'
 #' pdf(file = "Rplots2.pdf", width = out$din[1], height = out$din[2])
-#' PlotMap(r, scale.loc = "topleft", dms.tick = TRUE)
+#' PlotMap(r, dms.tick = TRUE)
 #' data(meuse, package = "sp")
 #' sp::coordinates(meuse) = ~ x + y
 #' points(meuse)
@@ -189,7 +199,7 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
                     labels=NULL, scale.loc=NULL, arrow.loc=NULL, explanation=NULL,
                     credit=NULL, shade=NULL, contour.lines=NULL,
                     rivers=NULL, lakes=NULL, roads=NULL, draw.key=NULL, draw.raster=TRUE,
-                    file=NULL, close.file=TRUE, useRaster, simplify=FALSE) {
+                    file=NULL, close.file=TRUE, useRaster, simplify) {
 
   if (!is.null(p) && !inherits(p, "SpatialPoints"))
     stop("spatial point data is the incorrect class")
@@ -472,14 +482,14 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (draw.raster & n > 0) {
-    if (simplify) {
+    if (!missing(simplify)) {
       ply <- Grid2Polygons(r, level=TRUE, at=breaks, zlim=zl)
-      # if (simplify > 0) {
-      #   simple.ply <- rgeos::gSimplify(ply, tol=simplify, topologyPreserve=TRUE)
-      #   ids <- sapply(methods::slot(simple.ply, "polygons"),
-      #                 function(x) methods::slot(x, "ID"))
-      #   ply <- sp::SpatialPolygonsDataFrame(simple.ply, data=ply[ids, ]@data)
-      # }
+      if (simplify > 0) {
+        simple.ply <- rgeos::gSimplify(ply, tol=simplify, topologyPreserve=TRUE)
+        FUN <- function(i) methods::slot(i, "ID")
+        ids <- sapply(methods::slot(simple.ply, "polygons"), FUN)
+        ply <- sp::SpatialPolygonsDataFrame(simple.ply, data=ply[ids, ]@data)
+      }
       plot(ply, col=cols, border=NA, add=TRUE)
     } else {
       raster::image(r, maxpixels=length(r), useRaster=useRaster, zlim=zl,

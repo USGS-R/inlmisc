@@ -22,10 +22,10 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @keywords utilities
-#'
 #' @references Lee, C.Y., 1961, An algorithm for path connections and its applications:
 #'   IRE Transactions on Electronic Computers, v. EC-10, no. 2, p. 346--365.
+#'
+#' @keywords utilities
 #'
 #' @import sp
 #' @import rgdal
