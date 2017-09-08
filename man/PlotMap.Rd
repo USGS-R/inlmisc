@@ -12,7 +12,7 @@ PlotMap(r, p = NULL, ..., layer = 1, att = NULL, n = NULL,
   arrow.loc = NULL, explanation = NULL, credit = NULL, shade = NULL,
   contour.lines = NULL, rivers = NULL, lakes = NULL, roads = NULL,
   draw.key = NULL, draw.raster = TRUE, file = NULL, close.file = TRUE,
-  useRaster)
+  useRaster, simplify)
 }
 \arguments{
 \item{r}{'Raster*', 'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'CRS'.
@@ -25,9 +25,9 @@ Spatial point data to be plotted.}
 Unused if \code{p = NULL}.}
 
 \item{layer}{'integer'.
-Layer to extract from if \code{r} is of class RasterStack/Brick or SpatialGridDataFrame.}
+Layer to extract from if \code{r} is of class 'RasterStack/Brick' or 'SpatialGridDataFrame'.}
 
-\item{att}{integer or character.
+\item{att}{'integer' or 'character'.
 The levels attribute to use in the Raster Attribute Table (RAT);
 requires \code{r} values of class factor.}
 
@@ -94,11 +94,12 @@ This list may include components \code{at} and \code{labels}.}
 
 \item{scale.loc}{'character'.
 Position of the scale bar:
-"bottomleft", "topleft", "topright", or "bottomright" to denote scale location.}
+\code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote scale location,
+see \code{\link{AddScaleBar}} function.}
 
 \item{arrow.loc}{'character'.
 Position of the north arrow:
-"bottomleft", "topleft", "topright", or "bottomright" to denote arrow location.}
+\code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote arrow location.}
 
 \item{explanation}{'character'.
 Label explaining the raster cell value.}
@@ -137,7 +138,7 @@ Passed arguments include \code{"x"}, \code{"col"}, and \code{"lwd"}.}
 \item{draw.key}{'logical'.
 If true, a color key should be drawn.}
 
-\item{draw.raster}{logical.
+\item{draw.raster}{'logical'.
 If true, the raster image is drawn.}
 
 \item{file}{'character'.
@@ -153,16 +154,25 @@ If true, the graphics device driver is shut down when the function exits.
 Unused if \code{file = NULL}}
 
 \item{useRaster}{'logical'.
-If true, a bitmap raster is used to plot \code{r} instead of using polygons.
-If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.}
+If true, a bitmap raster is used to plot \code{r} instead of using individual polygons for each raster cell.
+If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.
+Unused if \code{simplify = TRUE}.}
+
+\item{simplify}{'numeric'.
+Specifying this argument will convert the raster \code{r} to spatial polygons prior to plotting,
+see \code{\link{Grid2Polygons}} function for details.
+If \code{simplify > 0} the geometry of the spatial polygons is generalized using the
+Douglas-Peucker algorithm (Douglas and Peucker, 1961);
+and \code{simplify} is the numerical tolerance value to be used by the algorithm.
+See \code{\link[rgeos]{gSimplify}} function for additional information.}
 }
 \value{
 Used for the side-effect of a new plot generated.
   Returns a 'list' object with the following graphical parameters:
   \describe{
-    \item{din}{device dimensions \code{(width, height)}, in inches.}
-    \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}
-    \item{heights}{relative heights on the device \code{(upper, lower)} for the map and color-key plots.}
+    \item{din}{device dimensions \code{c(width, height)}, in inches.}
+    \item{usr}{extremes of the coordinates of the plotting region \code{c(x1, x2, y1, y2)}.}
+    \item{heights}{relative heights on the device \code{c(upper, lower)} for the map and color-key plots.}
   }
 }
 \description{
@@ -181,24 +191,35 @@ rat$land.cover <- c("Pine", "Oak", "Meadow")
 rat$code <- c(12, 25, 30)
 levels(r) <- rat
 PlotMap(r, att = "land.cover", col = c("grey", "orange", "purple"))
+
 PlotMap(r, att = "code")
 
-r <- raster::raster(system.file("external/test.grd", package="raster"))
-credit <- "Label crediting the map."
-explanation <- "Label explaining the raster cell value."
-PlotMap(r, scale.loc = "bottomright", dms.tick = TRUE, credit = credit,
-        explanation = explanation)
+m <- t(datasets::volcano)[61:1, ]
+x <- seq(from = 6478705, length.out = 87, by = 10)
+y <- seq(from = 2667405, length.out = 61, by = 10)
+r <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
+                    crs = "+init=epsg:27200")
+PlotMap(r, pal = terrain.colors, scale.loc = "bottomright",
+        explanation = "Topographic information on Auckland's Maunga Whau volcano.",
+        credit = "Digitized from a topographic map by Ross Ihaka on a 10-m by 10-m grid.",
+        shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1F"),
+        useRaster = TRUE)
+
+r <- raster::raster(system.file("external/test.grd", package = "raster"))
+Pal <- colorspace::rainbow_hcl
+breaks <- seq(0, 2000, by = 200)
+PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
+        scale.loc = "bottomright", contour.lines = list(col = "#1F1F1F"),
+        draw.key = FALSE, simplify = 0)
+AddGradientLegend(breaks, Pal, at = breaks, title = "Explanation", loc = "topleft",
+                  inset = c(0.1, 0.1), strip.dim = c(2, 20))
+
+out <- PlotMap(r, dms.tick = TRUE, file = "Rplots1.pdf")
+
+pdf(file = "Rplots2.pdf", width = out$din[1], height = out$din[2])
+PlotMap(r, dms.tick = TRUE)
 data(meuse, package = "sp")
 sp::coordinates(meuse) = ~ x + y
-points(meuse)
-
-val <- PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, credit = credit,
-               explanation = explanation, file = "Rplots1.pdf")
-print(val)
-
-pdf(file = "Rplots2.pdf", width = val$din[1], height = val$din[2])
-PlotMap(r, scale.loc = "topleft", dms.tick = TRUE, credit = credit,
-        explanation = explanation)
 points(meuse)
 dev.off()
 
@@ -206,8 +227,13 @@ file.remove(c("Rplots1.pdf", "Rplots2.pdf"))
 graphics.off()
 
 }
+\references{
+Douglas, D., and Peucker, T., 1961,
+  Algorithms for the reduction of the number of points required to represent a digitized line or its caricature:
+  The Canadian Cartographer, v. 10, no. 2, p. 112--122.
+}
 \seealso{
-\code{\link{AddScaleBar}}, \code{\link{AddColorKey}}
+\code{\link{AddColorKey}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

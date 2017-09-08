@@ -1,7 +1,10 @@
 # inlmisc 0.3.2.9000
 
-- In `Grid2Polygons` function, allow `grd` argument to be an object of class `SpatialPixelsDataFrame` or `Raster*`.
+- In `PlotMap` function, add `simplify` argument, used to convert raster to polygons prior to plotting.
+
+- In `Grid2Polygons` function: Allow `grd` argument to be an object of class `SpatialPixelsDataFrame` or `Raster*`.
   The coordinate reference system (CRS) of the `ply` argument will be transformed to match the CRS of the `grd` argument.
+  Add `zlim` argument, imposes limits on the attribute variable.
 
 - In `ToScientific` function, add arguments `scipen`, `delimiter`, and `...`; and rename `lab.type` argument to `type`.
   Code in place for backwards compatibility.

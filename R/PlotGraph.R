@@ -67,10 +67,10 @@
 #' @details Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 columns.
 #'   The first column contains the starting values, the second the ending values.
 #'   Observations are represented using
-#'     (-Inf, t) for left censored,
-#'     (t, Inf) for right censored,
-#'     (t, t) for exact, and
-#'     (t1, t2) for an interval.
+#'     \code{(-Inf, t)} for left censored,
+#'     \code{(t, Inf)} for right censored,
+#'     \code{(t, t)} for exact, and
+#'     \code{(t1, t2)} for an interval.
 #'   Where infinity is represented as \code{Inf} or \code{NA}, and t is a numeric value.
 #'
 #' @return Used for the side-effect of a new plot generated.
