@@ -1,6 +1,6 @@
 # inlmisc 0.3.2.9000
 
-- In `PlotMap` function, add `grd2ply` argument, used to convert raster to polygons prior to plotting.
+- In `PlotMap` function, add `simplify` argument, used to convert raster to polygons prior to plotting.
 
 - In `Grid2Polygons` function: Allow `grd` argument to be an object of class `SpatialPixelsDataFrame` or `Raster*`.
   The coordinate reference system (CRS) of the `ply` argument will be transformed to match the CRS of the `grd` argument.

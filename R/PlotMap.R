@@ -110,10 +110,10 @@
 #' @param useRaster 'logical'.
 #'   If true, a bitmap raster is used to plot \code{r} instead of using individaul polygons for each raster cell.
 #'   If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.
-#'   Unused if \code{grd2ply = TRUE}.
-#' @param grd2ply 'logical'.
-#'   If true, the raster \code{r} is converted to polygons prior to plotting,
-#'   see \code{\link{Grid2Polygons}} for details.
+#'   Unused if \code{simplify = TRUE}.
+#' @param simplify 'logical'.
+#'   If true, converts raster \code{r} to spatial polygons prior to plotting,
+#'   see \code{\link{Grid2Polygons}} function for details.
 #'
 #' @return Used for the side-effect of a new plot generated.
 #'   Returns a 'list' object with the following graphical parameters:
@@ -164,7 +164,7 @@
 #' Pal <- colorspace::rainbow_hcl
 #' breaks <- seq(0, 2000, by = 200)
 #' PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
-#'         contour.lines = list(col = "#1F1F1F"), draw.key = FALSE, grd2ply = TRUE)
+#'         contour.lines = list(col = "#1F1F1F"), draw.key = FALSE, simplify = TRUE)
 #' AddGradientLegend(breaks, Pal, at = breaks, title = "Elevation", loc = "topleft",
 #'                   inset = c(0.1, 0.1), strip.dim = c(2, 20))
 #'
@@ -189,7 +189,7 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
                     labels=NULL, scale.loc=NULL, arrow.loc=NULL, explanation=NULL,
                     credit=NULL, shade=NULL, contour.lines=NULL,
                     rivers=NULL, lakes=NULL, roads=NULL, draw.key=NULL, draw.raster=TRUE,
-                    file=NULL, close.file=TRUE, useRaster, grd2ply=FALSE) {
+                    file=NULL, close.file=TRUE, useRaster, simplify=FALSE) {
 
   if (!is.null(p) && !inherits(p, "SpatialPoints"))
     stop("spatial point data is the incorrect class")
@@ -472,8 +472,14 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (draw.raster & n > 0) {
-    if (grd2ply) {
+    if (simplify) {
       ply <- Grid2Polygons(r, level=TRUE, at=breaks, zlim=zl)
+      # if (simplify > 0) {
+      #   simple.ply <- rgeos::gSimplify(ply, tol=simplify, topologyPreserve=TRUE)
+      #   ids <- sapply(methods::slot(simple.ply, "polygons"),
+      #                 function(x) methods::slot(x, "ID"))
+      #   ply <- sp::SpatialPolygonsDataFrame(simple.ply, data=ply[ids, ]@data)
+      # }
       plot(ply, col=cols, border=NA, add=TRUE)
     } else {
       raster::image(r, maxpixels=length(r), useRaster=useRaster, zlim=zl,
@@ -542,7 +548,6 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
     drawl <- ifelse(length(drawl) == 1 && !is.na(drawl), drawl, TRUE)
     metho <- ifelse(length(metho) == 1 && !is.na(metho), metho, "flattest")
     contour.breaks <- if (n + 1L > 20L) pretty(zl, 20L) else breaks
-    ncontours <- length(contour.breaks)
     raster::contour(r, maxpixels=length(r), levels=contour.breaks,
                     labels=formatC(contour.breaks, big.mark=","),
                     xlim=xl, ylim=yl, zlim=zl, labcex=0.5, drawlabels=drawl,

@@ -12,7 +12,7 @@ PlotMap(r, p = NULL, ..., layer = 1, att = NULL, n = NULL,
   arrow.loc = NULL, explanation = NULL, credit = NULL, shade = NULL,
   contour.lines = NULL, rivers = NULL, lakes = NULL, roads = NULL,
   draw.key = NULL, draw.raster = TRUE, file = NULL, close.file = TRUE,
-  useRaster, grd2ply = FALSE)
+  useRaster, simplify = FALSE)
 }
 \arguments{
 \item{r}{'Raster*', 'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'CRS'.
@@ -155,11 +155,11 @@ Unused if \code{file = NULL}}
 \item{useRaster}{'logical'.
 If true, a bitmap raster is used to plot \code{r} instead of using individaul polygons for each raster cell.
 If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.
-Unused if \code{grd2ply = TRUE}.}
+Unused if \code{simplify = TRUE}.}
 
-\item{grd2ply}{'logical'.
-If true, the raster \code{r} is converted to polygons prior to plotting,
-see \code{\link{Grid2Polygons}} for details.}
+\item{simplify}{'logical'.
+If true, converts raster \code{r} to spatial polygons prior to plotting,
+see \code{\link{Grid2Polygons}} function for details.}
 }
 \value{
 Used for the side-effect of a new plot generated.
@@ -204,7 +204,7 @@ r <- raster::raster(system.file("external/test.grd", package = "raster"))
 Pal <- colorspace::rainbow_hcl
 breaks <- seq(0, 2000, by = 200)
 PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
-        contour.lines = list(col = "#1F1F1F"), draw.key = FALSE, grd2ply = TRUE)
+        contour.lines = list(col = "#1F1F1F"), draw.key = FALSE, simplify = TRUE)
 AddGradientLegend(breaks, Pal, at = breaks, title = "Elevation", loc = "topleft",
                   inset = c(0.1, 0.1), strip.dim = c(2, 20))
 
