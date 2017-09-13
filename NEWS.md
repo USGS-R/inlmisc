@@ -1,5 +1,7 @@
 # inlmisc 0.3.2.9000
 
+- Add **verbatimbox** package to LaTeX preamble.
+
 - In `PlotMap` function, add `simplify` argument, used to convert raster to polygons prior to plotting.
 
 - In `Grid2Polygons` function: Allow `grd` argument to be an object of class `SpatialPixelsDataFrame` or `Raster*`.
