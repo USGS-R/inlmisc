@@ -111,7 +111,7 @@ AddGradientLegend <- function(breaks, pal, at=NULL, n=5L, labels=TRUE,
   graphics::axis(4, at=at_norm, labels=labels, lwd=-1, lwd.ticks=-1,
                  mgp=c(3, 0.2, 0), cex.axis=cex, las=1)
   if (!is.null(title))
-    graphics::title(main=title, line=1 - cex, cex.main=cex)
+    graphics::title(main=title, line=0.4, cex.main=cex)
 
   invisible(NULL)
 }
