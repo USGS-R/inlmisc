@@ -130,7 +130,8 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @references Douglas, D., and Peucker, T., 1961,
+#' @references
+#'   Douglas, D., and Peucker, T., 1961,
 #'   Algorithms for the reduction of the number of points required to represent a digitized line or its caricature:
 #'   The Canadian Cartographer, v. 10, no. 2, p. 112--122.
 #'

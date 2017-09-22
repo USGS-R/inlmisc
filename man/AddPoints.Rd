@@ -149,7 +149,8 @@ AddPoints(x, legend.loc = NULL, add = FALSE)
 
 }
 \references{
-Tanimura, S., Kuroiwa, C., and Mizota, T., 2006, Proportional Symbol Mapping in R: Journal of Statistical Software, v. 15, no. 5, 7 p.
+Tanimura, S., Kuroiwa, C., and Mizota, T., 2006, Proportional Symbol Mapping in R:
+  Journal of Statistical Software, v. 15, no. 5, 7 p.
 }
 \seealso{
 \code{\link{symbols}}
