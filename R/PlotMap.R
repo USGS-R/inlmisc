@@ -4,7 +4,7 @@
 #' A key showing how the colors map to raster values is shown below the map.
 #' The width and height of the graphics region will be automagically determined in some cases.
 #'
-#' @param r 'Raster*', 'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'CRS'.
+#' @param r 'Raster*', 'Spatial*', or 'CRS'.
 #'   An object that can be converted to a raster layer, or a coordinate reference system (CRS).
 #' @param p 'SpatialPointsDataFrame'.
 #'   Spatial point data to be plotted.
@@ -203,28 +203,29 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
                     file=NULL, close.file=TRUE, useRaster, simplify) {
 
   if (!is.null(p) && !inherits(p, "SpatialPoints"))
-    stop("spatial point data is the incorrect class")
+    stop("spatial point data is invalid class")
 
   if (!is.null(bg.image) && !inherits(bg.image, "RasterLayer"))
-    stop("background image is the incorrect class")
+    stop("background image is invalid class")
 
   if (missing(useRaster)) {
     useRaster <- getOption("preferRaster")
     if (!is.logical(useRaster)) useRaster <- FALSE
   }
 
-  if (inherits(r, "CRS")) {
-    is.lim <- is.numeric(xlim) && length(xlim) == 2 && all(!is.na(xlim)) &&
-              is.numeric(ylim) && length(ylim) == 2 && all(!is.na(ylim))
+  if (inherits(r, c("RasterStack", "RasterBrick", "SpatialGrid", "SpatialPixelsDataFrame"))) {
+    r <- raster(r, layer=layer)
+  } else if (inherits(r, "CRS")) {
+    is.lim <- !is.null(xlim) && !is.null(ylim)
     if (!is.lim && is.null(bg.image)) stop("spatial limits must be specified")
     e <- extent(if (is.lim) c(xlim, ylim) else bg.image)
     r <- raster(e, crs=r)
     r[] <- NA
   }
-
-  if (inherits(r, c("RasterStack", "RasterBrick", "SpatialGrid", "SpatialPixelsDataFrame")))
-    r <- raster(r, layer=layer)
-  if (!inherits(r, "RasterLayer")) stop("raster layer is the incorrect class")
+  if (!inherits(r, "RasterLayer")) {
+    r <- raster(r)
+    r[] <- NA
+  }
 
   if (!is.null(p)) try(p <- spTransform(p, r@crs), silent=TRUE)
 

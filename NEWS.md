@@ -1,5 +1,7 @@
 # inlmisc 0.3.2.9000
 
+- In `PlotMap` function, `r` argument accepts any object that can be converted to a `RasterLayer`.
+
 - Add **verbatimbox** package to LaTeX preamble.
 
 - In `PlotMap` function, add `simplify` argument, used to convert raster to polygons prior to plotting.
