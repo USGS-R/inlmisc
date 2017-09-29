@@ -173,7 +173,8 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
     r_ver_new <- meta[is]
     r_ver_old <- R.version$version.string
     if (!identical(r_ver_old, r_ver_new)) {
-      fmt <- paste("Your %s is different from the R version read from the file.",
+      fmt <- paste("Current %s version is different from the version used",
+                   "when creating the package-details file.",
                    "If compatiblity is an issue, consider installing %s.")
       msg <- sprintf(fmt, r_ver_new, r_ver_old)
       message(paste(strwrap(msg), collapse="\n"))
