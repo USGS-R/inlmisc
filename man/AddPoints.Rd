@@ -6,7 +6,7 @@
 \usage{
 AddPoints(x, y = NULL, z = NULL, zcol = 1, crs = NULL, xlim = NULL,
   ylim = NULL, zlim = NULL, inches = c(0, 0.2),
-  scaling = c("perceptual", "mathematical"), bg = "#1F1F1FCB",
+  scaling = c("perceptual", "mathematical", "radius"), bg = "#1F1F1FCB",
   bg.neg = NULL, fg = NA, lwd = 0.25, cex = 0.7, format = NULL,
   legend.loc = "topright", inset = 0.02, breaks = NULL,
   break.labels = NULL, quantile.breaks = FALSE, make.intervals = FALSE,
@@ -43,8 +43,9 @@ Alternatively, a single number can be given resulting in a fixed radius being us
 this overrides proportional circles and the function behaves like the \code{\link{points}} function.}
 
 \item{scaling}{'character'.
-Selects the proportional symbol mapping algorithm to be used;
-either "perceptual" or "mathematical" scaling (Tanimura and others, 2006).}
+Selects the scaling algorithm to use for symbol mapping.
+Specify "perceptual" or "mathematical" for proportional scaling (Tanimura and others, 2006),
+or "radius" for scaling symbol size to radius (usually a bad idea).}
 
 \item{bg}{'character' or 'function'.
 Fill color(s) for circle symbols.

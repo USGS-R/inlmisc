@@ -1,5 +1,7 @@
 # inlmisc 0.3.2.9000
 
+- In `AddPoints` function, add option to scale symbol size to radius.
+
 - In `PlotMap` function, let `r` argument accept any object that can be converted to a `RasterLayer` class.
 
 - Add **verbatimbox** package to LaTeX preamble.

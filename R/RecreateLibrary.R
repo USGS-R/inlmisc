@@ -42,7 +42,7 @@
 #'   Requires that the \pkg{githubinstall} package is available,
 #'   see \code{\link[githubinstall]{gh_install_packages}} function.
 #'   Note that locating \R packages hosted on GitHub using nothing but the package name can be difficult.
-#'   The user will be prompted with suggested repository names to identify the correct package to install.
+#'   Therefore, the user may be prompted with suggested repository names to identify the correct package to install.
 #'   Package vignettes are not built using this option.
 #'   An example of an \R package that is only available on GitHub is \pkg{AnomalyDetection},
 #'   located at \href{https://github.com/twitter/AnomalyDetection}{twitter/AnomalyDetection}.
@@ -51,7 +51,7 @@
 #' @param pkg 'character'.
 #'   One or more names of packages located under \code{lib}.
 #'   Only packages specified in \code{pkg}, and the packages that \code{pkg} depend on/link to/import/suggest,
-#'   are included in the package-details \code{file}.
+#'   will be included in the package-details \code{file}.
 #'
 #' @details A typical workflow is as follows:
 #'   Run the \code{SavePackageDetails()} command on an older version of \R.
@@ -111,7 +111,7 @@
 #'   both of which provide robust tools for dependency management in \R.
 #'
 #'   If affiliated with the U.S. Department of Interior (DOI), you may receive the following error message:
-#'   "SSL certificate problem: unable to get local issuer certificate".
+#'   \dQuote{SSL certificate problem: unable to get local issuer certificate}.
 #'   The error results from a missing X.509 certificate that permits the DOI to scan encrypted data for security reasons.
 #'   A fix for this error is given in the \code{\link{AddCertificate}} function documentation.
 #'
