@@ -1,6 +1,7 @@
 # inlmisc 0.3.2.9000
 
-- In `AddPoints` function, add option to scale symbol size to radius.
+- In `AddPoints` function: add option to scale symbol size to radius;
+  revise calculation of symbol size and legend labels.
 
 - In `PlotMap` function, let `r` argument accept any object that can be converted to a `RasterLayer` class.
 

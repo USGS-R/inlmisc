@@ -209,15 +209,33 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     }
     make.intervals <- FALSE
   } else if (make.intervals) {
-    interval <- findInterval(z, breaks, rightmost.closed=FALSE)
+    breaks <- sort(breaks)
+    is_lt <- any(z < head(breaks, 1))
+    is_gt <- any(z > tail(breaks, 1))
+    interval <- findInterval(z, breaks, rightmost.closed=TRUE)
     s <- formatC(breaks, format=NULL, big.mark=",")
     ss <- sprintf(">%s to %s", head(s, -1), tail(s, -1))
-    ss[1] <- sub("^>", "", ss[1])
-    if (any(z < min(breaks))) ss[1] <- sprintf("-Inf to %s", s[1])
-    if (any(z > max(breaks))) ss[length(ss)] <- sprintf(">%s to +Inf", s[length(s) - 1L])
+    if (is_gt) ss <- c(ss, sprintf(">%s", s[length(s)]))
+    if (is_lt) {
+      ss <- c(as.expression(bquote(""<=.(s[1]))), ss)
+    } else {
+      ss[1] <- sub("^>", "", ss[1])
+    }
     if (is.null(break.labels)) break.labels <- ss
-    interval <- findInterval(z, breaks, all.inside=TRUE)
-    breaks <- (head(breaks, -1) + tail(breaks, -1)) / 2
+
+    # https://stackoverflow.com/questions/33930689/how-to-get-next-number-in-sequence-in-r
+    SeqNext <- function(x, npred=1L) {
+      n <- length(x)
+      d <- data.frame(x=seq_along(x), y=x)
+      unname(stats::predict(stats::lm(y ~ poly(x, 2), data=d),
+                            newdata=list(x=seq(n + 1, n + npred))))
+    }
+    if (is_lt) {
+      interval <- interval + 1L
+      breaks <- c(SeqNext(rev(breaks)), breaks)
+    }
+    if (is_gt) breaks <- c(breaks, SeqNext(breaks))
+    breaks <- head(breaks, -1) + (diff(breaks) / 2)
     z <- breaks[interval]
   }
   if (is.null(break.labels))
@@ -287,9 +305,9 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       if (make.intervals) {
         idxs <- interval
         idxs[z < 0] <- NA
-        idxs <- idxs - min(idxs, na.rm=TRUE) + 1L
+        idxs <- stats::na.omit(idxs - min(idxs, na.rm=TRUE) + 1L)
         n <- length(breaks[breaks > 0]) + 1L
-        cols[z > 0] <- .Map2Color(breaks[breaks > 0], bg, n=n)[stats::na.omit(idxs)]
+        cols[z > 0] <- .Map2Color(breaks[breaks > 0], bg, n=n)[idxs]
         cols0[breaks > 0] <- .Map2Color(breaks[breaks > 0], bg, n=n)
       } else {
         cols[z > 0] <- .Map2Color(z[z > 0], bg)
@@ -303,9 +321,9 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       if (make.intervals) {
         idxs <- interval
         idxs[z > 0] <- NA
-        idxs <- idxs - min(idxs, na.rm=TRUE) + 1L
+        idxs <- stats::na.omit(idxs - min(idxs, na.rm=TRUE) + 1L)
         n <- length(breaks[breaks < 0]) + 1L
-        cols[z < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg, n=n)[stats::na.omit(idxs)]
+        cols[z < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg, n=n)[idxs]
         cols0[breaks < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg, n=n)
       } else {
         cols[z < 0] <- .Map2Color(abs(z[z < 0]), bg.neg)
