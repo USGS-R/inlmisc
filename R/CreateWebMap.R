@@ -29,12 +29,10 @@
 #'
 #' @examples
 #' map <- CreateWebMap()
-#'
 #' lng <- c(-112.049705, -122.171257, -77.367458, -149.803565, -80.248344)
 #' lat <- c(43.517810, 37.456526, 38.947206, 61.187905, 26.080860)
 #' pop <- c("ID", "CA", "VA", "AK", "FL")
 #' map <- leaflet::addMarkers(map, lng, lat, popup = pop)
-#'
 #' map
 #'
 
@@ -76,32 +74,32 @@ CreateWebMap <- function(..., collapsed=TRUE) {
                "' | latitude: ' + (e.latlng.lat).toFixed(5) +",
                "' | zoom: ' + map.getZoom() + ' '")
   js <- sprintf("function(el, x, data) {
-                  var map = this;
-                  function addElement () {
-                    var newDiv = $(document.createElement('div'));
-                    $(el).append(newDiv);
-                    newDiv.addClass('lnlt');
-                    newDiv.css({
-                      'position': 'relative',
-                      'bottomleft':  '0px',
-                      'background-color': 'rgba(255, 255, 255, 0.7)',
-                      'box-shadow': '0 0 2px #bbb',
-                      'background-clip': 'padding-box',
-                      'margin': '0',
-                      'text-align': 'center',
-                      'color': '#333',
-                      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',
-                    });
-                    return newDiv;
-                  }
-                  var lnlt = $(el).find('.lnlt');
-                  if(!lnlt.length) {
-                    lnlt = addElement();
-                    map.on('mousemove', function (e) {
-                      lnlt.text(%s);
-                    })
-                  };
-                }", lab)
+                   var map = this;
+                   function addElement () {
+                     var newDiv = $(document.createElement('div'));
+                     $(el).append(newDiv);
+                     newDiv.addClass('lnlt');
+                     newDiv.css({
+                       'position': 'relative',
+                       'bottomleft':  '0px',
+                       'background-color': 'rgba(255, 255, 255, 0.7)',
+                       'box-shadow': '0 0 2px #bbb',
+                       'background-clip': 'padding-box',
+                       'margin': '0',
+                       'text-align': 'center',
+                       'color': '#333',
+                       'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',
+                     });
+                     return newDiv;
+                   }
+                   var lnlt = $(el).find('.lnlt');
+                   if(!lnlt.length) {
+                     lnlt = addElement();
+                     map.on('mousemove', function (e) {
+                       lnlt.text(%s);
+                     })
+                   };
+                 }", lab)
   map <- htmlwidgets::onRender(map, gsub(" +", " ", js))
 
   # return html widget

@@ -1,10 +1,17 @@
 # inlmisc 0.3.2.9000
 
+- In `AddPoints` function: add option to scale symbol size to radius;
+  revise calculation of symbol size and legend labels.
+
+- In `PlotMap` function, let `r` argument accept any object that can be converted to a `RasterLayer` class.
+
+- In LaTeX preamble: add **verbatimbox** package; add maketitle format.
+
 - In `PlotMap` function, add `simplify` argument, used to convert raster to polygons prior to plotting.
 
-- In `Grid2Polygons` function: Allow `grd` argument to be an object of class `SpatialPixelsDataFrame` or `Raster*`.
-  The coordinate reference system (CRS) of the `ply` argument will be transformed to match the CRS of the `grd` argument.
-  Add `zlim` argument, imposes limits on the attribute variable.
+- In `Grid2Polygons` function: allow `grd` argument to be an object of class `SpatialPixelsDataFrame` or `Raster*`;
+  transform coordinate reference system (CRS) of `ply` argument to match the CRS of the `grd` argument; and
+  add `zlim` argument, a limit on the attribute variable.
 
 - In `ToScientific` function, add arguments `scipen`, `delimiter`, and `...`; and rename `lab.type` argument to `type`.
   Code in place for backwards compatibility.

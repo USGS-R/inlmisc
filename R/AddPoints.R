@@ -26,8 +26,9 @@
 #'   Alternatively, a single number can be given resulting in a fixed radius being used for all circle symbols;
 #'   this overrides proportional circles and the function behaves like the \code{\link{points}} function.
 #' @param scaling 'character'.
-#'   Selects the proportional symbol mapping algorithm to be used;
-#'   either "perceptual" or "mathematical" scaling (Tanimura and others, 2006).
+#'   Selects the scaling algorithm to use for symbol mapping.
+#'   Specify "perceptual" or "mathematical" for proportional scaling (Tanimura and others, 2006),
+#'   or "radius" for scaling symbol size to radius (usually a bad idea).
 #' @param bg 'character' or 'function'.
 #'   Fill color(s) for circle symbols.
 #'   A color palette also may be specified.
@@ -78,7 +79,9 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @references Tanimura, S., Kuroiwa, C., and Mizota, T., 2006, Proportional Symbol Mapping in R: Journal of Statistical Software, v. 15, no. 5, 7 p.
+#' @references
+#'   Tanimura, S., Kuroiwa, C., and Mizota, T., 2006, Proportional Symbol Mapping in R:
+#'   Journal of Statistical Software, v. 15, no. 5, 7 p.
 #'
 #' @seealso \code{\link{symbols}}
 #'
@@ -120,8 +123,8 @@
 #'
 
 AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
-                      xlim=NULL, ylim=NULL, zlim=NULL,
-                      inches=c(0, 0.2), scaling=c("perceptual", "mathematical"),
+                      xlim=NULL, ylim=NULL, zlim=NULL, inches=c(0, 0.2),
+                      scaling=c("perceptual", "mathematical", "radius"),
                       bg="#1F1F1FCB", bg.neg=NULL, fg=NA, lwd=0.25,
                       cex=0.7, format=NULL, legend.loc="topright",
                       inset=0.02, breaks=NULL, break.labels=NULL,
@@ -206,15 +209,33 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     }
     make.intervals <- FALSE
   } else if (make.intervals) {
-    interval <- findInterval(z, breaks, rightmost.closed=FALSE)
+    breaks <- sort(breaks)
+    is_lt <- any(z < head(breaks, 1))
+    is_gt <- any(z > tail(breaks, 1))
+    interval <- findInterval(z, breaks, rightmost.closed=TRUE)
     s <- formatC(breaks, format=NULL, big.mark=",")
     ss <- sprintf(">%s to %s", head(s, -1), tail(s, -1))
-    ss[1] <- sub("^>", "", ss[1])
-    if (any(z < min(breaks))) ss[1] <- sprintf("-Inf to %s", s[1])
-    if (any(z > max(breaks))) ss[length(ss)] <- sprintf(">%s to +Inf", s[length(s) - 1L])
+    if (is_gt) ss <- c(ss, sprintf(">%s", s[length(s)]))
+    if (is_lt) {
+      ss <- c(as.expression(bquote(""<=.(s[1]))), ss)
+    } else {
+      ss[1] <- sub("^>", "", ss[1])
+    }
     if (is.null(break.labels)) break.labels <- ss
-    interval <- findInterval(z, breaks, all.inside=TRUE)
-    breaks <- (head(breaks, -1) + tail(breaks, -1)) / 2
+
+    # https://stackoverflow.com/questions/33930689/how-to-get-next-number-in-sequence-in-r
+    SeqNext <- function(x, npred=1L) {
+      n <- length(x)
+      d <- data.frame(x=seq_along(x), y=x)
+      unname(stats::predict(stats::lm(y ~ poly(x, 2), data=d),
+                            newdata=list(x=seq(n + 1, n + npred))))
+    }
+    if (is_lt) {
+      interval <- interval + 1L
+      breaks <- c(SeqNext(rev(breaks)), breaks)
+    }
+    if (is_gt) breaks <- c(breaks, SeqNext(breaks))
+    breaks <- head(breaks, -1) + (diff(breaks) / 2)
     z <- breaks[interval]
   }
   if (is.null(break.labels))
@@ -240,13 +261,22 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     if (is.na(inches[2])) inches[2] <- 0.2
     min.r <- diff(graphics::grconvertX(c(0, inches[1]), from="inches", to="user"))
     max.r <- diff(graphics::grconvertX(c(0, inches[2]), from="inches", to="user")) - min.r
+    min.v <- min(abs(c(z, breaks)), na.rm=TRUE)
+    max.v <- max(abs(c(z, breaks)), na.rm=TRUE)
     scaling <- match.arg(scaling)
-    if (scaling == "mathematical")
-      FUN <- function(v, max.v, max.r) {return(sqrt(v / max.v) * max.r)}
-    else
-      FUN <- function(v, max.v, max.r) {return(((v / max.v)^0.57) * max.r)}
-    r  <- FUN(abs(z), max(abs(c(z, breaks))), max.r) + min.r
-    r0 <- FUN(abs(breaks), max(abs(c(z, breaks))), max.r) + min.r
+    FUN <- function(v) {
+      v <- abs(v)
+      if (scaling == "perceptual") {
+        r <- ((v / max.v)^0.57)
+      } else if (scaling == "mathematical") {
+        r <- sqrt(v / max.v)
+      } else if (scaling == "radius") {
+        r <- (v - min.v) / (max.v - min.v)
+      }
+      return(r * (max.r - min.r) + min.r)
+    }
+    r  <- FUN(z)
+    r0 <- FUN(breaks)
   } else {
     fix.r <- diff(graphics::grconvertX(c(0, inches), from="inches", to="user"))
     r  <- rep(fix.r, length(z))
@@ -275,9 +305,9 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       if (make.intervals) {
         idxs <- interval
         idxs[z < 0] <- NA
-        idxs <- idxs - min(idxs, na.rm=TRUE) + 1L
+        idxs <- stats::na.omit(idxs - min(idxs, na.rm=TRUE) + 1L)
         n <- length(breaks[breaks > 0]) + 1L
-        cols[z > 0] <- .Map2Color(breaks[breaks > 0], bg, n=n)[stats::na.omit(idxs)]
+        cols[z > 0] <- .Map2Color(breaks[breaks > 0], bg, n=n)[idxs]
         cols0[breaks > 0] <- .Map2Color(breaks[breaks > 0], bg, n=n)
       } else {
         cols[z > 0] <- .Map2Color(z[z > 0], bg)
@@ -291,9 +321,9 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       if (make.intervals) {
         idxs <- interval
         idxs[z > 0] <- NA
-        idxs <- idxs - min(idxs, na.rm=TRUE) + 1L
+        idxs <- stats::na.omit(idxs - min(idxs, na.rm=TRUE) + 1L)
         n <- length(breaks[breaks < 0]) + 1L
-        cols[z < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg, n=n)[stats::na.omit(idxs)]
+        cols[z < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg, n=n)[idxs]
         cols0[breaks < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg, n=n)
       } else {
         cols[z < 0] <- .Map2Color(abs(z[z < 0]), bg.neg)

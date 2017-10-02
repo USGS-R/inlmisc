@@ -11,6 +11,7 @@
 \usepackage{ragged2e}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{verbatimbox}
 \usepackage{titling}
 \usepackage{booktabs, dcolumn, tabularx}
 \usepackage{makecell}
@@ -26,7 +27,7 @@
 \usepackage{fancyhdr}
 \usepackage[hidelinks, pdflang={en-US}]{hyperref}
 
-%%% References
+%%% bibtex
 
 \DefineBibliographyStrings{english}{andothers={and~others}}
 \setlength{\bibitemsep}{\baselineskip}
@@ -78,6 +79,16 @@
   \setunit*{\addcomma\space}%
   \printtext%
 }{}{}
+
+%%% maketitle
+
+\pretitle{\begin{flushleft}\LARGE\bfseries\sffamily}
+\posttitle{\end{flushleft}\vspace{2ex}}
+\preauthor{\begin{flushleft}\large\sffamily}
+\postauthor{\par\end{flushleft}}
+\predate{}
+\date{}
+\postdate{}
 
 %%%
 
@@ -140,7 +151,8 @@
 \widowpenalties 1 10000
 \raggedbottom
 
-%%% Paragraph
+%%% paragraph
+
 \renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}
 \usepackage{indentfirst}
 \setlength\RaggedRightParindent{15pt}
