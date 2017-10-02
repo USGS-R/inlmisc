@@ -27,7 +27,7 @@
 \usepackage{fancyhdr}
 \usepackage[hidelinks, pdflang={en-US}]{hyperref}
 
-%%% References
+%%% bibtex
 
 \DefineBibliographyStrings{english}{andothers={and~others}}
 \setlength{\bibitemsep}{\baselineskip}
@@ -79,6 +79,16 @@
   \setunit*{\addcomma\space}%
   \printtext%
 }{}{}
+
+%%% maketitle
+
+\pretitle{\begin{flushleft}\LARGE\bfseries\sffamily}
+\posttitle{\end{flushleft}\vspace{2ex}}
+\preauthor{\begin{flushleft}\large\sffamily}
+\postauthor{\par\end{flushleft}}
+\predate{}
+\date{}
+\postdate{}
 
 %%%
 
