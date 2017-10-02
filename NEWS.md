@@ -5,7 +5,7 @@
 
 - In `PlotMap` function, let `r` argument accept any object that can be converted to a `RasterLayer` class.
 
-- In LaTeX preamble: add **verbatimbox** package; add title, author, and date format.
+- In LaTeX preamble: add **verbatimbox** package; add maketitle format.
 
 - In `PlotMap` function, add `simplify` argument, used to convert raster to polygons prior to plotting.
 
