@@ -1,4 +1,4 @@
-# inlmisc 0.3.2.9000
+# inlmisc 0.3.3
 
 - In `AddPoints` function: add option to scale symbol size to radius;
   revise calculation of symbol size and legend labels.
