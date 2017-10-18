@@ -20,6 +20,7 @@ environment:
   - R_VERSION: devel
     R_ARCH: x64
     GCC_PATH: mingw_64
+    PKGTYPE: source
 
 build_script:
   - travis-tool.sh install_deps

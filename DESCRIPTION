@@ -1,6 +1,6 @@
 Package: inlmisc
 Title: Miscellaneous Functions for the USGS INL Project Office
-Version: 0.3.3
+Version: 0.3.3.9000
 Authors@R: person(given=c("Jason", "C."), family="Fisher", role=c("aut", "cre"), email="jfisher@usgs.gov")
 Description: A collection of functions for creating high-level graphics,
     performing raster-based analysis, processing MODFLOW-based models, etc.
@@ -10,7 +10,9 @@ Description: A collection of functions for creating high-level graphics,
 Depends:
     R (>= 3.2.0)
 Imports:
+    checkmate,
     dplyr,
+    GA,
     graphics,
     grDevices,
     htmlwidgets,
@@ -27,9 +29,12 @@ Imports:
 Suggests:
     colorspace,
     devtools,
+    doParallel,
+    doRNG,
     githubinstall,
     httr,
     maptools,
+    parallel,
     roxygen2,
     testthat
 License: CC0
