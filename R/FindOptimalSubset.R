@@ -14,7 +14,7 @@
 #'   takes as its first and second argument
 #'   the binary \code{string} representing a potential solution and
 #'   the maximum permissible index (\code{n}), respectively.
-#'   The function returns a single numerical value describing its \dQuote{fitness} score.
+#'   The fitness function returns a single numerical value describing its \dQuote{fitness} score.
 #'   Note that the \code{\link{DecodeChromosome}} function is provided to decode the binary string,
 #'   see \sQuote{Examples} section.
 #' @param ...
@@ -265,7 +265,8 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=50L, migrationRate=0.1
 #'
 #' @examples
 #' string <- EncodeChromosome(c(4, 196, 67), 255)
-#' DecodeChromosome(string, 255)
+#' print(string)
+#' print(DecodeChromosome(string, 255))
 #'
 
 EncodeChromosome <- function(x, n) {

@@ -22,7 +22,7 @@ Fitness (or objective) function, any allowable \R function which
 takes as its first and second argument
 the binary \code{string} representing a potential solution and
 the maximum permissible index (\code{n}), respectively.
-The function returns a single numerical value describing its \dQuote{fitness} score.
+The fitness function returns a single numerical value describing its \dQuote{fitness} score.
 Note that the \code{\link{DecodeChromosome}} function is provided to decode the binary string,
 see \sQuote{Examples} section.}
 

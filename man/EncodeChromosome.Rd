@@ -33,7 +33,8 @@ that a genetic algorithm is trying to solve.
 }
 \examples{
 string <- EncodeChromosome(c(4, 196, 67), 255)
-DecodeChromosome(string, 255)
+print(string)
+print(DecodeChromosome(string, 255))
 
 }
 \author{
