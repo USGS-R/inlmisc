@@ -1,3 +1,7 @@
+# inlmisc 0.3.3.9000
+
+- Add `FindOptimalSubset` function, used to identify an optimal subset using a genetic algorithm.
+
 # inlmisc 0.3.3
 
 - In `AddPoints` function: add option to scale symbol size to radius;
