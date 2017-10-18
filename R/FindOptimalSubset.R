@@ -92,9 +92,10 @@
 #' }
 #' \dontrun{
 #' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, seed = 321)
-#' out[["solution"]]
+#' print(out[["solution"]])
 #' plot(out[["ga_output"]])
 #' summary(out[["ga_output"]])
+#' print(out[["ga_output"]]@fitnessValue)
 #' }
 #'
 
@@ -164,6 +165,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=50L, migrationRate=0.1
   m <- t(apply(ga_output@solution, 1, FUN))
   solution <- m[!duplicated(m), , drop=FALSE]
 
+  # bundle output
   return(list(call=match.call(),
               solution=solution,
               ga_output=ga_output,

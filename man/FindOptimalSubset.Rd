@@ -105,9 +105,10 @@ Fitness <- function(string, n, numbers) {
 }
 \dontrun{
 out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, seed = 321)
-out[["solution"]]
+print(out[["solution"]])
 plot(out[["ga_output"]])
 summary(out[["ga_output"]])
+print(out[["ga_output"]]@fitnessValue)
 }
 
 }
