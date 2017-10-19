@@ -5,37 +5,39 @@
 \alias{DecodeChromosome}
 \title{Encode and Decode an Integer Chromosome}
 \usage{
-EncodeChromosome(x, res = 10L)
+EncodeChromosome(x, n)
 
-DecodeChromosome(y, res = 10L)
+DecodeChromosome(y, n)
 }
 \arguments{
 \item{x}{'numeric'.
-Binary representation, a vector of \code{0}s and \code{1}s, of the integer chromosome.}
+Integer representation of chromosome, a vector of integer values.}
 
-\item{res}{'integer'.
-Resolution of integer chromosome in bits.}
+\item{n}{'integer'.
+Maximum permissible number in the integer chromosome,
+used to calculate the fixed length of a binary string.}
 
 \item{y}{'numeric'.
-Integer chromosome, a vector of parameter values.}
+Binary representation of chromosome, a vector of \code{0}s and \code{1}s.}
 }
 \value{
-\code{EncodeChromosome} returns a 'numeric' vector of \code{0}s and \code{1}s, that is,
-    the binary representation of the integer chromosome.
+\code{EncodeChromosome} returns a 'numeric' vector of \code{0}s and \code{1}s.
 
-  \code{DecodeChromosome} returns a 'numeric' vector of
-    parameter values in the integer chromosome.
+  \code{DecodeChromosome} returns a 'numeric' vector of integers.
 }
 \description{
-Functions for encoding and decoding an integer chromosome,
-a set of integer values that define a proposed solution to the problem
-that a genetic algorithm is trying to solve.
+Functions for encoding and decoding a chromosome represented by integer values.
+Where a chromosome is a set of numbers that defines a proposed solution to the
+problem that a genetic algorithm is trying to solve.
 }
 \examples{
-string <- EncodeChromosome(c(4, 196, 67))
+string <- EncodeChromosome(c(41, 796, 382), 1000)
 print(string)
-print(DecodeChromosome(string))
+print(DecodeChromosome(string, 1000))
 
+}
+\seealso{
+\code{\link{FindOptimalSubset}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
