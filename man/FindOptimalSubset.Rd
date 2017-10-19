@@ -12,7 +12,7 @@ FindOptimalSubset(n, k, Fitness, ..., popSize = 50L, migrationRate = 0.1,
 \arguments{
 \item{n}{'integer'.
 Maximum permissible index, that is, the size of the integer sequence.
-The function chooses a subset of integers from \code{1} to \code{n}.}
+The function chooses a subset of integers from \code{1:n}.}
 
 \item{k}{'integer'.
 Number of indices to choose, that is, the size of the subset.}
@@ -80,7 +80,7 @@ Returns a 'list' with components:
   }
 }
 \description{
-This function identifies an optimal subset of a fixed size from a sequence of positive integers.
+This function identifies an optimal subset of a fixed size from a finite sequence (\code{1:n}).
 A distributed multiple-population genetic algorithm (GA) is used to do subset selection
 based on the maximization of a user-supplied fitness (objective) function.
 }

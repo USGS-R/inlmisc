@@ -1,5 +1,7 @@
 # inlmisc 0.3.3.9000
 
+- In `PlotMap` function, fix extent of background image, rivers, lakes, and roads using `par("usr")`.
+
 - Add `FindOptimalSubset` function, used to identify an optimal subset using a genetic algorithm.
 
 # inlmisc 0.3.3
