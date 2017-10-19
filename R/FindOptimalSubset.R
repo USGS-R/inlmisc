@@ -19,8 +19,6 @@
 #'   Additional arguments to be passed to the fitness function.
 #' @param popSize 'integer'.
 #'   Population size
-#' @param numIslands 'integer'.
-#'   Number of islands to be used in a ring topology.
 #' @param migrationRate 'numeric'.
 #'   Proportion of individuals that should migrate between islands.
 #' @param migrationInterval 'integer'.
@@ -41,7 +39,7 @@
 #'   Binary representation of chromosomes to be included in the initial population.
 #' @param parallel 'logical' or 'integer'.
 #'   Whether to use parallel computing.
-#'   This argument can also be used to specify the number of cores to employ;
+#'   This argument can also be used to specify the number of cores (and number of islands) to employ;
 #'   by default, this is taken from \code{\link[parallel]{detectCores}}.
 #' @param seed 'integer'.
 #'   Random number generator state, used to replicate the results.
@@ -110,7 +108,7 @@
 #'
 
 FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
-                              numIslands=4L, migrationRate=0.1, migrationInterval=10L,
+                              migrationRate=0.1, migrationInterval=10L,
                               pcrossover=0.8, pmutation=0.1, elitism=0L,
                               maxiter=1000L, run=maxiter, suggestions=NULL,
                               parallel=FALSE, seed=NULL) {
@@ -129,6 +127,13 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   checkmate::assertMatrix(suggestions, null.ok=TRUE)
   checkmate::qassert(parallel, c("b1", "x1"))
   checkmate::assertInt(seed, null.ok=TRUE)
+
+  # set number of islands
+  if (is.logical(parallel)) {
+    numIslands <- if (parallel) parallel::detectCores() else 4L
+  } else if (is.numeric(parallel)) {
+    numIslands <- parallel
+  }
 
   # calculate number of bits in the binary string representing the chromosome
   nBits <- ceiling(log2(n + 1)) * k
@@ -176,23 +181,25 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
               ga_time=ga_time))
 }
 
-.BuildChromosomes <- function(x, n, k) {
-  FUN <- function(i) sort(sample(seq_len(n), k, replace=FALSE))
-  return(t(vapply(seq_len(x), FUN, rep(0, k))))
+.BuildChromosomes <- function(size, n, k) {
+  v <- seq_len(n)
+  if (n < size * k) v <- rep(v, length.out=size * k)
+  v <- sample(v, size * k)
+  m <- matrix(v, nrow=size, ncol=k)
+  m <- t(apply(m, 1, sort))
+  return(m)
 }
 
 .Population <- function(object, n) {
   k <- object@nBits / ceiling(log2(n + 1))
   pop <- .BuildChromosomes(object@popSize, n, k)
   if (object@popSize < choose(n, k)) {
-    dups <- which(duplicated(t(apply(pop, 1, sort))))
-    i <- 1L
+    i <- 0L
     repeat {
-      len <- length(dups)
-      if ((len) == 0) break
-      pop[dups, ] <- .BuildChromosomes(len, n, k)
-      dups <- which(duplicated(t(apply(pop, 1, sort))))
       if ((i <- i + 1L) > 1000) stop("Runnaway loop")
+      dups <- which(duplicated(pop) | apply(pop, 1, function(v) any(duplicated(v))))
+      if ((ndups <- length(dups)) == 0) break
+      pop[dups, ] <- .BuildChromosomes(ndups, n, k)
     }
   }
   FUN <- function(i) EncodeChromosome(i, n)
@@ -207,13 +214,13 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   decoded_parent <- DecodeChromosome(encoded_parent, n)
   idxs <- seq_len(n)[-decoded_parent]
   j <- sample(seq_along(decoded_parent), size=1)
-  i <- 1L
+  i <- 0L
   repeat {
+    if ((i <- i + 1L) > 1000) stop("Runnaway loop")
     x <- decoded_parent
     x[j] <- sample(idxs, size=1)
     x <- sort(x)
     if (!any(apply(m, 1, function(y) identical(x, y)))) break
-    if ((i <- i + 1L) > 1000) stop("Runnaway loop")
   }
   mutated <- EncodeChromosome(x, n)
   return(mutated)

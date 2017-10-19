@@ -4,10 +4,10 @@
 \alias{FindOptimalSubset}
 \title{Genetic Algorithm for Subset Selection}
 \usage{
-FindOptimalSubset(n, k, Fitness, ..., popSize = 100L, numIslands = 4L,
-  migrationRate = 0.1, migrationInterval = 10L, pcrossover = 0.8,
-  pmutation = 0.1, elitism = 0L, maxiter = 1000L, run = maxiter,
-  suggestions = NULL, parallel = FALSE, seed = NULL)
+FindOptimalSubset(n, k, Fitness, ..., popSize = 100L, migrationRate = 0.1,
+  migrationInterval = 10L, pcrossover = 0.8, pmutation = 0.1,
+  elitism = 0L, maxiter = 1000L, run = maxiter, suggestions = NULL,
+  parallel = FALSE, seed = NULL)
 }
 \arguments{
 \item{n}{'integer'.
@@ -28,9 +28,6 @@ The fitness function returns a single numerical value describing its fitness sco
 
 \item{popSize}{'integer'.
 Population size}
-
-\item{numIslands}{'integer'.
-Number of islands to be used in a ring topology.}
 
 \item{migrationRate}{'numeric'.
 Proportion of individuals that should migrate between islands.}
@@ -60,7 +57,7 @@ Binary representation of chromosomes to be included in the initial population.}
 
 \item{parallel}{'logical' or 'integer'.
 Whether to use parallel computing.
-This argument can also be used to specify the number of cores to employ;
+This argument can also be used to specify the number of cores (and number of islands) to employ;
 by default, this is taken from \code{\link[parallel]{detectCores}}.}
 
 \item{seed}{'integer'.
