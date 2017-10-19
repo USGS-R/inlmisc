@@ -5,7 +5,7 @@
 #' The width and height of the graphics region will be automagically determined in some cases.
 #'
 #' @param r 'Raster*', 'Spatial*', or 'CRS'.
-#'   An object that can be converted to a raster layer, or a coordinate reference system (CRS).
+#'   An object that can be converted to a raster layer, or coordinate reference system (CRS).
 #' @param p 'SpatialPointsDataFrame'.
 #'   Spatial point data to be plotted.
 #' @param ...

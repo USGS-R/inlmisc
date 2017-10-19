@@ -18,7 +18,7 @@ The function chooses a subset of integers from \code{1:n}.}
 Number of indices to choose, that is, the size of the subset.}
 
 \item{Fitness}{'function'.
-Fitness (or objective) function, any allowable \R function which
+Fitness function (also known as an objective function), any allowable \R function which
 takes as its first and second argument
 the binary \code{string} representing a potential solution and
 the maximum permissible index (\code{n}), respectively.
@@ -82,7 +82,7 @@ Returns a 'list' with components:
 \description{
 This function identifies an optimal subset of a fixed size from a finite sequence (\code{1:n}).
 A distributed multiple-population genetic algorithm (GA) is used to do subset selection
-based on the maximization of a user-supplied fitness (objective) function.
+based on the maximization of a user-supplied fitness function.
 }
 \details{
 The fitness function (see \code{Fitness} argument) is

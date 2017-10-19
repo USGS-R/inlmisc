@@ -2,7 +2,7 @@
 #'
 #' This function identifies an optimal subset of a fixed size from a finite sequence (\code{1:n}).
 #' A distributed multiple-population genetic algorithm (GA) is used to do subset selection
-#' based on the maximization of a user-supplied fitness (objective) function.
+#' based on the maximization of a user-supplied fitness function.
 #'
 #' @param n 'integer'.
 #'   Maximum permissible index, that is, the size of the integer sequence.
@@ -10,7 +10,7 @@
 #' @param k 'integer'.
 #'   Number of indices to choose, that is, the size of the subset.
 #' @param Fitness 'function'.
-#'   Fitness (or objective) function, any allowable \R function which
+#'   Fitness function (also known as an objective function), any allowable \R function which
 #'   takes as its first and second argument
 #'   the binary \code{string} representing a potential solution and
 #'   the maximum permissible index (\code{n}), respectively.
