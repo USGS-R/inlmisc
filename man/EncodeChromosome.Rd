@@ -5,16 +5,16 @@
 \alias{DecodeChromosome}
 \title{Encode and Decode an Integer Chromosome}
 \usage{
-EncodeChromosome(x, n)
+EncodeChromosome(x, res = 10L)
 
-DecodeChromosome(y, n)
+DecodeChromosome(y, res = 10L)
 }
 \arguments{
 \item{x}{'numeric'.
 Binary representation, a vector of \code{0}s and \code{1}s, of the integer chromosome.}
 
-\item{n}{'integer'.
-Maximum permissible number in the integer chromosome.}
+\item{res}{'integer'.
+Resolution of integer chromosome in bits.}
 
 \item{y}{'numeric'.
 Integer chromosome, a vector of parameter values.}
@@ -28,13 +28,13 @@ Integer chromosome, a vector of parameter values.}
 }
 \description{
 Functions for encoding and decoding an integer chromosome,
-a set of integer parameter values that define a proposed solution to the problem
+a set of integer values that define a proposed solution to the problem
 that a genetic algorithm is trying to solve.
 }
 \examples{
-string <- EncodeChromosome(c(4, 196, 67), 255)
+string <- EncodeChromosome(c(4, 196, 67))
 print(string)
-print(DecodeChromosome(string, 255))
+print(DecodeChromosome(string))
 
 }
 \author{

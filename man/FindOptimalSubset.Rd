@@ -19,12 +19,9 @@ Number of indices to choose, that is, the size of the subset.}
 
 \item{Fitness}{'function'.
 Fitness function (also known as an objective function), any allowable \R function which
-takes as its first and second argument
-the binary \code{string} representing a potential solution and
-the maximum permissible index (\code{n}), respectively.
-The fitness function returns a single numerical value describing its \dQuote{fitness} score.
-Note that the \code{\link{DecodeChromosome}} function is provided to decode the binary string,
-see \sQuote{Examples} section.}
+takes as its first argument the binary \code{string} representing a potential solution.
+Use the \code{\link{DecodeChromosome}} function to decode the binary string, see \sQuote{Examples} section.
+The fitness function returns a single numerical value describing its \dQuote{fitness} score.}
 
 \item{...}{Additional arguments to be passed to the fitness function.}
 
@@ -88,9 +85,12 @@ based on the maximization of a user-supplied fitness function.
 The fitness function (see \code{Fitness} argument) is
   solved using the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013; Scrucca, 2016).
   The function implements the islands GAs approach.
-  Independent GAs are configured to use integer chromosomes,
+  Independent GAs are configured to use an integer chromosomes,
   where indices are represented as binary strings using \href{https://en.wikipedia.org/wiki/Gray_code}{Gray} encoding;
   linear-rank selection; uniform crossover; and uniform mutation.
+}
+\note{
+Integer chromosomes use a 10-bit resolution so the maximum value for argument \code{n} is 1,023.
 }
 \examples{
 # Choose the 4 smallest numbers from a list of 100 values
@@ -98,8 +98,8 @@ The fitness function (see \code{Fitness} argument) is
 k <- 4
 n <- 100
 numbers <- sort(runif(n))
-Fitness <- function(string, n, numbers) {
-  idxs <- DecodeChromosome(string, n)
+Fitness <- function(string, numbers) {
+  idxs <- DecodeChromosome(string)
   score <- -sum(numbers[idxs])
   return(score)
 }
