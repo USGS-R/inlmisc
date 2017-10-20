@@ -121,6 +121,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   checkmate::assertNumber(migrationRate, lower=0, upper=1, finite=TRUE)
   checkmate::assertInt(migrationInterval, lower=1)
   checkmate::assertNumber(pcrossover, lower=0, upper=1, finite=TRUE)
+  checkmate::assertNumber(pmutation, lower=0, upper=1, finite=TRUE)
   checkmate::assertInt(elitism, lower=0, upper=popSize)
   checkmate::assertInt(maxiter, lower=1)
   checkmate::assertInt(run, lower=1, upper=maxiter)
