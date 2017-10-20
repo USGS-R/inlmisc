@@ -45,12 +45,12 @@
 #'   Random number generator state, used to replicate the results.
 #'
 #' @details The fitness function (see \code{Fitness} argument) is
-#'   solved using the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013; Scrucca, 2016).
-#'   The function implements an islands evolution model
-#'   (Cohoon and others, 1987; Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
-#'   Independent GAs are configured to use integer chromosomes;
-#'   that is, indices are represented as binary strings using \href{https://en.wikipedia.org/wiki/Gray_code}{Gray} encoding.
-#'   GA operators include linear-rank selection, uniform crossover, and uniform mutation.
+#'   solved using the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
+#'   The function implements an islands evolution model (Cohoon and others, 1987).
+#'   That is, it maximizes a fitness function using islands genetic algorithms (ISLGAs)
+#'   (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
+#'   Independent GAs are configured to use integer chromosomes represented with a binary codification,
+#'   linear-rank selection, single-point crossover, and uniform mutation.
 #'
 #' @return Returns a 'list' with components:
 #'   \describe{
@@ -232,12 +232,17 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   encoded_parents <- object@population[parents, , drop=FALSE]
   FUN <- function(i) DecodeChromosome(i, n)
   decoded_parents <- t(apply(encoded_parents, 1, FUN))
-  len <- ncol(decoded_parents)
 
-  combo <- unique(as.vector(decoded_parents))
-  c1 <- sort(sample(combo, len))
-  c2 <- sort(sample(combo, len))
-  decoded_children <- matrix(c(c1, c2), nrow=2, ncol=len, byrow=TRUE)
+  p1 <- decoded_parents[1, ]
+  p2 <- decoded_parents[2, ]
+  c1 <- p1
+  c2 <- p2
+  is <- seq_along(p1) > sample.int(length(p1) - 1L, 1)
+  i1 <- is & !p2 %in% p1
+  i2 <- is & !p1 %in% p2
+  c1[i1] <- p2[i1]
+  c2[i2] <- p1[i2]
+  decoded_children <- rbind(sort(c1), sort(c2))
 
   FUN <- function(i) sort(DecodeChromosome(i, n))
   m <- t(apply(object@population, 1, FUN))
@@ -276,19 +281,21 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link{FindOptimalSubset}}
+#' @seealso \code{\link{FindOptimalSubset}}, \code{\link[GA]{binary2decimal}}
 #'
 #' @keywords internal
 #'
 #' @examples
-#' string <- EncodeChromosome(c(41, 796, 382), 1000)
-#' print(string)
-#' print(DecodeChromosome(string, 1000))
+#' x <- c(41, 796, 382)
+#' y <- EncodeChromosome(x, 1000)
+#' print(y)
+#' x <- DecodeChromosome(y, 1000)
+#' print(x)
 #'
 
 EncodeChromosome <- function(x, n) {
   len <- ceiling(log2(n + 1))
-  FUN <- function(i) GA::binary2gray(GA::decimal2binary(i, len))
+  FUN <- function(i) GA::decimal2binary(i, len)
   return(unlist(lapply(x, FUN)))
 }
 
@@ -297,6 +304,6 @@ EncodeChromosome <- function(x, n) {
 
 DecodeChromosome <- function(y, n) {
   len <- ceiling(log2(n + 1))
-  FUN <- function(i) GA::binary2decimal(GA::gray2binary(y[i:(i + len - 1L)]))
+  FUN <- function(i) GA::binary2decimal(y[i:(i + len - 1L)])
   return(vapply(seq(1, length(y), by=len), FUN, 0))
 }

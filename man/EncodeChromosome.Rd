@@ -31,13 +31,15 @@ Where a chromosome is a set of numbers that defines a proposed solution to the
 problem that a genetic algorithm is trying to solve.
 }
 \examples{
-string <- EncodeChromosome(c(41, 796, 382), 1000)
-print(string)
-print(DecodeChromosome(string, 1000))
+x <- c(41, 796, 382)
+y <- EncodeChromosome(x, 1000)
+print(y)
+x <- DecodeChromosome(y, 1000)
+print(x)
 
 }
 \seealso{
-\code{\link{FindOptimalSubset}}
+\code{\link{FindOptimalSubset}}, \code{\link[GA]{binary2decimal}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
