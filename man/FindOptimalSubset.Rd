@@ -92,9 +92,9 @@ The fitness function (see \code{Fitness} argument) is
   linear-rank selection, single-point crossover, and uniform mutation.
 }
 \examples{
-# Choose the 4 smallest numbers from a list of 100 values
+# Problem: choose the 5 smallest numbers from a list of 100 values
 # genearated from a standard uniform distribution.
-k <- 4
+k <- 5
 n <- 100
 numbers <- sort(runif(n))
 Fitness <- function(string, n, numbers) {
