@@ -4,27 +4,25 @@
 \alias{FindOptimalSubset}
 \title{Genetic Algorithm for Subset Selection}
 \usage{
-FindOptimalSubset(n, k, Fitness, ..., popSize = 50L, migrationRate = 0.1,
+FindOptimalSubset(n, k, Fitness, ..., popSize = 100L, migrationRate = 0.1,
   migrationInterval = 10L, pcrossover = 0.8, pmutation = 0.1,
-  elitism = 0L, maxiter = 100L, run = maxiter, suggestions = NULL,
+  elitism = 0L, maxiter = 1000L, run = maxiter, suggestions = NULL,
   parallel = FALSE, seed = NULL)
 }
 \arguments{
 \item{n}{'integer'.
-Maximum permissible index, that is, the size of the integer sequence.
-The function chooses a subset of integers from \code{1:n}.}
+Maximum permissible index, that is, the length of the finite sequence (\code{1:n}).
+The GA chooses a subset from this sequence.}
 
 \item{k}{'integer'.
-Number of indices to choose, that is, the size of the subset.}
+Number of indices to choose, that is, the fixed size of the subset.}
 
 \item{Fitness}{'function'.
-Fitness (or objective) function, any allowable \R function which
-takes as its first and second argument
-the binary \code{string} representing a potential solution and
-the maximum permissible index (\code{n}), respectively.
-The fitness function returns a single numerical value describing its \dQuote{fitness} score.
-Note that the \code{\link{DecodeChromosome}} function is provided to decode the binary string,
-see \sQuote{Examples} section.}
+Fitness function, also known as the objective function, is any allowable \R function which
+takes as its first argument the binary \code{string} representing a potential solution.
+And as its second argument the maximum permissible index, \code{n}.
+Use the \code{\link{DecodeChromosome}(string, n)} command to decode the binary \code{string}.
+The fitness function returns a single numerical value describing its fitness score.}
 
 \item{...}{Additional arguments to be passed to the fitness function.}
 
@@ -52,14 +50,14 @@ Maximum number of iterations to run before the GA search is halted.}
 
 \item{run}{'integer'.
 Number of consecutive generations without any improvement in the
-\dQuote{best} fitness value before the GA is stopped.}
+\dQuote{best} fitness score before the GA is stopped.}
 
 \item{suggestions}{'matrix'.
-Initial population}
+Binary representation of chromosomes to be included in the initial population.}
 
 \item{parallel}{'logical' or 'integer'.
 Whether to use parallel computing.
-This argument can also be used to specify the number of cores (and islands) to employ;
+This argument can also be used to specify the number of cores (and number of islands) to employ;
 by default, this is taken from \code{\link[parallel]{detectCores}}.}
 
 \item{seed}{'integer'.
@@ -80,22 +78,23 @@ Returns a 'list' with components:
   }
 }
 \description{
-This function identifies an optimal subset of a fixed size from a finite sequence (\code{1:n}).
-A distributed multiple-population genetic algorithm (GA) is used to do subset selection
-based on the maximization of a user-supplied fitness (objective) function.
+This function identifies an optimal subset of a fixed size \code{k} from a finite sequence of length \code{n}.
+A distributed multiple-population genetic algorithm (GA) is used to
+do subset selection based on the maximization of a user-supplied fitness function.
 }
 \details{
 The fitness function (see \code{Fitness} argument) is
-  solved using the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013; Scrucca, 2016).
-  The function implements the islands GAs approach.
-  Independent GAs are configured to use integer chromosomes,
-  where indices are represented as binary strings using \href{https://en.wikipedia.org/wiki/Gray_code}{Gray} encoding;
-  linear-rank selection; uniform crossover; and uniform mutation.
+  solved using the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
+  The function implements an islands evolution model (Cohoon and others, 1987).
+  That is, it maximizes a fitness function using islands genetic algorithms (ISLGAs)
+  (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
+  Independent GAs are configured to use integer chromosomes represented with a binary codification,
+  linear-rank selection, single-point crossover, and uniform mutation.
 }
 \examples{
-# Choose the 4 smallest numbers from a list of 100 values
+# Problem: choose the 5 smallest numbers from a list of 100 values
 # genearated from a standard uniform distribution.
-k <- 4
+k <- 5
 n <- 100
 numbers <- sort(runif(n))
 Fitness <- function(string, n, numbers) {
@@ -104,7 +103,7 @@ Fitness <- function(string, n, numbers) {
   return(score)
 }
 \dontrun{
-out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, seed = 321)
+out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10, seed = 321)
 print(out[["solution"]])
 plot(out[["ga_output"]])
 summary(out[["ga_output"]])
@@ -113,11 +112,20 @@ print(out[["ga_output"]]@fitnessValue)
 
 }
 \references{
-Scrucca, Luca, 2013, GA: A Package for Genetic Algorithms in R:
+Cohoon, J.P., Hegde, S.U., Martin, W.N., and Richards, D., 1987,
+  Punctuated Equilibria: A Parallel Genetic Algorithm,
+  in Genetic Algorithms and their Applications:
+  Proceedings of the Second International Conference on Genetic Algorithms,
+  Grefenstette, J.J., Lawrence Earlbaum Associates, p. 155-161.
+
+  Luke, Sean, 2015, Essentials of metaheuristics (2nd ed.): Lulu, 263 p.,
+  available for free at \url{https://cs.gmu.edu/~sean/book/metaheuristics/}.
+
+  Scrucca, Luca, 2013, GA: A Package for Genetic Algorithms in R:
   Journal of Statistical Software, v. 53, no. 4, p. 1-37.
 
   Scrucca, Luca, 2017, On some extensions to GA package: hybrid optimisation,
-  parallelisation and islands evolution: The R Journal, v. 9, no. 1, 187-206.
+  parallelisation and islands evolution: The R Journal, v. 9, no. 1, p. 187-206.
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

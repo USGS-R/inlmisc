@@ -1,22 +1,20 @@
 #' Genetic Algorithm for Subset Selection
 #'
-#' This function identifies an optimal subset of a fixed size from a finite sequence (\code{1:n}).
-#' A distributed multiple-population genetic algorithm (GA) is used to do subset selection
-#' based on the maximization of a user-supplied fitness (objective) function.
+#' This function identifies an optimal subset of a fixed size \code{k} from a finite sequence of length \code{n}.
+#' A distributed multiple-population genetic algorithm (GA) is used to
+#' do subset selection based on the maximization of a user-supplied fitness function.
 #'
 #' @param n 'integer'.
-#'   Maximum permissible index, that is, the size of the integer sequence.
-#'   The function chooses a subset of integers from \code{1:n}.
+#'   Maximum permissible index, that is, the length of the finite sequence (\code{1:n}).
+#'   The GA chooses a subset from this sequence.
 #' @param k 'integer'.
-#'   Number of indices to choose, that is, the size of the subset.
+#'   Number of indices to choose, that is, the fixed size of the subset.
 #' @param Fitness 'function'.
-#'   Fitness (or objective) function, any allowable \R function which
-#'   takes as its first and second argument
-#'   the binary \code{string} representing a potential solution and
-#'   the maximum permissible index (\code{n}), respectively.
-#'   The fitness function returns a single numerical value describing its \dQuote{fitness} score.
-#'   Note that the \code{\link{DecodeChromosome}} function is provided to decode the binary string,
-#'   see \sQuote{Examples} section.
+#'   Fitness function, also known as the objective function, is any allowable \R function which
+#'   takes as its first argument the binary \code{string} representing a potential solution.
+#'   And as its second argument the maximum permissible index, \code{n}.
+#'   Use the \code{\link{DecodeChromosome}(string, n)} command to decode the binary \code{string}.
+#'   The fitness function returns a single numerical value describing its fitness score.
 #' @param ...
 #'   Additional arguments to be passed to the fitness function.
 #' @param popSize 'integer'.
@@ -36,22 +34,23 @@
 #'   Maximum number of iterations to run before the GA search is halted.
 #' @param run 'integer'.
 #'   Number of consecutive generations without any improvement in the
-#'   \dQuote{best} fitness value before the GA is stopped.
+#'   \dQuote{best} fitness score before the GA is stopped.
 #' @param suggestions 'matrix'.
-#'   Initial population
+#'   Binary representation of chromosomes to be included in the initial population.
 #' @param parallel 'logical' or 'integer'.
 #'   Whether to use parallel computing.
-#'   This argument can also be used to specify the number of cores (and islands) to employ;
+#'   This argument can also be used to specify the number of cores (and number of islands) to employ;
 #'   by default, this is taken from \code{\link[parallel]{detectCores}}.
 #' @param seed 'integer'.
 #'   Random number generator state, used to replicate the results.
 #'
 #' @details The fitness function (see \code{Fitness} argument) is
-#'   solved using the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013; Scrucca, 2016).
-#'   The function implements the islands GAs approach.
-#'   Independent GAs are configured to use integer chromosomes,
-#'   where indices are represented as binary strings using \href{https://en.wikipedia.org/wiki/Gray_code}{Gray} encoding;
-#'   linear-rank selection; uniform crossover; and uniform mutation.
+#'   solved using the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
+#'   The function implements an islands evolution model (Cohoon and others, 1987).
+#'   That is, it maximizes a fitness function using islands genetic algorithms
+#'   (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
+#'   Independent GAs are configured to use integer chromosomes represented with a binary codification,
+#'   linear-rank selection, single-point crossover, and uniform mutation.
 #'
 #' @return Returns a 'list' with components:
 #'   \describe{
@@ -69,20 +68,29 @@
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
 #' @references
+#'   Cohoon, J.P., Hegde, S.U., Martin, W.N., and Richards, D., 1987,
+#'   Punctuated Equilibria: A Parallel Genetic Algorithm,
+#'   in Genetic Algorithms and their Applications:
+#'   Proceedings of the Second International Conference on Genetic Algorithms,
+#'   Grefenstette, J.J., Lawrence Earlbaum Associates, p. 155-161.
+#'
+#'   Luke, Sean, 2015, Essentials of metaheuristics (2nd ed.): Lulu, 263 p.,
+#'   available for free at \url{https://cs.gmu.edu/~sean/book/metaheuristics/}.
+#'
 #'   Scrucca, Luca, 2013, GA: A Package for Genetic Algorithms in R:
 #'   Journal of Statistical Software, v. 53, no. 4, p. 1-37.
 #'
 #'   Scrucca, Luca, 2017, On some extensions to GA package: hybrid optimisation,
-#'   parallelisation and islands evolution: The R Journal, v. 9, no. 1, 187-206.
+#'   parallelisation and islands evolution: The R Journal, v. 9, no. 1, p. 187-206.
 #'
 #' @keywords optimize
 #'
 #' @export
 #'
 #' @examples
-#' # Choose the 4 smallest numbers from a list of 100 values
+#' # Problem: choose the 5 smallest numbers from a list of 100 values
 #' # genearated from a standard uniform distribution.
-#' k <- 4
+#' k <- 5
 #' n <- 100
 #' numbers <- sort(runif(n))
 #' Fitness <- function(string, n, numbers) {
@@ -91,7 +99,7 @@
 #'   return(score)
 #' }
 #' \dontrun{
-#' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, seed = 321)
+#' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10, seed = 321)
 #' print(out[["solution"]])
 #' plot(out[["ga_output"]])
 #' summary(out[["ga_output"]])
@@ -99,9 +107,10 @@
 #' }
 #'
 
-FindOptimalSubset <- function(n, k, Fitness, ..., popSize=50L, migrationRate=0.1,
-                              migrationInterval=10L, pcrossover=0.8, pmutation=0.1,
-                              elitism=0L, maxiter=100L, run=maxiter, suggestions=NULL,
+FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
+                              migrationRate=0.1, migrationInterval=10L,
+                              pcrossover=0.8, pmutation=0.1, elitism=0L,
+                              maxiter=1000L, run=maxiter, suggestions=NULL,
                               parallel=FALSE, seed=NULL) {
 
   # check arguments
@@ -112,6 +121,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=50L, migrationRate=0.1
   checkmate::assertNumber(migrationRate, lower=0, upper=1, finite=TRUE)
   checkmate::assertInt(migrationInterval, lower=1)
   checkmate::assertNumber(pcrossover, lower=0, upper=1, finite=TRUE)
+  checkmate::assertNumber(pmutation, lower=0, upper=1, finite=TRUE)
   checkmate::assertInt(elitism, lower=0, upper=popSize)
   checkmate::assertInt(maxiter, lower=1)
   checkmate::assertInt(run, lower=1, upper=maxiter)
@@ -119,15 +129,15 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=50L, migrationRate=0.1
   checkmate::qassert(parallel, c("b1", "x1"))
   checkmate::assertInt(seed, null.ok=TRUE)
 
-  # calculate number of bits
-  nBits <- length(GA::decimal2binary(n)) * k
-
   # set number of islands
   if (is.logical(parallel)) {
     numIslands <- if (parallel) parallel::detectCores() else 4L
   } else if (is.numeric(parallel)) {
     numIslands <- parallel
   }
+
+  # calculate number of bits in the binary string representing the chromosome
+  nBits <- ceiling(log2(n + 1)) * k
 
   # solve genetic algorithm
   ga_time <- system.time({
@@ -172,23 +182,25 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=50L, migrationRate=0.1
               ga_time=ga_time))
 }
 
-.BuildChromosomes <- function(x, n, k) {
-  FUN <- function(i) sort(sample(seq_len(n), k, replace=FALSE))
-  return(t(vapply(seq_len(x), FUN, rep(0, k))))
+.BuildChromosomes <- function(size, n, k) {
+  v <- seq_len(n)
+  if (n < size * k) v <- rep(v, length.out=size * k)
+  v <- sample(v, size * k)
+  m <- matrix(v, nrow=size, ncol=k)
+  m <- t(apply(m, 1, sort))
+  return(m)
 }
 
 .Population <- function(object, n) {
-  k <- object@nBits / length(GA::decimal2binary(n))
+  k <- object@nBits / ceiling(log2(n + 1))
   pop <- .BuildChromosomes(object@popSize, n, k)
   if (object@popSize < choose(n, k)) {
-    dups <- which(duplicated(t(apply(pop, 1, sort))))
-    i <- 1L
+    i <- 0L
     repeat {
-      len <- length(dups)
-      if ((len) == 0) break
-      pop[dups, ] <- .BuildChromosomes(len, n, k)
-      dups <- which(duplicated(t(apply(pop, 1, sort))))
       if ((i <- i + 1L) > 1000) stop("Runnaway loop")
+      dups <- which(duplicated(pop) | apply(pop, 1, function(v) any(duplicated(v))))
+      if ((ndups <- length(dups)) == 0) break
+      pop[dups, ] <- .BuildChromosomes(ndups, n, k)
     }
   }
   FUN <- function(i) EncodeChromosome(i, n)
@@ -203,13 +215,13 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=50L, migrationRate=0.1
   decoded_parent <- DecodeChromosome(encoded_parent, n)
   idxs <- seq_len(n)[-decoded_parent]
   j <- sample(seq_along(decoded_parent), size=1)
-  i <- 1L
+  i <- 0L
   repeat {
+    if ((i <- i + 1L) > 1000) stop("Runnaway loop")
     x <- decoded_parent
     x[j] <- sample(idxs, size=1)
     x <- sort(x)
     if (!any(apply(m, 1, function(y) identical(x, y)))) break
-    if ((i <- i + 1L) > 1000) stop("Runnaway loop")
   }
   mutated <- EncodeChromosome(x, n)
   return(mutated)
@@ -220,12 +232,17 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=50L, migrationRate=0.1
   encoded_parents <- object@population[parents, , drop=FALSE]
   FUN <- function(i) DecodeChromosome(i, n)
   decoded_parents <- t(apply(encoded_parents, 1, FUN))
-  len <- ncol(decoded_parents)
 
-  combo <- unique(as.vector(decoded_parents))
-  c1 <- sort(sample(combo, len))
-  c2 <- sort(sample(combo, len))
-  decoded_children <- matrix(c(c1, c2), nrow=2, ncol=len, byrow=TRUE)
+  p1 <- decoded_parents[1, ]
+  p2 <- decoded_parents[2, ]
+  c1 <- p1
+  c2 <- p2
+  is <- seq_along(p1) > sample.int(length(p1) - 1L, 1)
+  i1 <- is & !p2 %in% p1
+  i2 <- is & !p1 %in% p2
+  c1[i1] <- p2[i1]
+  c2[i2] <- p1[i2]
+  decoded_children <- rbind(sort(c1), sort(c2))
 
   FUN <- function(i) sort(DecodeChromosome(i, n))
   m <- t(apply(object@population, 1, FUN))
@@ -243,47 +260,50 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=50L, migrationRate=0.1
 
 #' Encode and Decode an Integer Chromosome
 #'
-#' Functions for encoding and decoding an integer chromosome,
-#' a set of integer parameter values that define a proposed solution to the problem
-#' that a genetic algorithm is trying to solve.
+#' Functions for encoding and decoding a chromosome represented by integer values.
+#' Where a chromosome is a set of numbers that defines a proposed solution to the
+#' problem that a genetic algorithm is trying to solve.
 #'
 #' @param x 'numeric'.
-#'   Binary representation, a vector of \code{0}s and \code{1}s, of the integer chromosome.
+#'   Integer representation of chromosome, a vector of integer values.
 #' @param n 'integer'.
-#'   Maximum permissible number in the integer chromosome.
+#'   Maximum permissible number in the integer chromosome,
+#'   used to calculate the fixed length of a binary string.
+#' @param y 'numeric'.
+#'   Binary representation of chromosome, a vector of \code{0}s and \code{1}s.
 #'
 #' @return
-#'   \code{EncodeChromosome} returns a 'numeric' vector of \code{0}s and \code{1}s, that is,
-#'     the binary representation of the integer chromosome.
+#'   \code{EncodeChromosome} returns a 'numeric' vector of \code{0}s and \code{1}s.
 #'
-#'   \code{DecodeChromosome} returns a 'numeric' vector of
-#'     parameter values in the integer chromosome.
+#'   \code{DecodeChromosome} returns a 'numeric' vector of integers.
 #'
 #' @export
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
+#' @seealso \code{\link{FindOptimalSubset}}, \code{\link[GA]{binary2decimal}}
+#'
 #' @keywords internal
 #'
 #' @examples
-#' string <- EncodeChromosome(c(4, 196, 67), 255)
-#' print(string)
-#' print(DecodeChromosome(string, 255))
+#' x <- c(41, 796, 382)
+#' y <- EncodeChromosome(x, 1000)
+#' print(y)
+#' x <- DecodeChromosome(y, 1000)
+#' print(x)
 #'
 
 EncodeChromosome <- function(x, n) {
-  len <- length(GA::decimal2binary(n))
-  FUN <- function(i) GA::binary2gray(GA::decimal2binary(i, len))
+  len <- ceiling(log2(n + 1))
+  FUN <- function(i) GA::decimal2binary(i, len)
   return(unlist(lapply(x, FUN)))
 }
 
 #' @rdname EncodeChromosome
-#' @param y 'numeric'.
-#'   Integer chromosome, a vector of parameter values.
 #' @export
 
 DecodeChromosome <- function(y, n) {
-  len <- length(GA::decimal2binary(n))
-  FUN <- function(i) GA::binary2decimal(GA::gray2binary(y[i:(i + len - 1L)]))
+  len <- ceiling(log2(n + 1))
+  FUN <- function(i) GA::binary2decimal(y[i:(i + len - 1L)])
   return(vapply(seq(1, length(y), by=len), FUN, 0))
 }

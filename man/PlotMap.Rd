@@ -16,7 +16,7 @@ PlotMap(r, p = NULL, ..., layer = 1, att = NULL, n = NULL,
 }
 \arguments{
 \item{r}{'Raster*', 'Spatial*', or 'CRS'.
-An object that can be converted to a raster layer, or a coordinate reference system (CRS).}
+An object that can be converted to a raster layer, or coordinate reference system (CRS).}
 
 \item{p}{'SpatialPointsDataFrame'.
 Spatial point data to be plotted.}
