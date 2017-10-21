@@ -169,7 +169,6 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
                            seed=seed)
   })
 
-
   # decode solution
   FUN <- function(i) sort(DecodeChromosome(i, n))
   m <- t(apply(ga_output@solution, 1, FUN))

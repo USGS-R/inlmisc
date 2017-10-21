@@ -26,7 +26,7 @@ install.packages("inlmisc", dependencies = TRUE)
 Or use **devtools** to install the development version from GitHub.
 
 ```r
-devtools::install_github("USGS-R/inlmisc")
+devtools::install_github("USGS-R/inlmisc", dependencies = TRUE)
 ```
 
 ## Bugs

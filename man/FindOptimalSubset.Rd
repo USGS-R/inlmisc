@@ -86,7 +86,7 @@ do subset selection based on the maximization of a user-supplied fitness functio
 The fitness function (see \code{Fitness} argument) is
   solved using the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
   The function implements an islands evolution model (Cohoon and others, 1987).
-  That is, it maximizes a fitness function using islands genetic algorithms (ISLGAs)
+  That is, it maximizes a fitness function using islands genetic algorithms
   (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
   Independent GAs are configured to use integer chromosomes represented with a binary codification,
   linear-rank selection, single-point crossover, and uniform mutation.
