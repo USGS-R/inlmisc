@@ -5,7 +5,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
 [![](https://cranlogs.r-pkg.org/badges/inlmisc?color=brightgreen)](https://www.rpackages.io/package/inlmisc)
-[![CC0](https://img.shields.io/badge/license-CC0--1.0-brightgreen.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
 [![USGS Category](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
 
 ## Overview
@@ -26,7 +25,7 @@ install.packages("inlmisc", dependencies = TRUE)
 Or use **devtools** to install the development version from GitHub.
 
 ```r
-devtools::install_github("USGS-R/inlmisc")
+devtools::install_github("USGS-R/inlmisc", dependencies = TRUE)
 ```
 
 ## Bugs

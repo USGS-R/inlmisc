@@ -41,8 +41,10 @@
 #'   Whether to use parallel computing.
 #'   This argument can also be used to specify the number of cores (and number of islands) to employ;
 #'   by default, this is taken from \code{\link[parallel]{detectCores}}.
+#'   The \pkg{parallel} and \pkg{doParallel} packages must be installed for parallel computing to work.
 #' @param seed 'integer'.
 #'   Random number generator state, used to replicate the results.
+#'   The \pkg{doRNG} package must be installed if using parallel computing.
 #'
 #' @details The fitness function (see \code{Fitness} argument) is
 #'   solved using the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
@@ -90,7 +92,7 @@
 #' @examples
 #' # Problem: choose the 5 smallest numbers from a list of 100 values
 #' # genearated from a standard uniform distribution.
-#' k <- 5
+#' k <- 4
 #' n <- 100
 #' numbers <- sort(runif(n))
 #' Fitness <- function(string, n, numbers) {
@@ -111,7 +113,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
                               migrationRate=0.1, migrationInterval=10L,
                               pcrossover=0.8, pmutation=0.1, elitism=0L,
                               maxiter=1000L, run=maxiter, suggestions=NULL,
-                              parallel=FALSE, seed=NULL) {
+                              parallel=TRUE, seed=NULL) {
 
   # check arguments
   checkmate::assertInt(n, lower=2)
@@ -169,7 +171,6 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
                            seed=seed)
   })
 
-
   # decode solution
   FUN <- function(i) sort(DecodeChromosome(i, n))
   m <- t(apply(ga_output@solution, 1, FUN))
@@ -182,30 +183,19 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
               ga_time=ga_time))
 }
 
-.BuildChromosomes <- function(size, n, k) {
-  v <- seq_len(n)
-  if (n < size * k) v <- rep(v, length.out=size * k)
-  v <- sample(v, size * k)
-  m <- matrix(v, nrow=size, ncol=k)
-  m <- t(apply(m, 1, sort))
-  return(m)
-}
-
 .Population <- function(object, n) {
   k <- object@nBits / ceiling(log2(n + 1))
-  pop <- .BuildChromosomes(object@popSize, n, k)
-  if (object@popSize < choose(n, k)) {
-    i <- 0L
-    repeat {
-      if ((i <- i + 1L) > 1000) stop("Runnaway loop")
-      dups <- which(duplicated(pop) | apply(pop, 1, function(v) any(duplicated(v))))
-      if ((ndups <- length(dups)) == 0) break
-      pop[dups, ] <- .BuildChromosomes(ndups, n, k)
-    }
+  BuildChromosomes <- function(x) sample.int(n, k)
+  m <- do.call("rbind", lapply(seq_len(object@popSize), BuildChromosomes))
+  i <- 0L
+  repeat {
+    if ((i <- i + 1L) > 100) stop("Runnaway loop building initial population")
+    dups <- which(duplicated(m) | apply(m, 1, function(v) any(duplicated(v))))
+    if ((ndups <- length(dups)) == 0) break
+    m[dups, ] <- do.call("rbind", lapply(seq_len(ndups), BuildChromosomes))
   }
-  FUN <- function(i) EncodeChromosome(i, n)
-  population <- t(apply(pop, 1, FUN))
-  return(population)
+  pop <- t(apply(m, 1, function(i) EncodeChromosome(i, n)))
+  return(pop)
 }
 
 .Mutate <- function(object, parent, n) {
@@ -217,7 +207,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   j <- sample(seq_along(decoded_parent), size=1)
   i <- 0L
   repeat {
-    if ((i <- i + 1L) > 1000) stop("Runnaway loop")
+    if ((i <- i + 1L) > 100) stop("Runnaway loop during mutation")
     x <- decoded_parent
     x[j] <- sample(idxs, size=1)
     x <- sort(x)
