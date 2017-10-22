@@ -91,24 +91,25 @@ The fitness function (see \code{Fitness} argument) is
   That is, it maximizes a fitness function using islands genetic algorithms
   (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
   Independent GAs are configured to use integer chromosomes represented with a binary codification,
-  linear-rank selection, single-point crossover, and uniform mutation.
+  linear-rank selection, uniform crossover, and uniform mutation.
 }
 \examples{
 # Problem: choose the 5 smallest numbers from a list of 100 values
 # genearated from a standard uniform distribution.
 k <- 4
 n <- 100
-numbers <- sort(runif(n))
+seed <- 321
+set.seed(seed); numbers <- sort(runif(n))
 Fitness <- function(string, n, numbers) {
   idxs <- DecodeChromosome(string, n)
   score <- -sum(numbers[idxs])
   return(score)
 }
 \dontrun{
-out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10, seed = 321)
-print(out[["solution"]])
+out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10, seed = seed)
 plot(out[["ga_output"]])
 summary(out[["ga_output"]])
+print(out[["solution"]])
 print(out[["ga_output"]]@fitnessValue)
 }
 

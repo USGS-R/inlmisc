@@ -52,7 +52,7 @@
 #'   That is, it maximizes a fitness function using islands genetic algorithms
 #'   (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
 #'   Independent GAs are configured to use integer chromosomes represented with a binary codification,
-#'   linear-rank selection, single-point crossover, and uniform mutation.
+#'   linear-rank selection, uniform crossover, and uniform mutation.
 #'
 #' @return Returns a 'list' with components:
 #'   \describe{
@@ -94,17 +94,18 @@
 #' # genearated from a standard uniform distribution.
 #' k <- 4
 #' n <- 100
-#' numbers <- sort(runif(n))
+#' seed <- 321
+#' set.seed(seed); numbers <- sort(runif(n))
 #' Fitness <- function(string, n, numbers) {
 #'   idxs <- DecodeChromosome(string, n)
 #'   score <- -sum(numbers[idxs])
 #'   return(score)
 #' }
 #' \dontrun{
-#' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10, seed = 321)
-#' print(out[["solution"]])
+#' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10, seed = seed)
 #' plot(out[["ga_output"]])
 #' summary(out[["ga_output"]])
+#' print(out[["solution"]])
 #' print(out[["ga_output"]]@fitnessValue)
 #' }
 #'
@@ -187,31 +188,23 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   k <- object@nBits / ceiling(log2(n + 1))
   BuildChromosomes <- function(x) sample.int(n, k)
   m <- do.call("rbind", lapply(seq_len(object@popSize), BuildChromosomes))
-  i <- 0L
-  repeat {
-    if ((i <- i + 1L) > 100) stop("Runnaway loop building initial population")
-    dups <- which(duplicated(m) | apply(m, 1, function(v) any(duplicated(v))))
-    if ((ndups <- length(dups)) == 0) break
-    m[dups, ] <- do.call("rbind", lapply(seq_len(ndups), BuildChromosomes))
-  }
   pop <- t(apply(m, 1, function(i) EncodeChromosome(i, n)))
   return(pop)
 }
 
 .Mutate <- function(object, parent, n) {
-  FUN <- function(i) sort(DecodeChromosome(i, n))
-  m <- t(apply(object@population, 1, FUN))
   encoded_parent <- object@population[parent, ]
   decoded_parent <- DecodeChromosome(encoded_parent, n)
   idxs <- seq_len(n)[-decoded_parent]
+  m <- t(apply(object@population, 1, function(i) sort(DecodeChromosome(i, n))))
   j <- sample(seq_along(decoded_parent), size=1)
   i <- 0L
   repeat {
     if ((i <- i + 1L) > 100) stop("Runnaway loop during mutation")
     x <- decoded_parent
     x[j] <- sample(idxs, size=1)
-    x <- sort(x)
-    if (!any(apply(m, 1, function(y) identical(x, y)))) break
+    x_sorted <- sort(x)
+    if (!any(apply(m, 1, function(y) identical(y, x_sorted)))) break
   }
   mutated <- EncodeChromosome(x, n)
   return(mutated)
@@ -227,23 +220,24 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   p2 <- decoded_parents[2, ]
   c1 <- p1
   c2 <- p2
-  is <- seq_along(p1) > sample.int(length(p1) - 1L, 1)
+  is <- seq_along(p1) %in% sample.int(length(p1), round(length(p1) / 2))  # uniform
   i1 <- is & !p2 %in% p1
   i2 <- is & !p1 %in% p2
   c1[i1] <- p2[i1]
   c2[i2] <- p1[i2]
-  decoded_children <- rbind(sort(c1), sort(c2))
-
-  FUN <- function(i) sort(DecodeChromosome(i, n))
-  m <- t(apply(object@population, 1, FUN))
-  fitness_children <- rep(as.numeric(NA), 2)
-  FUN <- function(i) identical(i, decoded_children[1, ])
-  fitness_children[1] <- object@fitness[which(apply(m, 1, FUN))[1]]
-  FUN <- function(i) identical(i, decoded_children[2, ])
-  fitness_children[2] <- object@fitness[which(apply(m, 1, FUN))[1]]
-
+  decoded_children <- rbind(c1, c2)
   FUN <- function(i) EncodeChromosome(i, n)
   encoded_children <- t(apply(decoded_children, 1, FUN))
+
+  c1_sorted <- sort(c1)
+  c2_sorted <- sort(c2)
+  m <- t(apply(object@population, 1, function(i) sort(DecodeChromosome(i, n))))
+  fitness_children <- rep(as.numeric(NA), 2)
+  FUN <- function(i) identical(i, c1_sorted)
+  fitness_children[1] <- object@fitness[which(apply(m, 1, FUN))[1]]
+  FUN <- function(i) identical(i, c2_sorted)
+  fitness_children[2] <- object@fitness[which(apply(m, 1, FUN))[1]]
+
   return(list(children=encoded_children, fitness=fitness_children))
 }
 
@@ -258,7 +252,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
 #'   Integer representation of chromosome, a vector of integer values.
 #' @param n 'integer'.
 #'   Maximum permissible number in the integer chromosome,
-#'   used to calculate the fixed length of a binary string.
+#'   used to calculate the bit width of a binary string.
 #' @param y 'numeric'.
 #'   Binary representation of chromosome, a vector of \code{0}s and \code{1}s.
 #'
