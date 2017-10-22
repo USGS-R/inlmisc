@@ -15,7 +15,7 @@ Integer representation of chromosome, a vector of integer values.}
 
 \item{n}{'integer'.
 Maximum permissible number in the integer chromosome,
-used to calculate the fixed length of a binary string.}
+used to calculate the bit width of a binary string.}
 
 \item{y}{'numeric'.
 Binary representation of chromosome, a vector of \code{0}s and \code{1}s.}
