@@ -22,7 +22,8 @@ Fitness function, also known as the objective function, is any allowable \R func
 takes as its first argument the binary \code{string} representing a potential solution.
 And as its second argument the maximum permissible index, \code{n}.
 Use the \code{\link{DecodeChromosome}(string, n)} command to decode the binary \code{string}.
-The fitness function returns a single numerical value describing its fitness score.}
+The fitness function returns a single numerical value describing its fitness.
+Recall that the GA searches for a maximum fitness value.}
 
 \item{...}{Additional arguments to be passed to the fitness function.}
 
@@ -50,19 +51,23 @@ Maximum number of iterations to run before the GA search is halted.}
 
 \item{run}{'integer'.
 Number of consecutive generations without any improvement in the
-\dQuote{best} fitness score before the GA is stopped.}
+\dQuote{best} fitness value before the GA is stopped.}
 
 \item{suggestions}{'matrix'.
-Binary representation of chromosomes to be included in the initial population.}
+Binary representation of integer chromosomes to be included in the initial population.
+Use the \code{\link{EncodeChromosome}(string, n)} command
+to encode integer chromosomes as bit strings.}
 
 \item{parallel}{'logical' or 'integer'.
 Whether to use parallel computing.
-This argument can also be used to specify the number of cores (and number of islands) to employ;
-by default, this is taken from \code{\link[parallel]{detectCores}}.
-The \pkg{parallel} and \pkg{doParallel} packages must be installed for parallel computing to work.}
+This argument can also be used to specify the number of cores
+(and number of islands) to employ; by default,
+this is taken from \code{\link[parallel]{detectCores}}.
+The \pkg{parallel} and \pkg{doParallel} packages must be
+installed for parallel computing to work.}
 
 \item{seed}{'integer'.
-Random number generator state, used to replicate the results.
+Random number generator state for random number generation, used to replicate the results.
 The \pkg{doRNG} package must be installed if using parallel computing.}
 }
 \value{
@@ -72,38 +77,40 @@ Returns a 'list' with components:
     \item{\code{solution}}{a 'matrix' representation of the best solution found.
       Each row represents a unique solution giving the best fitness at the final iteration.
       More than one row indicates a non-unique solution.
-      The number of columns is equal to the subset size (\code{k}).}
-    \item{\code{ga_output}}{output from the GA,
+      The number of columns is equal to the subset size \code{k}.}
+    \item{\code{ga_output}}{output from the ISLGAs,
       see \code{\link[=gaisl-class]{gaisl-class}} for format description.}
-    \item{\code{ga_time}}{time required to run the GA,
+    \item{\code{ga_time}}{time required to run the ISLGAs,
       see \code{\link{system.time}} for details.}
   }
 }
 \description{
-This function identifies an optimal subset of a fixed size \code{k} from a finite sequence of length \code{n}.
-A distributed multiple-population genetic algorithm (GA) is used to
-do subset selection based on the maximization of a user-supplied fitness function.
+This function identifies an optimal subset of a fixed size \code{k}
+from a finite sequence of length \code{n}.
+A distributed multiple-population genetic algorithm (GA) is used to do
+subset selection based on the maximization of a user-supplied fitness function.
 }
 \details{
-The fitness function (see \code{Fitness} argument) is
-  solved using the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
-  The function implements an islands evolution model (Cohoon and others, 1987).
-  That is, it maximizes a fitness function using islands genetic algorithms
+The fitness function (see \code{Fitness} argument) is solved using
+  the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
+  The function implements an islands evolution model (first proposed by Cohoon and others, 1987).
+  That is, it maximizes a fitness function using islands genetic algorithms (ISLGAs)
   (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
-  Independent GAs are configured to use integer chromosomes represented with a binary codification,
-  linear-rank selection, uniform crossover, and uniform mutation.
+  Independent GAs are configured to use integer chromosomes
+  represented with a binary codification, linear-rank selection,
+  uniform crossover, and uniform mutation.
 }
 \examples{
-# Problem: choose the 5 smallest numbers from a list of 100 values
-# genearated from a standard uniform distribution.
+# Problem: Choose the 4 smallest numbers from a list of 100 values
+#          genearated from a standard uniform distribution.
 k <- 4
 n <- 100
 seed <- 321
 set.seed(seed); numbers <- sort(runif(n))
 Fitness <- function(string, n, numbers) {
   idxs <- DecodeChromosome(string, n)
-  score <- -sum(numbers[idxs])
-  return(score)
+  value <- -sum(numbers[idxs])
+  return(value)
 }
 \dontrun{
 out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10, seed = seed)
