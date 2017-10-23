@@ -215,7 +215,6 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   encoded_parents <- object@population[parents, , drop=FALSE]
   FUN <- function(i) DecodeChromosome(i, n)
   decoded_parents <- t(apply(encoded_parents, 1, FUN))
-
   p1 <- decoded_parents[1, ]
   p2 <- decoded_parents[2, ]
   c1 <- p1
@@ -228,7 +227,6 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   decoded_children <- rbind(c1, c2)
   FUN <- function(i) EncodeChromosome(i, n)
   encoded_children <- t(apply(decoded_children, 1, FUN))
-
   m <- t(apply(object@population, 1, function(i) sort(DecodeChromosome(i, n))))
   FindFitness <- function(child) {
     return(object@fitness[which(apply(m, 1, function(i) identical(i, child)))[1]])
