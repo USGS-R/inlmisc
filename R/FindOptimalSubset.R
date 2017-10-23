@@ -276,8 +276,8 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
 #'
 
 EncodeChromosome <- function(x, n) {
-  len <- ceiling(log2(n + 1))
-  FUN <- function(i) GA::decimal2binary(i, len)
+  width <- ceiling(log2(n + 1))
+  FUN <- function(i) GA::decimal2binary(i, width)
   return(unlist(lapply(x, FUN)))
 }
 
@@ -285,7 +285,7 @@ EncodeChromosome <- function(x, n) {
 #' @export
 
 DecodeChromosome <- function(y, n) {
-  len <- ceiling(log2(n + 1))
-  FUN <- function(i) GA::binary2decimal(y[i:(i + len - 1L)])
-  return(vapply(seq(1, length(y), by=len), FUN, 0))
+  width <- ceiling(log2(n + 1))
+  FUN <- function(i) GA::binary2decimal(y[i:(i + width - 1L)])
+  return(vapply(seq(1, length(y), by=width), FUN, 0))
 }
