@@ -57,9 +57,11 @@ Binary representation of chromosomes to be included in the initial population.}
 
 \item{parallel}{'logical' or 'integer'.
 Whether to use parallel computing.
-This argument can also be used to specify the number of cores (and number of islands) to employ;
-by default, this is taken from \code{\link[parallel]{detectCores}}.
-The \pkg{parallel} and \pkg{doParallel} packages must be installed for parallel computing to work.}
+This argument can also be used to specify the number of cores
+(and number of islands) to employ; by default,
+this is taken from \code{\link[parallel]{detectCores}}.
+The \pkg{parallel} and \pkg{doParallel} packages must be
+installed for parallel computing to work.}
 
 \item{seed}{'integer'.
 Random number generator state, used to replicate the results.
@@ -80,18 +82,20 @@ Returns a 'list' with components:
   }
 }
 \description{
-This function identifies an optimal subset of a fixed size \code{k} from a finite sequence of length \code{n}.
-A distributed multiple-population genetic algorithm (GA) is used to
-do subset selection based on the maximization of a user-supplied fitness function.
+This function identifies an optimal subset of a fixed size \code{k}
+from a finite sequence of length \code{n}.
+A distributed multiple-population genetic algorithm (GA) is used to do
+subset selection based on the maximization of a user-supplied fitness function.
 }
 \details{
-The fitness function (see \code{Fitness} argument) is
-  solved using the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
+The fitness function (see \code{Fitness} argument) is solved using
+  the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
   The function implements an islands evolution model (Cohoon and others, 1987).
   That is, it maximizes a fitness function using islands genetic algorithms
   (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
-  Independent GAs are configured to use integer chromosomes represented with a binary codification,
-  linear-rank selection, uniform crossover, and uniform mutation.
+  Independent GAs are configured to use integer chromosomes
+  represented with a binary codification, inear-rank selection,
+  luniform crossover, and uniform mutation.
 }
 \examples{
 # Problem: choose the 5 smallest numbers from a list of 100 values
