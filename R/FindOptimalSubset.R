@@ -206,8 +206,8 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
     x_sorted <- sort(x)
     if (!any(apply(m, 1, function(y) identical(y, x_sorted)))) break
   }
-  mutated <- EncodeChromosome(x, n)
-  return(mutated)
+  mut <- EncodeChromosome(x, n)
+  return(mut)
 }
 
 .Crossover <- function(object, parents, n) {
@@ -232,11 +232,10 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   c1_sorted <- sort(c1)
   c2_sorted <- sort(c2)
   m <- t(apply(object@population, 1, function(i) sort(DecodeChromosome(i, n))))
-  fitness_children <- rep(as.numeric(NA), 2)
-  FUN <- function(i) identical(i, c1_sorted)
-  fitness_children[1] <- object@fitness[which(apply(m, 1, FUN))[1]]
-  FUN <- function(i) identical(i, c2_sorted)
-  fitness_children[2] <- object@fitness[which(apply(m, 1, FUN))[1]]
+  FindFitness <- function(child) {
+    return(object@fitness[which(apply(m, 1, function(i) identical(i, child)))[1]])
+  }
+  fitness_children <- c(FindFitness(c1_sorted), FindFitness(c2_sorted))
 
   return(list(children=encoded_children, fitness=fitness_children))
 }
