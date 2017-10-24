@@ -102,7 +102,7 @@ The fitness function (see \code{Fitness} argument) is solved using
 }
 \examples{
 # Problem: Choose the 4 smallest numbers from a list of 100 values
-#          genearated from a standard uniform distribution.
+# genearated from a standard uniform distribution.
 k <- 4
 n <- 100
 seed <- 321
