@@ -1,3 +1,7 @@
+# inlmisc 0.3.4.9000
+
+- ...
+
 # inlmisc 0.3.4
 
 - In `PlotMap` function, fixed bug in `range` calculation of raster values by removing `finite = TRUE`.
