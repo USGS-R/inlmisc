@@ -1,4 +1,6 @@
-# inlmisc 0.3.3.9000
+# inlmisc 0.3.4
+
+- In `PlotMap` function, fixed bug in `range` calculation of raster values by removing `finite = TRUE`.
 
 - In `PlotMap` function, fix extent of background image, rivers, lakes, and roads using `par("usr")`.
 
