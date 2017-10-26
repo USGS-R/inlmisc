@@ -262,7 +262,7 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   r <- crop(r, extent(e), snap="near")
   if (!is.null(p)) p <- crop(p, extent(e), snap="near")
 
-  zran <- range(r[], finite=TRUE)
+  zran <- range(r[])
   if (anyNA(zran)) {
     n <- 0
   } else {
