@@ -125,6 +125,16 @@ Grid2Polygons <- function(grd, zcol=1L, level=FALSE, at, cuts=20L,
                           pretty=FALSE, xlim=NULL, ylim=NULL, zlim=NULL,
                           ply=NULL) {
 
+  # check arguments
+  checkmate::qassert(zcol, c("s1", "x1"))
+  checkmate::assertLogical(level, len=1)
+  if (!missing(at)) checkmate::assertNumeric(at, any.missing=FALSE, min.len=2)
+  checkmate::assertInt(cuts, lower=1)
+  checkmate::assertLogical(pretty, len=1)
+  checkmate::assertNumeric(xlim, len=2, sorted=TRUE, null.ok=TRUE)
+  checkmate::assertNumeric(ylim, len=2, sorted=TRUE, null.ok=TRUE)
+  checkmate::assertNumeric(zlim, len=2, sorted=TRUE, null.ok=TRUE)
+
   # check class
   what <- c("RasterLayer", "RasterStack", "RasterBrick",
             "SpatialPixelsDataFrame", "SpatialGridDataFrame")

@@ -262,10 +262,10 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   r <- crop(r, extent(e), snap="near")
   if (!is.null(p)) p <- crop(p, extent(e), snap="near")
 
-  zran <- range(r[])
-  if (anyNA(zran)) {
+  if (all(is.na(r[]))) {
     n <- 0
   } else {
+    zran <- range(r[], na.rm=TRUE)
     default.zl <- if (extend.z) range(pretty(zran, n=6)) else zran
     if (raster::is.factor(r)) {
       at1 <- raster::levels(r)[[1]][, "ID"]

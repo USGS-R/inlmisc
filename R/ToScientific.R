@@ -52,6 +52,14 @@
 ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
                          na=as.character(NA), delimiter="$", scipen=NULL, ...) {
 
+  # check arguments
+  checkmate::assertNumeric(x)
+  checkmate::assertInt(digits, null.ok=TRUE)
+  if (!missing(type)) checkmate::assertChoice(type, c("latex", "plotmath"))
+  checkmate::assertCharacter(na, len=1)
+  checkmate::assertCharacter(delimiter, len=1)
+  checkmate::assertInt(scipen, na.ok=TRUE, null.ok=TRUE)
+
   if (missing(type) && methods::hasArg("lab.type"))
     type <- list(...)$lab.type  # included for backward compatibility
   else
