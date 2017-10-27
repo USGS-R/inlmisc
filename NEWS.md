@@ -1,6 +1,10 @@
 # inlmisc 0.3.4.9000
 
-- ...
+- In `PlotMap` function, fix bug introduced by previous fix of raster range calculation.
+
+- Made `AddCertificate` an 'internal' function.
+
+- Add argument checks using **checkmate** package.
 
 # inlmisc 0.3.4
 
