@@ -19,7 +19,9 @@
 #'
 
 GetDaysInMonth <- function(x) {
+
   checkmate::assertCharacter(x, pattern="^\\d{6}$", any.missing=FALSE)
+
   d <- as.Date(paste0(x, "28"), format="%Y%m%d")
   m <- format(d, format="%m")
   for (i in seq_along(d)) {
