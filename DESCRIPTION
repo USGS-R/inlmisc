@@ -1,6 +1,6 @@
 Package: inlmisc
 Title: Miscellaneous Functions for the USGS INL Project Office
-Version: 0.3.4.9000
+Version: 0.3.5
 Authors@R: person(given=c("Jason", "C."), family="Fisher", role=c("aut", "cre"), email="jfisher@usgs.gov")
 Description: A collection of functions for creating high-level graphics,
     performing raster-based analysis, processing MODFLOW-based models, etc.
@@ -35,7 +35,6 @@ Suggests:
     httr,
     maptools,
     parallel,
-    roxygen2,
     testthat
 License: CC0
 Copyright: This software is in the public domain because it contains materials

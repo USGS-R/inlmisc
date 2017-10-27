@@ -37,14 +37,10 @@
 
 ReadCodeChunks <- function(path) {
 
-  if (!file.exists(path)) stop("file not found")
+  checkmate::assertFileExists(path, extension=c("rnw", "rmd", "r"))
 
   ext <- tools::file_ext(path)
-  if (tolower(ext) %in% c("rnw", "rmd", "r")) {
-    src <- readLines(path)
-  } else {
-    stop("file extension not recognized")
-  }
+  src <- readLines(path)
 
   # extract r code from knitr source documents
   if (tolower(ext) %in% c("rnw", "rmd"))
