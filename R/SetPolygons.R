@@ -51,8 +51,10 @@
 #' sp::plot(p, col = "purple", add = TRUE)
 #'
 
-SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"),
-                        buffer.width=NA) {
+SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.width=NA) {
+
+  if (!missing(cmd)) checkmate::assertChoice(cmd, c("gIntersection", "gDifference"))
+  checkmate::assertNumber(buffer.width, na.ok=TRUE, finite=TRUE)
 
   cmd <- match.arg(cmd)
 
