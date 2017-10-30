@@ -8,7 +8,7 @@ BumpRiverStage(r, outlets, min.drop = 1e-06)
 }
 \arguments{
 \item{r}{'RasterLayer'.
-Numeric cell values represent river stages.}
+Numeric cell values representing river stages.}
 
 \item{outlets}{'SpatialPoints*', 'SpatialLines*', 'SpatialPolygons*' or 'Extent'.
 Designates the location of discharge outlets.
