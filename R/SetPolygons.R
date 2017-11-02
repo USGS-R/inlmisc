@@ -53,10 +53,8 @@
 
 SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.width=NA) {
 
-  if (!missing(cmd)) checkmate::assertChoice(cmd, c("gIntersection", "gDifference"))
-  checkmate::assertNumber(buffer.width, na.ok=TRUE, finite=TRUE)
-
   cmd <- match.arg(cmd)
+  checkmate::assertNumber(buffer.width, na.ok=TRUE, finite=TRUE)
 
   if (!inherits(x, c("SpatialPolygons", "SpatialPolygonsDataFrame")))
     stop("argument 'x' is the wrong class")

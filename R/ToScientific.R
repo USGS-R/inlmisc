@@ -55,7 +55,6 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   # check arguments
   checkmate::assertNumeric(x)
   checkmate::assertInt(digits, null.ok=TRUE)
-  if (!missing(type)) checkmate::assertChoice(type, c("latex", "plotmath"))
   checkmate::assertCharacter(na, len=1)
   checkmate::assertCharacter(delimiter, len=1)
   checkmate::assertInt(scipen, na.ok=TRUE, null.ok=TRUE)

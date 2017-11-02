@@ -4,7 +4,7 @@
 \alias{Grid2Polygons}
 \title{Convert Spatial Grids to Polygons}
 \usage{
-Grid2Polygons(grd, zcol = 1L, level = FALSE, at, cuts = 20L,
+Grid2Polygons(grd, zcol = 1L, level = FALSE, at = NULL, cuts = 20L,
   pretty = FALSE, xlim = NULL, ylim = NULL, zlim = NULL, ply = NULL)
 }
 \arguments{
