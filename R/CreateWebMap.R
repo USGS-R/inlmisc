@@ -38,7 +38,7 @@
 
 CreateWebMap <- function(..., collapsed=TRUE) {
 
-  checkmate::assertLogical(collapsed, len=1, any.missing=FALSE)
+  checkmate::assertChoice(collapsed, c(TRUE, FALSE))
 
   # establish layers
   basemap <- c("Topo"          = "USGSTopo",
