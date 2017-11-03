@@ -42,7 +42,7 @@ FormatPval <- function(x, digits=max(1, getOption("digits") - 2),
   checkmate::assertNumeric(x)
   checkmate::assertInt(digits, null.ok=TRUE)
   checkmate::assertNumber(eps)
-  checkmate::assertCharacter(na.form, len=1)
+  checkmate::assertString(na.form)
   checkmate::assertLogical(scientific, len=1)
 
   p <- format(round(x, digits), nsmall=digits, scientific=FALSE)
