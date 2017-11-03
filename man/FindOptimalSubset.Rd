@@ -54,9 +54,9 @@ Number of consecutive generations without any improvement in the
 \dQuote{best} fitness value before the GA is stopped.}
 
 \item{suggestions}{'matrix'.
-Binary representation of integer chromosomes to be included in the initial population.
-Use the \code{\link{EncodeChromosome}(string, n)} command
-to encode integer chromosomes as bit strings.}
+Integer (or binary) representation of chromosomes to be included in the initial population (optional).
+For binary representation of chromosomes, the number of columns must match the number of decision variables.
+See returned list components \code{solution} and \code{ga_output@solution} for suggested values for this arugment.}
 
 \item{parallel}{'logical' or 'integer'.
 Whether to use parallel computing.

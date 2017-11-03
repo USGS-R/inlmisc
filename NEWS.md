@@ -1,3 +1,7 @@
+# inlmisc 0.3.5.9000
+
+- In `FindOptimalSubset` function, allow integer chromosomes to be specified for the `suggestions` argument.
+
 # inlmisc 0.3.5
 
 - In `PlotMap` function, fix bug introduced by previous fix of raster range calculation.
