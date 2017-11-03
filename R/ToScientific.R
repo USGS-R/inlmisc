@@ -54,7 +54,7 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
 
   # check arguments
   checkmate::assertNumeric(x)
-  checkmate::assertInt(digits, null.ok=TRUE)
+  checkmate::assertCount(digits, null.ok=TRUE)
   checkmate::assertString(na, na.ok=TRUE)
   checkmate::assertString(delimiter)
   checkmate::assertInt(scipen, na.ok=TRUE, null.ok=TRUE)
