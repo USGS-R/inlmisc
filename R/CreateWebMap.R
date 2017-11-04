@@ -64,7 +64,7 @@ CreateWebMap <- function(..., collapsed=TRUE) {
 
   # add control feature
   opt <- leaflet::layersControlOptions(collapsed=collapsed)
-  map <- leaflet::addLayersControl(map, position="topleft",
+  map <- leaflet::addLayersControl(map, position="topright",
                                    baseGroups=names(basemap), options=opt)
 
   # add scale bar
