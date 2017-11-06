@@ -21,7 +21,7 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link[leaflet]{addWMSTiles}}
+#' @seealso \code{\link{AddClusterButton}}
 #'
 #' @keywords hplot
 #'
@@ -31,8 +31,7 @@
 #' map <- CreateWebMap()
 #' lng <- c(-112.049705, -122.171257, -77.367458, -149.803565, -80.248344)
 #' lat <- c(43.517810, 37.456526, 38.947206, 61.187905, 26.080860)
-#' pop <- c("ID", "CA", "VA", "AK", "FL")
-#' map <- leaflet::addMarkers(map, lng, lat, popup = pop)
+#' map <- leaflet::addMarkers(map, lng, lat)
 #' map
 #'
 
@@ -54,8 +53,13 @@ CreateWebMap <- function(..., collapsed=TRUE) {
   att <- paste("<a href='https://www.usgs.gov/'>U.S. Geological Survey</a> |",
                "<a href='https://www.usgs.gov/laws/policies_notices.html'>Policies</a>")
 
+  # construct url for map tiles
+  GetURL <- function(service, host="basemap.nationalmap.gov") {
+    sprintf("https://%s/arcgis/services/%s/MapServer/WmsServer?", host, service)
+  }
+
   # add tiled basemaps
-  url <- .GetURL(basemap)
+  url <- GetURL(basemap)
   opt <- leaflet::WMSTileOptions(version="1.3.0", maxNativeZoom=15)
   for (i in seq_along(basemap)) {
     map <- leaflet::addWMSTiles(map, url[i], group=names(basemap)[i], attribution=att,
@@ -106,9 +110,4 @@ CreateWebMap <- function(..., collapsed=TRUE) {
 
   # return html widget
   return(map)
-}
-
-
-.GetURL <- function(service, host="basemap.nationalmap.gov") {
-  sprintf("https://%s/arcgis/services/%s/MapServer/WmsServer?", host, service)
 }

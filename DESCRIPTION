@@ -33,6 +33,7 @@ Suggests:
     doRNG,
     githubinstall,
     httr,
+    maps,
     maptools,
     parallel,
     testthat
