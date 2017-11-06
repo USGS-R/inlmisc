@@ -1,5 +1,8 @@
 # inlmisc 0.3.5.9000
 
+- Add `AddClusterButton` function, used to add a button on a web map that
+  toggles marker clusters between 'frozen' and 'unfrozen' states.
+
 - In `FindOptimalSubset` function, allow integer chromosomes to be specified for the `suggestions` argument.
 
 # inlmisc 0.3.5

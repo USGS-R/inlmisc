@@ -136,7 +136,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   checkmate::assertInt(maxiter, lower=1)
   checkmate::assertInt(run, lower=1, upper=maxiter)
   checkmate::assertMatrix(suggestions, null.ok=TRUE)
-  checkmate::qassert(parallel, c("b1", "x1"))
+  checkmate::qassert(parallel, c("B1", "X1[0,)"))
   checkmate::assertInt(seed, null.ok=TRUE)
 
   # set number of islands

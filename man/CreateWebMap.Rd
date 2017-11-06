@@ -33,13 +33,12 @@ A number of \href{https://viewer.nationalmap.gov/services/}{map services} are of
 map <- CreateWebMap()
 lng <- c(-112.049705, -122.171257, -77.367458, -149.803565, -80.248344)
 lat <- c(43.517810, 37.456526, 38.947206, 61.187905, 26.080860)
-pop <- c("ID", "CA", "VA", "AK", "FL")
-map <- leaflet::addMarkers(map, lng, lat, popup = pop)
+map <- leaflet::addMarkers(map, lng, lat)
 map
 
 }
 \seealso{
-\code{\link[leaflet]{addWMSTiles}}
+\code{\link{AddClusterButton}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

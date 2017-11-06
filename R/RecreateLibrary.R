@@ -423,7 +423,7 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
 AddCertificate <- function(file, header=NULL) {
 
   checkmate::assertOS("windows")
-  checkmate::assertCharacter(header, len=1, any.missing=FALSE, null.ok=TRUE)
+  checkmate::assertString(header, null.ok=TRUE)
 
   if (!requireNamespace("httr", quietly=TRUE))
     stop("Requires access to the 'httr' package.", call.=FALSE)
