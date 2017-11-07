@@ -13,10 +13,9 @@ AddClusterButton(map, clusterId, position = "topleft")
 \item{map}{'\link[leaflet]{leaflet}'.
 Map widget object}
 
-\item{extent}{'numeric'.
-Vector of length 4 representing a rectangular geographical area on the map.
-The order of the bounds is the minimum and maximum longitude,
-followed by the minimum and maximum latitude, in decimal degrees.}
+\item{extent}{'Raster*', 'Spatial*', 'Extent', 'matrix', or 'numeric'.
+Extent object (or object from which an \code{\link[raster]{extent}} object can be extracted/created)
+representing a rectangular geographical area on the map.}
 
 \item{position}{'character'.
 Position of the button on the web map.

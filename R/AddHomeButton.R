@@ -6,10 +6,9 @@
 #'
 #' @param map '\link[leaflet]{leaflet}'.
 #'   Map widget object
-#' @param extent 'numeric'.
-#'   Vector of length 4 representing a rectangular geographical area on the map.
-#'   The order of the bounds is the minimum and maximum longitude,
-#'   followed by the minimum and maximum latitude, in decimal degrees.
+#' @param extent 'Raster*', 'Spatial*', 'Extent', 'matrix', or 'numeric'.
+#'   Extent object (or object from which an \code{\link[raster]{extent}} object can be extracted/created)
+#'   representing a rectangular geographical area on the map.
 #' @param position 'character'.
 #'   Position of the button on the web map.
 #'   Possible values are \code{"topleft"}, \code{"topright"}, \code{"bottomleft"}, and \code{"bottomright"}.
@@ -42,13 +41,15 @@ AddHomeButton <- function(map, extent, position="topleft") {
 
   # check arguments
   checkmate::assertClass(map, c("leaflet", "htmlwidget"))
-  checkmate::assertNumeric(extent, finite=TRUE, any.missing=FALSE, len=4)
   checkmate::assertChoice(position, c("topleft", "topright", "bottomleft", "bottomright"))
+
+  # extract/create extent object
+  e <- raster::extent(extent)
 
   # create button
   js <- sprintf("function(btn, map) {
                    map.fitBounds([[%f, %f],[%f, %f]]);
-                 }", extent[3], extent[1], extent[4], extent[2])
+                 }", e[3], e[1], e[4], e[2])
   button <- leaflet::easyButton(icon="fa-home",
                                 title="View Original Extent",
                                 onClick=htmlwidgets::JS(js),
