@@ -6,9 +6,11 @@
 #'
 #' @param map '\link[leaflet]{leaflet}'.
 #'   Map widget object
-#' @param extent 'Raster*', 'Spatial*', 'Extent', 'matrix', or 'numeric'.
+#' @param extent 'Spatial*', 'Raster*', 'Extent', 'matrix', or 'numeric'.
 #'   Extent object (or object from which an \code{\link[raster]{extent}} object can be extracted/created)
 #'   representing a rectangular geographical area on the map.
+#'   The extent must be specified in the coordinate reference system (CRS) of the web map,
+#'   usually in latitude and longitude using WGS 84 (also known as \href{https://epsg.io/4326}{EPSG:4326}).
 #' @param position 'character'.
 #'   Position of the button on the web map.
 #'   Possible values are \code{"topleft"}, \code{"topright"}, \code{"bottomleft"}, and \code{"bottomright"}.
