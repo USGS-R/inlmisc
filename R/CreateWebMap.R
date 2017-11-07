@@ -66,47 +66,13 @@ CreateWebMap <- function(..., collapsed=TRUE) {
                                 options=opt, layers="0")
   }
 
-  # add control feature
+  # add basemap control feature
   opt <- leaflet::layersControlOptions(collapsed=collapsed)
   map <- leaflet::addLayersControl(map, position="topright",
                                    baseGroups=names(basemap), options=opt)
 
   # add scale bar
   map <- leaflet::addScaleBar(map, position="bottomleft")
-
-  # add mouse coordinates and zoom level;
-  # derived from mapview::addMouseCoordinates function, accessed on 2017-07-17.
-  lab <- paste("' longitude: ' + (e.latlng.lng).toFixed(5) +",
-               "' | latitude: ' + (e.latlng.lat).toFixed(5) +",
-               "' | zoom: ' + map.getZoom() + ' '")
-  js <- sprintf("function(el, x, data) {
-                   var map = this;
-                   function addElement () {
-                     var newDiv = $(document.createElement('div'));
-                     $(el).append(newDiv);
-                     newDiv.addClass('lnlt');
-                     newDiv.css({
-                       'position': 'relative',
-                       'bottomleft':  '0px',
-                       'background-color': 'rgba(255, 255, 255, 0.7)',
-                       'box-shadow': '0 0 2px #bbb',
-                       'background-clip': 'padding-box',
-                       'margin': '0',
-                       'text-align': 'center',
-                       'color': '#333',
-                       'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',
-                     });
-                     return newDiv;
-                   }
-                   var lnlt = $(el).find('.lnlt');
-                   if(!lnlt.length) {
-                     lnlt = addElement();
-                     map.on('mousemove', function (e) {
-                       lnlt.text(%s);
-                     })
-                   };
-                 }", lab)
-  map <- htmlwidgets::onRender(map, gsub(" +", " ", js))
 
   # return html widget
   return(map)

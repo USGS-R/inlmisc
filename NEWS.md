@@ -1,7 +1,8 @@
 # inlmisc 0.3.5.9000
 
-- Add `AddClusterButton` function, used to add a button on a web map that
-  toggles marker clusters between 'frozen' and 'unfrozen' states.
+- In `CreateWebMap` function, remove coordinates and zoom level information from top of map.
+
+- Add `AddHomeButton` and `AddClusterButton` functions, used to add miscellaneous web map buttons.
 
 - In `FindOptimalSubset` function, allow integer chromosomes to be specified for the `suggestions` argument.
 
