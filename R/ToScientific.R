@@ -93,10 +93,10 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   # plotmath expressions
   } else if (type == "plotmath") {
     FUN <- function(i) {
-      if (is.na(x[i])) {
-        return(substitute(X, list(X=na)))
-      } else if (is.zero[i]) {
+      if (is.zero[i]) {
         return(quote(0))
+      } else if (is.na(x[i])) {
+        return(substitute(X, list(X=na)))
       } else if (!is.null(scipen) && is.fixed[i]) {
         return(substitute(X, list(X=s.fixed[i])))
       } else {

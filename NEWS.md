@@ -1,5 +1,7 @@
 # inlmisc 0.3.5.9000
 
+- In `ToScientific` function, fix bug that formated `0` as `NA` when `type = "plotmath"`.
+
 - In `CreateWebMap` function, remove coordinates and zoom level information from top of map.
 
 - Add `AddHomeButton` and `AddClusterButton` functions, used to add miscellaneous web map buttons.

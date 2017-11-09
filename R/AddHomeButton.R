@@ -17,7 +17,7 @@
 #' @param clusterId 'character'.
 #'   Identification for the marker cluster layer.
 #'
-#' @return Used for the side-effect of a button placed on the web map.
+#' @return Used for the side-effect of a button placed on a web map.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

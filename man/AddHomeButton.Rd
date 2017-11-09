@@ -27,7 +27,7 @@ Possible values are \code{"topleft"}, \code{"topright"}, \code{"bottomleft"}, an
 Identification for the marker cluster layer.}
 }
 \value{
-Used for the side-effect of a button placed on the web map.
+Used for the side-effect of a button placed on a web map.
 }
 \description{
 These functions add buttons on a web map that control miscellaneous view options.
