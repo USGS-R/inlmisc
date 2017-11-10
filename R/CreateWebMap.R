@@ -5,8 +5,13 @@
 #' Information about the content of these base maps can be found within the
 #' \href{https://viewer.nationalmap.gov/help/3.0\%20TNM\%20Base\%20Maps.htm}{TNM Base Maps} document.
 #'
+#' @param maps 'character'.
+#'   Vector of TNM base maps to include in the web map.
+#'   Possible maps include \code{"Topo"}, \code{"Imagery"},
+#'   \code{"Imagery Topo"}, \code{"Hydrography"}, and \code{"Shaded Relief"}.
+#'   All base maps are included by default.
 #' @param ...
-#'   Leaflet options to be passed to the \code{\link[leaflet]{leafletOptions}} function.
+#'   Arguments to be passed to the \code{\link[leaflet]{leaflet}} function.
 #' @param collapsed 'logical'.
 #'   If true, the layers control will be rendered as an icon that expands when hovered over.
 #'
@@ -38,7 +43,7 @@
 #' map
 #'
 
-CreateWebMap <- function(..., collapsed=TRUE) {
+CreateWebMap <- function(maps, ..., collapsed=TRUE) {
 
   checkmate::assertFlag(collapsed)
 
@@ -48,9 +53,13 @@ CreateWebMap <- function(..., collapsed=TRUE) {
                "Imagery Topo"  = "USGSImageryTopo",
                "Hydrography"   = "USGSHydroCached",
                "Shaded Relief" = "USGSShadedReliefOnly")
+  if (!missing(maps)) {
+    checkmate::assertSubset(maps, names(basemap), empty.ok=FALSE)
+    basemap <- basemap[maps]
+  }
 
   # initialize map widget
-  map <- leaflet::leaflet(options=leaflet::leafletOptions(...))
+  map <- leaflet::leaflet(...)
 
   # specify attribution
   att <- paste("<a href='https://www.usgs.gov/'>U.S. Geological Survey</a> |",
@@ -69,13 +78,15 @@ CreateWebMap <- function(..., collapsed=TRUE) {
                                 options=opt, layers="0")
   }
 
-  # add basemap control feature
-  opt <- leaflet::layersControlOptions(collapsed=collapsed)
-  map <- leaflet::addLayersControl(map, position="topright",
-                                   baseGroups=names(basemap), options=opt)
-
   # add scale bar
   map <- leaflet::addScaleBar(map, position="bottomleft")
+
+  # add basemap control feature
+  if (length(basemap) > 1) {
+    opt <- leaflet::layersControlOptions(collapsed=collapsed)
+    map <- leaflet::addLayersControl(map, position="topright",
+                                     baseGroups=names(basemap), options=opt)
+  }
 
   # return html widget
   return(map)

@@ -28,7 +28,7 @@
 #' @export
 #'
 #' @examples
-#' map <- CreateWebMap()
+#' map <- CreateWebMap("Topo")
 #' d <- maps::us.cities
 #' opt <- leaflet::markerClusterOptions(showCoverageOnHover = FALSE)
 #' id <- "cities_cluster"

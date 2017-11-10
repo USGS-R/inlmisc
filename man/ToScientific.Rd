@@ -5,7 +5,8 @@
 \title{Format for Scientific Notation}
 \usage{
 ToScientific(x, digits = NULL, type = c("latex", "plotmath"),
-  na = as.character(NA), delimiter = "$", scipen = NULL, ...)
+  na = as.character(NA), delimiter = "$", scipen = NULL, big.mark = ",",
+  ...)
 }
 \arguments{
 \item{x}{'numeric'.
@@ -31,6 +32,10 @@ Positive values bias towards fixed and negative towards scientific notation:
 fixed notation will be preferred unless it is more than \code{scipen} digits wider.
 By default, all numbers, with the exception of zero, are formatted in scientific notation.}
 
+\item{big.mark}{'character'.
+Mark inserted between every big interval before the decimal point.
+By default, commas are placed every 3 decimal places for numbers larger than 999.}
+
 \item{...}{Arguments passed to the \code{\link{formatC}} function.
 Only applies to fixed formatted values that are not equal to zero.}
 }
@@ -54,7 +59,7 @@ ToScientific(x, digits = 2L, scipen = 0L)
 x <- exp(log(10) * 1:6)
 i <- seq_along(x)
 plot(i, i, type = "n", xaxt = "n", yaxt = "n", ann = FALSE)
-lab <- ToScientific(x, 0L, type = "plotmath", scipen = 0L, big.mark = ",")
+lab <- ToScientific(x, 0L, type = "plotmath", scipen = 0L)
 axis(1, i, labels = lab)
 axis(2, i, labels = lab)
 

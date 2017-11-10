@@ -35,7 +35,7 @@ The \code{AddHomeButton} function sets the map view to a user specified geograph
 And the \code{AddClusterButton} function toggles marker clusters between frozen and unfrozen states.
 }
 \examples{
-map <- CreateWebMap()
+map <- CreateWebMap("Topo")
 d <- maps::us.cities
 opt <- leaflet::markerClusterOptions(showCoverageOnHover = FALSE)
 id <- "cities_cluster"
