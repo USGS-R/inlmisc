@@ -106,10 +106,8 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
 
   if (is.logical(labels) && labels) {
     labels <- if (is.null(at)) graphics::axTicks(1) else at
-    if (scientific)
-      labels <- ToScientific(labels, type="plotmath")
-    else
-      labels <- formatC(labels, big.mark=",")
+    scipen <- if (scientific) NULL else getOption("scipen", default=0L)
+    labels <- ToScientific(labels, type="plotmath", scipen=scipen)
   }
 
   graphics::axis(1, at=at, labels=labels, lwd=-1, lwd.ticks=-1,

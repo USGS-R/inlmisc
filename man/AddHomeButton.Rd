@@ -27,7 +27,7 @@ Possible values are \code{"topleft"}, \code{"topright"}, \code{"bottomleft"}, an
 Identification for the marker cluster layer.}
 }
 \value{
-Used for the side-effect of a button placed on the web map.
+Used for the side-effect of a button placed on a web map.
 }
 \description{
 These functions add buttons on a web map that control miscellaneous view options.
@@ -35,7 +35,7 @@ The \code{AddHomeButton} function sets the map view to a user specified geograph
 And the \code{AddClusterButton} function toggles marker clusters between frozen and unfrozen states.
 }
 \examples{
-map <- CreateWebMap()
+map <- CreateWebMap("Topo")
 d <- maps::us.cities
 opt <- leaflet::markerClusterOptions(showCoverageOnHover = FALSE)
 id <- "cities_cluster"

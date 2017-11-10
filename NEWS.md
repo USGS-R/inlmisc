@@ -1,10 +1,23 @@
 # inlmisc 0.3.5.9000
 
+- In `CreateWebMap` function, pass `...` arguments to `leaflet::leaflet` function,
+  these arguments were previously passed to the `leaflet::leafletOptions` function.
+
+- In `CreateWebMap` function, add `maps` argument to specify which base maps to include.
+
+- In `ToScientific` function, add `big.mark` argument with default value of `","`.
+
+- In `AddColorKey`, use *m x 10^n* format for tick labels written in scientific notation.
+
+- In `ToScientific` function, fix bug that formated `0` as `NA` when `type = "plotmath"`.
+
 - In `CreateWebMap` function, remove coordinates and zoom level information from top of map.
 
 - Add `AddHomeButton` and `AddClusterButton` functions, used to add miscellaneous web map buttons.
 
 - In `FindOptimalSubset` function, allow integer chromosomes to be specified for the `suggestions` argument.
+
+- Add additional argument checks using **checkmate** package.
 
 # inlmisc 0.3.5
 

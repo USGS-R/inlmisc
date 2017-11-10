@@ -4,10 +4,16 @@
 \alias{CreateWebMap}
 \title{Create a Web Map Using The National Map Services}
 \usage{
-CreateWebMap(..., collapsed = TRUE)
+CreateWebMap(maps, ..., collapsed = TRUE)
 }
 \arguments{
-\item{...}{Leaflet options to be passed to the \code{\link[leaflet]{leafletOptions}} function.}
+\item{maps}{'character'.
+Vector of TNM base maps to include in the web map.
+Possible maps include \code{"Topo"}, \code{"Imagery"},
+\code{"Imagery Topo"}, \code{"Hydrography"}, and \code{"Shaded Relief"}.
+All base maps are included by default.}
+
+\item{...}{Arguments to be passed to the \code{\link[leaflet]{leaflet}} function.}
 
 \item{collapsed}{'logical'.
 If true, the layers control will be rendered as an icon that expands when hovered over.}
