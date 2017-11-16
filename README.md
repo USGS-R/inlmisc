@@ -27,7 +27,7 @@ Or use **devtools** to install the development version from GitHub.
 devtools::install_github("USGS-R/inlmisc", dependencies = TRUE)
 ```
 
-## Bugs
+## Contact
 
 Please consider reporting bugs and asking questions on the [Issues page](https://github.com/USGS-R/inlmisc/issues).
 

@@ -301,7 +301,7 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
   # install packages from github
   if (any(!is_on_repos) && github && requireNamespace("githubinstall", quietly=TRUE))
     githubinstall::gh_install_packages(pkgs$Package[!is_on_repos],
-                                       quiet=quiet, lib=lib[1])
+                                       quiet=quiet, lib=lib[1], threads=parallel)
 
   # warn about packages that could not be installed
   if (any(is <- !.IsPackageInstalled(pkgs$Package, lib))) {
