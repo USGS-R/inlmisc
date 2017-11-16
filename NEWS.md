@@ -1,5 +1,7 @@
 # inlmisc 0.3.5.9000
 
+- In `RecreateLibrary` function, add `parallel` argument to install packages from source using parallel processes.
+
 - In `CreateWebMap` function, pass `...` arguments to `leaflet::leaflet` function,
   these arguments were previously passed to the `leaflet::leafletOptions` function.
 

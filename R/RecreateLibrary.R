@@ -48,6 +48,9 @@
 #'   located at \href{https://github.com/twitter/AnomalyDetection}{twitter/AnomalyDetection}.
 #' @param quiet 'logical'.
 #'   If true, reduce the amount of output.
+#' @param parallel 'logical' or 'integer'.
+#'   Whether to use parallel processes for a parallel install of more than one source package.
+#'   This argument can also be used to specify the number of cores to employ.
 #' @param pkg 'character'.
 #'   One or more names of packages located under \code{lib}.
 #'   Only packages specified in \code{pkg}, and the packages that \code{pkg} depend on/link to/import/suggest,
@@ -142,7 +145,13 @@
 RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
                             repos=getOption("repos"), snapshot=FALSE,
                             local=NULL, versions=FALSE, github=FALSE,
-                            quiet=FALSE) {
+                            parallel=TRUE, quiet=FALSE) {
+
+  checkmate::qassert(parallel, c("B1", "X1[0,)"))
+
+  # set number of parallel process
+  if (is.logical(parallel))
+    parallel <- if (parallel) max(1L, parallel::detectCores() - 1L) else 1L
 
   # set environment variable for certificates path
   if (.Platform$OS.type == "windows" && Sys.getenv("CURL_CA_BUNDLE") == "") {
@@ -258,7 +267,7 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
       path <- path[!duplicated(nam) & nam %in% pkgs$Package]
     }
     if (length(path) > 0) {
-      utils::install.packages(path, lib[1], repos=NULL, quiet=quiet)
+      utils::install.packages(path, lib[1], repos=NULL, Ncpus=parallel, quiet=quiet)
 
       # filter out packages that were installed from local files
       pkgs <- pkgs[!.IsPackageInstalled(pkgs$Package, lib), , drop=FALSE]
@@ -285,7 +294,7 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
       }
     } else {
       utils::install.packages(pkgs$Package[is_on_repos], lib[1], repos=repos,
-                              type=type, quiet=quiet)
+                              type=type, Ncpus=parallel, quiet=quiet)
     }
   }
 
