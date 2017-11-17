@@ -111,6 +111,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
   }
 
   # TODO(jcf): https://joelgranados.com/2012/05/04/r-create-a-plot-with-non-overlapping-labels/
+  # n <- nchar(gsub("%|\\^", "", as.character(labels)))
 
   graphics::axis(1, at=at, labels=labels, lwd=-1, lwd.ticks=-1,
                  padj=-0.3, mgp=c(3, 0.1, 0), cex.axis=0.7)

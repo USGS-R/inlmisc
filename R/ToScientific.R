@@ -73,6 +73,7 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   n[is.num] <- floor(log(abs(x[is.num]), 10))
   m[is.num] <- x[is.num] / 10^n[is.num]
   if (is.null(digits)) digits <- format.info(m[is.num])[2]
+  m[is.num] <- round(m[is.num], digits)
 
   # fixed notation
   if (!is.null(scipen)) {
@@ -84,9 +85,8 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   # latex markup
   if (type == "latex") {
     s <- rep(na, length(x))
-    mantissa <- sprintf("%.*f", digits, trunc(m[is.num] * 10^digits) / 10^digits)
-    s[is.num] <- sprintf("%s%s \\times 10^{%d}%s",
-                         delimiter, mantissa, n[is.num], delimiter)
+    s[is.num] <- sprintf("%s%.*f \\times 10^{%d}%s",
+                         delimiter, digits, m[is.num], n[is.num], delimiter)
     s[is.zero] <- "0"
     if (!is.null(scipen)) s[is.fixed] <- s.fixed[is.fixed]
 
@@ -100,8 +100,7 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
       } else if (!is.null(scipen) && is.fixed[i]) {
         return(substitute(X, list(X=s.fixed[i])))
       } else {
-        mantissa <- round(m[i], digits)
-        return(substitute(M %*% 10^N, list(M=mantissa, N=n[i])))
+        return(substitute(M%*%10^N, list(M=m[i], N=n[i])))
       }
     }
     s <- lapply(seq_along(x), FUN)
