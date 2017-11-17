@@ -19,7 +19,7 @@
 #'   The points at which tick-marks and labels are to be drawn,
 #'   only applicable for continuous data.
 #'   The tick-marks will be located at the color breaks if the length of \code{at} is greater than or equal to one minus the length of \code{breaks}.
-#' @param labels 'logical' or 'character'.
+#' @param labels 'logical', 'character', or 'expression'.
 #'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
 #'   or a character or expression vector of labels to be placed at the tickpoints.
 #' @param scientific 'logical'.
@@ -109,6 +109,8 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
     scipen <- if (scientific) NULL else getOption("scipen", default=0L)
     labels <- ToScientific(labels, type="plotmath", scipen=scipen)
   }
+
+  # TODO(jcf): https://joelgranados.com/2012/05/04/r-create-a-plot-with-non-overlapping-labels/
 
   graphics::axis(1, at=at, labels=labels, lwd=-1, lwd.ticks=-1,
                  padj=-0.3, mgp=c(3, 0.1, 0), cex.axis=0.7)

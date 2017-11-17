@@ -30,7 +30,7 @@ The points at which tick-marks and labels are to be drawn,
 only applicable for continuous data.
 The tick-marks will be located at the color breaks if the length of \code{at} is greater than or equal to one minus the length of \code{breaks}.}
 
-\item{labels}{'logical' or 'character'.
+\item{labels}{'logical', 'character', or 'expression'.
 Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
 or a character or expression vector of labels to be placed at the tickpoints.}
 

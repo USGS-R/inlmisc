@@ -29,10 +29,6 @@
 #' @return For \code{type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
 #'   And for \code{type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
 #'
-#' @note As a workaround for \href{https://www.section508.gov}{Section 508} compliance,
-#'   the letter "x" is used as the times symbol in plotmath expressions---rather
-#'   than the noncompliant (but better looking) times symbol produced by the \code{"\%*\%"} syntax.
-#'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
 #' @keywords utilities
@@ -77,7 +73,6 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   n[is.num] <- floor(log(abs(x[is.num]), 10))
   m[is.num] <- x[is.num] / 10^n[is.num]
   if (is.null(digits)) digits <- format.info(m[is.num])[2]
-  m[is.num] <- sprintf("%0.*f", digits, m[is.num])
 
   # fixed notation
   if (!is.null(scipen)) {
@@ -89,8 +84,9 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   # latex markup
   if (type == "latex") {
     s <- rep(na, length(x))
+    mantissa <- sprintf("%.*f", digits, trunc(m[is.num] * 10^digits) / 10^digits)
     s[is.num] <- sprintf("%s%s \\times 10^{%d}%s",
-                         delimiter, m[is.num], n[is.num], delimiter)
+                         delimiter, mantissa, n[is.num], delimiter)
     s[is.zero] <- "0"
     if (!is.null(scipen)) s[is.fixed] <- s.fixed[is.fixed]
 
@@ -104,7 +100,8 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
       } else if (!is.null(scipen) && is.fixed[i]) {
         return(substitute(X, list(X=s.fixed[i])))
       } else {
-        return(substitute(paste(M, " x ", 10^N), list(M=m[i], N=n[i])))
+        mantissa <- round(m[i], digits)
+        return(substitute(M %*% 10^N, list(M=mantissa, N=n[i])))
       }
     }
     s <- lapply(seq_along(x), FUN)

@@ -46,11 +46,6 @@ For \code{type = "latex"}, returns a 'character' vector of the same length as ar
 \description{
 This function formats numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.
 }
-\note{
-As a workaround for \href{https://www.section508.gov}{Section 508} compliance,
-  the letter "x" is used as the times symbol in plotmath expressions---rather
-  than the noncompliant (but better looking) times symbol produced by the \code{"\%*\%"} syntax.
-}
 \examples{
 x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
 ToScientific(x, digits = 5L, na = "---")
