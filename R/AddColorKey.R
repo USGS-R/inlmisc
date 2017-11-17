@@ -19,12 +19,12 @@
 #'   The points at which tick-marks and labels are to be drawn,
 #'   only applicable for continuous data.
 #'   The tick-marks will be located at the color breaks if the length of \code{at} is greater than or equal to one minus the length of \code{breaks}.
-#' @param labels 'logical', 'character', or 'expression'.
+#' @param labels 'logical', 'character', 'expression', or 'numeric'.
 #'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
 #'   or a character or expression vector of labels to be placed at the tickpoints.
-#' @param scientific 'logical'.
-#'   Indicates if axes labels should be formatted for scientific notation,
-#'   see \code{\link{ToScientific}} for details.
+#' @param scientific 'logical' or 'integer'.
+#'   Indicates if axes tick-mark labels should be formatted for scientific notation,
+#'   see \code{scipen} argument in the \code{\link{ToScientific}} function for details.
 #' @param explanation 'character'.
 #'   Label that describes the data values.
 #' @param padx 'numeric'.
@@ -42,11 +42,19 @@
 #'
 #' @examples
 #' dev.new(width = 7, height = 2)
-#'
-#' AddColorKey(is.categorical = FALSE, breaks = 0:10, scientific = TRUE,
-#'             explanation = "Example description for data variables in meters.")
+#' txt <- "Example description for data variables in units of measurement."
+#' AddColorKey(is.categorical = FALSE, breaks = 0:10, explanation = txt)
 #' AddColorKey(is.categorical = FALSE, breaks = 0:10, at = pretty(0:10))
-#' AddColorKey(is.categorical = FALSE, breaks = seq(0.5, 10.5, by = 1), at = 1:10)
+#' AddColorKey(is.categorical = FALSE, breaks = c(0, 1, 2, 4, 8, 16))
+#'
+#' x <- c(pi * 10^(-5:5))
+#' breaks <- seq_along(x)
+#' AddColorKey(is.categorical = FALSE, breaks = breaks, labels = formatC(x))
+#' is <- as.logical(seq_along(x) %% 2)
+#' AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
+#'             labels = x[is], scientific = TRUE)
+#' AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
+#'             labels = x[is], scientific = FALSE)
 #'
 #' AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
 #' AddColorKey(is.categorical = TRUE, col = terrain.colors(5))
@@ -55,7 +63,8 @@
 #'
 
 AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
-                        scientific=FALSE, explanation=NULL, padx=0.2) {
+                        scientific=getOption("scipen", 0L), explanation=NULL,
+                        padx=0.2) {
 
   if (!missing(mai)) {
     mai[2] <- mai[2] + padx
@@ -104,20 +113,32 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
     graphics::box(lwd=lwd)
   }
 
-  if (is.logical(labels) && labels) {
-    labels <- if (is.null(at)) graphics::axTicks(1) else at
-    scipen <- if (scientific) NULL else getOption("scipen", default=0L)
-    labels <- ToScientific(labels, type="plotmath", scipen=scipen)
-  }
-
-  # TODO(jcf): https://joelgranados.com/2012/05/04/r-create-a-plot-with-non-overlapping-labels/
-  # n <- nchar(gsub("%|\\^", "", as.character(labels)))
-
-  graphics::axis(1, at=at, labels=labels, lwd=-1, lwd.ticks=-1,
-                 padj=-0.3, mgp=c(3, 0.1, 0), cex.axis=0.7)
-
   if (!is.null(explanation))
     graphics::mtext(explanation, side=3, line=0.1, padj=0, adj=0, cex=0.7)
+
+  if (is.logical(labels)) {
+    if (labels)
+      labels <- if (is.null(at)) graphics::axTicks(1) else at
+    else
+      return(invisible(NULL))
+  }
+
+  if (is.numeric(labels)) {
+    if (is.logical(scientific)) {
+      scipen <- NULL
+    } else {
+      scipen <- as.integer(scientific)
+      scientific <- TRUE
+    }
+    if (scientific) {
+      labels <- ToScientific(labels, type="plotmath", scipen=scipen)
+    } else {
+      fmt <- ifelse(is.integer(labels), "d", "f")
+      labels <- formatC(labels, format=fmt, big.mark=",")
+    }
+  }
+
+  graphics::axis(1, at=at, labels=labels, lwd=-1, lwd.ticks=-1, padj=0, cex.axis=0.7, mgp=c(3, 0.1, 0))
 
   invisible()
 }
