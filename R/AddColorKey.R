@@ -18,13 +18,16 @@
 #' @param at 'numeric'.
 #'   The points at which tick-marks and labels are to be drawn,
 #'   only applicable for continuous data.
-#'   The tick-marks will be located at the color breaks if the length of \code{at} is greater than or equal to one minus the length of \code{breaks}.
+#'   The tick marks will be located at the color breaks if the length of \code{at} is
+#'   greater than or equal to one minus the length of \code{breaks}.
+#'   Note that tick-mark labels are omitted where they would abut or overlap previously drawn labels
+#'   (labels are drawn left to right).
 #' @param labels 'logical', 'character', 'expression', or 'numeric'.
-#'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
-#'   or a character or expression vector of labels to be placed at the tickpoints.
+#'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tick marks,
+#'   or a character or expression vector of labels to be placed at the tick points.
 #' @param scientific 'logical' or 'integer'.
-#'   Indicates if axes tick-mark labels should be formatted for scientific notation,
-#'   see \code{scipen} argument in the \code{\link{ToScientific}} function for details.
+#'   Whether axes tick-mark labels should be formatted using scientific notation.
+#'   Or an integer penalty, see \code{\link{option}["scipen"]} for details.
 #' @param explanation 'character'.
 #'   Label that describes the data values.
 #' @param padx 'numeric'.
@@ -42,22 +45,26 @@
 #'
 #' @examples
 #' dev.new(width = 7, height = 2)
-#' txt <- "Example description for data variables in units of measurement."
-#' AddColorKey(is.categorical = FALSE, breaks = 0:10, explanation = txt)
+#' AddColorKey(is.categorical = FALSE, breaks = 0:10,
+#'             explanation = "Example description of data variable.")
+#'
 #' AddColorKey(is.categorical = FALSE, breaks = 0:10, at = pretty(0:10))
+#'
 #' AddColorKey(is.categorical = FALSE, breaks = c(0, 1, 2, 4, 8, 16))
 #'
-#' x <- c(pi * 10^(-5:5))
-#' breaks <- seq_along(x)
+#' x <- c(pi * 10^(-5:5)); breaks <- seq_along(x)
 #' AddColorKey(is.categorical = FALSE, breaks = breaks, labels = formatC(x))
-#' is <- as.logical(seq_along(x) %% 2)
+#'
+#' is <- as.logical(breaks %% 2)
 #' AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
 #'             labels = x[is], scientific = TRUE)
+#'
 #' AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
 #'             labels = x[is], scientific = FALSE)
 #'
 #' AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
-#' AddColorKey(is.categorical = TRUE, col = terrain.colors(5))
+#'
+#' AddColorKey(is.categorical = TRUE, col = grDevices::terrain.colors(5))
 #'
 #' dev.off()
 #'
@@ -82,11 +89,14 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
     stop("missing breaks argument for continous data")
   }
 
-  if (missing(col)) col <- grDevices::rainbow(length(breaks) - 1L, start=0.0, end=0.8)
+  if (missing(col))
+    col <- grDevices::rainbow(length(breaks) - 1L, start=0.0, end=0.8)
 
   if (is.null(at)) at <- breaks
 
+  cex <- 0.7
   lwd <- 0.5
+
   xlim <- range(breaks)
   plot(NA, type="n", xlim=xlim, ylim=c(0, 1), xaxs="i", yaxs="i", bty="n",
        xaxt="n", yaxt="n", xlab="", ylab="")
@@ -101,6 +111,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
     dx <- (diff(xlim) / pin[1]) * bw / 2
     x <- seq_along(col)
     graphics::rect(xleft=x - dx, ybottom=0, xright=x + dx, ytop=1, col=col, border=NA)
+
   } else {
     graphics::rect(xleft=head(breaks, -1), ybottom=0, xright=tail(breaks, -1),
                    ytop=1, col=col, border=col, lwd=lwd)
@@ -114,7 +125,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
   }
 
   if (!is.null(explanation))
-    graphics::mtext(explanation, side=3, line=0.1, padj=0, adj=0, cex=0.7)
+    graphics::mtext(explanation, side=3, line=0.1, padj=0, adj=0, cex=cex)
 
   if (is.logical(labels)) {
     if (labels)
@@ -138,7 +149,17 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
     }
   }
 
-  graphics::axis(1, at=at, labels=labels, lwd=-1, lwd.ticks=-1, padj=0, cex.axis=0.7, mgp=c(3, 0.1, 0))
+  # omit labels that abut or overlap
+  is <- rep(TRUE, length(labels))
+  dx <- (graphics::strwidth(labels, cex=cex) + graphics::strwidth("m", cex=cex)) / 2
+  hld <- at[1] + dx[1]
+  for (i in seq_along(is)[-1]) {
+    is[i] <- at[i] - dx[i] > hld
+    if (is[i]) hld <- at[i] + dx[i]
+  }
+
+  graphics::axis(1, at=at[is], labels=labels[is], lwd=-1, lwd.ticks=-1, padj=0,
+                 cex.axis=cex, mgp=c(3, 0.1, 0))
 
   invisible()
 }

@@ -28,15 +28,18 @@ categorical data require a color for each category.}
 \item{at}{'numeric'.
 The points at which tick-marks and labels are to be drawn,
 only applicable for continuous data.
-The tick-marks will be located at the color breaks if the length of \code{at} is greater than or equal to one minus the length of \code{breaks}.}
+The tick marks will be located at the color breaks if the length of \code{at} is
+greater than or equal to one minus the length of \code{breaks}.
+Note that tick-mark labels are omitted where they would abut or overlap previously drawn labels
+(labels are drawn left to right).}
 
 \item{labels}{'logical', 'character', 'expression', or 'numeric'.
-Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
-or a character or expression vector of labels to be placed at the tickpoints.}
+Can either be a logical value specifying whether (numerical) annotations are to be made at the tick marks,
+or a character or expression vector of labels to be placed at the tick points.}
 
 \item{scientific}{'logical' or 'integer'.
-Indicates if axes tick-mark labels should be formatted for scientific notation,
-see \code{scipen} argument in the \code{\link{ToScientific}} function for details.}
+Whether axes tick-mark labels should be formatted using scientific notation.
+Or an integer penalty, see \code{\link{option}["scipen"]} for details.}
 
 \item{explanation}{'character'.
 Label that describes the data values.}
@@ -52,23 +55,26 @@ This function can be used to add a color key to a plot.
 }
 \examples{
 dev.new(width = 7, height = 2)
+AddColorKey(is.categorical = FALSE, breaks = 0:10,
+            explanation = "Example description of data variable.")
 
-txt <- "Example description for data variables in units of measurement."
-AddColorKey(is.categorical = FALSE, breaks = 0:10, explanation = txt)
 AddColorKey(is.categorical = FALSE, breaks = 0:10, at = pretty(0:10))
+
 AddColorKey(is.categorical = FALSE, breaks = c(0, 1, 2, 4, 8, 16))
 
-x <- c(pi * 10^(-5:5))
-breaks <- seq_along(x)
+x <- c(pi * 10^(-5:5)); breaks <- seq_along(x)
 AddColorKey(is.categorical = FALSE, breaks = breaks, labels = formatC(x))
-is <- as.logical(seq_along(x) \%\% 2)
+
+is <- as.logical(breaks \%\% 2)
 AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
             labels = x[is], scientific = TRUE)
+
 AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
             labels = x[is], scientific = FALSE)
 
 AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
-AddColorKey(is.categorical = TRUE, col = terrain.colors(5))
+
+AddColorKey(is.categorical = TRUE, col = grDevices::terrain.colors(5))
 
 dev.off()
 
