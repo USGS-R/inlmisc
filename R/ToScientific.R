@@ -5,7 +5,9 @@
 #' @param x 'numeric'.
 #'   Vector of numbers
 #' @param digits 'integer'.
-#'   Number of digits after the decimal point for the coefficent part of a number in scientific notation.
+#'   Number of digits after the decimal point for the coefficent part
+#'   of the number in scientific notation (also known as the significand).
+#'   The default, \code{NULL}, uses \code{\link{getOption}("digits")}.
 #' @param type 'character'.
 #'   Specify \code{"latex"} to return numbers in the LaTeX markup language (default),
 #'   or \code{"plotmath"} to return as \code{\link[grDevices]{plotmath}} expressions.
