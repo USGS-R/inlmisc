@@ -66,15 +66,15 @@ AddColorKey(is.categorical = FALSE, breaks = 0:1000, at = pretty(0:1000))
 
 AddColorKey(is.categorical = FALSE, breaks = c(0, 1, 2, 4, 8, 16))
 
-x <- c(pi * 10^(-5:5)); breaks <- seq_along(x)
-AddColorKey(is.categorical = FALSE, breaks = breaks, labels = formatC(x))
+breaks <- c(pi * 10^(-5:5))
+AddColorKey(is.categorical = FALSE, breaks = breaks, log = TRUE)
 
-is <- as.logical(breaks \%\% 2)
+is <- as.logical(seq_along(breaks) \%\% 2)
 AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
-            labels = x[is], scientific = TRUE)
+            scientific = TRUE, log = TRUE)
 
 AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
-            labels = x[is], scientific = FALSE)
+            scientific = FALSE, log = TRUE)
 
 AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
 
