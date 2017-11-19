@@ -32,6 +32,8 @@
 #'   Label that describes the data values.
 #' @param padx 'numeric'.
 #'   Inner padding for the left and right margins specified in inches.
+#' @param log 'logical'.
+#'   Whether the axis is to be logarithmic.
 #'
 #' @return Used for the side-effect of a color key drawn on the current graphics device.
 #'
@@ -48,12 +50,14 @@
 #' AddColorKey(is.categorical = FALSE, breaks = 0:10,
 #'             explanation = "Example description of data variable.")
 #'
-#' AddColorKey(is.categorical = FALSE, breaks = 0:10, at = pretty(0:10))
+#' AddColorKey(is.categorical = FALSE, breaks = 0:1000, at = pretty(0:1000))
 #'
 #' AddColorKey(is.categorical = FALSE, breaks = c(0, 1, 2, 4, 8, 16))
 #'
 #' x <- c(pi * 10^(-5:5)); breaks <- seq_along(x)
 #' AddColorKey(is.categorical = FALSE, breaks = breaks, labels = formatC(x))
+#'
+#' AddColorKey(is.categorical = FALSE, breaks = x, log = TRUE)
 #'
 #' is <- as.logical(breaks %% 2)
 #' AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
@@ -71,7 +75,7 @@
 
 AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
                         scientific=getOption("scipen", 0L), explanation=NULL,
-                        padx=0.2) {
+                        padx=0.2, log=FALSE) {
 
   if (!missing(mai)) {
     mai[2] <- mai[2] + padx
@@ -98,8 +102,9 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
   lwd <- 0.5
 
   xlim <- range(breaks)
-  plot(NA, type="n", xlim=xlim, ylim=c(0, 1), xaxs="i", yaxs="i", bty="n",
-       xaxt="n", yaxt="n", xlab="", ylab="")
+  graphics::plot.default(NA, type="n", xlim=xlim, ylim=c(0, 1),
+                         log=ifelse(log, "x", ""), xaxs="i", yaxs="i",
+                         bty="n", xaxt="n", yaxt="n", xlab="", ylab="")
 
   if (is.categorical) {
     bw <- 2 / 6
@@ -150,12 +155,13 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
   }
 
   # omit labels that abut or overlap
-  is <- rep(TRUE, length(labels))
+  x <- if (log) log10(at) else at
+  is <- rep(TRUE, length(x))
   dx <- (graphics::strwidth(labels, cex=cex) + graphics::strwidth("m", cex=cex)) / 2
-  hld <- at[1] + dx[1]
-  for (i in seq_along(is)[-1]) {
-    is[i] <- at[i] - dx[i] > hld
-    if (is[i]) hld <- at[i] + dx[i]
+  hold <- x[1] + dx[1]
+  for (i in seq_along(x)[-1]) {
+    is[i] <- x[i] - dx[i] > hold
+    if (is[i]) hold <- x[i] + dx[i]
   }
 
   graphics::axis(1, at=at[is], labels=labels[is], lwd=-1, lwd.ticks=-1, padj=0,

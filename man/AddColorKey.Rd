@@ -5,7 +5,8 @@
 \title{Add Color Key to Plot}
 \usage{
 AddColorKey(mai, is.categorical, breaks, col, at = NULL, labels = TRUE,
-  scientific = getOption("scipen", 0L), explanation = NULL, padx = 0.2)
+  scientific = getOption("scipen", 0L), explanation = NULL, padx = 0.2,
+  log = FALSE)
 }
 \arguments{
 \item{mai}{'numeric'.
@@ -46,6 +47,9 @@ Label that describes the data values.}
 
 \item{padx}{'numeric'.
 Inner padding for the left and right margins specified in inches.}
+
+\item{log}{'logical'.
+Whether the axis is to be logarithmic.}
 }
 \value{
 Used for the side-effect of a color key drawn on the current graphics device.
@@ -58,7 +62,7 @@ dev.new(width = 7, height = 2)
 AddColorKey(is.categorical = FALSE, breaks = 0:10,
             explanation = "Example description of data variable.")
 
-AddColorKey(is.categorical = FALSE, breaks = 0:10, at = pretty(0:10))
+AddColorKey(is.categorical = FALSE, breaks = 0:1000, at = pretty(0:1000))
 
 AddColorKey(is.categorical = FALSE, breaks = c(0, 1, 2, 4, 8, 16))
 
