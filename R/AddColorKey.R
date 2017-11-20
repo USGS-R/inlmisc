@@ -18,17 +18,22 @@
 #' @param at 'numeric'.
 #'   The points at which tick-marks and labels are to be drawn,
 #'   only applicable for continuous data.
-#'   The tick-marks will be located at the color breaks if the length of \code{at} is greater than or equal to one minus the length of \code{breaks}.
-#' @param labels 'logical' or 'character'.
-#'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
-#'   or a character or expression vector of labels to be placed at the tickpoints.
-#' @param scientific 'logical'.
-#'   Indicates if axes labels should be formatted for scientific notation,
-#'   see \code{\link{ToScientific}} for details.
+#'   The tick marks will be located at the color breaks if the length of \code{at} is
+#'   greater than or equal to one minus the length of \code{breaks}.
+#'   Note that tick-mark labels are omitted where they would abut or overlap previously drawn labels
+#'   (labels are drawn left to right).
+#' @param labels 'logical', 'character', 'expression', or 'numeric'.
+#'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tick marks,
+#'   or a character or expression vector of labels to be placed at the tick points.
+#' @param scientific 'logical' or 'integer'.
+#'   Whether axes tick-mark labels should be formatted using scientific notation.
+#'   Or an integer penalty, see \code{\link{option}["scipen"]} for details.
 #' @param explanation 'character'.
 #'   Label that describes the data values.
 #' @param padx 'numeric'.
 #'   Inner padding for the left and right margins specified in inches.
+#' @param log 'logical'.
+#'   Whether the axis is to be logarithmic.
 #'
 #' @return Used for the side-effect of a color key drawn on the current graphics device.
 #'
@@ -42,20 +47,33 @@
 #'
 #' @examples
 #' dev.new(width = 7, height = 2)
+#' AddColorKey(is.categorical = FALSE, breaks = 0:10,
+#'             explanation = "Example description of data variable.")
 #'
-#' AddColorKey(is.categorical = FALSE, breaks = 0:10, scientific = TRUE,
-#'             explanation = "Example description for data variables in meters.")
-#' AddColorKey(is.categorical = FALSE, breaks = 0:10, at = pretty(0:10))
-#' AddColorKey(is.categorical = FALSE, breaks = seq(0.5, 10.5, by = 1), at = 1:10)
+#' AddColorKey(is.categorical = FALSE, breaks = 0:1000, at = pretty(0:1000))
+#'
+#' AddColorKey(is.categorical = FALSE, breaks = c(0, 1, 2, 4, 8, 16))
+#'
+#' breaks <- c(pi * 10^(-5:5))
+#' AddColorKey(is.categorical = FALSE, breaks = breaks, log = TRUE)
+#'
+#' is <- as.logical(seq_along(breaks) %% 2)
+#' AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
+#'             scientific = TRUE, log = TRUE)
+#'
+#' AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
+#'             scientific = FALSE, log = TRUE)
 #'
 #' AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
-#' AddColorKey(is.categorical = TRUE, col = terrain.colors(5))
+#'
+#' AddColorKey(is.categorical = TRUE, col = grDevices::terrain.colors(5))
 #'
 #' dev.off()
 #'
 
 AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
-                        scientific=FALSE, explanation=NULL, padx=0.2) {
+                        scientific=getOption("scipen", 0L), explanation=NULL,
+                        padx=0.2, log=FALSE) {
 
   if (!missing(mai)) {
     mai[2] <- mai[2] + padx
@@ -73,14 +91,18 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
     stop("missing breaks argument for continous data")
   }
 
-  if (missing(col)) col <- grDevices::rainbow(length(breaks) - 1L, start=0.0, end=0.8)
+  if (missing(col))
+    col <- grDevices::rainbow(length(breaks) - 1L, start=0.0, end=0.8)
 
   if (is.null(at)) at <- breaks
 
+  cex <- 0.7
   lwd <- 0.5
+
   xlim <- range(breaks)
-  plot(NA, type="n", xlim=xlim, ylim=c(0, 1), xaxs="i", yaxs="i", bty="n",
-       xaxt="n", yaxt="n", xlab="", ylab="")
+  graphics::plot.default(NA, type="n", xlim=xlim, ylim=c(0, 1),
+                         log=ifelse(log, "x", ""), xaxs="i", yaxs="i",
+                         bty="n", xaxt="n", yaxt="n", xlab="", ylab="")
 
   if (is.categorical) {
     bw <- 2 / 6
@@ -92,6 +114,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
     dx <- (diff(xlim) / pin[1]) * bw / 2
     x <- seq_along(col)
     graphics::rect(xleft=x - dx, ybottom=0, xright=x + dx, ytop=1, col=col, border=NA)
+
   } else {
     graphics::rect(xleft=head(breaks, -1), ybottom=0, xright=tail(breaks, -1),
                    ytop=1, col=col, border=col, lwd=lwd)
@@ -104,17 +127,46 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
     graphics::box(lwd=lwd)
   }
 
-  if (is.logical(labels) && labels) {
-    labels <- if (is.null(at)) graphics::axTicks(1) else at
-    scipen <- if (scientific) NULL else getOption("scipen", default=0L)
-    labels <- ToScientific(labels, type="plotmath", scipen=scipen)
+  if (!is.null(explanation))
+    graphics::mtext(explanation, side=3, line=0.1, padj=0, adj=0, cex=cex)
+
+  if (is.logical(labels)) {
+    if (labels)
+      labels <- if (is.null(at)) graphics::axTicks(1) else at
+    else
+      return(invisible(NULL))
   }
 
-  graphics::axis(1, at=at, labels=labels, lwd=-1, lwd.ticks=-1,
-                 padj=-0.3, mgp=c(3, 0.1, 0), cex.axis=0.7)
+  if (is.numeric(labels)) {
 
-  if (!is.null(explanation))
-    graphics::mtext(explanation, side=3, line=0.1, padj=0, adj=0, cex=0.7)
+    digits <- if (is.integer(labels)) 0 else format.info(labels)[2]
+
+    if (is.logical(scientific)) {
+      scipen <- NULL
+    } else {
+      scipen <- as.integer(scientific)
+      scientific <- TRUE
+    }
+    if (scientific) {
+      labels <- ToScientific(labels, digits=digits, type="plotmath", scipen=scipen)
+    } else {
+      fmt <- ifelse(is.integer(labels), "d", "fg")
+      labels <- formatC(labels, digits=digits, width=1, format=fmt, big.mark=",")
+    }
+  }
+
+  # omit labels that abut or overlap
+  x <- if (log) log10(at) else at
+  is <- rep(TRUE, length(x))
+  dx <- (graphics::strwidth(labels, cex=cex) + graphics::strwidth("m", cex=cex)) / 2
+  hold <- x[1] + dx[1]
+  for (i in seq_along(x)[-1]) {
+    is[i] <- x[i] - dx[i] > hold
+    if (is[i]) hold <- x[i] + dx[i]
+  }
+
+  graphics::axis(1, at=at[is], labels=labels[is], lwd=-1, lwd.ticks=-1, padj=0,
+                 cex.axis=cex, mgp=c(3, 0.1, 0))
 
   invisible()
 }

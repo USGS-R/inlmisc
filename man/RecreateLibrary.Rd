@@ -7,7 +7,7 @@
 \usage{
 RecreateLibrary(file = "R-packages.tsv", lib = .libPaths()[1],
   repos = getOption("repos"), snapshot = FALSE, local = NULL,
-  versions = FALSE, github = FALSE, quiet = FALSE)
+  versions = FALSE, github = FALSE, parallel = TRUE, quiet = FALSE)
 
 SavePackageDetails(file = "R-packages.tsv", lib = .libPaths(), pkg = NULL)
 }
@@ -58,6 +58,10 @@ Therefore, the user may be prompted with suggested repository names to identify 
 Package vignettes are not built using this option.
 An example of an \R package that is only available on GitHub is \pkg{AnomalyDetection},
 located at \href{https://github.com/twitter/AnomalyDetection}{twitter/AnomalyDetection}.}
+
+\item{parallel}{'logical' or 'integer'.
+Whether to use parallel processes for a parallel install of more than one source package.
+This argument can also be used to specify the number of cores to employ.}
 
 \item{quiet}{'logical'.
 If true, reduce the amount of output.}

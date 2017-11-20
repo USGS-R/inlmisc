@@ -27,14 +27,14 @@ If the source document is \file{.Rnw} or \file{.Rmd} the \code{\link[knitr]{purl
   names like \code{unnamed-chunk-i} where \code{i} is the chunk number.
 }
 \examples{
-path <- system.file("doc", "knitr-intro.Rmd", package = "knitr")
-chunks <- ReadCodeChunks(path)
+file <- system.file("misc", "knitr-markdown.Rmd", package = "inlmisc")
+chunks <- ReadCodeChunks(file)
 
 attr(chunks, "path")
 names(chunks)
-chunks[["show-off"]]
+chunks[["named-chunk-2"]]
 
-eval(parse(text = unlist(chunks[c("show-off", "graphics")])))
+eval(parse(text = unlist(chunks[c("unnamed-chunk-3", "named-chunk-4")])))
 
 }
 \seealso{

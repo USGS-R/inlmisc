@@ -1,0 +1,44 @@
+# A Minimal R Markdown Example
+
+The contents of this document were adapted from one of
+[Yihui Xie](https://yihui.name/)'s wonderful examples.
+
+To convert to a HTML document, run this in R using the
+`knitr::knit2html("knitr-markdown.Rmd")` command.
+
+## Code chunks
+
+Below are some code chunks as examples.
+
+```{r named-chunk-1, results="asis"}
+if (TRUE) cat("_hello_ **markdown**!", "\n")
+```
+
+Normally you do not need any chunk options.
+
+```{r named-chunk-2, collapse=TRUE}
+1+1
+10:1
+rnorm(5)^2
+strsplit("hello, markdown vignettes", "")
+```
+
+Feel free to draw beautiful plots and write math $P(X>x)=\alpha/2$.
+
+```{r}
+n <- 300; set.seed(123)
+x <- rnorm(n)
+y <- rnorm(n)
+```
+
+```{r named-chunk-4}
+par(mar = c(4, 4, 0.1, 0.1))
+plot(x, y, pch = 21, cex = 5 * runif(n), col = "white", bg="gray")
+```
+
+You can use your own CSS file instead of the built-in style in the
+**markdown** package -- just set the option `markdown.HTML.stylesheet`, e.g.
+
+```{r named-chunk-5, eval=FALSE}
+options(markdown.HTML.stylesheet = "path/to/a/custom/style.css")
+```

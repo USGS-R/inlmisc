@@ -5,7 +5,8 @@
 \title{Add Color Key to Plot}
 \usage{
 AddColorKey(mai, is.categorical, breaks, col, at = NULL, labels = TRUE,
-  scientific = FALSE, explanation = NULL, padx = 0.2)
+  scientific = getOption("scipen", 0L), explanation = NULL, padx = 0.2,
+  log = FALSE)
 }
 \arguments{
 \item{mai}{'numeric'.
@@ -28,21 +29,27 @@ categorical data require a color for each category.}
 \item{at}{'numeric'.
 The points at which tick-marks and labels are to be drawn,
 only applicable for continuous data.
-The tick-marks will be located at the color breaks if the length of \code{at} is greater than or equal to one minus the length of \code{breaks}.}
+The tick marks will be located at the color breaks if the length of \code{at} is
+greater than or equal to one minus the length of \code{breaks}.
+Note that tick-mark labels are omitted where they would abut or overlap previously drawn labels
+(labels are drawn left to right).}
 
-\item{labels}{'logical' or 'character'.
-Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
-or a character or expression vector of labels to be placed at the tickpoints.}
+\item{labels}{'logical', 'character', 'expression', or 'numeric'.
+Can either be a logical value specifying whether (numerical) annotations are to be made at the tick marks,
+or a character or expression vector of labels to be placed at the tick points.}
 
-\item{scientific}{'logical'.
-Indicates if axes labels should be formatted for scientific notation,
-see \code{\link{ToScientific}} for details.}
+\item{scientific}{'logical' or 'integer'.
+Whether axes tick-mark labels should be formatted using scientific notation.
+Or an integer penalty, see \code{\link{option}["scipen"]} for details.}
 
 \item{explanation}{'character'.
 Label that describes the data values.}
 
 \item{padx}{'numeric'.
 Inner padding for the left and right margins specified in inches.}
+
+\item{log}{'logical'.
+Whether the axis is to be logarithmic.}
 }
 \value{
 Used for the side-effect of a color key drawn on the current graphics device.
@@ -52,14 +59,26 @@ This function can be used to add a color key to a plot.
 }
 \examples{
 dev.new(width = 7, height = 2)
+AddColorKey(is.categorical = FALSE, breaks = 0:10,
+            explanation = "Example description of data variable.")
 
-AddColorKey(is.categorical = FALSE, breaks = 0:10, scientific = TRUE,
-            explanation = "Example description for data variables in meters.")
-AddColorKey(is.categorical = FALSE, breaks = 0:10, at = pretty(0:10))
-AddColorKey(is.categorical = FALSE, breaks = seq(0.5, 10.5, by = 1), at = 1:10)
+AddColorKey(is.categorical = FALSE, breaks = 0:1000, at = pretty(0:1000))
+
+AddColorKey(is.categorical = FALSE, breaks = c(0, 1, 2, 4, 8, 16))
+
+breaks <- c(pi * 10^(-5:5))
+AddColorKey(is.categorical = FALSE, breaks = breaks, log = TRUE)
+
+is <- as.logical(seq_along(breaks) \%\% 2)
+AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
+            scientific = TRUE, log = TRUE)
+
+AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
+            scientific = FALSE, log = TRUE)
 
 AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
-AddColorKey(is.categorical = TRUE, col = terrain.colors(5))
+
+AddColorKey(is.categorical = TRUE, col = grDevices::terrain.colors(5))
 
 dev.off()
 

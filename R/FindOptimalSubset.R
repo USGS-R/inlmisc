@@ -140,11 +140,10 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100L,
   checkmate::assertInt(seed, null.ok=TRUE)
 
   # set number of islands
-  if (is.logical(parallel)) {
+  if (is.logical(parallel))
     numIslands <- if (parallel) parallel::detectCores() else 4L
-  } else if (is.numeric(parallel)) {
+  else
     numIslands <- parallel
-  }
 
   # calculate number of bits in the binary string representing the chromosome
   nBits <- ceiling(log2(n + 1)) * k
