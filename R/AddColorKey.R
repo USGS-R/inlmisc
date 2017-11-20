@@ -138,6 +138,9 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
   }
 
   if (is.numeric(labels)) {
+
+    digits <- if (is.integer(labels)) 0 else format.info(labels)[2]
+
     if (is.logical(scientific)) {
       scipen <- NULL
     } else {
@@ -145,10 +148,10 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
       scientific <- TRUE
     }
     if (scientific) {
-      labels <- ToScientific(labels, type="plotmath", scipen=scipen)
+      labels <- ToScientific(labels, digits=digits, type="plotmath", scipen=scipen)
     } else {
-      fmt <- ifelse(is.integer(labels), "d", "f")
-      labels <- formatC(labels, format=fmt, big.mark=",")
+      fmt <- ifelse(is.integer(labels), "d", "fg")
+      labels <- formatC(labels, digits=digits, width=1, format=fmt, big.mark=",")
     }
   }
 
