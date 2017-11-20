@@ -1,6 +1,8 @@
 # inlmisc 0.3.5.9000
 
-- In `AddColorKey`, add `log` argument to specify axis to be logarithmic.
+- In `ReadCodeChunks` function, remove dependency on *knitr-intro.Rmd* file in example.
+
+- In `AddColorKey` function, add `log` argument to specify axis to be logarithmic.
 
 - In `RecreateLibrary` function, add `parallel` argument to install packages from source using parallel processes.
 
