@@ -53,7 +53,7 @@ AddHomeButton <- function(map, extent, position="topleft") {
                    map.fitBounds([[%f, %f],[%f, %f]]);
                  }", e[3], e[1], e[4], e[2])
   button <- leaflet::easyButton(icon="fa-home",
-                                title="Reset Default View",
+                                title="Reset Extent",
                                 onClick=htmlwidgets::JS(js),
                                 position=position)
 

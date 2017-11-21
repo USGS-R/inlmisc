@@ -232,7 +232,7 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
                             stringsAsFactors=FALSE)
 
   # filter out packages that are already installed
-  pkgs <- pkgs[!.IsPackageInstalled(pkgs$Package, lib), , drop=FALSE]
+  pkgs <- pkgs[!IsPackageInstalled(pkgs$Package, lib), , drop=FALSE]
   if (nrow(pkgs) == 0) return(invisible(NULL))
 
   # install packages from local files
@@ -270,7 +270,7 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
       utils::install.packages(path, lib[1], repos=NULL, Ncpus=parallel, quiet=quiet)
 
       # filter out packages that were installed from local files
-      pkgs <- pkgs[!.IsPackageInstalled(pkgs$Package, lib), , drop=FALSE]
+      pkgs <- pkgs[!IsPackageInstalled(pkgs$Package, lib), , drop=FALSE]
       if (nrow(pkgs) == 0) return(invisible(NULL))
     }
   }
@@ -284,7 +284,7 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
   if (any(is_on_repos)) {
     if (versions && requireNamespace("devtools", quietly=TRUE)) {
       for (i in which(is_on_repos)) {
-        if (.IsPackageInstalled(pkgs$Package[i], lib)) next
+        if (IsPackageInstalled(pkgs$Package[i], lib)) next
         ans <- try(devtools::install_version(pkgs$Package[i], pkgs$Version[i],
                                              type=type, quiet=quiet), silent=TRUE)
         if (inherits(ans, "try-error")) {
@@ -304,7 +304,7 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
                                        quiet=quiet, lib=lib[1], threads=parallel)
 
   # warn about packages that could not be installed
-  if (any(is <- !.IsPackageInstalled(pkgs$Package, lib))) {
+  if (any(is <- !IsPackageInstalled(pkgs$Package, lib))) {
     msg <- sprintf("The following packages could not be installed:\n %s\n",
                    paste(pkgs$Package[is], collapse=", "))
     warning(msg, call.=FALSE)
@@ -384,20 +384,33 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
   invisible(md5)
 }
 
+
 #' Check whether Package is Installed
+#'
+#' This function checks whether a package(s) is installed under the library tree(s).
 #'
 #' @param x 'character'.
 #'   Vector of package names
 #' @param lib 'character'.
-#'   Vector of library tree(s)
+#'   Vector of library trees
 #'
-#' @return A 'logical' vector the length of \code{x}.
+#' @return A 'logical' vector the length of argument \code{x}.
+#'
+#' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+#'
+#' @keywords internal
+#'
+#' @export
+#'
+#' @examples
+#' IsPackageInstalled(c("inlmisc", "csimlni", "colorspace"))
 #'
 
-.IsPackageInstalled <- function(x, lib) {
+IsPackageInstalled <- function(x, lib=.libPaths()) {
   FUN <- function(i) {system.file(package=i, lib.loc=lib) != ""}
   return(vapply(x, FUN, TRUE))
 }
+
 
 #' Add X.509 Certificate
 #'
