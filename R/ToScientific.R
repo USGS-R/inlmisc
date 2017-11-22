@@ -14,6 +14,8 @@
 #' @param na 'character'.
 #'   String to be used for missing values (\code{NA}).
 #'   By default, no string substitution is made for missing values.
+#' @param delimiter 'character'.
+#'   Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.
 #' @param scipen 'integer'.
 #'   A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 #'   Positive values bias towards fixed and negative towards scientific notation:
@@ -49,7 +51,8 @@
 #'
 
 ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
-                         na=as.character(NA), scipen=NULL, big.mark=",", ...) {
+                         na=as.character(NA), delimiter="$", scipen=NULL,
+                         big.mark=",", ...) {
 
   # check arguments
   checkmate::assertNumeric(x)
@@ -61,11 +64,11 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
     type <- list(...)$lab.type  # included for backward compatibility
   else
     type <- match.arg(type)
-  is.zero <- x == 0
-  x[is.zero] <- NA
+
+  x[is.zero <- x == 0] <- NA
   is.num <- which(is.finite(x))
 
-  # scientific notation: coefficient (m) and exponent (n)
+  # scientific notation
   m <- rep(NA, length(x))
   n <- m
   n[is.num] <- floor(log(abs(x[is.num]), 10))
@@ -83,12 +86,13 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   # latex markup
   if (type == "latex") {
     s <- rep(na, length(x))
-    m[is.num] <- formatC(m[is.num], digits, width=1, format="f", big.mark=",")
-    s[is.num] <- sprintf("$%s \\times 10^{%d}$", m[is.num], n[is.num])
+    m[is.num] <- formatC(m[is.num], digits, width=1, format="f")
+    s[is.num] <- sprintf("%s%s \\times 10^{%d}%s",
+                         delimiter, m[is.num], n[is.num], delimiter)
     s[is.zero] <- "0"
     if (!is.null(scipen)) s[is.fix] <- s.fix[is.fix]
 
-  # plotmath expressions
+  # plotmath expression
   } else if (type == "plotmath") {
 
     FUN <- function(i) {
