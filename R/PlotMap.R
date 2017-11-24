@@ -153,13 +153,9 @@
 #' r[51:100] <- 2L
 #' r[3:6, 1:5] <- 8L
 #' r <- raster::ratify(r)
-#' rat <- raster::levels(r)[[1]]
-#' rat$land.cover <- c("Pine", "Oak", "Meadow")
-#' rat$code <- c(12, 25, 30)
+#' rat <- cbind(raster::levels(r)[[1]], land.cover = c("Pine", "Oak", "Meadow"))
 #' levels(r) <- rat
-#' PlotMap(r, att = "land.cover", col = c("grey", "orange", "purple"))
-#'
-#' PlotMap(r, att = "code")
+#' PlotMap(r)
 #'
 #' m <- t(datasets::volcano)[61:1, ]
 #' x <- seq(from = 6478705, length.out = 87, by = 10)
