@@ -1,5 +1,7 @@
 # inlmisc 0.3.5.9000
 
+- In `PlotMap` function, remove option to map points.
+
 - In `ReadCodeChunks` function, remove dependency on *knitr-intro.Rmd* file in example.
 
 - In `AddColorKey` function, add `log` argument to specify axis to be logarithmic.

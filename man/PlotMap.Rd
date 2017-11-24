@@ -4,8 +4,8 @@
 \alias{PlotMap}
 \title{Plot Method for Maps}
 \usage{
-PlotMap(r, p = NULL, ..., layer = 1, att = NULL, n = NULL,
-  breaks = NULL, xlim = NULL, ylim = NULL, zlim = NULL, asp = NULL,
+PlotMap(r, layer = 1, att = NULL, n = NULL, breaks = NULL,
+  xlim = NULL, ylim = NULL, zlim = NULL, asp = NULL,
   extend.xy = FALSE, extend.z = FALSE, reg.axs = TRUE, dms.tick = FALSE,
   bg.lines = FALSE, bg.image = NULL, bg.image.alpha = 1, pal = NULL,
   col = NULL, max.dev.dim = c(43, 56), labels = NULL, scale.loc = NULL,
@@ -17,12 +17,6 @@ PlotMap(r, p = NULL, ..., layer = 1, att = NULL, n = NULL,
 \arguments{
 \item{r}{'Raster*', 'Spatial*', or 'CRS'.
 An object that can be converted to a raster layer, or coordinate reference system (CRS).}
-
-\item{p}{'SpatialPointsDataFrame'.
-Spatial point data to be plotted.}
-
-\item{...}{Graphics parameters to be passed to \code{\link{AddPoints}}.
-Unused if \code{p = NULL}.}
 
 \item{layer}{'integer'.
 Layer to extract from if \code{r} is of class 'RasterStack/Brick' or 'SpatialGridDataFrame'.}
@@ -67,7 +61,9 @@ If true and \code{r} is projected, the axes tickmarks are specified in degrees, 
 If true, grids or graticules are drawn in back of the raster layer using white lines and a grey background.}
 
 \item{bg.image}{'RasterLayer'.
-An image to drawn in back of the main raster layer \code{r}, image colors derived from vector of gray levels.}
+An image to be drawn in back of the main raster layer \code{r}, image colors are derived from a vector of gray levels.
+Raster values typically represent hill shading based on the slope and aspect of land-surface elevations,
+see \code{\link[raster]{hillShade}} function.}
 
 \item{bg.image.alpha}{'numeric'.
 Opacity of the background image from 0 to 1.}
@@ -84,6 +80,7 @@ Factors require a color for each level.}
 
 \item{max.dev.dim}{'numeric'.
 Vector of length 2 giving the maximum width and height for the graphics device in picas, respectively.
+Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimetre, or 12 points.
 Suggested dimensions for single-column, double-column, and sidetitle figures are
 \code{c(21, 56)}, \code{c(43, 56)}, and \code{c(56, 43)}, respectively.
 This argument is only applicable when the \code{file} argument is specified.}
@@ -109,31 +106,35 @@ Label crediting the base map.}
 
 \item{shade}{'list'.
 If specified, a semi-transparent shade layer is drawn on top of the raster layer.
-This layer is described using a list of arguments supplied to \code{raster::hillShade} function.
-Passed arguments include \code{"angle"} and \code{"direction"}.
+This layer is described using a list of arguments supplied to the
+\code{\link[raster]{hillShade}} function.
+Passed arguments include \code{angle} and \code{direction}.
 Additional arguments also may be passed that control the vertical aspect ratio
-(\code{"z.factor"}) and color opacity (\code{"alpha"}).}
+(\code{z.factor}) and color opacity (\code{alpha}).}
 
 \item{contour.lines}{'list'.
 If specified, contour lines are drawn.
-The contours are described using a list of arguments supplied to \code{contour}.
-Passed arguments include \code{"drawlables"}, \code{"method"}, and \code{"col"}.}
+The contours are described using a list of arguments supplied to the \code{\link[raster]{contour}} function.
+Passed arguments include \code{drawlables}, \code{method}, and \code{col}.}
 
 \item{rivers}{'list'.
 If specified, lines are drawn.
-The lines are described using a list of arguments supplied to the plot method for SpatialLines.
-Passed arguments include \code{"x"}, \code{"col"}, and \code{"lwd"}.}
+The lines are described using a list of arguments supplied to the plot method for
+class '\code{\link[=SpatialLines-class]{SpatialLines}}'.
+Passed arguments include \code{x}, \code{col}, and \code{lwd}.}
 
 \item{lakes}{'list'.
 If specified, polygons are drawn.
-The polygons are described using a list of arguments supplied to the plot method for SpatialPolygons.
-Passed arguments include \code{"x"}, \code{"col"}, \code{"border"}, and \code{"lwd"}.
+The polygons are described using a list of arguments supplied to the plot method for
+class '\code{\link[=SpatialPolygons-class]{SpatialPolygons}}'.
+Passed arguments include \code{x}, \code{col}, \code{border}, and \code{lwd}.
 Bitmap images require a regular grid.}
 
 \item{roads}{'list'.
 If specified, lines are drawn.
-The lines are described using a list of arguments supplied to the plot method for SpatialLines.
-Passed arguments include \code{"x"}, \code{"col"}, and \code{"lwd"}.}
+The lines are described using a list of arguments supplied to the plot method for
+class '\code{\link[=SpatialLines-class]{SpatialLines}}'.
+Passed arguments include \code{x}, \code{col}, and \code{lwd}.}
 
 \item{draw.key}{'logical'.
 If true, a color key should be drawn.}
@@ -155,7 +156,7 @@ Unused if \code{file = NULL}}
 
 \item{useRaster}{'logical'.
 If true, a bitmap raster is used to plot \code{r} instead of using individual polygons for each raster cell.
-If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.
+If \code{UseRaster} is not specified, raster images are used when the \code{\link{getOption}("preferRaster")} is true.
 Unused if \code{simplify = TRUE}.}
 
 \item{simplify}{'numeric'.
@@ -176,7 +177,7 @@ Used for the side-effect of a new plot generated.
   }
 }
 \description{
-This function maps raster and point data.
+This function maps raster data and geographical features.
 A key showing how the colors map to raster values is shown below the map.
 The width and height of the graphics region will be automagically determined in some cases.
 }
@@ -215,6 +216,7 @@ AddGradientLegend(breaks, Pal, at = breaks, title = "Explanation", loc = "toplef
                   inset = c(0.1, 0.1), strip.dim = c(2, 20))
 
 out <- PlotMap(r, dms.tick = TRUE, file = "Rplots1.pdf")
+print(out)
 
 pdf(file = "Rplots2.pdf", width = out$din[1], height = out$din[2])
 PlotMap(r, dms.tick = TRUE)
