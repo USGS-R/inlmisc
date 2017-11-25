@@ -29,6 +29,7 @@
 #'   If true, the spatial limits will be extended to the next tick mark on the axes beyond the grid extent.
 #' @param extend.z 'logical'.
 #'   If true, the raster value limits will be extended to the next tick mark on the color key beyond the measured range.
+#'   Not used if the \code{zlim} argument is specified.
 #' @param reg.axs 'logical'.
 #'   If true, the spatial data range is extended.
 #' @param dms.tick 'logical'.

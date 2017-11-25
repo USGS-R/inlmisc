@@ -49,7 +49,8 @@ otherwise, a calculated value based on axes limits is used.}
 If true, the spatial limits will be extended to the next tick mark on the axes beyond the grid extent.}
 
 \item{extend.z}{'logical'.
-If true, the raster value limits will be extended to the next tick mark on the color key beyond the measured range.}
+If true, the raster value limits will be extended to the next tick mark on the color key beyond the measured range.
+Not used if the \code{zlim} argument is specified.}
 
 \item{reg.axs}{'logical'.
 If true, the spatial data range is extended.}
