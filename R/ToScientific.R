@@ -99,10 +99,8 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   if (type == "latex") {
     s <- rep(na, length(x))
     s[is_zero] <- "0"
-    if (any(is_fix)) {
-      s[is_fix] <- formatC(x[is_fix], digits_fix, width=1, format="f",
-                           big.mark=big.mark)
-    }
+    if (any(is_fix))
+      s[is_fix] <- formatC(x[is_fix], digits_fix, width=1, format="f", big.mark=big.mark)
     if (any(is_sci)) {
       m[is_sci] <- formatC(m[is_sci], digits_sci, width=1, format="f")
       s[is_sci] <- sprintf("%s \\times 10^{%d}", m[is_sci], n[is_sci])
@@ -118,8 +116,8 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
       } else if (is.na(x[i])) {
         return(substitute(X, list(X=na)))
       } else if (is_fix[i]) {
-        v <- formatC(x[i], digits_fix, width=1, format="f",
-                     big.mark=big.mark, drop0trailing=TRUE)
+        v <- formatC(x[i], digits_fix, width=1, format="f", big.mark=big.mark,
+                     drop0trailing=TRUE)
         return(substitute(X, list(X=v)))
       } else {
         v <- round(m[i], digits_sci)
