@@ -14,6 +14,7 @@
 #'   By default, no string substitution is made for missing values.
 #' @param delimiter 'character'.
 #'   Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.
+#'   Does not apply to missing value strings.
 #' @param scipen 'integer'.
 #'   A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 #'   Positive values bias towards fixed and negative towards scientific notation:
@@ -25,7 +26,8 @@
 #' @param ...
 #'   Not used
 #'
-#' @return For \code{type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
+#' @return
+#'   For \code{type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
 #'   And for \code{type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
@@ -60,6 +62,7 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   checkmate::assertString(na, na.ok=TRUE)
   checkmate::assertString(delimiter)
   checkmate::assertInt(scipen, na.ok=TRUE, null.ok=TRUE)
+  checkmate::assertString(big.mark)
 
   if (missing(type) && methods::hasArg("lab.type"))
     type <- list(...)$lab.type  # include for backward compatibility
@@ -68,15 +71,14 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
 
   x <- as.numeric(x)
 
-  is_zero <- x == 0
+  is_zero <- x %in% 0
   x[is_zero] <- NA
 
   is_finite <- is.finite(x)
   if (is.null(scipen)) {
     is_sci <- is.finite(x)
   } else {
-    op <- options(scipen=scipen)
-    on.exit(options(op))
+    op <- options(scipen=scipen); on.exit(options(op))
     is_sci <- grepl("e", formatC(x)) & is.finite(x)
   }
   is_fix <- !is_sci & is_finite
@@ -96,14 +98,17 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   # latex markup
   if (type == "latex") {
     s <- rep(na, length(x))
+    s[is_zero] <- "0"
+    if (any(is_fix)) {
+      s[is_fix] <- formatC(x[is_fix], digits_fix, width=1, format="f",
+                           big.mark=big.mark)
+    }
     if (any(is_sci)) {
       m[is_sci] <- formatC(m[is_sci], digits_sci, width=1, format="f")
-      s[is_sci] <- sprintf("%s%s \\times 10^{%d}%s",
-                           delimiter, m[is_sci], n[is_sci], delimiter)
+      s[is_sci] <- sprintf("%s \\times 10^{%d}", m[is_sci], n[is_sci])
     }
-    s[is_zero] <- "0"
-    if (any(is_fix))
-      s[is_fix] <- formatC(x[is_fix], digits_fix, width=1, format="f", big.mark=",")
+    is <-  is_zero | is_fix | is_sci
+    s[is] <- sprintf("%s%s%s", delimiter, s[is], delimiter)
 
   # plotmath expression
   } else {
@@ -113,7 +118,8 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
       } else if (is.na(x[i])) {
         return(substitute(X, list(X=na)))
       } else if (is_fix[i]) {
-        v <- formatC(x[i], digits_fix, width=1, format="f", big.mark=",", drop0trailing=TRUE)
+        v <- formatC(x[i], digits_fix, width=1, format="f",
+                     big.mark=big.mark, drop0trailing=TRUE)
         return(substitute(X, list(X=v)))
       } else {
         v <- round(m[i], digits_sci)

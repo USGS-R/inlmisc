@@ -24,7 +24,8 @@ String to be used for missing values (\code{NA}).
 By default, no string substitution is made for missing values.}
 
 \item{delimiter}{'character'.
-Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.}
+Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.
+Does not apply to missing value strings.}
 
 \item{scipen}{'integer'.
 A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
