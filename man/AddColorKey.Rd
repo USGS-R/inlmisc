@@ -5,7 +5,7 @@
 \title{Add Color Key to Plot}
 \usage{
 AddColorKey(mai, is.categorical, breaks, col, at = NULL, labels = TRUE,
-  scientific = getOption("scipen", 0L), explanation = NULL, padx = 0.2,
+  scipen = getOption("scipen", 0L), explanation = NULL, padx = 0.2,
   log = FALSE)
 }
 \arguments{
@@ -38,9 +38,11 @@ Note that tick-mark labels are omitted where they would abut or overlap previous
 Can either be a logical value specifying whether (numerical) annotations are to be made at the tick marks,
 or a character or expression vector of labels to be placed at the tick points.}
 
-\item{scientific}{'logical' or 'integer'.
-Whether axes tick-mark labels should be formatted using scientific notation.
-Or an integer penalty, see \code{\link{option}["scipen"]} for details.}
+\item{scipen}{'integer'.
+A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
+Positive values bias towards fixed and negative towards scientific notation:
+fixed notation will be preferred unless it is more than \code{scipen} digits wider.
+Specify \code{NULL} to format all numbers, with the exception of zero, in scientific notation.}
 
 \item{explanation}{'character'.
 Label that describes the data values.}
@@ -71,10 +73,7 @@ AddColorKey(is.categorical = FALSE, breaks = breaks, log = TRUE)
 
 is <- as.logical(seq_along(breaks) \%\% 2)
 AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
-            scientific = TRUE, log = TRUE)
-
-AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
-            scientific = FALSE, log = TRUE)
+            scipen = NULL, log = TRUE)
 
 AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
 

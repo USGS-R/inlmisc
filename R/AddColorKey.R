@@ -25,15 +25,13 @@
 #' @param labels 'logical', 'character', 'expression', or 'numeric'.
 #'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tick marks,
 #'   or a character or expression vector of labels to be placed at the tick points.
-#' @param scientific 'logical' or 'integer'.
-#'   Whether axes tick-mark labels should be formatted using scientific notation.
-#'   Or an integer penalty, see \code{\link{option}["scipen"]} for details.
 #' @param explanation 'character'.
 #'   Label that describes the data values.
 #' @param padx 'numeric'.
 #'   Inner padding for the left and right margins specified in inches.
 #' @param log 'logical'.
 #'   Whether the axis is to be logarithmic.
+#' @inheritParams ToScientific
 #'
 #' @return Used for the side-effect of a color key drawn on the current graphics device.
 #'
@@ -59,10 +57,7 @@
 #'
 #' is <- as.logical(seq_along(breaks) %% 2)
 #' AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
-#'             scientific = TRUE, log = TRUE)
-#'
-#' AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
-#'             scientific = FALSE, log = TRUE)
+#'             scipen = NULL, log = TRUE)
 #'
 #' AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
 #'
@@ -72,7 +67,7 @@
 #'
 
 AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
-                        scientific=getOption("scipen", 0L), explanation=NULL,
+                        scipen=getOption("scipen", 0L), explanation=NULL,
                         padx=0.2, log=FALSE) {
 
   if (!missing(mai)) {
@@ -137,23 +132,8 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
       return(invisible(NULL))
   }
 
-  if (is.numeric(labels)) {
-
-    digits <- if (is.integer(labels)) 0 else format.info(labels)[2]
-
-    if (is.logical(scientific)) {
-      scipen <- NULL
-    } else {
-      scipen <- as.integer(scientific)
-      scientific <- TRUE
-    }
-    if (scientific) {
-      labels <- ToScientific(labels, digits=digits, type="plotmath", scipen=scipen)
-    } else {
-      fmt <- ifelse(is.integer(labels), "d", "fg")
-      labels <- formatC(labels, digits=digits, width=1, format=fmt, big.mark=",")
-    }
-  }
+  if (is.numeric(labels))
+    labels <- ToScientific(labels, type="plotmath", scipen=scipen)
 
   # omit labels that abut or overlap
   x <- if (log) log10(at) else at

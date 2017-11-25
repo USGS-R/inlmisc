@@ -31,7 +31,7 @@ Does not apply to missing value strings.}
 A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 Positive values bias towards fixed and negative towards scientific notation:
 fixed notation will be preferred unless it is more than \code{scipen} digits wider.
-By default, all numbers, with the exception of zero, are formatted in scientific notation.}
+Specify \code{NULL} to format all numbers, with the exception of zero, in scientific notation.}
 
 \item{big.mark}{'character'.
 Mark inserted between every big interval before the decimal point.

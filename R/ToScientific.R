@@ -19,7 +19,7 @@
 #'   A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 #'   Positive values bias towards fixed and negative towards scientific notation:
 #'   fixed notation will be preferred unless it is more than \code{scipen} digits wider.
-#'   By default, all numbers, with the exception of zero, are formatted in scientific notation.
+#'   Specify \code{NULL} to format all numbers, with the exception of zero, in scientific notation.
 #' @param big.mark 'character'.
 #'   Mark inserted between every big interval before the decimal point.
 #'   By default, commas are placed every 3 decimal places for numbers larger than 999.
@@ -92,8 +92,8 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   }
 
   # decimal places
-  digits_fix <- if (is.null(digits)) format.info(x[is_fix])[2] else digits
-  digits_sci <- if (is.null(digits)) format.info(m[is_sci])[2] else digits
+  digits_fix <- if (is.null(digits) && any(is_fix)) format.info(x[is_fix])[2] else digits
+  digits_sci <- if (is.null(digits) && any(is_sci)) format.info(m[is_sci])[2] else digits
 
   # latex markup
   if (type == "latex") {
