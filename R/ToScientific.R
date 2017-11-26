@@ -5,9 +5,7 @@
 #' @param x 'numeric'.
 #'   Vector of numbers
 #' @param digits 'integer'.
-#'   Number of digits after the decimal point for the coefficent part
-#'   of the number in scientific notation (also known as the significand).
-#'   The default, \code{NULL}, is 2 for integer and 4 for real numbers.
+#'   Desired number of digits after the decimal point.
 #' @param type 'character'.
 #'   Specify \code{"latex"} to return numbers in the LaTeX markup language (default),
 #'   or \code{"plotmath"} to return as \code{\link[grDevices]{plotmath}} expressions.
@@ -16,18 +14,20 @@
 #'   By default, no string substitution is made for missing values.
 #' @param delimiter 'character'.
 #'   Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.
+#'   Does not apply to missing value strings.
 #' @param scipen 'integer'.
 #'   A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 #'   Positive values bias towards fixed and negative towards scientific notation:
 #'   fixed notation will be preferred unless it is more than \code{scipen} digits wider.
-#'   By default, all numbers, with the exception of zero, are formatted in scientific notation.
+#'   Specify \code{NULL} to format all numbers, with the exception of zero, in scientific notation.
 #' @param big.mark 'character'.
 #'   Mark inserted between every big interval before the decimal point.
 #'   By default, commas are placed every 3 decimal places for numbers larger than 999.
 #' @param ...
 #'   Not used
 #'
-#' @return For \code{type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
+#' @return
+#'   For \code{type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
 #'   And for \code{type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
@@ -38,14 +38,16 @@
 #'
 #' @examples
 #' x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
-#' ToScientific(x, digits = 5L, na = "---")
+#' ToScientific(x, digits = 2L, na = "---")
 #'
 #' ToScientific(x, digits = 2L, scipen = 0L)
 #'
-#' x <- exp(log(10) * 1:6)
+#' x <- seq(0, 20000, by = 4000)
+#' ToScientific(x, scipen = 0)
+#'
+#' lab <- ToScientific(x, type = "plotmath", scipen = 0L)
 #' i <- seq_along(x)
-#' plot(i, i, type = "n", xaxt = "n", yaxt = "n", ann = FALSE)
-#' lab <- ToScientific(x, 0L, type = "plotmath", scipen = 0L)
+#' plot(i, type = "n", xaxt = "n", yaxt = "n", ann = FALSE)
 #' axis(1, i, labels = lab)
 #' axis(2, i, labels = lab)
 #'
@@ -58,52 +60,68 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   checkmate::assertNumeric(x)
   checkmate::assertCount(digits, null.ok=TRUE)
   checkmate::assertString(na, na.ok=TRUE)
+  checkmate::assertString(delimiter)
   checkmate::assertInt(scipen, na.ok=TRUE, null.ok=TRUE)
+  checkmate::assertString(big.mark)
 
   if (missing(type) && methods::hasArg("lab.type"))
-    type <- list(...)$lab.type  # included for backward compatibility
+    type <- list(...)$lab.type  # include for backward compatibility
   else
     type <- match.arg(type)
 
-  x[is.zero <- x == 0] <- NA
-  is.num <- which(is.finite(x))
+  x <- as.numeric(x)
+
+  is_zero <- x %in% 0
+  x[is_zero] <- NA
+
+  is_finite <- is.finite(x)
+  if (is.null(scipen)) {
+    is_sci <- is.finite(x)
+  } else {
+    op <- options(scipen=scipen); on.exit(options(op))
+    is_sci <- grepl("e", formatC(x)) & is.finite(x)
+  }
+  is_fix <- !is_sci & is_finite
 
   # scientific notation
-  m <- rep(NA, length(x))
-  n <- m
-  n[is.num] <- floor(log(abs(x[is.num]), 10))
-  m[is.num] <- x[is.num] / 10^n[is.num]
-  if (is.null(digits)) digits <- if (is.integer(x)) 2 else 4
-  m[is.num] <- round(m[is.num], digits)
-
-  # fixed notation
-  if (!is.null(scipen)) {
-    op <- options(scipen=scipen); on.exit(options(op))
-    s.fix <- formatC(x, digits, width=1, format="f", big.mark=",")
-    is.fix <- !grepl("e", formatC(x)) & is.finite(x)
+  if (any(is_sci)) {
+    m <- rep(as.numeric(NA), length(x))
+    n <- m
+    n[is_sci] <- floor(log(abs(x[is_sci]), 10))
+    m[is_sci] <- x[is_sci] / 10^n[is_sci]
   }
+
+  # decimal places
+  digits_fix <- if (is.null(digits) && any(is_fix)) format.info(x[is_fix])[2] else digits
+  digits_sci <- if (is.null(digits) && any(is_sci)) format.info(m[is_sci])[2] else digits
 
   # latex markup
   if (type == "latex") {
     s <- rep(na, length(x))
-    m[is.num] <- formatC(m[is.num], digits, width=1, format="f")
-    s[is.num] <- sprintf("%s%s \\times 10^{%d}%s",
-                         delimiter, m[is.num], n[is.num], delimiter)
-    s[is.zero] <- "0"
-    if (!is.null(scipen)) s[is.fix] <- s.fix[is.fix]
+    s[is_zero] <- "0"
+    if (any(is_fix))
+      s[is_fix] <- formatC(x[is_fix], digits_fix, width=1, format="f", big.mark=big.mark)
+    if (any(is_sci)) {
+      m[is_sci] <- formatC(m[is_sci], digits_sci, width=1, format="f")
+      s[is_sci] <- sprintf("%s \\times 10^{%d}", m[is_sci], n[is_sci])
+    }
+    is <-  is_zero | is_fix | is_sci
+    s[is] <- sprintf("%s%s%s", delimiter, s[is], delimiter)
 
   # plotmath expression
-  } else if (type == "plotmath") {
-
+  } else {
     FUN <- function(i) {
-      if (is.zero[i]) {
-        return(quote(0))
+      if (is_zero[i]) {
+        return("0")
       } else if (is.na(x[i])) {
         return(substitute(X, list(X=na)))
-      } else if (!is.null(scipen) && is.fix[i]) {
-        return(substitute(X, list(X=s.fix[i])))
+      } else if (is_fix[i]) {
+        v <- formatC(x[i], digits_fix, width=1, format="f", big.mark=big.mark,
+                     drop0trailing=TRUE)
+        return(substitute(X, list(X=v)))
       } else {
-        return(substitute(M%*%10^N, list(M=m[i], N=n[i])))
+        v <- round(m[i], digits_sci)
+        return(substitute(M%*%10^N, list(M=v, N=n[i])))
       }
     }
     s <- do.call("expression", lapply(seq_along(x), FUN))

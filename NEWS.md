@@ -1,5 +1,9 @@
 # inlmisc 0.3.5.9000
 
+- In `AddColorKey` function, replace `scientific` argument with `scipen`, see `getOption("scipen")` command.
+
+- In `PlotMap` function, remove option to map points.
+
 - In `ReadCodeChunks` function, remove dependency on *knitr-intro.Rmd* file in example.
 
 - In `AddColorKey` function, add `log` argument to specify axis to be logarithmic.

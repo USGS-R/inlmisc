@@ -13,9 +13,7 @@ ToScientific(x, digits = NULL, type = c("latex", "plotmath"),
 Vector of numbers}
 
 \item{digits}{'integer'.
-Number of digits after the decimal point for the coefficent part
-of the number in scientific notation (also known as the significand).
-The default, \code{NULL}, is 2 for integer and 4 for real numbers.}
+Desired number of digits after the decimal point.}
 
 \item{type}{'character'.
 Specify \code{"latex"} to return numbers in the LaTeX markup language (default),
@@ -26,13 +24,14 @@ String to be used for missing values (\code{NA}).
 By default, no string substitution is made for missing values.}
 
 \item{delimiter}{'character'.
-Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.}
+Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.
+Does not apply to missing value strings.}
 
 \item{scipen}{'integer'.
 A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 Positive values bias towards fixed and negative towards scientific notation:
 fixed notation will be preferred unless it is more than \code{scipen} digits wider.
-By default, all numbers, with the exception of zero, are formatted in scientific notation.}
+Specify \code{NULL} to format all numbers, with the exception of zero, in scientific notation.}
 
 \item{big.mark}{'character'.
 Mark inserted between every big interval before the decimal point.
@@ -49,14 +48,16 @@ This function formats numbers in scientific notation \eqn{m \times 10^{n}}{m x 1
 }
 \examples{
 x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
-ToScientific(x, digits = 5L, na = "---")
+ToScientific(x, digits = 2L, na = "---")
 
 ToScientific(x, digits = 2L, scipen = 0L)
 
-x <- exp(log(10) * 1:6)
+x <- seq(0, 20000, by = 4000)
+ToScientific(x, scipen = 0)
+
+lab <- ToScientific(x, type = "plotmath", scipen = 0L)
 i <- seq_along(x)
-plot(i, i, type = "n", xaxt = "n", yaxt = "n", ann = FALSE)
-lab <- ToScientific(x, 0L, type = "plotmath", scipen = 0L)
+plot(i, type = "n", xaxt = "n", yaxt = "n", ann = FALSE)
 axis(1, i, labels = lab)
 axis(2, i, labels = lab)
 

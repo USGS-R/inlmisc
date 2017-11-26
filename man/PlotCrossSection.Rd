@@ -42,6 +42,7 @@ Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.}
 
 \item{max.dev.dim}{'numeric'.
 Vector of length 2 giving the maximum width and height for the graphics device in picas, respectively.
+Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimetre, or 12 points.
 Suggested dimensions for single-column, double-column, and sidetitle figures are
 \code{c(21, 56)}, \code{c(43, 56)}, and \code{c(56, 43)}, respectively.
 This argument is only applicable when the \code{file} argument is specified.}
@@ -97,8 +98,8 @@ otherwise, these data values are assumed continuous.}
 
 \item{contour.lines}{'list'.
 If specified, contour lines are drawn.
-The contours are described using a list of arguments supplied to \code{contour}.
-Passed arguments include \code{"drawlables"}, \code{"method"}, and \code{"col"}.}
+The contours are described using a list of arguments supplied to the \code{\link[raster]{contour}} function.
+Passed arguments include \code{drawlables}, \code{method}, and \code{col}.}
 
 \item{bg.col}{'character'.
 Color used for the background of the area below the upper geometry raster layer.}

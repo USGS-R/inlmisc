@@ -1,16 +1,11 @@
 #' Plot Method for Maps
 #'
-#' This function maps raster and point data.
+#' This function maps raster data and geographical features.
 #' A key showing how the colors map to raster values is shown below the map.
 #' The width and height of the graphics region will be automagically determined in some cases.
 #'
 #' @param r 'Raster*', 'Spatial*', or 'CRS'.
 #'   An object that can be converted to a raster layer, or coordinate reference system (CRS).
-#' @param p 'SpatialPointsDataFrame'.
-#'   Spatial point data to be plotted.
-#' @param ...
-#'   Graphics parameters to be passed to \code{\link{AddPoints}}.
-#'   Unused if \code{p = NULL}.
 #' @param layer 'integer'.
 #'   Layer to extract from if \code{r} is of class 'RasterStack/Brick' or 'SpatialGridDataFrame'.
 #' @param att 'integer' or 'character'.
@@ -34,6 +29,7 @@
 #'   If true, the spatial limits will be extended to the next tick mark on the axes beyond the grid extent.
 #' @param extend.z 'logical'.
 #'   If true, the raster value limits will be extended to the next tick mark on the color key beyond the measured range.
+#'   Not used if the \code{zlim} argument is specified.
 #' @param reg.axs 'logical'.
 #'   If true, the spatial data range is extended.
 #' @param dms.tick 'logical'.
@@ -41,7 +37,9 @@
 #' @param bg.lines 'logical'.
 #'   If true, grids or graticules are drawn in back of the raster layer using white lines and a grey background.
 #' @param bg.image 'RasterLayer'.
-#'   An image to drawn in back of the main raster layer \code{r}, image colors derived from vector of gray levels.
+#'   An image to be drawn in back of the main raster layer \code{r}, image colors are derived from a vector of gray levels.
+#'   Raster values typically represent hill shading based on the slope and aspect of land-surface elevations,
+#'   see \code{\link[raster]{hillShade}} function.
 #' @param bg.image.alpha 'numeric'.
 #'   Opacity of the background image from 0 to 1.
 #' @param pal 'function'.
@@ -54,6 +52,7 @@
 #'   Factors require a color for each level.
 #' @param max.dev.dim 'numeric'.
 #'   Vector of length 2 giving the maximum width and height for the graphics device in picas, respectively.
+#'   Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimetre, or 12 points.
 #'   Suggested dimensions for single-column, double-column, and sidetitle figures are
 #'   \code{c(21, 56)}, \code{c(43, 56)}, and \code{c(56, 43)}, respectively.
 #'   This argument is only applicable when the \code{file} argument is specified.
@@ -73,27 +72,31 @@
 #'   Label crediting the base map.
 #' @param shade 'list'.
 #'   If specified, a semi-transparent shade layer is drawn on top of the raster layer.
-#'   This layer is described using a list of arguments supplied to \code{raster::hillShade} function.
-#'   Passed arguments include \code{"angle"} and \code{"direction"}.
+#'   This layer is described using a list of arguments supplied to the
+#'   \code{\link[raster]{hillShade}} function.
+#'   Passed arguments include \code{angle} and \code{direction}.
 #'   Additional arguments also may be passed that control the vertical aspect ratio
-#'   (\code{"z.factor"}) and color opacity (\code{"alpha"}).
+#'   (\code{z.factor}) and color opacity (\code{alpha}).
 #' @param contour.lines 'list'.
 #'   If specified, contour lines are drawn.
-#'   The contours are described using a list of arguments supplied to \code{contour}.
-#'   Passed arguments include \code{"drawlables"}, \code{"method"}, and \code{"col"}.
+#'   The contours are described using a list of arguments supplied to the \code{\link[raster]{contour}} function.
+#'   Passed arguments include \code{drawlables}, \code{method}, and \code{col}.
 #' @param rivers 'list'.
 #'   If specified, lines are drawn.
-#'   The lines are described using a list of arguments supplied to the plot method for SpatialLines.
-#'   Passed arguments include \code{"x"}, \code{"col"}, and \code{"lwd"}.
+#'   The lines are described using a list of arguments supplied to the plot method for
+#'   class '\code{\link[=SpatialLines-class]{SpatialLines}}'.
+#'   Passed arguments include \code{x}, \code{col}, and \code{lwd}.
 #' @param lakes 'list'.
 #'   If specified, polygons are drawn.
-#'   The polygons are described using a list of arguments supplied to the plot method for SpatialPolygons.
-#'   Passed arguments include \code{"x"}, \code{"col"}, \code{"border"}, and \code{"lwd"}.
+#'   The polygons are described using a list of arguments supplied to the plot method for
+#'   class '\code{\link[=SpatialPolygons-class]{SpatialPolygons}}'.
+#'   Passed arguments include \code{x}, \code{col}, \code{border}, and \code{lwd}.
 #'   Bitmap images require a regular grid.
 #' @param roads 'list'.
 #'   If specified, lines are drawn.
-#'   The lines are described using a list of arguments supplied to the plot method for SpatialLines.
-#'   Passed arguments include \code{"x"}, \code{"col"}, and \code{"lwd"}.
+#'   The lines are described using a list of arguments supplied to the plot method for
+#'   class '\code{\link[=SpatialLines-class]{SpatialLines}}'.
+#'   Passed arguments include \code{x}, \code{col}, and \code{lwd}.
 #' @param draw.key 'logical'.
 #'   If true, a color key should be drawn.
 #' @param draw.raster 'logical'.
@@ -110,7 +113,7 @@
 #'   Unused if \code{file = NULL}
 #' @param useRaster 'logical'.
 #'   If true, a bitmap raster is used to plot \code{r} instead of using individual polygons for each raster cell.
-#'   If \code{UseRaster} is not specified, raster images are used when the \code{getOption("preferRaster")} is true.
+#'   If \code{UseRaster} is not specified, raster images are used when the \code{\link{getOption}("preferRaster")} is true.
 #'   Unused if \code{simplify = TRUE}.
 #' @param simplify 'numeric'.
 #'   Specifying this argument will convert the raster \code{r} to spatial polygons prior to plotting,
@@ -151,13 +154,9 @@
 #' r[51:100] <- 2L
 #' r[3:6, 1:5] <- 8L
 #' r <- raster::ratify(r)
-#' rat <- raster::levels(r)[[1]]
-#' rat$land.cover <- c("Pine", "Oak", "Meadow")
-#' rat$code <- c(12, 25, 30)
+#' rat <- cbind(raster::levels(r)[[1]], land.cover = c("Pine", "Oak", "Meadow"))
 #' levels(r) <- rat
-#' PlotMap(r, att = "land.cover", col = c("grey", "orange", "purple"))
-#'
-#' PlotMap(r, att = "code")
+#' PlotMap(r)
 #'
 #' m <- t(datasets::volcano)[61:1, ]
 #' x <- seq(from = 6478705, length.out = 87, by = 10)
@@ -180,6 +179,7 @@
 #'                   inset = c(0.1, 0.1), strip.dim = c(2, 20))
 #'
 #' out <- PlotMap(r, dms.tick = TRUE, file = "Rplots1.pdf")
+#' print(out)
 #'
 #' pdf(file = "Rplots2.pdf", width = out$din[1], height = out$din[2])
 #' PlotMap(r, dms.tick = TRUE)
@@ -192,7 +192,7 @@
 #' graphics.off()
 #'
 
-PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
+PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
                     xlim=NULL, ylim=NULL, zlim=NULL, asp=NULL,
                     extend.xy=FALSE, extend.z=FALSE,
                     reg.axs=TRUE, dms.tick=FALSE, bg.lines=FALSE, bg.image=NULL,
@@ -201,9 +201,6 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
                     credit=NULL, shade=NULL, contour.lines=NULL,
                     rivers=NULL, lakes=NULL, roads=NULL, draw.key=NULL, draw.raster=TRUE,
                     file=NULL, close.file=TRUE, useRaster, simplify) {
-
-  if (!is.null(p) && !inherits(p, "SpatialPoints"))
-    stop("spatial point data is invalid class")
 
   if (!is.null(bg.image) && !inherits(bg.image, "RasterLayer"))
     stop("background image is invalid class")
@@ -226,8 +223,6 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
     r <- raster(r)
     r[] <- NA
   }
-
-  if (!is.null(p)) try(p <- spTransform(p, r@crs), silent=TRUE)
 
   if (is.null(asp) && !is.na(rgdal::CRSargs(raster::crs(r)))) asp <- 1
 
@@ -252,15 +247,12 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   xl <- if (is.null(xlim)) c(NA, NA) else xlim
   yl <- if (is.null(ylim)) c(NA, NA) else ylim
   zl <- if (is.null(zlim)) c(NA, NA) else zlim
-
-  e <- cbind(as.vector(extent(r)), if (is.null(p)) NULL else as.vector(extent(p)))
-  e <- c(min(e[1, ]), max(e[2, ]), min(e[3, ]), max(e[4, ]))
+  e <- as.vector(extent(r))
   if (!is.na(xl[1])) e[1] <- xl[1]
   if (!is.na(xl[2])) e[2] <- xl[2]
   if (!is.na(yl[1])) e[3] <- yl[1]
   if (!is.na(yl[2])) e[4] <- yl[2]
   r <- crop(r, extent(e), snap="near")
-  if (!is.null(p)) p <- crop(p, extent(e), snap="near")
 
   if (all(is.na(r[]))) {
     n <- 0
@@ -295,10 +287,8 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (!all(is.na(r[]))) r <- trim(r)
-
-  xran <- range(c(bbox(r)[1, ]), if (is.null(p)) NULL else bbox(p)[1, ])
-  yran <- range(c(bbox(r)[2, ]), if (is.null(p)) NULL else bbox(p)[2, ])
-
+  xran <- bbox(r)[1, ]
+  yran <- bbox(r)[2, ]
   if (extend.xy) {
     default.xl <- range(pretty(xran))
     default.yl <- range(pretty(yran))
@@ -565,8 +555,6 @@ PlotMap <- function(r, p=NULL, ..., layer=1, att=NULL, n=NULL, breaks=NULL,
                     xlim=xl, ylim=yl, zlim=zl, labcex=0.5, drawlabels=drawl,
                     method=metho, axes=FALSE, col=color, lwd=lwd, add=TRUE)
   }
-
-  if (!is.null(p)) AddPoints(p, xlim=xlim, ylim=ylim, zlim=zlim, ...)
 
   graphics::axis(1, at=at2[[1]], labels=FALSE, lwd=-1, lwd.ticks=lwd, tcl=tcl,
                  cex.axis=cex)
