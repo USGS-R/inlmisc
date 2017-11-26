@@ -112,7 +112,7 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   } else {
     FUN <- function(i) {
       if (is_zero[i]) {
-        return(quote(0))
+        return("0")
       } else if (is.na(x[i])) {
         return(substitute(X, list(X=na)))
       } else if (is_fix[i]) {

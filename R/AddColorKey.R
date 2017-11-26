@@ -146,7 +146,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
   }
 
   graphics::axis(1, at=at[is], labels=labels[is], lwd=-1, lwd.ticks=-1, padj=0,
-                 cex.axis=cex, mgp=c(3, 0.1, 0))
+                 cex.axis=cex, mgp=c(3, 0, 0))
 
   invisible()
 }
