@@ -24,7 +24,7 @@
 #' @return Returns a 'leaflet' Hypertext Markup Language (HTML) widget object with TNM base maps.
 #'   See example for instructions on how to add additional graphic layers
 #'   (such as points, lines, and polygons) to the map widget.
-#'   Note that the web map expects graphic layers be specified in latitude and longitude using WGS 84
+#'   Graphic layers added to the web map must be in latitude and longitude using WGS 84
 #'   (also known as \href{https://epsg.io/4326}{EPSG:4326}).
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
