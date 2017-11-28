@@ -86,7 +86,7 @@ AddClusterButton <- function(map, clusterId, position="topleft") {
                    btn.state('frozen-markers');
                  }", clusterId)
   s0 <- leaflet::easyButtonState(stateName="unfrozen-markers",
-                                 icon="ion-toggle",
+                                 icon="ion-ios-color-filter-outline",
                                  title="Freeze Clusters",
                                  onClick=htmlwidgets::JS(js))
 
@@ -97,7 +97,7 @@ AddClusterButton <- function(map, clusterId, position="topleft") {
                    btn.state('unfrozen-markers');
                  }", clusterId)
   s1 <- leaflet::easyButtonState(stateName="frozen-markers",
-                                 icon="ion-toggle-filled",
+                                 icon="ion-ios-color-filter",
                                  title="Unfreeze Clusters",
                                  onClick=htmlwidgets::JS(js))
 
