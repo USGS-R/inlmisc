@@ -1,7 +1,7 @@
 #' Add Miscellaneous Web Map Buttons
 #'
 #' These functions add buttons on a web map that control miscellaneous view options.
-#' The \code{AddHomeButton} function sets the map view to a user specified geographical extent.
+#' The \code{AddHomeButton} function that sets the map view to a user specified geographical extent.
 #' And the \code{AddClusterButton} function toggles marker clusters between frozen and unfrozen states.
 #'
 #' @param map '\link[leaflet]{leaflet}'.
@@ -11,6 +11,7 @@
 #'   representing a rectangular geographical area on the map.
 #'   The extent must be specified in the coordinate reference system (CRS) of the web map,
 #'   usually in latitude and longitude using WGS 84 (also known as \href{https://epsg.io/4326}{EPSG:4326}).
+#'   By default, the extent object is read from the map widget.
 #' @param position 'character'.
 #'   Position of the button on the web map.
 #'   Possible values are \code{"topleft"}, \code{"topright"}, \code{"bottomleft"}, and \code{"bottomright"}.
@@ -34,19 +35,22 @@
 #' id <- "cities_cluster"
 #' map <- leaflet::addMarkers(map, lng = d$long, lat = d$lat, popup = d$name,
 #'                            clusterOptions = opt, clusterId = id)
-#' map <- AddHomeButton(map, extent = c(range(d$long), range(d$lat)))
+#' map <- AddHomeButton(map)
 #' map <- AddClusterButton(map, id)
 #' map
 #'
 
-AddHomeButton <- function(map, extent, position="topleft") {
+AddHomeButton <- function(map, extent=NULL, position="topleft") {
 
   # check arguments
   checkmate::assertClass(map, c("leaflet", "htmlwidget"))
   checkmate::assertChoice(position, c("topleft", "topright", "bottomleft", "bottomright"))
 
   # extract/create extent object
-  e <- raster::extent(extent)
+  if (is.null(extent))
+    e <- c(map$x$limits$lng, map$x$limits$lat)
+  else
+    e <- raster::extent(extent)
 
   # create button
   js <- sprintf("function(btn, map) {

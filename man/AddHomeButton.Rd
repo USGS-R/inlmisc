@@ -5,7 +5,7 @@
 \alias{AddClusterButton}
 \title{Add Miscellaneous Web Map Buttons}
 \usage{
-AddHomeButton(map, extent, position = "topleft")
+AddHomeButton(map, extent = NULL, position = "topleft")
 
 AddClusterButton(map, clusterId, position = "topleft")
 }
@@ -17,7 +17,8 @@ Map widget object}
 Extent object (or object from which an \code{\link[raster]{extent}} object can be extracted/created)
 representing a rectangular geographical area on the map.
 The extent must be specified in the coordinate reference system (CRS) of the web map,
-usually in latitude and longitude using WGS 84 (also known as \href{https://epsg.io/4326}{EPSG:4326}).}
+usually in latitude and longitude using WGS 84 (also known as \href{https://epsg.io/4326}{EPSG:4326}).
+By default, the extent object is read from the map widget.}
 
 \item{position}{'character'.
 Position of the button on the web map.
@@ -31,7 +32,7 @@ Used for the side-effect of a button placed on a web map.
 }
 \description{
 These functions add buttons on a web map that control miscellaneous view options.
-The \code{AddHomeButton} function sets the map view to a user specified geographical extent.
+The \code{AddHomeButton} function that sets the map view to a user specified geographical extent.
 And the \code{AddClusterButton} function toggles marker clusters between frozen and unfrozen states.
 }
 \examples{
@@ -41,7 +42,7 @@ opt <- leaflet::markerClusterOptions(showCoverageOnHover = FALSE)
 id <- "cities_cluster"
 map <- leaflet::addMarkers(map, lng = d$long, lat = d$lat, popup = d$name,
                            clusterOptions = opt, clusterId = id)
-map <- AddHomeButton(map, extent = c(range(d$long), range(d$lat)))
+map <- AddHomeButton(map)
 map <- AddClusterButton(map, id)
 map
 
