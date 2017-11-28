@@ -8,7 +8,7 @@
 #' @param maps 'character'.
 #'   Vector of TNM base maps to include in the web map.
 #'   Possible maps include \code{"Topo"}, \code{"Imagery"},
-#'   \code{"Imagery Topo"}, \code{"Hydrography"}, and \code{"Shaded Relief"}.
+#'   \code{"Imagery Topo"}, \code{"Hydrography"}, and \code{"Hill Shade"}.
 #'   All base maps are included by default.
 #' @param ...
 #'   Arguments to be passed to the \code{\link[leaflet]{leaflet}} function.
@@ -47,12 +47,12 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
 
   checkmate::assertFlag(collapsed)
 
-  # establish layers
+  # establish base map layers
   basemap <- c("Topo"          = "USGSTopo",
                "Imagery"       = "USGSImageryOnly",
                "Imagery Topo"  = "USGSImageryTopo",
                "Hydrography"   = "USGSHydroCached",
-               "Shaded Relief" = "USGSShadedReliefOnly")
+               "Hill Shade"    = "USGSShadedReliefOnly")
   if (!missing(maps)) {
     checkmate::assertSubset(maps, names(basemap), empty.ok=FALSE)
     basemap <- basemap[maps]
@@ -70,7 +70,7 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
     sprintf("https://%s/arcgis/services/%s/MapServer/WmsServer?", host, service)
   }
 
-  # add tiled basemaps
+  # add tiled base maps
   url <- GetURL(basemap)
   opt <- leaflet::WMSTileOptions(version="1.3.0", maxNativeZoom=15)
   for (i in seq_along(basemap)) {
@@ -78,15 +78,15 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
                                 options=opt, layers="0")
   }
 
-  # add scale bar
-  map <- leaflet::addScaleBar(map, position="bottomleft")
-
   # add basemap control feature
   if (length(basemap) > 1) {
     opt <- leaflet::layersControlOptions(collapsed=collapsed)
     map <- leaflet::addLayersControl(map, position="topright",
                                      baseGroups=names(basemap), options=opt)
   }
+
+  # add scale bar
+  map <- leaflet::addScaleBar(map, position="bottomleft")
 
   # return html widget
   return(map)
