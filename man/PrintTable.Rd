@@ -6,7 +6,7 @@
 \usage{
 PrintTable(d, colheadings = NULL, align = NULL, label = NULL,
   title = NULL, headnotes = NULL, footnotes = NULL, nrec = nrow(d),
-  na = "--")
+  na = "--", rm_dup = NULL)
 }
 \arguments{
 \item{d}{'data.frame'.
@@ -35,9 +35,12 @@ Something.}
 
 \item{na}{'character'.
 Something.}
+
+\item{rm_dup}{'character' or 'integer'.
+Something.}
 }
 \description{
-Something...
+This function prints the LaTeX code associated with the supplied data frame.
 }
 \details{
 Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
@@ -47,17 +50,15 @@ Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
 d <- datasets::iris
 d <- d[, c("Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")]
 colheadings <- c("Species of \\\\\\\\ Iris",
-                 "Sepal \\\\\\\\ length \\\\\\\\ (cm)",
-                 "Sepal \\\\\\\\ width \\\\\\\\ (cm)",
-                 "Petal \\\\\\\\ length \\\\\\\\ (cm)",
-                 "Petal \\\\\\\\ width \\\\\\\\ (cm)")
+                 "Sepal \\\\\\\\ length \\\\\\\\ (cm)", "Sepal \\\\\\\\ width \\\\\\\\ (cm)",
+                 "Petal \\\\\\\\ length \\\\\\\\ (cm)", "Petal \\\\\\\\ width \\\\\\\\ (cm)")
 align <- c("l", "r", "r", "r", "r")
 title <- "Measurments of sepal length and width and petal length and width,
           for three species of Iris flower."
 headnotes <- "\\\\textbf{Species of Iris}: inlcudes setosa, versicolor, and virginica.
               \\\\textbf{Abbreviations}: cm, centimeters"
 PrintTable(d, colheadings, align, title = title, headnotes = headnotes,
-           nrec = c(40L, 45L))
+           nrec = c(40L, 45L), rm_dup = 1L)
 
 }
 \seealso{
@@ -66,4 +67,4 @@ PrintTable(d, colheadings, align, title = title, headnotes = headnotes,
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 }
-\keyword{IO}
+\keyword{print}
