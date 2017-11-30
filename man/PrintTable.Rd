@@ -4,9 +4,10 @@
 \alias{PrintTable}
 \title{Print as LaTeX Table}
 \usage{
-PrintTable(d, colheadings = NULL, align = NULL, label = NULL,
-  title = NULL, headnotes = NULL, footnotes = NULL, nrec = nrow(d),
-  na = "--", rm_dup = NULL)
+PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
+  label = NULL, title = NULL, headnotes = NULL, footnotes = NULL,
+  nrec = nrow(d), hline = NULL, na = "--", rm_dup = NULL,
+  landscape = FALSE)
 }
 \arguments{
 \item{d}{'data.frame'.
@@ -16,6 +17,9 @@ Something.}
 Something.}
 
 \item{align}{'character'.
+Something.}
+
+\item{digits}{'integer'.
 Something.}
 
 \item{label}{'character'.
@@ -33,11 +37,18 @@ Something.}
 \item{nrec}{'integer'.
 Something.}
 
+\item{hline}{'integer'.
+Something.}
+
 \item{na}{'character'.
 Something.}
 
-\item{rm_dup}{'character' or 'integer'.
+\item{rm_dup}{'integer'.
 Something.}
+
+\item{landscape}{'logical'.
+Something.
+This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.}
 }
 \description{
 This function prints the LaTeX code associated with the supplied data frame.
