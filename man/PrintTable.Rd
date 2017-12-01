@@ -39,7 +39,8 @@ to the table as a whole, or to the column headings.}
 String placed at the end of the table to provide explanations of individual entries in the table.}
 
 \item{nrec}{'integer'.
-Something.}
+End value of a sequence of column indexes with a starting value of \code{1},
+specifying columns to remove duplicate values.}
 
 \item{hline}{'integer'.
 Vector of numbers between 1 and \code{nrow(d) - 1}, indicating the rows after which
@@ -49,10 +50,12 @@ a horizontal line should appear.}
 String to be used for missing values in table entries.}
 
 \item{rm_dup}{'integer'.
-Something.}
+Vector of length equal to 2, indicating the maximum number of records to show on the first page,
+and every subsequent page, respectively.
+Value is recycled as necessary.}
 
 \item{landscape}{'logical'.
-If true, displays the table page in landscape orientation by conforming PDF viewers.
+If true, displays the table in landscape orientation by conforming PDF viewers.
 This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.}
 }
 \description{
