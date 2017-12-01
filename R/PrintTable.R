@@ -160,14 +160,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     hline.after <- sort(unique(stats::na.omit(c(-1L, 0L, match(c(hline, nrow(d)), idxs)))))
 
     if (!is.null(footnotes) && i == length(n)) {
-#     fmt <- "\\midrule\n\\multicolumn{%s}{l}{\\footnotesize{%s}}\\\\"
       fmt <- "\\midrule\n\\multicolumn{%s}{l}{\\makecell[l]{%s}}\\\\"
-
-
-
-
-
-
       cmd <- sprintf(fmt, ncol(tbl), footnotes)
       add.to.row <- list(pos=list(nrow(tbl)), command=cmd)
       hline.after <- utils::head(hline.after, -1)
