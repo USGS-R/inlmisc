@@ -27,7 +27,8 @@ Imports:
     rgeos,
     sp,
     stats,
-    tools
+    tools,
+    xtable
 Suggests:
     colorspace,
     devtools,
