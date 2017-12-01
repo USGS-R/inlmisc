@@ -14,12 +14,13 @@ PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
 Data table to print.}
 
 \item{colheadings}{'character'.
-Vector of length equal to the number of columns in the table, specifying column headers.}
+Vector of length equal to the number of columns in the table, the column headings.}
 
 \item{align}{'character'.
 Vector of length equal to the number of columns in the table,
 indicating the alignment of the corresponding columns.
-Use \code{"l"}, \code{"r"}, and \code{"c"} to denote left, right, and center alignment, respectively.}
+Use \code{"l"}, \code{"r"}, and \code{"c"} to denote left, right,
+and center alignment, respectively.}
 
 \item{digits}{'integer'.
 Vector of length equal to the number of columns in the table,
@@ -32,7 +33,7 @@ String containing the LaTeX label anchor.}
 String containing the table caption.}
 
 \item{headnotes}{'character'.
-String placed below the table caption to provide information pertaining to the title,
+String placed below the table caption to provide information pertaining to the caption,
 to the table as a whole, or to the column headings.}
 
 \item{footnotes}{'character'.
@@ -44,19 +45,24 @@ and every subsequent page, respectively.
 Value is recycled as necessary.}
 
 \item{hline}{'integer'.
-Vector of numbers between 1 and \code{nrow(d) - 1}, indicating the rows after which
+Vector of numbers between 1 and \code{nrow(d) - 1}, indicating the table rows after which
 a horizontal line should appear.}
 
 \item{na}{'character'.
 String to be used for missing values in table entries.}
 
 \item{rm_dup}{'integer'.
-End value of a sequence of column indexes \code{(1:rm_dup)},
-specifying columns where duplicate values are to be removed.}
+End value of a sequence of column indexes \code{(1:rm_dup)}.
+Duplicate values contained in these columns will be set equal to an empty string.
+Where duplicates in a column are determined from the 'character' vector formed by
+combining its content with the content from all previous columns in the table.}
 
 \item{landscape}{'logical'.
-If true, displays the table in landscape orientation by conforming PDF viewers.
+If true, conforming PDF viewers will display the table in landscape orientation.
 This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.}
+}
+\value{
+Invisible \code{NULL}
 }
 \description{
 This function prints the LaTeX code associated with the supplied data table.
@@ -68,16 +74,41 @@ Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
 \examples{
 d <- datasets::iris
 d <- d[, c("Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")]
-colheadings <- c("Species of \\\\\\\\ Iris",
-                 "Sepal \\\\\\\\ length \\\\\\\\ (cm)", "Sepal \\\\\\\\ width \\\\\\\\ (cm)",
-                 "Petal \\\\\\\\ length \\\\\\\\ (cm)", "Petal \\\\\\\\ width \\\\\\\\ (cm)")
-align <- c("l", "r", "r", "r", "r")
-title <- "Measurments of sepal length and width and petal length and width,
+colheadings <- c("Species of Iris",
+                 "Sepal length \\\\\\\\ (cm)", "Sepal width \\\\\\\\ (cm)",
+                 "Petal length \\\\\\\\ (cm)", "Petal width \\\\\\\\ (cm)")
+align <- c("l", "c", "c", "c", "c")
+digits <- c(0, 1, 1, 1, 1)
+title <- "Measurements of sepal length and width and petal length and width,
           for three species of Iris flower."
 headnotes <- "\\\\textbf{Species of Iris}: inlcudes setosa, versicolor, and virginica.
               \\\\textbf{Abbreviations}: cm, centimeters"
-PrintTable(d, colheadings, align, title = title, headnotes = headnotes,
-           nrec = c(40L, 45L), rm_dup = 1L)
+levels(d[[1]]) <- sprintf("\%s\\\\footnotemark[\%d]", levels(d[[1]]), 1:3)
+footnotes <- paste(sprintf("\\\\footnotemark[\%d] Common name: \%s", 1:3,
+                           c("wild flag", "blue flag", "virginia")),
+                           collapse = "\\\\\\\\")
+hline <- utils::tail(which(!duplicated(d[[1]])), -1) - 1L
+PrintTable(d, colheadings, align, digits, title = title,
+           headnotes = headnotes, footnotes = footnotes,
+           hline = hline, nrec = c(40L, 42L), rm_dup = 1L)
+
+\dontrun{
+sink("table-example.tex")
+cat("\\\\documentclass{article}",
+    "\\\\usepackage[labelsep=period, labelfont=bf]{caption}",
+    "\\\\usepackage{booktabs}",
+    "\\\\usepackage{makecell}",
+    "\\\\begin{document}", sep = "\\n")
+PrintTable(d, colheadings, align, digits, title = title,
+           headnotes = headnotes, footnotes = footnotes,
+           hline = hline, nrec = c(40L, 42L), rm_dup = 1L)
+cat("\\\\end{document}")
+sink()
+tools::texi2dvi("table-example.tex", pdf = TRUE, clean = TRUE)
+system("open table-example.pdf")
+
+file.remove("table-example.tex", "table-example.pdf")
+}
 
 }
 \seealso{

@@ -156,7 +156,7 @@ inlmisc::RecreateLibrary(repos = repos, github = TRUE)
 }
 
 # Clean up example
-unlink("R-packages.tsv")
+file.remove("R-packages.tsv")
 
 }
 \seealso{

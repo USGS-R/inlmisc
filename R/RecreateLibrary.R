@@ -137,7 +137,7 @@
 #' }
 #'
 #' # Clean up example
-#' unlink("R-packages.tsv")
+#' file.remove("R-packages.tsv")
 #'
 #' @rdname RecreateLibrary
 #' @export
