@@ -135,7 +135,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
       fmt <- "\\midrule\n\\multicolumn{%s}{l}{\\footnotesize{%s}}\\\\"
       cmd <- sprintf(fmt, ncol(tbl), footnotes)
       add.to.row <- list(pos=list(nrow(tbl)), command=cmd)
-      hline.after <- head(hline.after, -1)
+      hline.after <- utils::head(hline.after, -1)
     }
 
     print(tbl,
