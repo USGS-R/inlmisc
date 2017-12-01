@@ -1,5 +1,7 @@
 # inlmisc 0.3.5.9000
 
+- Add `PrintTable` function, used to print the LaTeX code associated with a `data.frame` object.
+
 - In `AddColorKey` function, replace `scientific` argument with `scipen`, see `getOption("scipen")` command.
 
 - In `PlotMap` function, remove option to map points.
