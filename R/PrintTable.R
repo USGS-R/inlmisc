@@ -1,38 +1,43 @@
 #' Print as LaTeX Table
 #'
-#' This function prints the LaTeX code associated with the supplied data frame.
+#' This function prints the LaTeX code associated with the supplied data table.
 #'
 #' @param d 'data.frame'.
-#'   Something.
+#'   Data table to print.
 #' @param colheadings 'character'.
-#'   Something.
+#'   Vector of length equal to the number of columns in the table, specifying column headers.
 #' @param align 'character'.
-#'   Something.
+#'   Vector of length equal to the number of columns in the table,
+#'   indicating the alignment of the corresponding columns.
+#'   Use \code{"l"}, \code{"r"}, and \code{"c"} to denote left, right, and center alignment, respectively.
 #' @param digits 'integer'.
-#'   Something.
+#'   Vector of length equal to the number of columns in the table,
+#'   indicating the number of digits to display in the corresponding columns.
 #' @param label 'character'.
-#'   Something.
+#'   String containing the LaTeX label anchor.
 #' @param title 'character'.
-#'   Something.
+#'   String containing the table caption.
 #' @param headnotes 'character'.
-#'   Something.
+#'   String placed below the \code{title} to provide information pertaining to the title,
+#'   to the table as a whole, or to the column headings.
 #' @param footnotes 'character'.
-#'   Something.
+#'   String placed at the end of the table to provide explanations of individual entries in the table.
 #' @param nrec 'integer'.
 #'   Something.
 #' @param hline 'integer'.
-#'   Something.
+#'   Vector of numbers between 1 and \code{nrow(d) - 1}, indicating the rows after which
+#'   a horizontal line should appear.
 #' @param na 'character'.
-#'   Something.
+#'   String to be used for missing values in table entries.
 #' @param rm_dup 'integer'.
 #'   Something.
 #' @param landscape 'logical'.
-#'   Something.
+#'   If true, displays the table page in landscape orientation by conforming PDF viewers.
 #'   This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.
 #'
 #' @details
-#'   Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
-#'   and \code{\\usepackage{makecell}} in the LaTeX preamble.
+#'   Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
+#'   \code{\\usepackage{makecell}} in the LaTeX preamble.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

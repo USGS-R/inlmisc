@@ -11,51 +11,56 @@ PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
 }
 \arguments{
 \item{d}{'data.frame'.
-Something.}
+Data table to print.}
 
 \item{colheadings}{'character'.
-Something.}
+Vector of length equal to the number of columns in the table, specifying column headers.}
 
 \item{align}{'character'.
-Something.}
+Vector of length equal to the number of columns in the table,
+indicating the alignment of the corresponding columns.
+Use \code{"l"}, \code{"r"}, and \code{"c"} to denote left, right, and center alignment, respectively.}
 
 \item{digits}{'integer'.
-Something.}
+Vector of length equal to the number of columns in the table,
+indicating the number of digits to display in the corresponding columns.}
 
 \item{label}{'character'.
-Something.}
+String containing the LaTeX label anchor.}
 
 \item{title}{'character'.
-Something.}
+String containing the table caption.}
 
 \item{headnotes}{'character'.
-Something.}
+String placed below the \code{title} to provide information pertaining to the title,
+to the table as a whole, or to the column headings.}
 
 \item{footnotes}{'character'.
-Something.}
+String placed at the end of the table to provide explanations of individual entries in the table.}
 
 \item{nrec}{'integer'.
 Something.}
 
 \item{hline}{'integer'.
-Something.}
+Vector of numbers between 1 and \code{nrow(d) - 1}, indicating the rows after which
+a horizontal line should appear.}
 
 \item{na}{'character'.
-Something.}
+String to be used for missing values in table entries.}
 
 \item{rm_dup}{'integer'.
 Something.}
 
 \item{landscape}{'logical'.
-Something.
+If true, displays the table page in landscape orientation by conforming PDF viewers.
 This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.}
 }
 \description{
-This function prints the LaTeX code associated with the supplied data frame.
+This function prints the LaTeX code associated with the supplied data table.
 }
 \details{
-Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
-  and \code{\\usepackage{makecell}} in the LaTeX preamble.
+Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
+  \code{\\usepackage{makecell}} in the LaTeX preamble.
 }
 \examples{
 d <- datasets::iris
