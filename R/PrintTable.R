@@ -2,11 +2,10 @@
 #'
 #' This function prints the LaTeX code associated with the supplied data table.
 #'
-#' @param d 'data.frame' or 'matrix'.
-#'   Data table to print.
-#'   Note that row names are not printed.
+#' @param d 'data.frame'.
+#'   Data table to print (row names are excluded).
 #' @param colheadings 'character'.
-#'   Vector of length equal to the number of columns in the table, the column headings.
+#'   Vector of length equal to the number of columns in the table, indicating column headings.
 #' @param align 'character'.
 #'   Vector of length equal to the number of columns in the table,
 #'   indicating the alignment of the corresponding columns.
@@ -41,6 +40,8 @@
 #' @param landscape 'logical'.
 #'   If true, conforming PDF viewers will display the table in landscape orientation.
 #'   This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.
+#' @param ...
+#'   Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.
 #'
 #' @details
 #'   Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
@@ -74,7 +75,7 @@
 #'                            collapse = "\\\\")
 #' hline <- utils::tail(which(!duplicated(d[[1]])), -1) - 1L
 #' PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
-#'            footnotes = footnotes, hline = hline, nrec = c(40, 42), rm_dup = 1)
+#'            footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
 #'
 #' \dontrun{
 #' sink("table-example.tex")
@@ -83,9 +84,12 @@
 #'     "\\usepackage{booktabs}",
 #'     "\\usepackage{makecell}",
 #'     "\\usepackage[pdftex]{lscape}",
+#'     "\\makeatletter",
+#'     "\\setlength{\\@fptop}{0pt}",
+#'     "\\makeatother",
 #'     "\\begin{document}", sep = "\n")
 #' PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
-#'            footnotes = footnotes, hline = hline, nrec = c(40, 42), rm_dup = 1)
+#'            footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
 #' cat("\\clearpage")
 #' PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
 #'            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
@@ -103,9 +107,9 @@
 
 PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
                        title=NULL, headnotes=NULL, footnotes=NULL, nrec=nrow(d),
-                       hline=NULL, na="--", rm_dup=NULL, landscape=FALSE) {
+                       hline=NULL, na="--", rm_dup=NULL, landscape=FALSE, ...) {
 
-  checkmate::qassert(d, c("D+", "M+"))
+  checkmate::assertDataFrame(d, min.rows=1, min.cols=1)
   checkmate::assertCharacter(colheadings, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
   checkmate::assertCharacter(align, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
   checkmate::assertIntegerish(digits, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
@@ -183,7 +187,8 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
           sanitize.text.function=identity,
           add.to.row=add.to.row,
           hline.after=hline.after,
-          NA.string=na)
+          NA.string=na,
+          ...)
 
     if (i > 1 && i == length(n)) cat("\\captionsetup[table]{list=yes}\n")
   }

@@ -7,15 +7,14 @@
 PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
   label = NULL, title = NULL, headnotes = NULL, footnotes = NULL,
   nrec = nrow(d), hline = NULL, na = "--", rm_dup = NULL,
-  landscape = FALSE)
+  landscape = FALSE, ...)
 }
 \arguments{
-\item{d}{'data.frame' or 'matrix'.
-Data table to print.
-Note that row names are not printed.}
+\item{d}{'data.frame'.
+Data table to print (row names are excluded).}
 
 \item{colheadings}{'character'.
-Vector of length equal to the number of columns in the table, the column headings.}
+Vector of length equal to the number of columns in the table, indicating column headings.}
 
 \item{align}{'character'.
 Vector of length equal to the number of columns in the table,
@@ -61,6 +60,8 @@ combining its content with the content from all previous columns in the table.}
 \item{landscape}{'logical'.
 If true, conforming PDF viewers will display the table in landscape orientation.
 This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.}
+
+\item{...}{Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.}
 }
 \value{
 Invisible \code{NULL}
@@ -90,7 +91,7 @@ footnotes <- paste(sprintf("\\\\footnotemark[\%d] Common name is \%s iris.", 1:3
                            collapse = "\\\\\\\\")
 hline <- utils::tail(which(!duplicated(d[[1]])), -1) - 1L
 PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
-           footnotes = footnotes, hline = hline, nrec = c(40, 42), rm_dup = 1)
+           footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
 
 \dontrun{
 sink("table-example.tex")
@@ -99,9 +100,12 @@ cat("\\\\documentclass{article}",
     "\\\\usepackage{booktabs}",
     "\\\\usepackage{makecell}",
     "\\\\usepackage[pdftex]{lscape}",
+    "\\\\makeatletter",
+    "\\\\setlength{\\\\@fptop}{0pt}",
+    "\\\\makeatother",
     "\\\\begin{document}", sep = "\\n")
 PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
-           footnotes = footnotes, hline = hline, nrec = c(40, 42), rm_dup = 1)
+           footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
 cat("\\\\clearpage")
 PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
