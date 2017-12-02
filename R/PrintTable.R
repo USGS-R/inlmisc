@@ -2,8 +2,9 @@
 #'
 #' This function prints the LaTeX code associated with the supplied data table.
 #'
-#' @param d 'data.frame'.
+#' @param d 'data.frame' or 'matrix'.
 #'   Data table to print.
+#'   Note that row names are not printed.
 #' @param colheadings 'character'.
 #'   Vector of length equal to the number of columns in the table, the column headings.
 #' @param align 'character'.
@@ -68,13 +69,12 @@
 #' headnotes <- "\\textbf{Species of Iris}: inlcudes setosa, versicolor, and virginica.
 #'               \\textbf{Abbreviations}: cm, centimeters"
 #' levels(d[[1]]) <- sprintf("%s\\footnotemark[%d]", levels(d[[1]]), 1:3)
-#' footnotes <- paste(sprintf("\\footnotemark[%d] Common name: %s", 1:3,
-#'                            c("wild flag", "blue flag", "virginia")),
+#' footnotes <- paste(sprintf("\\footnotemark[%d] Common name is %s iris.", 1:3,
+#'                            c("Wild Flag", "Blue Flag", "Virginia")),
 #'                            collapse = "\\\\")
 #' hline <- utils::tail(which(!duplicated(d[[1]])), -1) - 1L
-#' PrintTable(d, colheadings, align, digits, title = title,
-#'            headnotes = headnotes, footnotes = footnotes,
-#'            hline = hline, nrec = c(40L, 42L), rm_dup = 1L)
+#' PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
+#'            footnotes = footnotes, hline = hline, nrec = c(40, 42), rm_dup = 1)
 #'
 #' \dontrun{
 #' sink("table-example.tex")
@@ -82,13 +82,19 @@
 #'     "\\usepackage[labelsep=period, labelfont=bf]{caption}",
 #'     "\\usepackage{booktabs}",
 #'     "\\usepackage{makecell}",
+#'     "\\usepackage[pdftex]{lscape}",
 #'     "\\begin{document}", sep = "\n")
-#' PrintTable(d, colheadings, align, digits, title = title,
-#'            headnotes = headnotes, footnotes = footnotes,
-#'            hline = hline, nrec = c(40L, 42L), rm_dup = 1L)
+#' PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
+#'            footnotes = footnotes, hline = hline, nrec = c(40, 42), rm_dup = 1)
+#' cat("\\clearpage")
+#' PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
+#'            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
+#' cat("\\clearpage")
+#' PrintTable(cbind("type" = rownames(datasets::mtcars), datasets::mtcars),
+#'            title = "Motor trend car road tests.", landscape = TRUE)
 #' cat("\\end{document}")
 #' sink()
-#' tools::texi2dvi("table-example.tex", pdf = TRUE, clean = TRUE)
+#' tools::texi2pdf("table-example.tex", clean = TRUE)
 #' system("open table-example.pdf")
 #'
 #' file.remove("table-example.tex", "table-example.pdf")
@@ -99,7 +105,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
                        title=NULL, headnotes=NULL, footnotes=NULL, nrec=nrow(d),
                        hline=NULL, na="--", rm_dup=NULL, landscape=FALSE) {
 
-  checkmate::assertDataFrame(d, min.rows=1, min.cols=1)
+  checkmate::qassert(d, c("D+", "M+"))
   checkmate::assertCharacter(colheadings, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
   checkmate::assertCharacter(align, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
   checkmate::assertIntegerish(digits, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
@@ -113,8 +119,10 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
   checkmate::assertInt(rm_dup, lower=1, upper=ncol(d), null.ok=TRUE)
   checkmate::assertFlag(landscape)
 
-  if (!is.null(colheadings))
-    colnames(d) <- sprintf("{\\normalfont\\bfseries\\sffamily \\makecell{%s}}", colheadings)
+  d <- data.frame(d)
+
+  if (is.null(colheadings)) colheadings <- colnames(d)
+  colnames(d) <- sprintf("{\\normalfont\\bfseries\\sffamily \\makecell{%s}}", colheadings)
 
   cap1 <- strwrap(title, width=.Machine$integer.max)
   cap2 <- strwrap(headnotes, width=.Machine$integer.max)
