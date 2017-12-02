@@ -93,7 +93,7 @@
 #' PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
 #'            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
 #' cat("\\clearpage\n")
-#' PrintTable(cbind("type" = rownames(datasets::mtcars), datasets::mtcars),
+#' PrintTable(cbind(type = rownames(datasets::mtcars), datasets::mtcars),
 #'            title = "Motor trend car road tests.", landscape = TRUE)
 #' cat("\\end{document}\n")
 #' sink()
