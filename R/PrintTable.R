@@ -71,8 +71,7 @@
 #'               \\textbf{Abbreviations}: cm, centimeters"
 #' levels(d[[1]]) <- sprintf("%s\\footnotemark[%d]", levels(d[[1]]), 1:3)
 #' footnotes <- paste(sprintf("\\footnotemark[%d] Common name is %s iris.", 1:3,
-#'                            c("Wild Flag", "Blue Flag", "Virginia")),
-#'                            collapse = "\\\\")
+#'                            c("Wild Flag", "Blue Flag", "Virginia")), collapse = "\\\\")
 #' hline <- utils::tail(which(!duplicated(d[[1]])), -1) - 1L
 #' PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
 #'            footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
@@ -90,13 +89,13 @@
 #'     "\\begin{document}", sep = "\n")
 #' PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
 #'            footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
-#' cat("\\clearpage")
+#' cat("\\clearpage\n")
 #' PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
 #'            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
-#' cat("\\clearpage")
+#' cat("\\clearpage\n")
 #' PrintTable(cbind("type" = rownames(datasets::mtcars), datasets::mtcars),
 #'            title = "Motor trend car road tests.", landscape = TRUE)
-#' cat("\\end{document}")
+#' cat("\\end{document}\n")
 #' sink()
 #' tools::texi2pdf("table-example.tex", clean = TRUE)
 #' system("open table-example.pdf")
