@@ -64,13 +64,16 @@ combining its content with the content from all previous columns in the table.}
 If true, conforming PDF viewers will display the table in landscape orientation.
 This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.}
 
-\item{...}{Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.}
+\item{...}{Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.
+Use with care, many of its arguments are already included.}
 }
 \value{
 Invisible \code{NULL}
 }
 \description{
 This function prints the LaTeX code associated with the supplied data table.
+The applied output format attempts to adhere to the design recommendations
+for tables in United States Geological Survey (USGS) publications.
 }
 \details{
 Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and

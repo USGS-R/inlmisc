@@ -1,6 +1,8 @@
 #' Print as LaTeX Table
 #'
 #' This function prints the LaTeX code associated with the supplied data table.
+#' The applied output format attempts to adhere to the design recommendations
+#' for tables in United States Geological Survey (USGS) publications.
 #'
 #' @param d 'data.frame'.
 #'   Data table to print (row names are excluded).
@@ -45,6 +47,7 @@
 #'   This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.
 #' @param ...
 #'   Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.
+#'   Use with care, many of its arguments are already included.
 #'
 #' @details
 #'   Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
@@ -178,15 +181,19 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     }
 
     print(x=tbl,
-          include.rownames=FALSE,
+          type="latex",
           caption.placement="top",
-          booktabs=TRUE,
-          sanitize.colnames.function=function(x){x},
           size="\\small",
-          sanitize.text.function=identity,
-          add.to.row=add.to.row,
           hline.after=hline.after,
           NA.string=na,
+          include.rownames=FALSE,
+          add.to.row=add.to.row,
+          sanitize.text.function=identity,
+          sanitize.colnames.function=function(x){x},
+          math.style.exponents=TRUE,
+          format.args=list(big.mark=","),
+          booktabs=TRUE,
+          comment=FALSE,
           ...)
 
     if (i > 1 && i == length(n)) cat("\\captionsetup[table]{list=yes}\n")
