@@ -27,7 +27,10 @@ Vector of length equal to the number of columns in the table,
 indicating the number of digits to display in the corresponding columns.}
 
 \item{label}{'character'.
-String containing the LaTeX label anchor.}
+String containing the LaTeX label anchor.
+Specifying this argument allows you to easily reference the table within the LaTeX document.
+For example, when \code{label = "id"}, use \code{\\ref\{id\}}
+to reference the table within a sentence.}
 
 \item{title}{'character'.
 String containing the table caption.}
@@ -112,7 +115,7 @@ PrintTable(cbind(type = rownames(datasets::mtcars), datasets::mtcars),
            title = "Motor trend car road tests.", landscape = TRUE)
 cat("\\\\end{document}\\n")
 sink()
-tools::texi2pdf("table-example.tex", clean = TRUE)
+tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation
 system("open table-example.pdf")
 
 file.remove("table-example.tex", "table-example.pdf")

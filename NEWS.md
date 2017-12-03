@@ -1,5 +1,7 @@
 # inlmisc 0.3.5.9000
 
+- Remove `AddCertificate` function, no longer needed with new version of R (3.4.3).
+
 - Add `PrintTable` function, used to print the LaTeX code associated with a `data.frame` object.
 
 - In `AddColorKey` function, replace `scientific` argument with `scipen`, see `getOption("scipen")` command.

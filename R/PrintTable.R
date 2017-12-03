@@ -16,6 +16,9 @@
 #'   indicating the number of digits to display in the corresponding columns.
 #' @param label 'character'.
 #'   String containing the LaTeX label anchor.
+#'   Specifying this argument allows you to easily reference the table within the LaTeX document.
+#'   For example, when \code{label = "id"}, use \code{\\ref\{id\}}
+#'   to reference the table within a sentence.
 #' @param title 'character'.
 #'   String containing the table caption.
 #' @param headnotes 'character'.
@@ -96,7 +99,7 @@
 #'            title = "Motor trend car road tests.", landscape = TRUE)
 #' cat("\\end{document}\n")
 #' sink()
-#' tools::texi2pdf("table-example.tex", clean = TRUE)
+#' tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation
 #' system("open table-example.pdf")
 #'
 #' file.remove("table-example.tex", "table-example.pdf")
