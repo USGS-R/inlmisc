@@ -58,8 +58,7 @@
 #' @export
 #'
 #' @examples
-#' d <- datasets::iris
-#' d <- d[, c("Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")]
+#' d <- datasets::iris[, c(5, 1:4)]
 #' colheadings <- c("Species of Iris",
 #'                  "Sepal length \\\\ (cm)", "Sepal width \\\\ (cm)",
 #'                  "Petal length \\\\ (cm)", "Petal width \\\\ (cm)")

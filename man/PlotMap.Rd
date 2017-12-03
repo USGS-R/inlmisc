@@ -166,7 +166,7 @@ see \code{\link{Grid2Polygons}} function for details.
 If \code{simplify > 0} the geometry of the spatial polygons is generalized using the
 Douglas-Peucker algorithm (Douglas and Peucker, 1961);
 and \code{simplify} is the numerical tolerance value to be used by the algorithm.
-See \code{\link[rgeos]{gSimplify}} function for additional information.}
+See \code{gSimplify} function for additional information.}
 }
 \value{
 Used for the side-effect of a new plot generated.
