@@ -121,8 +121,6 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
   checkmate::assertInt(rm_dup, lower=1, upper=ncol(d), null.ok=TRUE)
   checkmate::assertFlag(landscape)
 
-  d <- data.frame(d)
-
   if (is.null(colheadings)) colheadings <- colnames(d)
   colnames(d) <- sprintf("{\\normalfont\\bfseries\\sffamily \\makecell{%s}}", colheadings)
 
