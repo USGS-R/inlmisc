@@ -7,14 +7,14 @@
 PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
   label = NULL, title = NULL, headnotes = NULL, footnotes = NULL,
   nrec = nrow(d), hline = NULL, na = "--", rm_dup = NULL,
-  landscape = FALSE)
+  landscape = FALSE, ...)
 }
 \arguments{
 \item{d}{'data.frame'.
-Data table to print.}
+Data table to print (row names are excluded).}
 
 \item{colheadings}{'character'.
-Vector of length equal to the number of columns in the table, the column headings.}
+Vector of length equal to the number of columns in the table, indicating column headings.}
 
 \item{align}{'character'.
 Vector of length equal to the number of columns in the table,
@@ -27,7 +27,10 @@ Vector of length equal to the number of columns in the table,
 indicating the number of digits to display in the corresponding columns.}
 
 \item{label}{'character'.
-String containing the LaTeX label anchor.}
+String containing the LaTeX label anchor.
+Specifying this argument allows you to easily reference the table within the LaTeX document.
+For example, when \code{label = "id"}, use \code{\\ref\{id\}}
+to reference the table within a sentence.}
 
 \item{title}{'character'.
 String containing the table caption.}
@@ -60,6 +63,8 @@ combining its content with the content from all previous columns in the table.}
 \item{landscape}{'logical'.
 If true, conforming PDF viewers will display the table in landscape orientation.
 This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.}
+
+\item{...}{Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.}
 }
 \value{
 Invisible \code{NULL}
@@ -72,8 +77,7 @@ Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
   \code{\\usepackage{makecell}} in the LaTeX preamble.
 }
 \examples{
-d <- datasets::iris
-d <- d[, c("Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")]
+d <- datasets::iris[, c(5, 1:4)]
 colheadings <- c("Species of Iris",
                  "Sepal length \\\\\\\\ (cm)", "Sepal width \\\\\\\\ (cm)",
                  "Petal length \\\\\\\\ (cm)", "Petal width \\\\\\\\ (cm)")
@@ -84,13 +88,11 @@ title <- "Measurements of sepal length and width and petal length and width,
 headnotes <- "\\\\textbf{Species of Iris}: inlcudes setosa, versicolor, and virginica.
               \\\\textbf{Abbreviations}: cm, centimeters"
 levels(d[[1]]) <- sprintf("\%s\\\\footnotemark[\%d]", levels(d[[1]]), 1:3)
-footnotes <- paste(sprintf("\\\\footnotemark[\%d] Common name: \%s", 1:3,
-                           c("wild flag", "blue flag", "virginia")),
-                           collapse = "\\\\\\\\")
+footnotes <- paste(sprintf("\\\\footnotemark[\%d] Common name is \%s iris.", 1:3,
+                           c("Wild Flag", "Blue Flag", "Virginia")), collapse = "\\\\\\\\")
 hline <- utils::tail(which(!duplicated(d[[1]])), -1) - 1L
-PrintTable(d, colheadings, align, digits, title = title,
-           headnotes = headnotes, footnotes = footnotes,
-           hline = hline, nrec = c(40L, 42L), rm_dup = 1L)
+PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
+           footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
 
 \dontrun{
 sink("table-example.tex")
@@ -98,13 +100,22 @@ cat("\\\\documentclass{article}",
     "\\\\usepackage[labelsep=period, labelfont=bf]{caption}",
     "\\\\usepackage{booktabs}",
     "\\\\usepackage{makecell}",
+    "\\\\usepackage[pdftex]{lscape}",
+    "\\\\makeatletter",
+    "\\\\setlength{\\\\@fptop}{0pt}",
+    "\\\\makeatother",
     "\\\\begin{document}", sep = "\\n")
-PrintTable(d, colheadings, align, digits, title = title,
-           headnotes = headnotes, footnotes = footnotes,
-           hline = hline, nrec = c(40L, 42L), rm_dup = 1L)
-cat("\\\\end{document}")
+PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
+           footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
+cat("\\\\clearpage\\n")
+PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
+           title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
+cat("\\\\clearpage\\n")
+PrintTable(cbind(type = rownames(datasets::mtcars), datasets::mtcars),
+           title = "Motor trend car road tests.", landscape = TRUE)
+cat("\\\\end{document}\\n")
 sink()
-tools::texi2dvi("table-example.tex", pdf = TRUE, clean = TRUE)
+tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation
 system("open table-example.pdf")
 
 file.remove("table-example.tex", "table-example.pdf")

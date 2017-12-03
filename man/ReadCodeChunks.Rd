@@ -20,7 +20,7 @@ Returns a 'list' object of length equal to the number of code chunks in \code{pa
 This function reads \bold{knitr} code chunks into the current session.
 }
 \details{
-If the source document is \file{.Rnw} or \file{.Rmd} the \code{\link[knitr]{purl}} function is used to extract the R code.
+If the source document is \file{.Rnw} or \file{.Rmd} the \code{purl} function is used to extract the R code.
   The R code is read into the current session using a chunk separator of the from \code{## ---- chunk-name}
   (at least four dashes before the chunk name) in the script.
   Unnamed chunks (that is, \code{chunk-name} is missing) will be assigned
