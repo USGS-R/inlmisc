@@ -37,6 +37,8 @@
 #'   a horizontal line should appear.
 #' @param na 'character'.
 #'   String to be used for missing values in table entries.
+#' @param include.rownames 'logical'.
+#'   Whether to print row names.
 #' @param rm_dup 'integer'.
 #'   End value of a sequence of column indexes \code{(1:rm_dup)}.
 #'   Duplicate values contained in these columns will be set equal to an empty string.
@@ -98,8 +100,8 @@
 #' PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
 #'            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
 #' cat("\\clearpage\n")
-#' PrintTable(cbind(type = rownames(datasets::mtcars), datasets::mtcars),
-#'            title = "Motor trend car road tests.", landscape = TRUE)
+#' PrintTable(datasets::mtcars, title = "Motor trend car road tests.",
+#'            include.rownames = TRUE, landscape = TRUE)
 #' cat("\\end{document}\n")
 #' sink()
 #' tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation
@@ -111,7 +113,8 @@
 
 PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
                        title=NULL, headnotes=NULL, footnotes=NULL, nrec=nrow(d),
-                       hline=NULL, na="--", rm_dup=NULL, landscape=FALSE, ...) {
+                       hline=NULL, na="--", include.rownames=FALSE,
+                       rm_dup=NULL, landscape=FALSE, ...) {
 
   checkmate::assertDataFrame(d, min.rows=1, min.cols=1)
   checkmate::assertCharacter(colheadings, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
@@ -124,6 +127,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
   checkmate::assertIntegerish(nrec, lower=1, any.missing=FALSE, min.len=1, max.len=2)
   checkmate::assertIntegerish(hline, lower=1, upper=nrow(d) - 1, any.missing=FALSE, null.ok=TRUE)
   checkmate::assertString(na, null.ok=TRUE)
+  checkmate::assertFlag(include.rownames)
   checkmate::assertInt(rm_dup, lower=1, upper=ncol(d), null.ok=TRUE)
   checkmate::assertFlag(landscape)
 
@@ -167,12 +171,15 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     tbl <- xtable::xtable(tbl)
     xtable::caption(tbl) <- caption
     if (length(caption) > 0) xtable::label(tbl) <- label
-    if (!is.null(align)) xtable::align(tbl) <- c("l", align)
-    if (!is.null(digits)) xtable::digits(tbl) <- c(0L, digits)
+
+    row_names <- utils::type.convert(rownames(d))
+    row_align <- ifelse(is.numeric(row_names), "r", "l")
+    row_digits <- ifelse(is.double(row_names), format.info(row_names)[2], 0L)
+    if (!is.null(align)) xtable::align(tbl) <- c(row_align, align)
+    if (!is.null(digits)) xtable::digits(tbl) <- c(row_digits, digits)
+
     add.to.row <- NULL
-
     hline.after <- sort(unique(stats::na.omit(c(-1L, 0L, match(c(hline, nrow(d)), idxs)))))
-
     if (!is.null(footnotes) && i == length(n)) {
       fmt <- "\\midrule\n\\multicolumn{%s}{l}{\\makecell[l]{%s}}\\\\"
       cmd <- sprintf(fmt, ncol(tbl), footnotes)
@@ -186,7 +193,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
           size="\\small",
           hline.after=hline.after,
           NA.string=na,
-          include.rownames=FALSE,
+          include.rownames=include.rownames,
           add.to.row=add.to.row,
           sanitize.text.function=identity,
           sanitize.colnames.function=function(x){x},

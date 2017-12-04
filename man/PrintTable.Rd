@@ -6,8 +6,8 @@
 \usage{
 PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
   label = NULL, title = NULL, headnotes = NULL, footnotes = NULL,
-  nrec = nrow(d), hline = NULL, na = "--", rm_dup = NULL,
-  landscape = FALSE, ...)
+  nrec = nrow(d), hline = NULL, na = "--", include.rownames = FALSE,
+  rm_dup = NULL, landscape = FALSE, ...)
 }
 \arguments{
 \item{d}{'data.frame'.
@@ -53,6 +53,9 @@ a horizontal line should appear.}
 
 \item{na}{'character'.
 String to be used for missing values in table entries.}
+
+\item{include.rownames}{'logical'.
+Whether to print row names.}
 
 \item{rm_dup}{'integer'.
 End value of a sequence of column indexes \code{(1:rm_dup)}.
@@ -114,8 +117,8 @@ cat("\\\\clearpage\\n")
 PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
 cat("\\\\clearpage\\n")
-PrintTable(cbind(type = rownames(datasets::mtcars), datasets::mtcars),
-           title = "Motor trend car road tests.", landscape = TRUE)
+PrintTable(datasets::mtcars, title = "Motor trend car road tests.",
+           include.rownames = TRUE, landscape = TRUE)
 cat("\\\\end{document}\\n")
 sink()
 tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation
