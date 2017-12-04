@@ -11,10 +11,11 @@ PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
 }
 \arguments{
 \item{d}{'data.frame'.
-Data table to print (row names are excluded).}
+Data table to print.}
 
 \item{colheadings}{'character'.
-Vector of length equal to the number of columns in the table, indicating column headings.}
+Vector of length equal to the number of columns in the table, indicating column headings.
+Use \code{\\\\\\\\} to indicate a line break.}
 
 \item{align}{'character'.
 Vector of length equal to the number of columns in the table,
@@ -64,13 +65,16 @@ combining its content with the content from all previous columns in the table.}
 If true, conforming PDF viewers will display the table in landscape orientation.
 This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.}
 
-\item{...}{Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.}
+\item{...}{Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.
+The arguments \code{type}, \code{hline.after} and \code{add.to.row} should not be included.}
 }
 \value{
 Invisible \code{NULL}
 }
 \description{
 This function prints the LaTeX code associated with the supplied data table.
+The applied output format attempts to adhere to the design recommendations
+for tables in United States Geological Survey (USGS) publications.
 }
 \details{
 Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
@@ -85,7 +89,7 @@ align <- c("l", "c", "c", "c", "c")
 digits <- c(0, 1, 1, 1, 1)
 title <- "Measurements of sepal length and width and petal length and width,
           for three species of Iris flower."
-headnotes <- "\\\\textbf{Species of Iris}: inlcudes setosa, versicolor, and virginica.
+headnotes <- "\\\\textbf{Species of Iris}: includes setosa, versicolor, and virginica.
               \\\\textbf{Abbreviations}: cm, centimeters"
 levels(d[[1]]) <- sprintf("\%s\\\\footnotemark[\%d]", levels(d[[1]]), 1:3)
 footnotes <- paste(sprintf("\\\\footnotemark[\%d] Common name is \%s iris.", 1:3,
@@ -97,7 +101,7 @@ PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
 \dontrun{
 sink("table-example.tex")
 cat("\\\\documentclass{article}",
-    "\\\\usepackage[labelsep=period, labelfont=bf]{caption}",
+    "\\\\usepackage[labelsep=period,labelfont=bf]{caption}",
     "\\\\usepackage{booktabs}",
     "\\\\usepackage{makecell}",
     "\\\\usepackage[pdftex]{lscape}",
@@ -111,8 +115,8 @@ cat("\\\\clearpage\\n")
 PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
 cat("\\\\clearpage\\n")
-PrintTable(cbind(type = rownames(datasets::mtcars), datasets::mtcars),
-           title = "Motor trend car road tests.", landscape = TRUE)
+PrintTable(datasets::mtcars, title = "Motor trend car road tests.",
+           landscape = TRUE, include.rownames = TRUE)
 cat("\\\\end{document}\\n")
 sink()
 tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation

@@ -1,11 +1,14 @@
 #' Print as LaTeX Table
 #'
 #' This function prints the LaTeX code associated with the supplied data table.
+#' The applied output format attempts to adhere to the design recommendations
+#' for tables in United States Geological Survey (USGS) publications.
 #'
 #' @param d 'data.frame'.
-#'   Data table to print (row names are excluded).
+#'   Data table to print.
 #' @param colheadings 'character'.
 #'   Vector of length equal to the number of columns in the table, indicating column headings.
+#'   Use \code{\\\\\\\\} to indicate a line break.
 #' @param align 'character'.
 #'   Vector of length equal to the number of columns in the table,
 #'   indicating the alignment of the corresponding columns.
@@ -45,6 +48,7 @@
 #'   This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.
 #' @param ...
 #'   Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.
+#'   The arguments \code{type}, \code{hline.after} and \code{add.to.row} should not be included.
 #'
 #' @details
 #'   Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
@@ -69,7 +73,7 @@
 #' digits <- c(0, 1, 1, 1, 1)
 #' title <- "Measurements of sepal length and width and petal length and width,
 #'           for three species of Iris flower."
-#' headnotes <- "\\textbf{Species of Iris}: inlcudes setosa, versicolor, and virginica.
+#' headnotes <- "\\textbf{Species of Iris}: includes setosa, versicolor, and virginica.
 #'               \\textbf{Abbreviations}: cm, centimeters"
 #' levels(d[[1]]) <- sprintf("%s\\footnotemark[%d]", levels(d[[1]]), 1:3)
 #' footnotes <- paste(sprintf("\\footnotemark[%d] Common name is %s iris.", 1:3,
@@ -81,7 +85,7 @@
 #' \dontrun{
 #' sink("table-example.tex")
 #' cat("\\documentclass{article}",
-#'     "\\usepackage[labelsep=period, labelfont=bf]{caption}",
+#'     "\\usepackage[labelsep=period,labelfont=bf]{caption}",
 #'     "\\usepackage{booktabs}",
 #'     "\\usepackage{makecell}",
 #'     "\\usepackage[pdftex]{lscape}",
@@ -95,8 +99,8 @@
 #' PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
 #'            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
 #' cat("\\clearpage\n")
-#' PrintTable(cbind(type = rownames(datasets::mtcars), datasets::mtcars),
-#'            title = "Motor trend car road tests.", landscape = TRUE)
+#' PrintTable(datasets::mtcars, title = "Motor trend car road tests.",
+#'            landscape = TRUE, include.rownames = TRUE)
 #' cat("\\end{document}\n")
 #' sink()
 #' tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation
@@ -144,6 +148,18 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     on.exit(cat("\\end{landscape}\n"))
   }
 
+  Print <- xtable::print.xtable
+  formals(Print)$caption.placement <- "top"
+  formals(Print)$size <- "\\small"
+  formals(Print)$NA.string <- na
+  formals(Print)$sanitize.text.function <- identity
+  formals(Print)$sanitize.colnames.function <- function(x){x}
+  formals(Print)$include.rownames <- FALSE
+  formals(Print)$math.style.exponents <- TRUE
+  formals(Print)$format.args <- list(big.mark=",")
+  formals(Print)$booktabs <- TRUE
+  formals(Print)$comment <- FALSE
+
   for (i in seq_along(n)) {
     if (i == 2) cat("\\captionsetup[table]{list=no}\n")
     if (i == 1){
@@ -164,12 +180,15 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     tbl <- xtable::xtable(tbl)
     xtable::caption(tbl) <- caption
     if (length(caption) > 0) xtable::label(tbl) <- label
-    if (!is.null(align)) xtable::align(tbl) <- c("l", align)
-    if (!is.null(digits)) xtable::digits(tbl) <- c(0L, digits)
+
+    row_names <- utils::type.convert(rownames(d))
+    row_align <- ifelse(is.numeric(row_names), "r", "l")
+    row_digits <- ifelse(is.double(row_names), format.info(row_names)[2], 0L)
+    if (!is.null(align)) xtable::align(tbl) <- c(row_align, align)
+    if (!is.null(digits)) xtable::digits(tbl) <- c(row_digits, digits)
+
     add.to.row <- NULL
-
     hline.after <- sort(unique(stats::na.omit(c(-1L, 0L, match(c(hline, nrow(d)), idxs)))))
-
     if (!is.null(footnotes) && i == length(n)) {
       fmt <- "\\midrule\n\\multicolumn{%s}{l}{\\makecell[l]{%s}}\\\\"
       cmd <- sprintf(fmt, ncol(tbl), footnotes)
@@ -177,17 +196,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
       hline.after <- utils::head(hline.after, -1)
     }
 
-    print(x=tbl,
-          include.rownames=FALSE,
-          caption.placement="top",
-          booktabs=TRUE,
-          sanitize.colnames.function=function(x){x},
-          size="\\small",
-          sanitize.text.function=identity,
-          add.to.row=add.to.row,
-          hline.after=hline.after,
-          NA.string=na,
-          ...)
+    Print(x=tbl, type="latex", hline.after=hline.after, add.to.row=add.to.row, ...)
 
     if (i > 1 && i == length(n)) cat("\\captionsetup[table]{list=yes}\n")
   }
