@@ -5,9 +5,10 @@
 #' for tables in United States Geological Survey (USGS) publications.
 #'
 #' @param d 'data.frame'.
-#'   Data table to print (row names are excluded).
+#'   Data table to print.
 #' @param colheadings 'character'.
 #'   Vector of length equal to the number of columns in the table, indicating column headings.
+#'   Use \code{\\\\\\\\} to indicate a line break.
 #' @param align 'character'.
 #'   Vector of length equal to the number of columns in the table,
 #'   indicating the alignment of the corresponding columns.
@@ -37,8 +38,6 @@
 #'   a horizontal line should appear.
 #' @param na 'character'.
 #'   String to be used for missing values in table entries.
-#' @param include.rownames 'logical'.
-#'   Whether to print row names.
 #' @param rm_dup 'integer'.
 #'   End value of a sequence of column indexes \code{(1:rm_dup)}.
 #'   Duplicate values contained in these columns will be set equal to an empty string.
@@ -49,7 +48,7 @@
 #'   This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.
 #' @param ...
 #'   Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.
-#'   Use with care, many of its arguments are already included.
+#'   The arguments \code{type}, \code{hline.after} and \code{add.to.row} should not be included.
 #'
 #' @details
 #'   Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
@@ -101,7 +100,7 @@
 #'            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
 #' cat("\\clearpage\n")
 #' PrintTable(datasets::mtcars, title = "Motor trend car road tests.",
-#'            include.rownames = TRUE, landscape = TRUE)
+#'            landscape = TRUE, include.rownames = TRUE)
 #' cat("\\end{document}\n")
 #' sink()
 #' tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation
@@ -113,8 +112,7 @@
 
 PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
                        title=NULL, headnotes=NULL, footnotes=NULL, nrec=nrow(d),
-                       hline=NULL, na="--", include.rownames=FALSE,
-                       rm_dup=NULL, landscape=FALSE, ...) {
+                       hline=NULL, na="--", rm_dup=NULL, landscape=FALSE, ...) {
 
   checkmate::assertDataFrame(d, min.rows=1, min.cols=1)
   checkmate::assertCharacter(colheadings, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
@@ -127,7 +125,6 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
   checkmate::assertIntegerish(nrec, lower=1, any.missing=FALSE, min.len=1, max.len=2)
   checkmate::assertIntegerish(hline, lower=1, upper=nrow(d) - 1, any.missing=FALSE, null.ok=TRUE)
   checkmate::assertString(na, null.ok=TRUE)
-  checkmate::assertFlag(include.rownames)
   checkmate::assertInt(rm_dup, lower=1, upper=ncol(d), null.ok=TRUE)
   checkmate::assertFlag(landscape)
 
@@ -150,6 +147,18 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     cat("\\begin{landscape}\n")
     on.exit(cat("\\end{landscape}\n"))
   }
+
+  Print <- xtable::print.xtable
+  formals(Print)$caption.placement <- "top"
+  formals(Print)$size <- "\\small"
+  formals(Print)$NA.string <- na
+  formals(Print)$sanitize.text.function <- identity
+  formals(Print)$sanitize.colnames.function <- function(x){x}
+  formals(Print)$include.rownames <- FALSE
+  formals(Print)$math.style.exponents <- TRUE
+  formals(Print)$format.args <- list(big.mark=",")
+  formals(Print)$booktabs <- TRUE
+  formals(Print)$comment <- FALSE
 
   for (i in seq_along(n)) {
     if (i == 2) cat("\\captionsetup[table]{list=no}\n")
@@ -187,21 +196,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
       hline.after <- utils::head(hline.after, -1)
     }
 
-    print(x=tbl,
-          type="latex",
-          caption.placement="top",
-          size="\\small",
-          hline.after=hline.after,
-          NA.string=na,
-          include.rownames=include.rownames,
-          add.to.row=add.to.row,
-          sanitize.text.function=identity,
-          sanitize.colnames.function=function(x){x},
-          math.style.exponents=TRUE,
-          format.args=list(big.mark=","),
-          booktabs=TRUE,
-          comment=FALSE,
-          ...)
+    Print(x=tbl, type="latex", hline.after=hline.after, add.to.row=add.to.row, ...)
 
     if (i > 1 && i == length(n)) cat("\\captionsetup[table]{list=yes}\n")
   }

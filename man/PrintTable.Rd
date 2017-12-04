@@ -6,15 +6,16 @@
 \usage{
 PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
   label = NULL, title = NULL, headnotes = NULL, footnotes = NULL,
-  nrec = nrow(d), hline = NULL, na = "--", include.rownames = FALSE,
-  rm_dup = NULL, landscape = FALSE, ...)
+  nrec = nrow(d), hline = NULL, na = "--", rm_dup = NULL,
+  landscape = FALSE, ...)
 }
 \arguments{
 \item{d}{'data.frame'.
-Data table to print (row names are excluded).}
+Data table to print.}
 
 \item{colheadings}{'character'.
-Vector of length equal to the number of columns in the table, indicating column headings.}
+Vector of length equal to the number of columns in the table, indicating column headings.
+Use \code{\\\\\\\\} to indicate a line break.}
 
 \item{align}{'character'.
 Vector of length equal to the number of columns in the table,
@@ -54,9 +55,6 @@ a horizontal line should appear.}
 \item{na}{'character'.
 String to be used for missing values in table entries.}
 
-\item{include.rownames}{'logical'.
-Whether to print row names.}
-
 \item{rm_dup}{'integer'.
 End value of a sequence of column indexes \code{(1:rm_dup)}.
 Duplicate values contained in these columns will be set equal to an empty string.
@@ -68,7 +66,7 @@ If true, conforming PDF viewers will display the table in landscape orientation.
 This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.}
 
 \item{...}{Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.
-Use with care, many of its arguments are already included.}
+The arguments \code{type}, \code{hline.after} and \code{add.to.row} should not be included.}
 }
 \value{
 Invisible \code{NULL}
@@ -118,7 +116,7 @@ PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
 cat("\\\\clearpage\\n")
 PrintTable(datasets::mtcars, title = "Motor trend car road tests.",
-           include.rownames = TRUE, landscape = TRUE)
+           landscape = TRUE, include.rownames = TRUE)
 cat("\\\\end{document}\\n")
 sink()
 tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation
