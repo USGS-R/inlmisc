@@ -144,7 +144,6 @@
 #'
 #' @import sp
 #' @import rgdal
-#' @import raster
 #'
 #' @export
 #'
@@ -211,22 +210,22 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (inherits(r, c("RasterStack", "RasterBrick", "SpatialGrid", "SpatialPixelsDataFrame"))) {
-    r <- raster(r, layer=layer)
+    r <- raster::raster(r, layer=layer)
   } else if (inherits(r, "CRS")) {
     is.lim <- !is.null(xlim) && !is.null(ylim)
     if (!is.lim && is.null(bg.image)) stop("spatial limits must be specified")
-    e <- extent(if (is.lim) c(xlim, ylim) else bg.image)
-    r <- raster(e, crs=r)
+    e <- raster::extent(if (is.lim) c(xlim, ylim) else bg.image)
+    r <- raster::raster(e, crs=r)
     r[] <- NA
   }
   if (!inherits(r, "RasterLayer")) {
-    r <- raster(r)
+    r <- raster::raster(r)
     r[] <- NA
   }
 
   if (is.null(asp) && !is.na(rgdal::CRSargs(raster::crs(r)))) asp <- 1
 
-  is.dms <- dms.tick && !is.na(CRSargs(r@crs))
+  is.dms <- dms.tick && !is.na(rgdal::CRSargs(r@crs))
 
   if (raster::is.factor(r)) {
     att.tbl <- raster::levels(r)[[1]]
@@ -247,12 +246,12 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   xl <- if (is.null(xlim)) c(NA, NA) else xlim
   yl <- if (is.null(ylim)) c(NA, NA) else ylim
   zl <- if (is.null(zlim)) c(NA, NA) else zlim
-  e <- as.vector(extent(r))
+  e <- as.vector(raster::extent(r))
   if (!is.na(xl[1])) e[1] <- xl[1]
   if (!is.na(xl[2])) e[2] <- xl[2]
   if (!is.na(yl[1])) e[3] <- yl[1]
   if (!is.na(yl[2])) e[4] <- yl[2]
-  r <- crop(r, extent(e), snap="near")
+  r <- raster::crop(r, raster::extent(e), snap="near")
 
   if (all(is.na(r[]))) {
     n <- 0
@@ -286,7 +285,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     r[r[] < zl[1] | r[] > zl[2]] <- NA
   }
 
-  if (!all(is.na(r[]))) r <- trim(r)
+  if (!all(is.na(r[]))) r <- raster::trim(r)
   xran <- bbox(r)[1, ]
   yran <- bbox(r)[2, ]
   if (extend.xy) {
@@ -467,7 +466,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (!is.null(bg.image)) {
-    bg.image <- crop(bg.image, extent(graphics::par("usr")), snap="out")
+    bg.image <- raster::crop(bg.image, raster::extent(graphics::par("usr")), snap="out")
     if (!is.null(bg.image))
       raster::image(bg.image, maxpixels=length(bg.image), useRaster=TRUE,
                     col=grDevices::grey(0:255 / 255, alpha=bg.image.alpha), add=TRUE)
@@ -497,8 +496,9 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
       direc <- ifelse(length(direc) == 1 && !is.na(direc), direc, 0)
       alpha <- ifelse(length(alpha) == 1 && !is.na(alpha), alpha, 1)
       rr <- r * zfact
-      hs <- hillShade(slope=terrain(rr), aspect=terrain(rr, opt="aspect"),
-                      angle=angle, direction=direc)
+      hs <- raster::hillShade(slope=raster::terrain(rr),
+                              aspect=raster::terrain(rr, opt="aspect"),
+                              angle=angle, direction=direc)
       raster::image(hs, maxpixels=length(hs), useRaster=TRUE,
                     col=grDevices::grey(0:255 / 255, alpha=alpha), add=TRUE)
     }
@@ -506,7 +506,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (is.list(rivers)) {
     river <- spTransform(rivers[["x"]], r@crs)
-    river <- crop(river, extent(graphics::par("usr")))
+    river <- raster::crop(river, raster::extent(graphics::par("usr")))
     if (!is.null(river)) {
       color <- as.character(rivers[["col"]])
       width <- as.numeric(rivers[["lwd"]])
@@ -518,7 +518,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (is.list(lakes)) {
     lake <- spTransform(lakes[["x"]], r@crs)
-    lake <- crop(lake, extent(graphics::par("usr")))
+    lake <- raster::crop(lake, raster::extent(graphics::par("usr")))
     if (!is.null(lake)) {
       color <- as.character(lakes[["col"]])
       bordr <- as.character(lakes[["border"]])
@@ -532,7 +532,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (is.list(roads)) {
     road <- spTransform(roads[["x"]], r@crs)
-    road <- crop(road, extent(graphics::par("usr")))
+    road <- raster::crop(road, raster::extent(graphics::par("usr")))
     if (!is.null(roads)) {
       color <- as.character(roads[["col"]])
       width <- as.numeric(roads[["lwd"]])
@@ -635,7 +635,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     pos <- 4
   }
   graphics::arrows(x0, y0, x1, y1, length=0.1)
-  text(x1, y1, labels="N", pos=pos, cex=cex)
+  graphics::text(x1, y1, labels="N", pos=pos, cex=cex)
 }
 
 

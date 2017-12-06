@@ -78,13 +78,13 @@ ExtractAlongTransect <- function(transect, r) {
   v <- coordinates(spTransform(transect, crs))
   if (length(v) < 2) stop("number of vertices in transect is < 2")
 
-  r.xmin <- xmin(r)
-  r.xmax <- xmax(r)
-  r.ymin <- ymin(r)
-  r.ymax <- ymax(r)
+  r.xmin <- raster::xmin(r)
+  r.xmax <- raster::xmax(r)
+  r.ymin <- raster::ymin(r)
+  r.ymax <- raster::ymax(r)
 
-  rx <- seq(r.xmin, r.xmax, by=xres(r))
-  ry <- seq(r.ymin, r.ymax, by=yres(r))
+  rx <- seq(r.xmin, r.xmax, by=raster::xres(r))
+  ry <- seq(r.ymin, r.ymax, by=raster::yres(r))
 
   dist.along.transect <- as.matrix(stats::dist(v))
   segs <- list()
@@ -122,12 +122,12 @@ ExtractAlongTransect <- function(transect, r) {
     d <- c(d[1], rep(d[2:(n - 1L)], each=2), d[n])
 
     n <- length(x)
-    seg <- cbind(x, y, dist=d, matrix(NA, nrow=n, ncol=nlayers(r),
+    seg <- cbind(x, y, dist=d, matrix(NA, nrow=n, ncol=raster::nlayers(r),
                  dimnames=list(NULL, names(r))))
     colnames(seg) <- make.names(colnames(seg), unique=TRUE)
 
-    for (j in seq_len(nlayers(r))) {
-      z <- extract(r[[j]], SpatialPoints(cbind(mid.x, mid.y)))
+    for (j in seq_len(raster::nlayers(r))) {
+      z <- raster::extract(r[[j]], SpatialPoints(cbind(mid.x, mid.y)))
       seg[, j + 3L] <- rep(z, each=2)
     }
     rownames(seg) <- NULL

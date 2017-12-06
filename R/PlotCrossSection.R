@@ -66,7 +66,6 @@
 #'
 #' @import sp
 #' @import rgdal
-#' @import raster
 #'
 #' @export
 #'
@@ -122,10 +121,10 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   if (length(val.lays) >= length(geo.lays))
     stop("number of value layers is greater than the number of geometry layers")
 
-  transect <- spTransform(transect, crs(rs))
-  rs <- crop(rs, extent(as.vector(t(bbox(transect)))), snap="out")
+  transect <- spTransform(transect, raster::crs(rs))
+  rs <- raster::crop(rs, raster::extent(as.vector(t(bbox(transect)))), snap="out")
   layer.names <- unique(c(geo.lays, val.lays, wt.lay))
-  eat <- ExtractAlongTransect(transect, subset(rs, layer.names))
+  eat <- ExtractAlongTransect(transect, raster::subset(rs, layer.names))
 
   cell.values <- NULL
   cell.polys  <- list()
@@ -279,24 +278,24 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
 
   if (!is.null(wt.lay) && wt.lay[1] %in% names(rs)) {
     for (s in eat)
-      lines(s@data[["dist"]], s@data[, wt.lay[1]], lwd=lwd, col=wt.col)
+      graphics::lines(s@data[["dist"]], s@data[, wt.lay[1]], lwd=lwd, col=wt.col)
   }
 
-  lays <- if (draw.sep) geo.lays else c(head(geo.lays, 1), tail(geo.lays, 1))
+  lays <- if (draw.sep) geo.lays else c(utils::head(geo.lays, 1), utils::tail(geo.lays, 1))
   for (s in eat)
     graphics::matplot(s@data[["dist"]], s@data[, lays], xaxt="n", yaxt="n",
                       type="l", lty=1, lwd=lwd, col="#1F1F1F", add=TRUE)
 
   if (is.list(contour.lines)) {
-    e <- extent(cell.polys.merged)
+    e <- raster::extent(cell.polys.merged)
     nc <- 200
     dx <- diff(e[1:2]) / nc
     nr <- as.integer(diff(e[3:4]) / (dx / asp))
-    r <- raster(e, nrows=nr, ncols=nc)
+    r <- raster::raster(e, nrows=nr, ncols=nc)
     FUN <- function(i) Polygons(list(cell.polys[[i]]), as.character(i))
     p <- lapply(seq_along(cell.polys), FUN)
     p <- SpatialPolygons(p, seq_along(cell.polys))
-    r <- rasterize(p, r)
+    r <- raster::rasterize(p, r)
     r[] <- cell.values[r[]]
 
     color <- as.character(contour.lines[["col"]])
@@ -342,24 +341,24 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   GetGeoTop <- stats::approxfun(x, y)
   pady <- diff(usr[3:4]) * 0.02
   d <- as.matrix(stats::dist(coordinates(methods::as(transect, "SpatialPoints"))))[, 1]
-  dist.to.bend <- head(d[-1], -1)
+  dist.to.bend <- utils::head(d[-1], -1)
   for (d in dist.to.bend) {
     y <- GetGeoTop(d)
-    lines(c(d, d), c(usr[3], y + pady), lwd=0.3, col="#999999")
-    text(d, y + pady, "BEND", adj=c(-0.1, 0.5), col="#999999", cex=0.6, srt=90)
+    graphics::lines(c(d, d), c(usr[3], y + pady), lwd=0.3, col="#999999")
+    graphics::text(d, y + pady, "BEND", adj=c(-0.1, 0.5), col="#999999", cex=0.6, srt=90)
   }
   if (!is.null(features)) {
     tran.pts <- do.call("rbind", eat)
     for (i in seq_len(length(features))) {
-      pnt <- spTransform(features, crs(rs))[i, ]
+      pnt <- spTransform(features, raster::crs(rs))[i, ]
       dist.to.transect <- rgeos::gDistance(pnt, tran.pts, byid=TRUE)
       idx <- which.min(dist.to.transect)
       if (dist.to.transect[idx] > max.feature.dist) next
       d <- x[idx]
       y <- GetGeoTop(d)
-      lines(c(d, d), c(y, y + pady), lwd=0.3)
+      graphics::lines(c(d, d), c(y, y + pady), lwd=0.3)
       label <- format(pnt@data[1, 1])
-      text(d, y + pady, label, adj=c(-0.1, 0.5), cex=cex, srt=90)
+      graphics::text(d, y + pady, label, adj=c(-0.1, 0.5), cex=cex, srt=90)
     }
   }
   graphics::par(xpd=FALSE)

@@ -80,10 +80,10 @@ AddScaleBar <- function(asp=1, unit=NULL, is.lonlat=FALSE,
   xat <- seq(loc[1], loc[1] + d, length.out=(divs + 1L))
   tcl <- (diff(usr[1:2]) * 0.01) / asp
 
-  lines(rbind(c(loc[1], loc[2]), c(loc[1] + d, loc[2])), lwd=0.5)
-  for (i in xat) lines(rbind(c(i, loc[2]), c(i, loc[2] + tcl)), lwd=0.5)
-  text(loc[1], loc[2] + tcl, "0", adj=c(0.5, -0.5), cex=0.7)
-  text(loc[1] + d, loc[2] + tcl, label, adj=c(0.3, -0.5), cex=0.7)
+  graphics::lines(rbind(c(loc[1], loc[2]), c(loc[1] + d, loc[2])), lwd=0.5)
+  for (i in xat) graphics::lines(rbind(c(i, loc[2]), c(i, loc[2] + tcl)), lwd=0.5)
+  graphics::text(loc[1], loc[2] + tcl, "0", adj=c(0.5, -0.5), cex=0.7)
+  graphics::text(loc[1] + d, loc[2] + tcl, label, adj=c(0.3, -0.5), cex=0.7)
 
   if (is.logical(lab.vert.exag)) {
     add.label <- lab.vert.exag
@@ -92,6 +92,6 @@ AddScaleBar <- function(asp=1, unit=NULL, is.lonlat=FALSE,
   }
   if (add.label) {
     txt <- sprintf("VERTICAL EXAGGERATION x%s", asp)
-    text(loc[1] + d / 2, loc[2], txt, cex=0.7, pos=1)
+    graphics::text(loc[1] + d / 2, loc[2], txt, cex=0.7, pos=1)
   }
 }

@@ -143,7 +143,7 @@ graphics.off()
 
 }
 \seealso{
-\code{\link{matplot}}, \code{\link{boxplot}}
+\code{\link[graphics]{matplot}}, \code{\link[graphics]{boxplot}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

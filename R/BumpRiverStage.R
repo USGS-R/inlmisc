@@ -30,7 +30,6 @@
 #'
 #' @import sp
 #' @import rgdal
-#' @import raster
 #'
 #' @export
 #'
@@ -41,20 +40,19 @@
 BumpRiverStage <- function(r, outlets, min.drop=1e-06) {
 
   r.save <- r
-  r.out <- rasterize(outlets, r)
+  r.out <- raster::rasterize(outlets, r)
 
   riv.cells <- which(!is.na(r[]))
   out.cells <- which(!is.na(r.out[]))
 
-  adj.cells <- adjacent(raster(r), cells=out.cells, pairs=FALSE)
+  adj.cells <- raster::adjacent(raster::raster(r), cells=out.cells, pairs=FALSE)
   out.cells <- riv.cells[riv.cells %in% adj.cells]
 
-  adj <- unique(adjacent(r, riv.cells, sorted=TRUE))
+  adj <- unique(raster::adjacent(r, riv.cells, sorted=TRUE))
   adj <- cbind(adj, is=as.integer(adj[, "to"] %in% riv.cells))
   adj <- adj[adj[, "is"] == 1L, c("from", "to")]
 
-  # Move up the river system finding all possible source (stuck) cells off the
-  # main paths.
+  # Move up the river system finding all possible source (stuck) cells off the main paths.
 
   FUN <- function(path) {
     i <- 1L
@@ -62,7 +60,7 @@ BumpRiverStage <- function(r, outlets, min.drop=1e-06) {
       cells <- adj[adj[, "from"] == path[i], "to"]
       cells <- cells[!cells %in% visited.cells & !cells %in% out.cells]
       if (length(cells) == 0) {
-        stuck.cells <<- c(stuck.cells, tail(path, 1))
+        stuck.cells <<- c(stuck.cells, utils::tail(path, 1))
         return(NULL)
       }
       i <- i + 1L
@@ -86,8 +84,7 @@ BumpRiverStage <- function(r, outlets, min.drop=1e-06) {
       breaks <- unique(unlist(lapply(breaks, FUN)))
     }
     stuck.cells <- stuck.cells[!stuck.cells %in% out.cells]
-    if (length(stuck.cells) > 0)
-      source.cells[[i]] <- stuck.cells
+    if (length(stuck.cells) > 0) source.cells[[i]] <- stuck.cells
   }
 
   sink.cells <- out.cells[!vapply(source.cells, is.null, FALSE)]

@@ -74,8 +74,8 @@ ExportRasterStack <- function(rs, path, zip="",
     grDevices::dev.off()
 
     f <- file.path(path.tif, paste(fig.num, "_", i, ".tif", sep=""))
-    writeRaster(rs[[i]], filename=f, format="GTiff", overwrite=TRUE,
-                NAflag=-999)
+    raster::writeRaster(rs[[i]], filename=f, format="GTiff",
+                        overwrite=TRUE, NAflag=-999)
   }
 
   base.name <- "raster"
@@ -85,9 +85,9 @@ ExportRasterStack <- function(rs, path, zip="",
 
   f <- file.path(path.kml, "rasters.kml")
   crs <- "+init=epsg:4326"
-  rs <- projectRaster(rs, crs=crs, method="ngb", alignOnly=FALSE)
-  KML(rs, f, col=col, maxpixels=ncell(rs) * 2, blur=5, zip=zip,
-      overwrite=TRUE)
+  rs <- raster::projectRaster(rs, crs=crs, method="ngb", alignOnly=FALSE)
+  raster::KML(rs, f, col=col, maxpixels=raster::ncell(rs) * 2, blur=5,
+              zip=zip, overwrite=TRUE)
 
   invisible()
 }

@@ -201,7 +201,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
   # breaks
   if (is.null(breaks)) breaks <- pretty(z, n=6)
   if (quantile.breaks) {
-    breaks <- quantile(z, probs=seq(0, 1, 0.25))
+    breaks <- stats::quantile(z, probs=seq(0, 1, 0.25))
     if (is.null(break.labels)) {
       val <- formatC(breaks, format=format, big.mark=",")
       lab <- c("minimum", "25th quartile", "median", "75th quartile", "maximum")
@@ -210,11 +210,11 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     make.intervals <- FALSE
   } else if (make.intervals) {
     breaks <- sort(breaks)
-    is_lt <- any(z < head(breaks, 1))
-    is_gt <- any(z > tail(breaks, 1))
+    is_lt <- any(z < utils::head(breaks, 1))
+    is_gt <- any(z > utils::tail(breaks, 1))
     interval <- findInterval(z, breaks, rightmost.closed=TRUE)
     s <- formatC(breaks, format=NULL, big.mark=",")
-    ss <- sprintf(">%s to %s", head(s, -1), tail(s, -1))
+    ss <- sprintf(">%s to %s", utils::head(s, -1), utils::tail(s, -1))
     if (is_gt) ss <- c(ss, sprintf(">%s", s[length(s)]))
     if (is_lt) {
       ss <- c(as.expression(bquote(""<=.(s[1]))), ss)
@@ -235,7 +235,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       breaks <- c(SeqNext(rev(breaks)), breaks)
     }
     if (is_gt) breaks <- c(breaks, SeqNext(breaks))
-    breaks <- head(breaks, -1) + (diff(breaks) / 2)
+    breaks <- utils::head(breaks, -1) + (diff(breaks) / 2)
     z <- breaks[interval]
   }
   if (is.null(break.labels))
@@ -389,12 +389,12 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     graphics::symbols(x, y, circles=r0, bg=cols0, fg=fg.col0, inches=FALSE,
                       lwd=lwd, add=TRUE)
 
-    text(loc[1] + ipadx + max(r0) * 2 + ipadx, y, break.labels, adj=c(0, 0.5), cex=cex)
+    graphics::text(loc[1] + ipadx + max(r0) * 2 + ipadx, y, break.labels, adj=c(0, 0.5), cex=cex)
     if (!is.null(title))
-      text(loc[1] + dx / 2, loc[2] + dy - ipady, title, adj=c(0.5, 0.5), cex=cex, font=2)
+      graphics::text(loc[1] + dx / 2, loc[2] + dy - ipady, title, adj=c(0.5, 0.5), cex=cex, font=2)
     if (!is.null(subtitle))
-      text(loc[1] + dx / 2, loc[2] + dy - title.height - subtitle.height, subtitle,
-           adj=c(0.5, 0), cex=cex)
+      graphics::text(loc[1] + dx / 2, loc[2] + dy - title.height - subtitle.height, subtitle,
+                     adj=c(0.5, 0), cex=cex)
   }
   invisible(NULL)
 }

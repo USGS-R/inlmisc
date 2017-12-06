@@ -32,7 +32,6 @@
 #' @keywords hplot
 #'
 #' @import sp
-#' @import raster
 #'
 #' @export
 #'
@@ -66,12 +65,12 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
   crds <- cbind(c(usr[1:2], usr[2:1], usr[1]),
                 c(rep(usr[3], 2), rep(usr[4], 2), usr[3]))
   b <- SpatialPolygons(list(Polygons(list(Polygon(crds)), "bbox")),
-                       proj4string=crs(p))
+                       proj4string=raster::crs(p))
 
   if (length(rgeos::gIntersection(p, b)) == 0)
     stop("user coordinates of the plotting region do not intersect polygon")
 
-  ext <- extent(rgeos::gUnion(p, b))
+  ext <- raster::extent(rgeos::gUnion(p, b))
 
   if (is.null(width)) {
     dx  <- 0.2 * diff(usr[1:2])
@@ -110,11 +109,11 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
 
   if (!is.na(main.label[[1]])) {
     x <- coordinates(rgeos::gUnaryUnion(p))[1, ]
-    text(x[1], x[2], labels=main.label[[1]], adj=main.label$adj, cex=0.7, font=2)
+    graphics::text(x[1], x[2], labels=main.label[[1]], adj=main.label$adj, cex=0.7, font=2)
   }
   if (!is.na(sub.label[[1]])) {
     x <- coordinates(rgeos::gUnaryUnion(b))[1, ]
-    text(x[1], x[2], labels=sub.label[[1]], adj=sub.label$adj, cex=0.6)
+    graphics::text(x[1], x[2], labels=sub.label[[1]], adj=sub.label$adj, cex=0.6)
   }
 
   graphics::box(lwd=0.5)
