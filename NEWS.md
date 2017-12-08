@@ -6,26 +6,26 @@
 
 - Add `PrintTable` function, used to print the LaTeX code associated with a `data.frame` object.
 
-- In `AddColorKey` function, replace `scientific` argument with `scipen`, see `getOption("scipen")` command.
-
 - In `PlotMap` function, remove option to map points.
 
 - In `ReadCodeChunks` function, remove dependency on *knitr-intro.Rmd* file in example.
 
+- In `AddColorKey` function, replace `scientific` argument with `scipen`, see `getOption("scipen")` command.
+
 - In `AddColorKey` function, add `log` argument to specify axis to be logarithmic.
 
+- In `AddColorKey`, use *m x 10^n* format for tick labels written in scientific notation.
+
 - In `RecreateLibrary` function, add `parallel` argument to install packages from source using parallel processes.
+
+- In `ToScientific` function, add `big.mark` argument with default value of `","`.
+
+- In `ToScientific` function, fix bug that formated `0` as `NA` when `type = "plotmath"`.
 
 - In `CreateWebMap` function, pass `...` arguments to `leaflet::leaflet` function,
   these arguments were previously passed to the `leaflet::leafletOptions` function.
 
 - In `CreateWebMap` function, add `maps` argument to specify which base maps to include.
-
-- In `ToScientific` function, add `big.mark` argument with default value of `","`.
-
-- In `AddColorKey`, use *m x 10^n* format for tick labels written in scientific notation.
-
-- In `ToScientific` function, fix bug that formated `0` as `NA` when `type = "plotmath"`.
 
 - In `CreateWebMap` function, remove coordinates and zoom level information from top of map.
 
