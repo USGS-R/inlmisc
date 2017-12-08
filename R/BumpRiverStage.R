@@ -28,9 +28,6 @@
 #'
 #' @keywords utilities
 #'
-#' @import sp
-#' @import rgdal
-#'
 #' @export
 #'
 #' @examples

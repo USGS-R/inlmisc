@@ -64,7 +64,6 @@
 #'
 #' @keywords hplot
 #'
-#' @import sp
 #' @import rgdal
 #'
 #' @export
@@ -121,7 +120,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   if (length(val.lays) >= length(geo.lays))
     stop("number of value layers is greater than the number of geometry layers")
 
-  transect <- spTransform(transect, raster::crs(rs))
+  transect <- sp::spTransform(transect, raster::crs(rs))
   rs <- raster::crop(rs, raster::extent(as.vector(t(bbox(transect)))), snap="out")
   layer.names <- unique(c(geo.lays, val.lays, wt.lay))
   eat <- ExtractAlongTransect(transect, raster::subset(rs, layer.names))
@@ -138,7 +137,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
                    seg[k, c("dist", geo.lays[i]), drop=FALSE])
         if (anyNA(p)) next
         cell.values <- c(cell.values, v)
-        cell.polys  <- c(cell.polys, Polygon(p))
+        cell.polys  <- c(cell.polys, sp::Polygon(p))
       }
     }
   }
@@ -172,14 +171,14 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     cols <- unique(cell.cols)
 
     FUN <- function(i) {
-      p <- Polygons(cell.polys[which(cell.cols == cols[i])], i)
-      p <- rgeos::gUnaryUnion(SpatialPolygons(list(p), i))
+      p <- sp::Polygons(cell.polys[which(cell.cols == cols[i])], i)
+      p <- rgeos::gUnaryUnion(sp::SpatialPolygons(list(p), i))
       p <- methods::slot(p, "polygons")[[1]]
       p@ID <- cols[i]
       return(p)
     }
     p <- lapply(seq_along(cols), FUN)
-    cell.polys.merged <- SpatialPolygons(p, seq_along(cols))
+    cell.polys.merged <- sp::SpatialPolygons(p, seq_along(cols))
   }
 
   x <- unlist(lapply(eat, function(i) i@data$dist))
@@ -255,8 +254,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
 
   # plot map
   graphics::par(mai=mai2, mgp=c(3, 0.7, 0))
-  plot(NA, type="n", xlim=xlim, ylim=ylim, xaxs="i", yaxs="i", bty="n",
-       xaxt="n", yaxt="n", xlab="", ylab="", asp=asp)
+  graphics::plot(NA, type="n", xlim=xlim, ylim=ylim, xaxs="i", yaxs="i", bty="n",
+                 xaxt="n", yaxt="n", xlab="", ylab="", asp=asp)
   usr <- graphics::par("usr")
 
   if (is.null(file)) {
@@ -268,13 +267,13 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     FUN <- function(i) {
       m <- cbind(x=i@data[[1]], y=i@data[[2]])
       m <- rbind(m, cbind(rev(range(m[, "x"], na.rm=TRUE)), usr[3]), m[1, , drop=FALSE])
-      return(Polygon(m))
+      return(sp::Polygon(m))
     }
-    bg.poly <- SpatialPolygons(list(Polygons(lapply(eat, FUN), "bg")), 1L)
-    plot(bg.poly, col=bg.col, border=NA, lwd=0.1, add=TRUE)
+    bg.poly <- sp::SpatialPolygons(list(sp::Polygons(lapply(eat, FUN), "bg")), 1L)
+    sp::plot(bg.poly, col=bg.col, border=NA, lwd=0.1, add=TRUE)
   }
 
-  plot(cell.polys.merged, col=cols, border=cols, lwd=0.1, add=TRUE)
+  sp::plot(cell.polys.merged, col=cols, border=cols, lwd=0.1, add=TRUE)
 
   if (!is.null(wt.lay) && wt.lay[1] %in% names(rs)) {
     for (s in eat)
@@ -292,9 +291,9 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     dx <- diff(e[1:2]) / nc
     nr <- as.integer(diff(e[3:4]) / (dx / asp))
     r <- raster::raster(e, nrows=nr, ncols=nc)
-    FUN <- function(i) Polygons(list(cell.polys[[i]]), as.character(i))
+    FUN <- function(i) sp::Polygons(list(cell.polys[[i]]), as.character(i))
     p <- lapply(seq_along(cell.polys), FUN)
-    p <- SpatialPolygons(p, seq_along(cell.polys))
+    p <- sp::SpatialPolygons(p, seq_along(cell.polys))
     r <- raster::rasterize(p, r)
     r[] <- cell.values[r[]]
 
@@ -340,7 +339,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   y <- unlist(lapply(eat, function(i) i@data[[geo.lays[1]]]))
   GetGeoTop <- stats::approxfun(x, y)
   pady <- diff(usr[3:4]) * 0.02
-  d <- as.matrix(stats::dist(coordinates(methods::as(transect, "SpatialPoints"))))[, 1]
+  d <- as.matrix(stats::dist(sp::coordinates(methods::as(transect, "SpatialPoints"))))[, 1]
   dist.to.bend <- utils::head(d[-1], -1)
   for (d in dist.to.bend) {
     y <- GetGeoTop(d)
@@ -350,7 +349,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   if (!is.null(features)) {
     tran.pts <- do.call("rbind", eat)
     for (i in seq_len(length(features))) {
-      pnt <- spTransform(features, raster::crs(rs))[i, ]
+      pnt <- sp::spTransform(features, raster::crs(rs))[i, ]
       dist.to.transect <- rgeos::gDistance(pnt, tran.pts, byid=TRUE)
       idx <- which.min(dist.to.transect)
       if (dist.to.transect[idx] > max.feature.dist) next

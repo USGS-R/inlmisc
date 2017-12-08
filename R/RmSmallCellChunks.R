@@ -15,7 +15,6 @@
 #'
 #' @keywords utilities
 #'
-#' @import sp
 #' @importFrom igraph clusters
 #'
 #' @export

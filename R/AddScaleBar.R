@@ -46,7 +46,7 @@ AddScaleBar <- function(asp=1, unit=NULL, is.lonlat=FALSE,
     y <- (usr[3] + usr[4]) / 2
     xaxp <- graphics::par("xaxp")
     dx1 <- diff(xaxp[1:2]) / xaxp[3]
-    dm1 <- spDistsN1(cbind(0, y), c(dx1, y), longlat=TRUE)
+    dm1 <- sp::spDistsN1(cbind(0, y), c(dx1, y), longlat=TRUE)
     dm2 <- diff(pretty(c(0, dm1), 1)[1:2])
     d <- (dx1 * dm2) / dm1
     label <- paste(format(dm2), "km")

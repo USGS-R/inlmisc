@@ -69,8 +69,7 @@ ExportRasterStack <- function(rs, path, zip="",
     f <- file.path(path.png, paste(fig.num, "_", i, ".png", sep=""))
     grDevices::png(filename=f, width=7, height=7, units="in", pointsize=12,
                    res=1200, antialias="cleartype")
-    plot(rs[[i]], maxpixels=length(rs[[i]]), col=col, main=names(rs[[i]]),
-         asp=1)
+    raster::plot(rs[[i]], maxpixels=length(rs[[i]]), col=col, main=names(rs[[i]]), asp=1)
     grDevices::dev.off()
 
     f <- file.path(path.tif, paste(fig.num, "_", i, ".tif", sep=""))

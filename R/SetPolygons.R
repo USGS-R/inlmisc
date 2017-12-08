@@ -25,7 +25,6 @@
 #'
 #' @keywords utilities
 #'
-#' @import sp
 #' @importFrom rgeos gIntersection gDifference
 #'
 #' @export
@@ -63,8 +62,8 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
 
   if (inherits(y, "Extent")) {
     crds <- cbind(c(y[1:2], y[2:1], y[1]), c(rep(y[3], 2), rep(y[4], 2), y[3]))
-    y <- SpatialPolygons(list(Polygons(list(Polygon(crds)), "bbox")),
-                         proj4string=raster::crs(x))
+    y <- sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(crds)), "bbox")),
+                             proj4string=raster::crs(x))
   }
 
   if (inherits(x, "SpatialPolygonsDataFrame")) {
@@ -108,10 +107,10 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
   z <- lapply(seq_along(x), FUN)
 
   is.retained <- !vapply(z, is.null, TRUE)
-  z <- SpatialPolygons(z[is.retained], proj4string=raster::crs(x))
+  z <- sp::SpatialPolygons(z[is.retained], proj4string=raster::crs(x))
   if (inherits(d, "data.frame")) {
     d <- d[is.retained, , drop=FALSE]
-    z <- SpatialPolygonsDataFrame(z, d, match.ID=TRUE)
+    z <- sp::SpatialPolygonsDataFrame(z, d, match.ID=TRUE)
   }
   return(z)
 }

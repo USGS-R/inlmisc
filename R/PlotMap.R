@@ -142,7 +142,6 @@
 #'
 #' @keywords hplot
 #'
-#' @import sp
 #' @import rgdal
 #'
 #' @export
@@ -402,8 +401,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
   # plot map
   graphics::par(mai=mai2)
-  plot(NA, type="n", xlim=xl, ylim=yl, xaxs="i", yaxs="i", bty="n",
-       xaxt="n", yaxt="n", xlab="", ylab="", asp=asp)
+  graphics::plot(NA, type="n", xlim=xl, ylim=yl, xaxs="i", yaxs="i", bty="n",
+                 xaxt="n", yaxt="n", xlab="", ylab="", asp=asp)
   usr <- graphics::par("usr")
 
   if (is.null(file)) {
@@ -413,34 +412,34 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (is.dms) {
     al <- list()
-    al[[1]] <- Lines(list(Line(rbind(c(xl[1], yl[1]),
-                                     c(xl[2], yl[1])))), ID="al1")
-    al[[2]] <- Lines(list(Line(rbind(c(xl[1], yl[1]),
-                                     c(xl[1], yl[2])))), ID="al2")
-    al[[3]] <- Lines(list(Line(rbind(c(xl[1], yl[2]),
-                                     c(xl[2], yl[2])))), ID="al3")
-    al[[4]] <- Lines(list(Line(rbind(c(xl[2], yl[1]),
-                                     c(xl[2], yl[2])))), ID="al4")
-    sl <- SpatialLines(al, proj4string=r@crs)
-    sl.dd <- spTransform(sl, CRS("+init=epsg:4326"))
+    al[[1]] <- sp::Lines(list(sp::Line(rbind(c(xl[1], yl[1]),
+                                             c(xl[2], yl[1])))), ID="al1")
+    al[[2]] <- sp::Lines(list(sp::Line(rbind(c(xl[1], yl[1]),
+                                             c(xl[1], yl[2])))), ID="al2")
+    al[[3]] <- sp::Lines(list(sp::Line(rbind(c(xl[1], yl[2]),
+                                             c(xl[2], yl[2])))), ID="al3")
+    al[[4]] <- sp::Lines(list(sp::Line(rbind(c(xl[2], yl[1]),
+                                             c(xl[2], yl[2])))), ID="al4")
+    sl <- sp::SpatialLines(al, proj4string=r@crs)
+    sl.dd <- sp::spTransform(sl, sp::CRS("+init=epsg:4326"))
     e.dd <- pretty(range(bbox(sl.dd)[1, ]))
     n.dd <- pretty(range(bbox(sl.dd)[2, ]))
-    grd.dd <- gridlines(sl.dd, easts=e.dd, norths=n.dd, ndiscr=1000)
+    grd.dd <- sp::gridlines(sl.dd, easts=e.dd, norths=n.dd, ndiscr=1000)
 
     pts.dd <- rgeos::gIntersection(sl.dd, grd.dd, byid=TRUE)
     ids <- row.names(pts.dd)
 
     row.names(pts.dd) <- make.names(ids, unique=TRUE)
-    pts <- spTransform(pts.dd, r@crs)
+    pts <- sp::spTransform(pts.dd, r@crs)
 
     at2 <- list()
-    at2[[1]] <- as.vector(coordinates(pts[ids == "al1 NS", ])[, 1])
-    at2[[2]] <- as.vector(coordinates(pts[ids == "al2 EW", ])[, 2])
-    at2[[3]] <- as.vector(coordinates(pts[ids == "al3 NS", ])[, 1])
-    at2[[4]] <- as.vector(coordinates(pts[ids == "al4 EW", ])[, 2])
+    at2[[1]] <- as.vector(sp::coordinates(pts[ids == "al1 NS", ])[, 1])
+    at2[[2]] <- as.vector(sp::coordinates(pts[ids == "al2 EW", ])[, 2])
+    at2[[3]] <- as.vector(sp::coordinates(pts[ids == "al3 NS", ])[, 1])
+    at2[[4]] <- as.vector(sp::coordinates(pts[ids == "al4 EW", ])[, 2])
 
-    xlabs <- .FormatDMS(dd2dms(coordinates(pts.dd[ids == "al3 NS", ])[, 1], NS=FALSE))
-    ylabs <- .FormatDMS(dd2dms(coordinates(pts.dd[ids == "al2 EW", ])[, 2], NS=TRUE))
+    xlabs <- .FormatDMS(sp::dd2dms(sp::coordinates(pts.dd[ids == "al3 NS", ])[, 1], NS=FALSE))
+    ylabs <- .FormatDMS(sp::dd2dms(sp::coordinates(pts.dd[ids == "al2 EW", ])[, 2], NS=TRUE))
   } else {
     at2 <- list()
     at2[[1]] <- pretty(xl)
@@ -456,7 +455,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     graphics::rect(xleft=usr[1], ybottom=usr[3], xright=usr[2], ytop=usr[4],
                    col="#E7E7E7", border=NA)
     if (is.dms) {
-      plot(spTransform(grd.dd, r@crs), lwd=lwd, col="#FFFFFF", add=TRUE)
+      sp::plot(sp::spTransform(grd.dd, r@crs), lwd=lwd, col="#FFFFFF", add=TRUE)
     } else {
       graphics::abline(v=at2[[1]], lwd=lwd, col="#FFFFFF")
       graphics::abline(h=at2[[2]], lwd=lwd, col="#FFFFFF")
@@ -481,7 +480,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
         ids <- sapply(methods::slot(simple.ply, "polygons"), FUN)
         ply <- sp::SpatialPolygonsDataFrame(simple.ply, data=ply[ids, ]@data)
       }
-      plot(ply, col=cols, border=NA, add=TRUE)
+      sp::plot(ply, col=cols, border=NA, add=TRUE)
     } else {
       raster::image(r, maxpixels=length(r), useRaster=useRaster, zlim=zl,
                     col=cols, add=TRUE, breaks=breaks)
@@ -505,19 +504,19 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (is.list(rivers)) {
-    river <- spTransform(rivers[["x"]], r@crs)
+    river <- sp::spTransform(rivers[["x"]], r@crs)
     river <- raster::crop(river, raster::extent(graphics::par("usr")))
     if (!is.null(river)) {
       color <- as.character(rivers[["col"]])
       width <- as.numeric(rivers[["lwd"]])
       color <- ifelse(length(color) == 1 && .AreColors(color), color, "#3399CC")
       width <- ifelse(length(width) == 1 && !is.na(width), width, 0.5)
-      plot(river, col=color, lwd=width, add=TRUE)
+      sp::plot(river, col=color, lwd=width, add=TRUE)
     }
   }
 
   if (is.list(lakes)) {
-    lake <- spTransform(lakes[["x"]], r@crs)
+    lake <- sp::spTransform(lakes[["x"]], r@crs)
     lake <- raster::crop(lake, raster::extent(graphics::par("usr")))
     if (!is.null(lake)) {
       color <- as.character(lakes[["col"]])
@@ -526,19 +525,19 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
       color <- ifelse(length(color) == 1 && .AreColors(color), color, "#CCFFFF")
       bordr <- ifelse(length(bordr) == 1 && .AreColors(bordr), bordr, "#3399CC")
       width <- ifelse(length(width) == 1 && !is.na(width), width, 0.5)
-      plot(lake, col=color, border=bordr, lwd=width, add=TRUE)
+      sp::plot(lake, col=color, border=bordr, lwd=width, add=TRUE)
     }
   }
 
   if (is.list(roads)) {
-    road <- spTransform(roads[["x"]], r@crs)
+    road <- sp::spTransform(roads[["x"]], r@crs)
     road <- raster::crop(road, raster::extent(graphics::par("usr")))
     if (!is.null(roads)) {
       color <- as.character(roads[["col"]])
       width <- as.numeric(roads[["lwd"]])
       color <- ifelse(length(color) == 1 && .AreColors(color), color, "#666666")
       width <- ifelse(length(width) == 1 && !is.na(width), width, 0.25)
-      plot(road, col=color, lwd=width, add=TRUE)
+      sp::plot(road, col=color, lwd=width, add=TRUE)
     }
   }
 
@@ -600,17 +599,17 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
 
 .AddNorthArrow <- function(loc, crs, cex) {
-  crs.dd <- CRS("+init=epsg:4326")
+  crs.dd <- sp::CRS("+init=epsg:4326")
   usr <- graphics::par("usr")
   x.mid <- (usr[2] + usr[1]) / 2
   y.mid <- (usr[4] + usr[3]) / 2
   d <- 0.05 * (usr[4] - usr[3])
   xy <- rbind(c(x.mid, y.mid), c(x.mid, y.mid + d))
-  sp.dd <- spTransform(SpatialPoints(xy, proj4string=crs), crs.dd)
+  sp.dd <- sp::spTransform(sp::SpatialPoints(xy, proj4string=crs), crs.dd)
   dd <- sp.dd@coords
   d.dd <- sqrt((dd[2, 1] - dd[1, 1])^2 + (dd[2, 2] - dd[1, 2])^2)
   dd <- rbind(dd[1, ], c(dd[1, 1],  dd[1, 2] + d.dd))
-  sp.xy <- spTransform(SpatialPoints(dd, proj4string=crs.dd), crs)
+  sp.xy <- sp::spTransform(sp::SpatialPoints(dd, proj4string=crs.dd), crs)
   xy <- sp.xy@coords
   padx <- 0.1 * (usr[2] - usr[1])
   pady <- 0.1 * (usr[4] - usr[3])

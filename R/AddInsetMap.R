@@ -31,8 +31,6 @@
 #'
 #' @keywords hplot
 #'
-#' @import sp
-#'
 #' @export
 #'
 #' @examples
@@ -64,8 +62,8 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
   usr <- graphics::par("usr")
   crds <- cbind(c(usr[1:2], usr[2:1], usr[1]),
                 c(rep(usr[3], 2), rep(usr[4], 2), usr[3]))
-  b <- SpatialPolygons(list(Polygons(list(Polygon(crds)), "bbox")),
-                       proj4string=raster::crs(p))
+  b <- sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(crds)), "bbox")),
+                           proj4string=raster::crs(p))
 
   if (length(rgeos::gIntersection(p, b)) == 0)
     stop("user coordinates of the plotting region do not intersect polygon")
@@ -103,16 +101,16 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
   ylim <- range(ext[3:4])
   graphics::plot.window(xlim=xlim, ylim=ylim)
 
-  plot(p, col=col[1], border=NA,        lwd=0.25, add=TRUE)
-  plot(b, col=col[2], border="#090909", lwd=0.25, add=TRUE)
-  plot(p, col=NA,     border="#090909", lwd=0.25, add=TRUE)
+  sp::plot(p, col=col[1], border=NA,        lwd=0.25, add=TRUE)
+  sp::plot(b, col=col[2], border="#090909", lwd=0.25, add=TRUE)
+  sp::plot(p, col=NA,     border="#090909", lwd=0.25, add=TRUE)
 
   if (!is.na(main.label[[1]])) {
-    x <- coordinates(rgeos::gUnaryUnion(p))[1, ]
+    x <- sp::coordinates(rgeos::gUnaryUnion(p))[1, ]
     graphics::text(x[1], x[2], labels=main.label[[1]], adj=main.label$adj, cex=0.7, font=2)
   }
   if (!is.na(sub.label[[1]])) {
-    x <- coordinates(rgeos::gUnaryUnion(b))[1, ]
+    x <- sp::coordinates(rgeos::gUnaryUnion(b))[1, ]
     graphics::text(x[1], x[2], labels=sub.label[[1]], adj=sub.label$adj, cex=0.6)
   }
 
