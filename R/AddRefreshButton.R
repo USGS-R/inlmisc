@@ -1,7 +1,7 @@
 #' Add Miscellaneous Web Map Buttons
 #'
 #' These functions add buttons on a web map that control miscellaneous view options.
-#' The \code{AddHomeButton} function that sets the map view to a user specified geographical extent.
+#' The \code{AddRefreshButton} function that sets the map view to the original extent.
 #' And the \code{AddClusterButton} function toggles marker clusters between frozen and unfrozen states.
 #'
 #' @param map '\link[leaflet]{leaflet}'.
@@ -35,12 +35,12 @@
 #' id <- "cities_cluster"
 #' map <- leaflet::addMarkers(map, lng = d$long, lat = d$lat, popup = d$name,
 #'                            clusterOptions = opt, clusterId = id)
-#' map <- AddHomeButton(map)
+#' map <- AddRefreshButton(map)
 #' map <- AddClusterButton(map, id)
 #' map
 #'
 
-AddHomeButton <- function(map, extent=NULL, position="topleft") {
+AddRefreshButton <- function(map, extent=NULL, position="topleft") {
 
   # check arguments
   checkmate::assertClass(map, c("leaflet", "htmlwidget"))
@@ -56,8 +56,8 @@ AddHomeButton <- function(map, extent=NULL, position="topleft") {
   js <- sprintf("function(btn, map) {
                    map.fitBounds([[%f, %f],[%f, %f]]);
                  }", e[3], e[1], e[4], e[2])
-  button <- leaflet::easyButton(icon="fa-home",
-                                title="Reset Extent",
+  button <- leaflet::easyButton(icon="fa-refresh",
+                                title="Refresh View",
                                 onClick=htmlwidgets::JS(js),
                                 position=position)
 
@@ -66,7 +66,7 @@ AddHomeButton <- function(map, extent=NULL, position="topleft") {
 }
 
 
-#' @rdname AddHomeButton
+#' @rdname AddRefreshButton
 #' @export
 
 AddClusterButton <- function(map, clusterId, position="topleft") {

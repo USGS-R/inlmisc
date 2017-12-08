@@ -29,7 +29,7 @@
 
 - In `CreateWebMap` function, remove coordinates and zoom level information from top of map.
 
-- Add `AddHomeButton` and `AddClusterButton` functions, used to add miscellaneous web map buttons.
+- Add `AddRefreshButton` and `AddClusterButton` functions, used to add miscellaneous web map buttons.
 
 - In `FindOptimalSubset` function, allow integer chromosomes to be specified for the `suggestions` argument.
 
