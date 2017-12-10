@@ -27,6 +27,8 @@
 #'
 #' @return Used for the side-effect of a button placed on a web map.
 #'
+#' @note The \code{AddSearchButton} function is not compatible with marker clusters.
+#'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
 #' @seealso \code{\link{CreateWebMap}}

@@ -50,6 +50,9 @@ The \code{AddRefreshButton} function sets the map view to the original extent.
 The \code{AddClusterButton} function toggles marker clusters between frozen and unfrozen states.
 And the \code{AddSearchButton} function may be used to search for, and move to, a marker.
 }
+\note{
+The \code{AddSearchButton} function is not compatible with marker clusters.
+}
 \examples{
 d <- maps::us.cities
 map <- CreateWebMap("Topo")
