@@ -29,7 +29,7 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link{AddClusterButton}}
+#' @seealso \code{\link{AddWebMapButtons}}
 #'
 #' @keywords hplot
 #'

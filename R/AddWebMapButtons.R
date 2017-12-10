@@ -1,8 +1,9 @@
 #' Add Miscellaneous Web Map Buttons
 #'
-#' These functions add buttons on a web map that control miscellaneous view options.
-#' The \code{AddRefreshButton} function that sets the map view to the original extent.
-#' And the \code{AddClusterButton} function toggles marker clusters between frozen and unfrozen states.
+#' These functions add buttons on a \href{http://leafletjs.com/}{Leaflet} web map that control miscellaneous view options.
+#' The \code{AddRefreshButton} function sets the map view to the original extent.
+#' The \code{AddClusterButton} function toggles marker clusters between frozen and unfrozen states.
+#' And the \code{AddSearchButton} function may be used to search for, and move to, a marker.
 #'
 #' @param map '\link[leaflet]{leaflet}'.
 #'   Map widget object
@@ -17,6 +18,12 @@
 #'   Possible values are \code{"topleft"}, \code{"topright"}, \code{"bottomleft"}, and \code{"bottomright"}.
 #' @param clusterId 'character'.
 #'   Identification for the marker cluster layer.
+#' @param group 'character'.
+#'   Name of the group whose features will be searched.
+#' @param propertyName 'character'.
+#'   Property name used to describe markers, such as, \code{"label"} and \code{"popup"}.
+#' @param zoom 'integer'.
+#'   Zoom level for move to location after marker found in search.
 #'
 #' @return Used for the side-effect of a button placed on a web map.
 #'
@@ -26,19 +33,29 @@
 #'
 #' @keywords hplot
 #'
-#' @export
+#' @name AddWebMapButtons
 #'
 #' @examples
-#' map <- CreateWebMap("Topo")
 #' d <- maps::us.cities
+#' map <- CreateWebMap("Topo")
 #' opt <- leaflet::markerClusterOptions(showCoverageOnHover = FALSE)
-#' id <- "cities_cluster"
-#' map <- leaflet::addMarkers(map, lng = d$long, lat = d$lat, popup = d$name,
-#'                            clusterOptions = opt, clusterId = id)
+#' map <- leaflet::addMarkers(map, d$long, d$lat, popup = d$name,
+#'                            clusterOptions = opt, clusterId = "cities_cluster")
 #' map <- AddRefreshButton(map)
-#' map <- AddClusterButton(map, id)
+#' map <- AddClusterButton(map, "cities_cluster")
 #' map
 #'
+#' map <- CreateWebMap("Imagery")
+#' map <- leaflet::addMarkers(map, d$long, d$lat, popup = d$name, group = "marker")
+#' map <- AddRefreshButton(map)
+#' map <- AddSearchButton(map, "marker", propertyName = "popup")
+#' map
+#'
+
+NULL
+
+#' @rdname AddWebMapButtons
+#' @export
 
 AddRefreshButton <- function(map, extent=NULL, position="topleft") {
 
@@ -66,7 +83,7 @@ AddRefreshButton <- function(map, extent=NULL, position="topleft") {
 }
 
 
-#' @rdname AddRefreshButton
+#' @rdname AddWebMapButtons
 #' @export
 
 AddClusterButton <- function(map, clusterId, position="topleft") {
@@ -106,4 +123,29 @@ AddClusterButton <- function(map, clusterId, position="topleft") {
 
   # place button on map
   leaflet::addEasyButton(map, button)
+}
+
+
+#' @rdname AddWebMapButtons
+#' @export
+
+AddSearchButton <- function(map, group, propertyName="label", zoom=15, position="topleft") {
+
+    map$dependencies <- c(map$dependencies, .SearchDependencies())
+    leaflet::invokeMethod(map,
+                          data=leaflet::getMapData(map),
+                          method="addSearchMarker",
+                          group,
+                          position,
+                          propertyName,
+                          zoom)
+}
+
+.SearchDependencies <- function() {
+  src <- system.file("htmlwidgets/plugins/leaflet-search", package="inlmisc")
+  list(htmltools::htmlDependency(name="leaflet-search",
+                                 version="2.3.7",
+                                 src=src,
+                                 script=c("leaflet-search.min.js", "leaflet-search-binding.js"),
+                                 stylesheet="leaflet-search.min.css"))
 }
