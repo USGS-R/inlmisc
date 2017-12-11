@@ -14,7 +14,12 @@ LeafletWidget.methods.addSearchMarker = function(group, position, propertyName, 
     zoom: zoom,
     marker: false
   });
-
   this.addControl(search);
   this.search = search;
+
+  this.search.on('search:locationfound', function(e) {
+    if(e.layer._popup) {
+      e.layer.openPopup();
+    }
+  });
 };

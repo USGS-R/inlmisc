@@ -42,15 +42,16 @@
 #' map <- CreateWebMap("Topo")
 #' opt <- leaflet::markerClusterOptions(showCoverageOnHover = FALSE)
 #' map <- leaflet::addMarkers(map, d$long, d$lat, popup = d$name,
-#'                            clusterOptions = opt, clusterId = "cities_cluster")
+#'                            clusterOptions = opt, clusterId = "cluster")
 #' map <- AddRefreshButton(map)
-#' map <- AddClusterButton(map, "cities_cluster")
+#' map <- AddClusterButton(map, "cluster")
 #' map
 #'
 #' map <- CreateWebMap("Imagery")
-#' map <- leaflet::addMarkers(map, d$long, d$lat, popup = d$name, group = "marker")
+#' map <- leaflet::addMarkers(map, d$long, d$lat, label = d$name,
+#'                            popup = d$name, group = "marker")
 #' map <- AddRefreshButton(map)
-#' map <- AddSearchButton(map, "marker", propertyName = "popup")
+#' map <- AddSearchButton(map, "marker")
 #' map
 #'
 
