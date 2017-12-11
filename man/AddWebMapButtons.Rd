@@ -11,8 +11,8 @@ AddRefreshButton(map, extent = NULL, position = "topleft")
 
 AddClusterButton(map, clusterId, position = "topleft")
 
-AddSearchButton(map, group, propertyName = "label", zoom = 15,
-  position = "topleft")
+AddSearchButton(map, group, propertyName = "label", zoom = NULL,
+  textPlaceholder = "Search...", position = "topleft")
 }
 \arguments{
 \item{map}{'\link[leaflet]{leaflet}'.
@@ -40,6 +40,9 @@ Property name used to describe markers, such as, \code{"label"} and \code{"popup
 
 \item{zoom}{'integer'.
 Zoom level for move to location after marker found in search.}
+
+\item{textPlaceholder}{'character'.
+Text message to show in search element.}
 }
 \value{
 Used for the side-effect of a button placed on a web map.
@@ -48,26 +51,20 @@ Used for the side-effect of a button placed on a web map.
 These functions add buttons on a \href{http://leafletjs.com/}{Leaflet} web map that control miscellaneous view options.
 The \code{AddRefreshButton} function sets the map view to the original extent.
 The \code{AddClusterButton} function toggles marker clusters between frozen and unfrozen states.
-And the \code{AddSearchButton} function may be used to search for, and move to, a marker.
-}
-\note{
-The \code{AddSearchButton} function is not compatible with marker clusters.
+And the \code{AddSearchButton} function may be used to search for, and move to, the location of a marker.
 }
 \examples{
-d <- maps::us.cities
+df <- maps::us.cities
+spdf <- sp::SpatialPointsDataFrame(df[, c("long", "lat")], data = df,
+                                   proj4string = sp::CRS("+init=epsg:4326"))
 map <- CreateWebMap("Topo")
 opt <- leaflet::markerClusterOptions(showCoverageOnHover = FALSE)
-map <- leaflet::addMarkers(map, d$long, d$lat, popup = d$name,
-                           clusterOptions = opt, clusterId = "cluster")
+map <- leaflet::addMarkers(map, label = ~name, popup = ~name,
+                           clusterOptions = opt, clusterId = "cluster",
+                           group = "marker", data = spdf)
 map <- AddRefreshButton(map)
 map <- AddClusterButton(map, "cluster")
-map
-
-map <- CreateWebMap("Imagery")
-map <- leaflet::addMarkers(map, d$long, d$lat, label = d$name,
-                           popup = d$name, group = "marker")
-map <- AddRefreshButton(map)
-map <- AddSearchButton(map, "marker")
+map <- AddSearchButton(map, "marker", zoom = 15, textPlaceholder = "Search cities...")
 map
 
 }

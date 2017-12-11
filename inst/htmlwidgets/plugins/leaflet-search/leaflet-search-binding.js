@@ -1,4 +1,4 @@
-LeafletWidget.methods.addSearchMarker = function(group, position, propertyName, zoom) {
+LeafletWidget.methods.addSearchMarker = function(group, position, propertyName, zoom, textPlaceholder) {
 
   if(this.search) {
     this.search.removeFrom(this);
@@ -8,10 +8,11 @@ LeafletWidget.methods.addSearchMarker = function(group, position, propertyName, 
 
   var search = new L.Control.Search({
     layer: layer_group,
-    position: position,
     propertyName: propertyName,
-    initial: false,
     zoom: zoom,
+    initial: false,
+    textPlaceholder: textPlaceholder,
+    position: position,
     marker: false
   });
   this.addControl(search);
@@ -22,4 +23,5 @@ LeafletWidget.methods.addSearchMarker = function(group, position, propertyName, 
       e.layer.openPopup();
     }
   });
+
 };
