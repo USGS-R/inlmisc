@@ -1,9 +1,10 @@
-#' Add Miscellaneous Web Map Buttons
+#' Add Additional Web Map Elements
 #'
-#' These functions add buttons on a \href{http://leafletjs.com/}{Leaflet} web map that control miscellaneous view options.
-#' The \code{AddRefreshButton} function sets the map view to the original extent.
-#' The \code{AddClusterButton} function toggles marker clusters between frozen and unfrozen states.
-#' And the \code{AddSearchButton} function may be used to search for, and move to, the location of a marker.
+#' These functions can be used to augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
+#' The \code{AddRefreshButton} function adds a button that sets the map view to the original extent.
+#' The \code{AddClusterButton} function adds a button that toggles marker clusters between frozen and unfrozen states.
+#' The \code{AddSearchButton} function adds a search element that may be used to locate, and move to, a marker.
+#' And the \code{AddCircleLegend} function adds a map legend.
 #'
 #' @param map '\link[leaflet]{leaflet}'.
 #'   Map widget object
@@ -26,6 +27,18 @@
 #'   Zoom level for move to location after marker found in search.
 #' @param textPlaceholder 'character'.
 #'   Text message to show in search element.
+#' @param labels 'character'.
+#'   Vector of text labels in the legend.
+#' @param colors 'character'.
+#'   Vector of (HTML) colors corresponding to \code{labels}.
+#' @param radius 'numeric'.
+#'   Border radius of symbols in the legend, in pixels.
+#' @param opacity 'numeric'.
+#'   Opacity of symbols in the legend, from 0 to 1.
+#' @param symbol 'character'.
+#'   Symbol type in the legend, either \code{"square"} or \code{"circle"}.
+#' @param title 'character'.
+#'   Legend title
 #'
 #' @return Used for the side-effect of a button placed on a web map.
 #'
@@ -35,26 +48,37 @@
 #'
 #' @keywords hplot
 #'
-#' @name AddWebMapButtons
+#' @name AddWebMapElements
 #'
 #' @examples
 #' df <- maps::us.cities
 #' spdf <- sp::SpatialPointsDataFrame(df[, c("long", "lat")], data = df,
 #'                                    proj4string = sp::CRS("+init=epsg:4326"))
-#' map <- CreateWebMap("Topo")
 #' opt <- leaflet::markerClusterOptions(showCoverageOnHover = FALSE)
-#' map <- leaflet::addMarkers(map, label = ~name, popup = ~name,
-#'                            clusterOptions = opt, clusterId = "cluster",
-#'                            group = "marker", data = spdf)
+#' map <- CreateWebMap("Topo")
+#' map <- leaflet::addMarkers(map, popup = ~name, clusterOptions = opt,
+#'                            clusterId = "cluster", group = "marker", data = spdf)
 #' map <- AddRefreshButton(map)
 #' map <- AddClusterButton(map, "cluster")
-#' map <- AddSearchButton(map, "marker", zoom = 15, textPlaceholder = "Search cities...")
+#' map <- AddSearchButton(map, "marker", zoom = 15,
+#'                        textPlaceholder = "Search city names...")
+#' map
+#'
+#' labels <- c("Non-capital", "Capital")
+#' colors <- c("green", "red")
+#' fillColor <- colors[(spdf@data$capital > 0) + 1L]
+#' map <- CreateWebMap("Topo")
+#' map <- leaflet::addCircleMarkers(map, radius = 6, color = "white", weight = 1,
+#'                                  opacity = 1, fillColor = fillColor, fillOpacity = 1,
+#'                                  fill = TRUE, data = spdf)
+#' map <- AddLegend(map, labels = labels, colors = colors, radius = 5,
+#'                  opacity = 1, symbol = "circle")
 #' map
 #'
 
 NULL
 
-#' @rdname AddWebMapButtons
+#' @rdname AddWebMapElements
 #' @export
 
 AddRefreshButton <- function(map, extent=NULL, position="topleft") {
@@ -83,7 +107,7 @@ AddRefreshButton <- function(map, extent=NULL, position="topleft") {
 }
 
 
-#' @rdname AddWebMapButtons
+#' @rdname AddWebMapElements
 #' @export
 
 AddClusterButton <- function(map, clusterId, position="topleft") {
@@ -126,7 +150,7 @@ AddClusterButton <- function(map, clusterId, position="topleft") {
 }
 
 
-#' @rdname AddWebMapButtons
+#' @rdname AddWebMapElements
 #' @export
 
 AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
@@ -158,4 +182,36 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
                                  src=src,
                                  script=c("leaflet-search.min.js", "leaflet-search-binding.js"),
                                  stylesheet="leaflet-search.min.css"))
+}
+
+
+#' @rdname AddWebMapElements
+#' @export
+
+AddLegend <- function(map, labels, colors, radius, opacity=0.5, symbol=c("square", "circle"),
+                      title="EXPLANATION", position="topright") {
+
+  # check arguments
+  checkmate::assertClass(map, c("leaflet", "htmlwidget"))
+  checkmate::assertCharacter(labels, any.missing=FALSE, min.len=1)
+  checkmate::assertCharacter(colors, any.missing=FALSE, len=length(labels))
+  checkmate::assertNumeric(radius, lower=0, any.missing=FALSE, min.len=1)
+  checkmate::assertNumber(opacity, lower=0, upper=1, finite=TRUE)
+  checkmate::assertString(title, null.ok=TRUE)
+  checkmate::assertChoice(position, c("topleft", "topright", "bottomleft", "bottomright"))
+
+  symbol <- match.arg(symbol)
+
+  sizes <- rep(radius, length.out=length(colors)) * 2
+  if (symbol == "square")
+    fmt <- "%s; width:%spx; height:%spx; margin-top:4px;"
+  else
+    fmt <- "%s; border-radius:50%%; width:%spx; height:%spx; margin-top:4px;"
+  col <- sprintf(fmt, colors, sizes, sizes)
+  fmt <- "<div style='display:inline-block; height:%spx; line-height:%spx; margin-top:4px;'>%s</div>"
+  lab <- sprintf(fmt, sizes, sizes, labels)
+  if (!is.null(title))
+    title <- sprintf("<span style='text-align:center;'>%s</span>", title)
+  return(leaflet::addLegend(map, position=position, colors=col, labels=lab,
+                            labFormat=as.character(), opacity=opacity, title=title))
 }
