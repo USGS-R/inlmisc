@@ -6,7 +6,7 @@
 \alias{AddClusterButton}
 \alias{AddSearchButton}
 \alias{AddLegend}
-\title{Add Additional Web Map Elements}
+\title{Add Miscellaneous Web Map Elements}
 \usage{
 AddRefreshButton(map, extent = NULL, position = "topleft")
 

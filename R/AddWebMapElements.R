@@ -1,4 +1,4 @@
-#' Add Additional Web Map Elements
+#' Add Miscellaneous Web Map Elements
 #'
 #' These functions can be used to augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
 #' The \code{AddRefreshButton} function adds a button that sets the map view to the original extent.
@@ -204,11 +204,11 @@ AddLegend <- function(map, labels, colors, radius, opacity=0.5, symbol=c("square
 
   sizes <- rep(radius, length.out=length(colors)) * 2
   if (symbol == "square")
-    fmt <- "%s; width:%spx; height:%spx; margin-top:4px;"
+    fmt <- "%s; width:%fpx; height:%fpx; margin-top:4px;"
   else
-    fmt <- "%s; border-radius:50%%; width:%spx; height:%spx; margin-top:4px;"
+    fmt <- "%s; border-radius:50%%; width:%fpx; height:%fpx; margin-top:4px;"
   col <- sprintf(fmt, colors, sizes, sizes)
-  fmt <- "<div style='display:inline-block; height:%spx; line-height:%spx; margin-top:4px;'>%s</div>"
+  fmt <- "<div style='display:inline-block; height:%fpx; line-height:%fpx; margin-top:4px;'>%s</div>"
   lab <- sprintf(fmt, sizes, sizes, labels)
   if (!is.null(title))
     title <- sprintf("<div style='text-align:center;'>%s</div>", title)
