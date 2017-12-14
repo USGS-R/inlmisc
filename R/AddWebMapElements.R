@@ -98,7 +98,7 @@ AddRefreshButton <- function(map, extent=NULL, position="topleft") {
                    map.fitBounds([[%f, %f],[%f, %f]]);
                  }", e[3], e[1], e[4], e[2])
   button <- leaflet::easyButton(icon="fa-refresh",
-                                title="Refresh View",
+                                title="Refresh view",
                                 onClick=htmlwidgets::JS(js),
                                 position=position)
 
@@ -128,7 +128,7 @@ AddClusterButton <- function(map, clusterId, position="topleft") {
                  }", clusterId)
   s0 <- leaflet::easyButtonState(stateName="unfrozen-markers",
                                  icon="fa-circle-o",
-                                 title="Freeze Clusters",
+                                 title="Freeze clusters",
                                  onClick=htmlwidgets::JS(js))
 
   # frozen state
@@ -139,7 +139,7 @@ AddClusterButton <- function(map, clusterId, position="topleft") {
                  }", clusterId)
   s1 <- leaflet::easyButtonState(stateName="frozen-markers",
                                  icon="fa-circle",
-                                 title="Unfreeze Clusters",
+                                 title="Unfreeze clusters",
                                  onClick=htmlwidgets::JS(js))
 
   # create button

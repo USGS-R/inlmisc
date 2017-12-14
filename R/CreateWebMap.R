@@ -62,8 +62,8 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
   map <- leaflet::leaflet(...)
 
   # specify attribution
-  att <- paste("<a href='https://www.usgs.gov/' target='_blank'>U.S. Geological Survey</a> |",
-               "<a href='https://www.usgs.gov/laws/policies_notices.html' target='_blank'>Policies</a>")
+  att <- paste("<a href='https://www.usgs.gov/' title='United States Geological Survey' target='_blank'>USGS</a> |",
+               "<a href='https://www.usgs.gov/laws/policies_notices.html' title='USGS policies and notices' target='_blank'>Policies</a>")
 
   # construct url for map tiles
   GetURL <- function(service, host="basemap.nationalmap.gov") {
