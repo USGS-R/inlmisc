@@ -27,6 +27,8 @@
 #'   Zoom level for move to location after marker found in search.
 #' @param textPlaceholder 'character'.
 #'   Text message to show in search element.
+#' @param openPopup 'logical'.
+#'   Whether to open the marker popup associated with the searched for marker.
 #' @param labels 'character'.
 #'   Vector of text labels in the legend.
 #' @param colors 'character'.
@@ -56,11 +58,11 @@
 #'                                    proj4string = sp::CRS("+init=epsg:4326"))
 #' opt <- leaflet::markerClusterOptions(showCoverageOnHover = FALSE)
 #' map <- CreateWebMap("Topo")
-#' map <- leaflet::addMarkers(map, popup = ~name, clusterOptions = opt,
+#' map <- leaflet::addMarkers(map, label = ~name, popup = ~name, clusterOptions = opt,
 #'                            clusterId = "cluster", group = "marker", data = spdf)
 #' map <- AddRefreshButton(map)
-#' map <- AddClusterButton(map, "cluster")
-#' map <- AddSearchButton(map, "marker", zoom = 15,
+#' map <- AddClusterButton(map, clusterId = "cluster")
+#' map <- AddSearchButton(map, group = "marker", zoom = 15,
 #'                        textPlaceholder = "Search city names...")
 #' map
 #'
@@ -154,7 +156,8 @@ AddClusterButton <- function(map, clusterId, position="topleft") {
 #' @export
 
 AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
-                            textPlaceholder="Search...", position="topleft") {
+                            textPlaceholder="Search...", openPopup=TRUE,
+                            position="topleft") {
 
   # check arguments
   checkmate::assertClass(map, c("leaflet", "htmlwidget"))
@@ -162,6 +165,7 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
   checkmate::assertString(propertyName, min.chars=1)
   checkmate::assertInt(zoom, lower=0, null.ok=TRUE)
   checkmate::assertString(textPlaceholder, null.ok=TRUE)
+  checkmate::assertFlag(openPopup)
   checkmate::assertChoice(position, c("topleft", "topright", "bottomleft", "bottomright"))
 
   map$dependencies <- c(map$dependencies, .SearchDependencies())
@@ -172,7 +176,8 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
                         position,
                         propertyName,
                         zoom,
-                        textPlaceholder)
+                        textPlaceholder,
+                        openPopup)
 }
 
 .SearchDependencies <- function() {

@@ -13,7 +13,7 @@ AddRefreshButton(map, extent = NULL, position = "topleft")
 AddClusterButton(map, clusterId, position = "topleft")
 
 AddSearchButton(map, group, propertyName = "label", zoom = NULL,
-  textPlaceholder = "Search...", position = "topleft")
+  textPlaceholder = "Search...", openPopup = TRUE, position = "topleft")
 
 AddLegend(map, labels, colors, radius, opacity = 0.5, symbol = c("square",
   "circle"), title = "EXPLANATION", position = "topright")
@@ -47,6 +47,9 @@ Zoom level for move to location after marker found in search.}
 
 \item{textPlaceholder}{'character'.
 Text message to show in search element.}
+
+\item{openPopup}{'logical'.
+Whether to open the marker popup associated with the searched for marker.}
 
 \item{labels}{'character'.
 Vector of text labels in the legend.}
@@ -82,11 +85,11 @@ spdf <- sp::SpatialPointsDataFrame(df[, c("long", "lat")], data = df,
                                    proj4string = sp::CRS("+init=epsg:4326"))
 opt <- leaflet::markerClusterOptions(showCoverageOnHover = FALSE)
 map <- CreateWebMap("Topo")
-map <- leaflet::addMarkers(map, popup = ~name, clusterOptions = opt,
+map <- leaflet::addMarkers(map, label = ~name, popup = ~name, clusterOptions = opt,
                            clusterId = "cluster", group = "marker", data = spdf)
 map <- AddRefreshButton(map)
-map <- AddClusterButton(map, "cluster")
-map <- AddSearchButton(map, "marker", zoom = 15,
+map <- AddClusterButton(map, clusterId = "cluster")
+map <- AddSearchButton(map, group = "marker", zoom = 15,
                        textPlaceholder = "Search city names...")
 map
 

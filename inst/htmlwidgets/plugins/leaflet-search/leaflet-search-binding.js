@@ -1,4 +1,4 @@
-LeafletWidget.methods.addSearchMarker = function(group, position, propertyName, zoom, textPlaceholder) {
+LeafletWidget.methods.addSearchMarker = function(group, position, propertyName, zoom, textPlaceholder, openPopup) {
 
   if(this.search) {
     this.search.removeFrom(this);
@@ -19,7 +19,7 @@ LeafletWidget.methods.addSearchMarker = function(group, position, propertyName, 
   this.search = search;
 
   this.search.on('search:locationfound', function(e) {
-    if(e.layer._popup) {
+    if(openPopup && e.layer._popup) {
       e.layer.openPopup();
     }
   });
