@@ -13,7 +13,19 @@ LeafletWidget.methods.addSearchMarker = function(group, position, propertyName, 
     initial: false,
     textPlaceholder: textPlaceholder,
     position: position,
-    marker: false
+    hideMarkerOnCollapse: true,
+    marker: {
+      icon: false,
+      animate: true,
+      circle: {
+        radius: 10,
+        weight: 3,
+        opacity: 0.7,
+        color: '#FF4040',
+        stroke: true,
+        fill: false
+      }
+    }
   });
   this.addControl(search);
   this.search = search;

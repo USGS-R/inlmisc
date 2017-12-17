@@ -156,12 +156,12 @@ AddClusterButton <- function(map, clusterId, position="topleft") {
 #' @export
 
 AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
-                            textPlaceholder="Search...", openPopup=TRUE,
+                            textPlaceholder="Search...", openPopup=FALSE,
                             position="topleft") {
 
   # check arguments
   checkmate::assertClass(map, c("leaflet", "htmlwidget"))
-  checkmate::assertString(group, min.chars=1)
+  checkmate::assertCharacter(group, min.chars=1, any.missing=FALSE, min.len=1)
   checkmate::assertString(propertyName, min.chars=1)
   checkmate::assertInt(zoom, lower=0, null.ok=TRUE)
   checkmate::assertString(textPlaceholder, null.ok=TRUE)

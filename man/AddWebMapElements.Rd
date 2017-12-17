@@ -13,7 +13,7 @@ AddRefreshButton(map, extent = NULL, position = "topleft")
 AddClusterButton(map, clusterId, position = "topleft")
 
 AddSearchButton(map, group, propertyName = "label", zoom = NULL,
-  textPlaceholder = "Search...", openPopup = TRUE, position = "topleft")
+  textPlaceholder = "Search...", openPopup = FALSE, position = "topleft")
 
 AddLegend(map, labels, colors, radius, opacity = 0.5, symbol = c("square",
   "circle"), title = "EXPLANATION", position = "topright")
