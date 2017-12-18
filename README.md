@@ -3,7 +3,7 @@
 [![Travis Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
 [![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
-[![](https://cranlogs.r-pkg.org/badges/inlmisc?color=brightgreen)](https://www.rpackages.io/package/inlmisc)
+[![](https://cranlogs.r-pkg.org/badges/inlmisc?color=brightgreen)](https://CRAN.R-project.org/package=inlmisc)
 [![USGS Category](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
 
 ## Overview
