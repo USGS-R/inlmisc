@@ -47,7 +47,7 @@ map
 
 }
 \seealso{
-\code{\link{AddClusterButton}}
+\code{\link{AddWebMapElements}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

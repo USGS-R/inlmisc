@@ -3,7 +3,7 @@
 [![Travis Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
 [![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
-[![](https://cranlogs.r-pkg.org/badges/inlmisc?color=brightgreen)](https://www.rpackages.io/package/inlmisc)
+[![](https://cranlogs.r-pkg.org/badges/inlmisc?color=brightgreen)](https://CRAN.R-project.org/package=inlmisc)
 [![USGS Category](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
 
 ## Overview
@@ -12,6 +12,8 @@ The [R](https://www.r-project.org/) package **inlmisc** is a collection of funct
 performing raster-based analysis, processing [MODFLOW](https://water.usgs.gov/ogw/modflow/)-based models, etc.
 Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
 Idaho National Laboratory (INL) [Project Office](https://www.usgs.gov/centers/id-water/science/idaho-national-laboratory-project-office "USGS INL Project Office").
+Additional information about the package functions can be found within the
+[R Documentation](https://www.rdocumentation.org/packages/inlmisc).
 
 ## Install
 

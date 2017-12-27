@@ -16,6 +16,7 @@ Imports:
     GA,
     graphics,
     grDevices,
+    htmltools,
     htmlwidgets,
     igraph,
     knitr,

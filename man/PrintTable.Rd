@@ -14,8 +14,8 @@ PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
 Data table to print.}
 
 \item{colheadings}{'character'.
-Vector of length equal to the number of columns in the table, indicating column headings.
-Use \code{\\\\\\\\} to indicate a line break.}
+Vector of length equal to the number of columns in the table, containing the column headings.
+Use \code{\\\\\\\\} to code a line break.}
 
 \item{align}{'character'.
 Vector of length equal to the number of columns in the table,

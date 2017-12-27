@@ -26,8 +26,6 @@
 #'
 #' @keywords utilities
 #'
-#' @import raster
-#'
 #' @export
 #'
 #' @examples
@@ -46,14 +44,14 @@ BumpDisconnectCells <- function(rs, min.overlap=2, bump.by=0.1, max.itr=1e+04) {
   r <- rs[[2]]
 
   cell <- which(!is.na(r[]))
-  rows <- rowFromCell(r, cell)
-  cols <- colFromCell(r, cell)
+  rows <- raster::rowFromCell(r, cell)
+  cols <- raster::colFromCell(r, cell)
 
   d <- cbind(cell, c1=NA, c2=NA, c3=NA, c4=NA)
-  d[, "c1"] <- cellFromRowCol(r, rows + 1L, cols)
-  d[, "c2"] <- cellFromRowCol(r, rows, cols - 1L)
-  d[, "c3"] <- cellFromRowCol(r, rows - 1L, cols)
-  d[, "c4"] <- cellFromRowCol(r, rows, cols + 1L)
+  d[, "c1"] <- raster::cellFromRowCol(r, rows + 1L, cols)
+  d[, "c2"] <- raster::cellFromRowCol(r, rows, cols - 1L)
+  d[, "c3"] <- raster::cellFromRowCol(r, rows - 1L, cols)
+  d[, "c4"] <- raster::cellFromRowCol(r, rows, cols + 1L)
 
   itr <- 0L
   while(TRUE) {

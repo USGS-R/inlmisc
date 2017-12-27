@@ -77,7 +77,7 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link{matplot}}, \code{\link{boxplot}}
+#' @seealso \code{\link[graphics]{matplot}}, \code{\link[graphics]{boxplot}}
 #'
 #' @keywords hplot
 #'
@@ -206,15 +206,15 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
         xxx <- xx[idxs]
         yyy <- yy[idxs]
         if (type == "s") {
-          xxx <- sort(c(xxx, tail(xxx, -1)), decreasing=is.decreasing)
-          yyy <- head(rep(yyy, each=2), -1)
+          xxx <- sort(c(xxx, utils::tail(xxx, -1)), decreasing=is.decreasing)
+          yyy <- utils::head(rep(yyy, each=2), -1)
           max.idx <- max(idxs)
           if (max.idx < length(xx)) {
             xxx <- c(xxx, xx[max.idx + 1L])
-            yyy <- c(yyy, tail(yyy, 1))
+            yyy <- c(yyy, utils::tail(yyy, 1))
           }
         }
-        xxx <- c(xxx, tail(xxx, 1), xxx[1])
+        xxx <- c(xxx, utils::tail(xxx, 1), xxx[1])
         ylim <- sort(graphics::par("usr")[3:4])
         ymin <- if (ylim[1] < 0 & ylim[2] > 0) 0 else ylim[which.min(abs(ylim))]
         yyy <- c(yyy, rep(ymin, 2))
@@ -226,10 +226,10 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
   if (inherits(x, "Date")) {
     if (center.date.labels) {
 
-      if (tail(xat, 1) < xlim[2])
+      if (utils::tail(xat, 1) < xlim[2])
         at <- xat + diff(c(xat, xlim[2])) / 2
       else
-        at <- head(xat, -1) + diff(xat) / 2
+        at <- utils::head(xat, -1) + diff(xat) / 2
 
       graphics::axis.Date(1, at=xat, tcl=tcl, labels=FALSE, lwd=-1, lwd.ticks=0.5)
       graphics::axis.Date(1, at=at, tcl=0, cex.axis=cex, lwd=-1)
@@ -321,8 +321,8 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
   y[y < ylim[1] & y > ylim[2]] <- NA
 
   if (type %in% c("w", "box")) {  # box-and-whisker plot
-    boxplot(y, xaxt="n", yaxt="n", range=0, varwidth=TRUE, boxwex=boxwex,
-            col=col, border="#333333", add=TRUE, at=x)
+    graphics::boxplot(y, xaxt="n", yaxt="n", range=0, varwidth=TRUE, boxwex=boxwex,
+                      col=col, border="#333333", add=TRUE, at=x)
 
   } else if (type == "i") {  # interval censored plot
     arg <- list(length=0.015, angle=90, lwd=lwd, col=col)
@@ -361,12 +361,12 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
       grp <- .GetSegmentGroup(yy)
       for (j in unique(stats::na.omit(grp))) {
         idxs <- which(grp %in% j)
-        xxx <- sort(c(xx[idxs], tail(xx[idxs], -1)), decreasing=is.decreasing)
-        yyy <- head(rep(yy[idxs], each=2), -1)
+        xxx <- sort(c(xx[idxs], utils::tail(xx[idxs], -1)), decreasing=is.decreasing)
+        yyy <- utils::head(rep(yy[idxs], each=2), -1)
         max.idx <- max(idxs)
         if (max.idx < length(xx)) {
           xxx <- c(xxx, xx[max.idx + 1L])
-          yyy <- c(yyy, tail(yyy, 1))
+          yyy <- c(yyy, utils::tail(yyy, 1))
         }
         graphics::lines(xxx, yyy, lty=lty[i], lwd=lwd[i], col=col[i])
       }

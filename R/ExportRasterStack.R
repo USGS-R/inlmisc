@@ -69,13 +69,12 @@ ExportRasterStack <- function(rs, path, zip="",
     f <- file.path(path.png, paste(fig.num, "_", i, ".png", sep=""))
     grDevices::png(filename=f, width=7, height=7, units="in", pointsize=12,
                    res=1200, antialias="cleartype")
-    plot(rs[[i]], maxpixels=length(rs[[i]]), col=col, main=names(rs[[i]]),
-         asp=1)
+    raster::plot(rs[[i]], maxpixels=length(rs[[i]]), col=col, main=names(rs[[i]]), asp=1)
     grDevices::dev.off()
 
     f <- file.path(path.tif, paste(fig.num, "_", i, ".tif", sep=""))
-    writeRaster(rs[[i]], filename=f, format="GTiff", overwrite=TRUE,
-                NAflag=-999)
+    raster::writeRaster(rs[[i]], filename=f, format="GTiff",
+                        overwrite=TRUE, NAflag=-999)
   }
 
   base.name <- "raster"
@@ -85,9 +84,9 @@ ExportRasterStack <- function(rs, path, zip="",
 
   f <- file.path(path.kml, "rasters.kml")
   crs <- "+init=epsg:4326"
-  rs <- projectRaster(rs, crs=crs, method="ngb", alignOnly=FALSE)
-  KML(rs, f, col=col, maxpixels=ncell(rs) * 2, blur=5, zip=zip,
-      overwrite=TRUE)
+  rs <- raster::projectRaster(rs, crs=crs, method="ngb", alignOnly=FALSE)
+  raster::KML(rs, f, col=col, maxpixels=raster::ncell(rs) * 2, blur=5,
+              zip=zip, overwrite=TRUE)
 
   invisible()
 }

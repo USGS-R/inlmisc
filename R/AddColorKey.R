@@ -111,7 +111,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
     graphics::rect(xleft=x - dx, ybottom=0, xright=x + dx, ytop=1, col=col, border=NA)
 
   } else {
-    graphics::rect(xleft=head(breaks, -1), ybottom=0, xright=tail(breaks, -1),
+    graphics::rect(xleft=utils::head(breaks, -1), ybottom=0, xright=utils::tail(breaks, -1),
                    ytop=1, col=col, border=col, lwd=lwd)
     if (length(at) >= length(breaks) - 1L) {
       graphics::abline(v=breaks, lwd=lwd)

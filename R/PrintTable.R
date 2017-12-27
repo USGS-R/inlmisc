@@ -7,8 +7,8 @@
 #' @param d 'data.frame'.
 #'   Data table to print.
 #' @param colheadings 'character'.
-#'   Vector of length equal to the number of columns in the table, indicating column headings.
-#'   Use \code{\\\\\\\\} to indicate a line break.
+#'   Vector of length equal to the number of columns in the table, containing the column headings.
+#'   Use \code{\\\\\\\\} to code a line break.
 #' @param align 'character'.
 #'   Vector of length equal to the number of columns in the table,
 #'   indicating the alignment of the corresponding columns.
