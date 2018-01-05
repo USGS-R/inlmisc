@@ -217,17 +217,20 @@ Grid2Polygons <- function(grd, zcol=1L, level=FALSE, at=NULL, cuts=20L,
   levs <- sort(unique(stats::na.omit(z)))
 
   # find polygon nodes for each level
-  FUN <- function(i) .FindPolyNodes(segs[segs[, "z"] == i, c("a", "b")])
-  poly.nodes <- lapply(levs, FUN)
+  poly.nodes <- lapply(levs, function(i) {
+    .FindPolyNodes(segs[segs[, "z"] == i, c("a", "b")])
+  })
 
   # build lists of 'Polygon' objects
-  FUN <- function(i) lapply(i, function(j) sp::Polygon(coords[j, ]))
-  poly <- lapply(poly.nodes, FUN)
+  poly <- lapply(poly.nodes, function(i) {
+    lapply(i, function(j) sp::Polygon(coords[j, ]))
+  })
 
   # build list of 'Polygons' objects
   ids <- make.names(1:length(poly), unique=TRUE)
-  FUN <- function(i) sp::Polygons(poly[[i]], ID=ids[i])
-  polys <- lapply(1:length(poly), FUN)
+  polys <- lapply(1:length(poly), function(i) {
+    sp::Polygons(poly[[i]], ID=ids[i])
+  })
 
   # convert to 'SpatialPolygons' object, add datum and projection
   sp.polys <- sp::SpatialPolygons(polys, proj4string=raster::crs(grd))

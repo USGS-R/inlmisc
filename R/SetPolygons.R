@@ -79,7 +79,7 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
 
   are.intersecting <- rgeos::gIntersects(x, y, byid=TRUE)
 
-  FUN <- function (i) {
+  z <- lapply(seq_along(x), function (i) {
     if (any(are.intersecting[, i])) {
       y.intersect <- y[are.intersecting[, i]]
       if (is.numeric(buffer.width))
@@ -103,8 +103,7 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
       p <- if (cmd == "gIntersection") NULL else x[i]@polygons[[1]]
     }
     return(p)
-  }
-  z <- lapply(seq_along(x), FUN)
+  })
 
   is.retained <- !vapply(z, is.null, TRUE)
   z <- sp::SpatialPolygons(z[is.retained], proj4string=raster::crs(x))

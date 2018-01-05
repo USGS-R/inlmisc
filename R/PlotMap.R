@@ -476,8 +476,9 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
       ply <- Grid2Polygons(r, level=TRUE, at=breaks, zlim=zl)
       if (simplify > 0) {
         simple.ply <- rgeos::gSimplify(ply, tol=simplify, topologyPreserve=TRUE)
-        FUN <- function(i) methods::slot(i, "ID")
-        ids <- sapply(methods::slot(simple.ply, "polygons"), FUN)
+        ids <- sapply(methods::slot(simple.ply, "polygons"), function(i) {
+          methods::slot(i, "ID")
+        })
         ply <- sp::SpatialPolygonsDataFrame(simple.ply, data=ply[ids, ]@data)
       }
       sp::plot(ply, col=cols, border=NA, add=TRUE)

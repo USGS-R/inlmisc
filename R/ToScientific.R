@@ -110,7 +110,7 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
 
   # plotmath expression
   } else {
-    FUN <- function(i) {
+    s <- do.call("expression", lapply(seq_along(x), function(i) {
       if (is_zero[i]) {
         return("0")
       } else if (is.na(x[i])) {
@@ -123,8 +123,7 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
         v <- round(m[i], digits_sci)
         return(substitute(M%*%10^N, list(M=v, N=n[i])))
       }
-    }
-    s <- do.call("expression", lapply(seq_along(x), FUN))
+    }))
   }
 
   return(s)

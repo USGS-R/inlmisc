@@ -329,7 +329,7 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
                      paste(pkg[is], collapse=", "))
       stop(msg, call.=FALSE)
     }
-    FUN <- function(i) {
+    p <- c(unlist(lapply(pkg, function(i) {
       x <- utils::packageDescription(i, lib)
       x <- c(x$Depends, x$LinkingTo, x$Imports, x$Suggests)
       if (is.null(x)) return(NULL)
@@ -338,8 +338,7 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
       x <- gsub("\\s*\\([^\\)]+\\)", "", x)
       x <- strsplit(x, ", ")[[1]]
       return(x)
-    }
-    p <- c(unlist(lapply(pkg, FUN)), pkg)
+    })), pkg)
     pkgs <- pkgs[pkgs[, "Package"] %in% p, , drop=FALSE]
   }
 
@@ -402,6 +401,7 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
 #'
 
 IsPackageInstalled <- function(x, lib=.libPaths()) {
-  FUN <- function(i) {system.file(package=i, lib.loc=lib) != ""}
-  return(vapply(x, FUN, TRUE))
+  return(vapply(x, function(i) {
+    system.file(package=i, lib.loc=lib) != ""
+  }, TRUE))
 }

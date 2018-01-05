@@ -170,14 +170,13 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     }
     cols <- unique(cell.cols)
 
-    FUN <- function(i) {
+    p <- lapply(seq_along(cols), function(i) {
       p <- sp::Polygons(cell.polys[which(cell.cols == cols[i])], i)
       p <- rgeos::gUnaryUnion(sp::SpatialPolygons(list(p), i))
       p <- methods::slot(p, "polygons")[[1]]
       p@ID <- cols[i]
       return(p)
-    }
-    p <- lapply(seq_along(cols), FUN)
+    })
     cell.polys.merged <- sp::SpatialPolygons(p, seq_along(cols))
   }
 
@@ -197,8 +196,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   mai2 <- c(0.6, 4.6, 4, 2) * csi
   if (draw.key) {
     y1 <- csi
-    FUN <- function(i) {if (is.null(i)) 0 else length(strsplit(i, "\n")[[1]])}
     mai1 <- c(1.2, 4.6, NA, 2) * csi
+    FUN <- function(i) {if (is.null(i)) 0 else length(strsplit(i, "\n")[[1]])}
     mai1[3] <- FUN(explanation) * (csi * 0.7)
   } else {
     y1 <- 0
@@ -264,12 +263,11 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   }
 
   if (is.character(bg.col)) {
-    FUN <- function(i) {
+    bg.poly <- sp::SpatialPolygons(list(sp::Polygons(lapply(eat, function(i) {
       m <- cbind(x=i@data[[1]], y=i@data[[2]])
       m <- rbind(m, cbind(rev(range(m[, "x"], na.rm=TRUE)), usr[3]), m[1, , drop=FALSE])
       return(sp::Polygon(m))
-    }
-    bg.poly <- sp::SpatialPolygons(list(sp::Polygons(lapply(eat, FUN), "bg")), 1L)
+    }), "bg")), 1L)
     sp::plot(bg.poly, col=bg.col, border=NA, lwd=0.1, add=TRUE)
   }
 
@@ -291,8 +289,9 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     dx <- diff(e[1:2]) / nc
     nr <- as.integer(diff(e[3:4]) / (dx / asp))
     r <- raster::raster(e, nrows=nr, ncols=nc)
-    FUN <- function(i) sp::Polygons(list(cell.polys[[i]]), as.character(i))
-    p <- lapply(seq_along(cell.polys), FUN)
+    p <- lapply(seq_along(cell.polys), function(i) {
+      sp::Polygons(list(cell.polys[[i]]), as.character(i))
+    })
     p <- sp::SpatialPolygons(p, seq_along(cell.polys))
     r <- raster::rasterize(p, r)
     r[] <- cell.values[r[]]

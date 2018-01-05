@@ -219,11 +219,10 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
 
 
 .Read3dArray <- function(con, nrow, ncol, nlay, nbytes, endian) {
-  FUN <- function(i) {
+  return(lapply(seq_len(nlay), function(i) {
     v <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
     return(matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE))
-  }
-  return(lapply(seq_len(nlay), FUN))
+  }))
 }
 
 
