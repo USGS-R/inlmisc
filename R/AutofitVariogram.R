@@ -137,11 +137,11 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
       width <- init.width
       if (verbose) cat("Initial width provided.\n")
     }
-    # get the experimental variogram
-    if (!methods::is(GLS.model, "variogramModel")) {
-      experimental_variogram <- gstat::variogram(formula, input_data, width=width, ...)
+    # get the empirical variogram
+    if (methods::is(GLS.model, "variogramModel")) {
+      empirical_variogram <- gstat::variogram(g, width=width, ...)
     } else {
-      experimental_variogram <- gstat::variogram(g, width=width, ...)
+      empirical_variogram <- gstat::variogram(formula, input_data, width=width, ...)
     }
     # merge small bins if requested
     if (merge.small.bins) {
@@ -150,12 +150,12 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
       iter <- 0
       maxiter <- 1000
       while (TRUE) {
-        if (!any(experimental_variogram$np < min.np.bin)) break
+        if (!any(empirical_variogram$np < min.np.bin)) break
         width <- width * 1.1  # increase width by 10 percent and try again
-        if (!methods::is(GLS.model, "variogramModel")) {
-          experimental_variogram <- gstat::variogram(formula, input_data, width=width, ...)
+        if (methods::is(GLS.model, "variogramModel")) {
+          empirical_variogram <- gstat::variogram(g, width=width, ...)
         } else {
-          experimental_variogram <- gstat::variogram(g, width=width, ...)
+          empirical_variogram <- gstat::variogram(formula, input_data, width=width, ...)
         }
         iter <- iter + 1
         if (iter > maxiter) {
@@ -199,12 +199,12 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
       # reduce number of bins
       num.bins <- num.bins - 1
     }
-    if (!methods::is(GLS.model, "variogramModel")) {
-      experimental_variogram <- gstat::variogram(formula, input_data, boundaries=boundaries, ...)
-    } else {
+    if (methods::is(GLS.model, "variogramModel")) {
       if (verbose) cat("Calculating GLS sample variogram.\n")
       g <- gstat::gstat(NULL, "bla", formula, input_data, model=GLS.model, set=list(gls=1))
-      experimental_variogram <- gstat::variogram(g, boundaries=boundaries, ...)
+      empirical_variogram <- gstat::variogram(g, boundaries=boundaries, ...)
+    } else {
+      empirical_variogram <- gstat::variogram(formula, input_data, boundaries=boundaries, ...)
     }
 
   # compute boundaries using automap method
@@ -213,23 +213,23 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
     boundaries <- c(2, 4, 6, 9, 12, 15, 25, 35, 50, 65, 80, 100) *
                     diagonal * 0.35 / 100  # boundaries for the bins
     # specifiy a variogram model in GLS.model the generelised least squares sample variogram is constructed
-    if (!methods::is(GLS.model, "variogramModel")) {
-      experimental_variogram <- gstat::variogram(formula, input_data, boundaries=boundaries, ...)
-    } else {
+    if (methods::is(GLS.model, "variogramModel")) {
       if (verbose) cat("Calculating GLS sample variogram.\n")
       g <- gstat::gstat(NULL, "bla", formula, input_data, model=GLS.model, set=list(gls=1))
-      experimental_variogram <- gstat::variogram(g, boundaries=boundaries, ...)
+      empirical_variogram <- gstat::variogram(g, boundaries=boundaries, ...)
+    } else {
+      empirical_variogram <- gstat::variogram(formula, input_data, boundaries=boundaries, ...)
     }
     if (merge.small.bins) {
       if (verbose) cat("Checking if any bins have less than 5 points, merging bins when necessary...\n\n")
       while (TRUE) {
-        if (length(experimental_variogram$np[experimental_variogram$np < min.np.bin]) == 0 |
+        if (length(empirical_variogram$np[empirical_variogram$np < min.np.bin]) == 0 |
             length(boundaries) == 1) break
         boundaries <- boundaries[2:length(boundaries)]
-        if (!methods::is(GLS.model, "variogramModel")) {
-          experimental_variogram <- gstat::variogram(formula, input_data,boundaries=boundaries, ...)
+        if (methods::is(GLS.model, "variogramModel")) {
+          empirical_variogram <- gstat::variogram(g, boundaries=boundaries, ...)
         } else {
-          experimental_variogram <- gstat::variogram(g, boundaries=boundaries, ...)
+          empirical_variogram <- gstat::variogram(formula, input_data,boundaries=boundaries, ...)
         }
       }
     }
@@ -241,15 +241,15 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
     if (methods::is(GLS.model, "variogramModel")) {
       if (verbose) cat("Calculating GLS sample variogram\n")
       g <- gstat::gstat(NULL, "bla", formula, input_data, model=GLS.model, set=list(gls=1))
-      experimental_variogram=gstat::variogram(g, ...)
+      empirical_variogram=gstat::variogram(g, ...)
     } else {
-      experimental_variogram <- gstat::variogram(formula, input_data, ...)
+      empirical_variogram <- gstat::variogram(formula, input_data, ...)
     }
   }
 
   # set initial values
   if (is.na(start_vals[1])) {  # nugget
-    initial_nugget <- min(experimental_variogram$gamma)
+    initial_nugget <- min(empirical_variogram$gamma)
   } else {
     initial_nugget <- start_vals[1]
   }
@@ -259,47 +259,47 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
     initial_range <- start_vals[2]
   }
   if (is.na(start_vals[3])) {  # sill
-    initial_sill <- mean(c(max(experimental_variogram$gamma),
-                           stats::median(experimental_variogram$gamma)))
+    initial_sill <- mean(c(max(empirical_variogram$gamma),
+                           stats::median(empirical_variogram$gamma)))
   } else {
     initial_sill <- start_vals[3]
   }
 
   # determine what should be automatically fitted and what should be fixed
-  if (!is.na(fix.values[1])) {  # nugget
+  if (is.na(fix.values[1])) {  # nugget
+    fit_nugget <- TRUE
+  } else {
     fit_nugget <- FALSE
     initial_nugget <- fix.values[1]
-  } else {
-    fit_nugget <- TRUE
   }
-  if (!is.na(fix.values[2])) {  # range
+  if (is.na(fix.values[2])) {  # range
+    fit_range <- TRUE
+  } else {
     fit_range <- FALSE
     initial_range <- fix.values[2]
-  } else {
-    fit_range <- TRUE
   }
-  if (!is.na(fix.values[3])) {  # partial sill
+  if (is.na(fix.values[3])) {  # partial sill
+    fit_sill <- TRUE
+  } else {
     fit_sill <- FALSE
     initial_sill <- fix.values[3]
-  } else {
-    fit_sill <- TRUE
   }
 
   GetModel <- function(psill, model, range, kappa, nugget, fit_range, fit_sill,
                        fit_nugget, verbose) {
-    if (verbose) debug.level <- 1 else debug.level <- 0
+    debug.level <- if (verbose) 1 else 0
     if (model == "Pow") {
       warning("Using the power model is at your own risk, read the docs of autofitVariogram for more details.")
       if (is.na(start_vals[1])) nugget <- 0
       if (is.na(start_vals[2])) range  <- 1  # if a power mode, range == 1 is a better start value
       if (is.na(start_vals[3])) sill   <- 1
     }
-    obj <- try(gstat::fit.variogram(experimental_variogram,
+    obj <- try(gstat::fit.variogram(empirical_variogram,
                                     model=gstat::vgm(psill=psill, model=model, range=range, nugget=nugget, kappa=kappa),
                                     fit.ranges=c(fit_range),
                                     fit.sills=c(fit_nugget, fit_sill),
                                     debug.level=0), TRUE)
-    if ("try-error" %in% class(obj)) {
+    if (inherits(obj, "try-error")) {
       warning("An error has occured during variogram fitting. Used:\n",
               "\tnugget:\t", nugget,
               "\n\tmodel:\t", model,
@@ -336,7 +336,8 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
                               fit_nugget, verbose=verbose)
         if (!is.null(model_fit)) {
           vgm_list[[counter]] <- model_fit
-          SSerr_list <- c(SSerr_list, attr(model_fit, "SSErr"))}
+          SSerr_list <- c(SSerr_list, attr(model_fit, "SSErr"))
+        }
         counter <- counter + 1
       }
     }
@@ -367,7 +368,7 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
     print(tested)
   }
 
-  result <- list(exp_var=experimental_variogram,
+  result <- list(exp_var=empirical_variogram,
                  var_model=vgm_list[[which.min(SSerr_list)]],
                  sserr=min(SSerr_list))
   class(result) <- c("autofitVariogram", "list")
