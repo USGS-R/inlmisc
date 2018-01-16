@@ -31,13 +31,13 @@ Vector of smoothing parameter(s) of the Matern model.}
 
 \item{fix.values}{'numeric'.
 A vector of length 3 containing user specified fixed values for nugget, range, and sill.
-Specifying value as NA indicates that the value is not fixed.}
+Specifying value as \code{NA} indicates that the value is not fixed.}
 
 \item{verbose}{'logical'.
 Specify as true to print additional output describing the fitting process.}
 
-\item{GLS.model}{'?'.
-If specified, a Generalized Least Squares sample variogram is calculated.}
+\item{GLS.model}{'variogramModel'.
+If specified, a Generalized Least Squares (GLS) empirical variogram is calculated.}
 
 \item{start_vals}{'numeric'.
 Starting values for variogram fitting, see \code{fix.values} argument for format.}
@@ -60,14 +60,14 @@ Initial number of bins}
 \item{init.width}{'numeric'.
 Initial bin width}
 
-\item{...}{Parameters passed on to the \code{\link[gstat]{variogram}} function when calculating the empirical variogram.}
+\item{...}{Parameters passed to the \code{\link[gstat]{variogram}} function when calculating the empirical variogram.}
 }
 \value{
 Returns a 'autofitVariogram' object with the following components:
   \describe{
     \item{\code{exp_var}}{experimental variogram}
     \item{\code{var_model}}{variogram model}
-    \item{\code{sserr}}{sums of squares between the sample variogram and the fitted variogram model.}
+    \item{\code{sserr}}{sums of squares between the empirical variogram and the fitted theoretical variogram model.}
   }
 }
 \description{
@@ -81,7 +81,7 @@ Many options are available for customization of the bins in the empirical variog
 The different binning methods include:
   \describe{
     \item{\code{"automap"}}{is the default binning method used by \code{\link[automap]{autofitVariogram}} function.
-      The distance intervals which define the bins are equal to 2, 4, 6, ..., 100 percent
+      The distance intervals which define the bins are equal to 2, 4, 6, \ldots{}, 100 percent
       of about 1/3 the diagonal of the box spanning the observation locations.}
     \item{\code{"gstat"}}{is the default binning method used by \code{\link[gstat]{variogram}} function.}
     \item{\code{"equal_width"}}{resizes the bins so that each contains the minimum number of observations.}
@@ -89,8 +89,13 @@ The different binning methods include:
   }
 }
 \note{
-Koohafkan, M.C., \href{http://hydroecology.net/know-your-variograms/}{know-your-variograms};
-  Hiemstra, P., \href{https://CRAN.R-project.org/package=automap}{automap}
+Function source code was modified from the \code{autofitVariogram} function in the
+  \href{https://CRAN.R-project.org/package=automap}{automap} package (version 1.0-14; license
+  \href{https://cran.r-project.org/web/licenses/GPL-2}{GPL-2}) |
+  \href{https://cran.r-project.org/web/licenses/GPL-3}{GPL-3}).
+  And source code for the \code{"equal_width"} and \code{"equal_count"} binning methods was modified from the
+  \href{http://hydroecology.net/know-your-variograms/}{know-your-variograms} blog post,
+  by M.C. Koohafkan, accessed on Jan. 14, 2018.
 }
 \examples{
 data(meuse, package = "sp")

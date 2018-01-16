@@ -653,6 +653,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
 
 .AreColors <- function(x) {
-  sapply(x, function(i) tryCatch(is.matrix(grDevices::col2rgb(i)),
-                                 error=function(e) FALSE))
+  sapply(x, function(i) tryCatch({
+    is.matrix(grDevices::col2rgb(i))
+  }, error=function(e) FALSE))
 }
