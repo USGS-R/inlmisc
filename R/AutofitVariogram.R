@@ -126,7 +126,7 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
     # replace diagonal with cutoff
     if ("cutoff" %in% names(list(...))) diagonal <- list(...)[["cutoff"]]
     # user must supply either bin width or number of bins
-    if (is.na(init.width)){
+    if (is.na(init.width)) {
       if (is.na(num.bins))
         stop("When 'equal.width.bins' is TRUE, ",
              "user must also supply either 'init.width' or 'num.bins'.", call.=FALSE)
@@ -143,7 +143,7 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
       experimental_variogram <- gstat::variogram(g, width=width, ...)
     }
     # merge small bins if requested
-    if (merge.small.bins){
+    if (merge.small.bins) {
       if (verbose) cat("Checking if any bins have less than", min.np.bin,
                        "points, merging bins when necessary...\n")
       iter <- 0
@@ -157,7 +157,7 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
           experimental_variogram <- gstat::variogram(g, width=width, ...)
         }
         iter <- iter + 1
-        if (iter > maxiter){
+        if (iter > maxiter) {
           cat("Maximum number of interations reached.",
               "Try decreasing 'min.np.bin' or 'init.width'.\n\n")
           break
@@ -178,7 +178,7 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
     # apply the cutoff
     dists <- dists[dists < diagonal & dists > 0]
     # split the data into bins based on number of observations
-    if (is.na(num.bins)){
+    if (is.na(num.bins)) {
       # compute number of bins based on the minimum number of observations per bin
       num.bins <- floor(0.5 * length(dists) / min.np.bin)
       if (verbose)
@@ -186,7 +186,7 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
             "based on min.np.bin.\n")
     }
     cat("Checking bins, decreasing num.bins if necessary... \n")
-    while (TRUE){
+    while (TRUE) {
       # compute interval based on the number of bins
       interval <- length(dists) / num.bins
       # define boundaries

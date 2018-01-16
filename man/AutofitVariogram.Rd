@@ -90,7 +90,7 @@ The different binning methods include:
 }
 \note{
 Function source code was modified from the \code{autofitVariogram} function in the
-  \href{https://CRAN.R-project.org/package=automap}{automap} package (version 1.0-14; license
+  \href{https://CRAN.R-project.org/package=automap}{automap} package (version 1.0-14, license
   \href{https://cran.r-project.org/web/licenses/GPL-2}{GPL-2}) |
   \href{https://cran.r-project.org/web/licenses/GPL-3}{GPL-3}).
   And source code for the \code{"equal_width"} and \code{"equal_count"} binning methods was modified from the

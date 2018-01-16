@@ -401,7 +401,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
 
 ##
 
-.Map2Color <- function(x, Pal, xlim=NULL, n=100L){
+.Map2Color <- function(x, Pal, xlim=NULL, n=100L) {
   if (length(x) == 0) return(NULL)
   if (is.null(xlim)) xlim <- range(x)
   Pal(n)[findInterval(x, seq(xlim[1], xlim[2], length.out=n), all.inside=TRUE)]
