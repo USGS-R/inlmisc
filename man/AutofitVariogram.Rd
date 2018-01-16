@@ -19,7 +19,8 @@ Formula that defines the dependent variable as a linear model of independent var
 Input data}
 
 \item{model}{'character'.
-Vector of variogram model types that will be examined when automatically fitting a variogram to the data.
+Vector of model types that will be examined when automatically fitting a
+theoretical variogram model to the empirical variogram data.
 The different model types include:
 \code{"Sph"}, spherical;
 \code{"Exp"}, exponential;
@@ -65,13 +66,13 @@ Initial bin width}
 \value{
 Returns a 'autofitVariogram' object with the following components:
   \describe{
-    \item{\code{exp_var}}{experimental variogram}
-    \item{\code{var_model}}{variogram model}
+    \item{\code{exp_var}}{empirical variogram}
+    \item{\code{var_model}}{theoretical variogram model}
     \item{\code{sserr}}{sums of squares between the empirical variogram and the fitted theoretical variogram model.}
   }
 }
 \description{
-This function automatically fits a variogram model to input data.
+This function automatically fits a theoretical variogram model to input data.
 Automatic fitting is performed using the \code{\link[gstat]{fit.variogram}} function.
 And initial values for the sill, range, nugget, and model type are estimated using a
 modified version of the \code{\link[automap]{autofitVariogram}} function.
@@ -80,10 +81,10 @@ Many options are available for customization of the bins in the empirical variog
 \details{
 The different binning methods include:
   \describe{
-    \item{\code{"automap"}}{is the default binning method used by \code{\link[automap]{autofitVariogram}} function.
-      The distance intervals which define the bins are equal to 2, 4, 6, \ldots{}, 100 percent
+    \item{\code{"automap"}}{is the default binning method used by the \code{\link[automap]{autofitVariogram}} function.
+      The distance intervals that define the bins are equal to 2, 4, 6, \ldots{}, 100 percent
       of about 1/3 the diagonal of the box spanning the observation locations.}
-    \item{\code{"gstat"}}{is the default binning method used by \code{\link[gstat]{variogram}} function.}
+    \item{\code{"gstat"}}{is the default binning method used by the \code{\link[gstat]{variogram}} function.}
     \item{\code{"equal_width"}}{resizes the bins so that each contains the minimum number of observations.}
     \item{\code{"equal_count"}}{defines bins so that each contains the same number of observations.}
   }
