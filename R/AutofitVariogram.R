@@ -299,17 +299,18 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
                                     fit.ranges=c(fit_range),
                                     fit.sills=c(fit_nugget, fit_sill),
                                     debug.level=0), TRUE)
-  if ("try-error" %in% class(obj)) {
-    warning("An error has occured during variogram fitting. Used:\n",
-            "\tnugget:\t", nugget,
-            "\n\tmodel:\t", model,
-            "\n\tpsill:\t", psill,
-            "\n\trange:\t", range,
-            "\n\tkappa:\t", ifelse(kappa == 0, NA, kappa),
-            "\n  as initial guess. This particular variogram fit is not taken into account. \nGstat error:\n", obj)
-    return(NULL)
-  } else
-    return(obj)
+    if ("try-error" %in% class(obj)) {
+      warning("An error has occured during variogram fitting. Used:\n",
+              "\tnugget:\t", nugget,
+              "\n\tmodel:\t", model,
+              "\n\tpsill:\t", psill,
+              "\n\trange:\t", range,
+              "\n\tkappa:\t", ifelse(kappa == 0, NA, kappa),
+              "\n  as initial guess. This particular variogram fit is not taken into account. \nGstat error:\n", obj)
+      return(NULL)
+    } else {
+      return(obj)
+    }
   }
 
   # automatically test different models, the one with the smallest sums-of-squares is chosen
