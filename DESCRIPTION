@@ -16,6 +16,7 @@ Imports:
     GA,
     graphics,
     grDevices,
+    gstat,
     htmltools,
     htmlwidgets,
     igraph,
@@ -31,6 +32,7 @@ Imports:
     tools,
     xtable
 Suggests:
+    automap,
     colorspace,
     devtools,
     doParallel,
