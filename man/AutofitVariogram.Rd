@@ -48,12 +48,12 @@ Binning method, either \code{"automap"} (default), \code{"gstat"}, \code{"equal_
 See \sQuote{Details} section for method descriptions.}
 
 \item{merge.small.bins}{'logical'.
-Whether to check if there are bins with less than 5 observations.
+Whether to check if there are bins with less than 5 pairs of observations.
 If true, the first two bins are merged and the check is repeated.
-This is repeated until all bins have more than \code{min.np.bin} observations.}
+This is repeated until all bins have more than \code{min.np.bin} observation pairs.}
 
 \item{min.np.bin}{'integer'.
-Minimum number of observations that every bin should contain.}
+Minimum number of observation pairs that every bin should contain.}
 
 \item{num.bins}{'integer'.
 Initial number of bins}
@@ -76,7 +76,7 @@ This function automatically fits a theoretical variogram model to input data.
 Automatic fitting is performed using the \code{\link[gstat]{fit.variogram}} function.
 And initial values for the sill, range, nugget, and model type are estimated using a
 modified version of the \code{\link[automap]{autofitVariogram}} function.
-Many options are available for customization of the bins in the empirical variogram.
+Many options are available for defining lag distances (binning) in the empirical variogram.
 }
 \details{
 The different binning methods include:
@@ -85,8 +85,8 @@ The different binning methods include:
       The distance intervals that define the bins are equal to 2, 4, 6, \ldots{}, 100 percent
       of about 1/3 the diagonal of the box spanning the observation locations.}
     \item{\code{"gstat"}}{is the default binning method used by the \code{\link[gstat]{variogram}} function.}
-    \item{\code{"equal_width"}}{resizes the bins so that each contains the minimum number of observations.}
-    \item{\code{"equal_count"}}{defines bins so that each contains the same number of observations.}
+    \item{\code{"equal_width"}}{resizes the bins so that each contains the minimum number of observation pairs.}
+    \item{\code{"equal_count"}}{defines bins so that each contains the same number of observation pairs.}
   }
 }
 \note{

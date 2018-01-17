@@ -4,7 +4,7 @@
 #' Automatic fitting is performed using the \code{\link[gstat]{fit.variogram}} function.
 #' And initial values for the sill, range, nugget, and model type are estimated using a
 #' modified version of the \code{\link[automap]{autofitVariogram}} function.
-#' Many options are available for customization of the bins in the empirical variogram.
+#' Many options are available for defining lag distances (binning) in the empirical variogram.
 #'
 #' @param formula 'formula'.
 #'   Formula that defines the dependent variable as a linear model of independent variables.
@@ -33,11 +33,11 @@
 #'   Binning method, either \code{"automap"} (default), \code{"gstat"}, \code{"equal_width"}, or \code{"equal_count"}.
 #'   See \sQuote{Details} section for method descriptions.
 #' @param merge.small.bins 'logical'.
-#'   Whether to check if there are bins with less than 5 observations.
+#'   Whether to check if there are bins with less than 5 pairs of observations.
 #'   If true, the first two bins are merged and the check is repeated.
-#'   This is repeated until all bins have more than \code{min.np.bin} observations.
+#'   This is repeated until all bins have more than \code{min.np.bin} observation pairs.
 #' @param min.np.bin 'integer'.
-#'   Minimum number of observations that every bin should contain.
+#'   Minimum number of observation pairs that every bin should contain.
 #' @param num.bins 'integer'.
 #'   Initial number of bins
 #' @param init.width 'numeric'.
@@ -52,8 +52,8 @@
 #'       The distance intervals that define the bins are equal to 2, 4, 6, \ldots{}, 100 percent
 #'       of about 1/3 the diagonal of the box spanning the observation locations.}
 #'     \item{\code{"gstat"}}{is the default binning method used by the \code{\link[gstat]{variogram}} function.}
-#'     \item{\code{"equal_width"}}{resizes the bins so that each contains the minimum number of observations.}
-#'     \item{\code{"equal_count"}}{defines bins so that each contains the same number of observations.}
+#'     \item{\code{"equal_width"}}{resizes the bins so that each contains the minimum number of observation pairs.}
+#'     \item{\code{"equal_count"}}{defines bins so that each contains the same number of observation pairs.}
 #'   }
 #'
 #' @return Returns a 'autofitVariogram' object with the following components:
@@ -122,15 +122,15 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
   if (bin_method == "equal_width") {
     if (verbose) cat("Using equal-width bins...\n")
     if ("width" %in% names(list(...)))
-      stop("Cannot pass width when 'equal.width.bins' is TRUE. ",
+      stop("Cannot pass width when using equal width bins. ",
            "Supply 'init.width' instead.", call.=FALSE)
     # replace diagonal with cutoff
     if ("cutoff" %in% names(list(...))) diagonal <- list(...)[["cutoff"]]
     # user must supply either bin width or number of bins
     if (is.na(init.width)) {
       if (is.na(num.bins))
-        stop("When 'equal.width.bins' is TRUE, ",
-             "user must also supply either 'init.width' or 'num.bins'.", call.=FALSE)
+        stop("When equal width bins are used, ",
+             "the user must supply either 'init.width' or 'num.bins'.", call.=FALSE)
       width <- diagonal / num.bins
       if (verbose) cat("Initial width not provided. Calculating using num.bins.\n")
     } else {
@@ -146,12 +146,12 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
     # merge small bins if requested
     if (merge.small.bins) {
       if (verbose) cat("Checking if any bins have less than", min.np.bin,
-                       "points, merging bins when necessary...\n")
+                       "data pairs, merging bins when necessary...\n")
       iter <- 0
       maxiter <- 1000
       while (TRUE) {
         if (!any(empirical_variogram$np < min.np.bin)) break
-        width <- width * 1.1  # increase width by 10 percent and try again
+        width <- width * 1.1  # increase width by ten percent and try again
         if (methods::is(GLS.model, "variogramModel")) {
           empirical_variogram <- gstat::variogram(g, width=width, ...)
         } else {
@@ -166,21 +166,21 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
       }
     }
 
-  # equal observation count bins
+  # equal pair count bins
   } else if (bin_method == "equal_count") {
-    if (verbose) cat("Using bins of equal observation counts...\n")
+    if (verbose) cat("Using bins of equal pair counts...\n")
     if ("boundaries" %in% names(list(...)))
-      stop("Can not pass boundaries when 'equal.np.bins' is TRUE. ",
+      stop("Can not pass boundaries when using equal pair counts. ",
            "Pass 'num.bins' or 'min.np.bin' instead.", call.=FALSE)
-    # replace diagonal with cutoff, if provided
+    # replace diagonal with cutoff
     if ("cutoff" %in% names(list(...))) diagonal <- list(...)[["cutoff"]]
     # get a sorted list of distances
     dists <- sort(sp::spDists(input_data))
     # apply the cutoff
     dists <- dists[dists < diagonal & dists > 0]
-    # split the data into bins based on number of observations
+    # split the data into bins based on number of pairs
     if (is.na(num.bins)) {
-      # compute number of bins based on the minimum number of observations per bin
+      # compute number of bins based on the minimum number of pairs per bin
       num.bins <- floor(0.5 * length(dists) / min.np.bin)
       if (verbose)
         cat("num.bins not supplied. Setting 'num.bins' equal to", num.bins,
@@ -200,7 +200,7 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
       num.bins <- num.bins - 1
     }
     if (methods::is(GLS.model, "variogramModel")) {
-      if (verbose) cat("Calculating GLS sample variogram.\n")
+      if (verbose) cat("Calculating GLS empirical variogram.\n")
       g <- gstat::gstat(NULL, "bla", formula, input_data, model=GLS.model, set=list(gls=1))
       empirical_variogram <- gstat::variogram(g, boundaries=boundaries, ...)
     } else {
@@ -212,16 +212,16 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
     if (verbose) cat("Boundaries as defined by automap::autofitVariogram...\n\n")
     boundaries <- c(2, 4, 6, 9, 12, 15, 25, 35, 50, 65, 80, 100) *
                     diagonal * 0.35 / 100  # boundaries for the bins
-    # specifiy a variogram model in GLS.model the generelised least squares sample variogram is constructed
+    # specifiy a variogram model in GLS.model the generelised least squares empirical variogram is constructed
     if (methods::is(GLS.model, "variogramModel")) {
-      if (verbose) cat("Calculating GLS sample variogram.\n")
+      if (verbose) cat("Calculating GLS empirical variogram.\n")
       g <- gstat::gstat(NULL, "bla", formula, input_data, model=GLS.model, set=list(gls=1))
       empirical_variogram <- gstat::variogram(g, boundaries=boundaries, ...)
     } else {
       empirical_variogram <- gstat::variogram(formula, input_data, boundaries=boundaries, ...)
     }
     if (merge.small.bins) {
-      if (verbose) cat("Checking if any bins have less than 5 points, merging bins when necessary...\n\n")
+      if (verbose) cat("Checking if any bins have less than 5 data pairs, merging bins when necessary...\n\n")
       while (TRUE) {
         if (length(empirical_variogram$np[empirical_variogram$np < min.np.bin]) == 0 |
             length(boundaries) == 1) break
@@ -239,7 +239,7 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
     if (verbose) cat("Boundaries as defined by gstat::variogram...\n\n")
 
     if (methods::is(GLS.model, "variogramModel")) {
-      if (verbose) cat("Calculating GLS sample variogram\n")
+      if (verbose) cat("Calculating GLS empirical variogram\n")
       g <- gstat::gstat(NULL, "bla", formula, input_data, model=GLS.model, set=list(gls=1))
       empirical_variogram=gstat::variogram(g, ...)
     } else {
