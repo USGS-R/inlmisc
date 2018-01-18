@@ -17,7 +17,7 @@
 #'   \code{"Sph"}, spherical;
 #'   \code{"Exp"}, exponential;
 #'   \code{"Gau"}, Gaussian;
-#'   \code{"Ste"}, Matern with Michael Stein's parameterization.
+#'   \code{"Ste"}, Matern, M. Stein's parameterization.
 #' @param kappa 'numeric'.
 #'   Vector of smoothing parameter(s) of the Matern model.
 #' @param fix.values 'numeric'.
@@ -58,9 +58,9 @@
 #'
 #' @return Returns a 'autofitVariogram' object with the following components:
 #'   \describe{
-#'     \item{\code{exp_var}}{empirical variogram}
-#'     \item{\code{var_model}}{theoretical variogram model}
-#'     \item{\code{sserr}}{sums of squares between the empirical variogram and the fitted theoretical variogram model.}
+#'     \item{\code{exp_var}}{empirical variogram;}
+#'     \item{\code{var_model}}{theoretical variogram model; and}
+#'     \item{\code{sserr}}{sum of squares between the empirical variogram and the fitted theoretical variogram model.}
 #'   }
 #'
 #' @note
@@ -278,7 +278,7 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
     fit_range <- FALSE
     initial_range <- fix.values[2]
   }
-  if (is.na(fix.values[3])) {  # partial sill
+  if (is.na(fix.values[3])) {  # sill
     fit_sill <- TRUE
   } else {
     fit_sill <- FALSE
@@ -294,11 +294,13 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
       if (is.na(start_vals[2])) range  <- 1  # if a power mode, range == 1 is a better start value
       if (is.na(start_vals[3])) sill   <- 1
     }
-    obj <- try(gstat::fit.variogram(empirical_variogram,
-                                    model=gstat::vgm(psill=psill, model=model, range=range, nugget=nugget, kappa=kappa),
-                                    fit.ranges=c(fit_range),
-                                    fit.sills=c(fit_nugget, fit_sill),
-                                    debug.level=0), TRUE)
+    obj <- try({
+      gstat::fit.variogram(empirical_variogram,
+                           model=gstat::vgm(psill=psill, model=model, range=range, nugget=nugget, kappa=kappa),
+                           fit.ranges=c(fit_range),
+                           fit.sills=c(fit_nugget, fit_sill),
+                           debug.level=0)
+    }, silent=TRUE)
     if (inherits(obj, "try-error")) {
       warning("An error has occured during variogram fitting. Used:\n",
               "\tnugget:\t", nugget,
@@ -320,11 +322,11 @@ AutofitVariogram <- function(formula, input_data, model=c("Sph", "Exp", "Gau", "
   counter <- 1
 
   for (m in test_models) {
-    if (m != "Mat" && m != "Ste") {  # matern and not stein
+    if (m != "Mat" && m != "Ste") {  # not matern and not stein
       model_fit <- GetModel(initial_sill - initial_nugget, m, initial_range,
                             kappa=0, initial_nugget, fit_range, fit_sill,
                             fit_nugget, verbose=verbose)
-      if (!is.null(model_fit)) {  # skip models that failed
+      if (!is.null(model_fit)) {
         vgm_list[[counter]] <- model_fit
         SSerr_list <- c(SSerr_list, attr(model_fit, "SSErr"))
       }

@@ -25,7 +25,7 @@ The different model types include:
 \code{"Sph"}, spherical;
 \code{"Exp"}, exponential;
 \code{"Gau"}, Gaussian;
-\code{"Ste"}, Matern with Michael Stein's parameterization.}
+\code{"Ste"}, Matern, M. Stein's parameterization.}
 
 \item{kappa}{'numeric'.
 Vector of smoothing parameter(s) of the Matern model.}
@@ -66,9 +66,9 @@ Initial bin width}
 \value{
 Returns a 'autofitVariogram' object with the following components:
   \describe{
-    \item{\code{exp_var}}{empirical variogram}
-    \item{\code{var_model}}{theoretical variogram model}
-    \item{\code{sserr}}{sums of squares between the empirical variogram and the fitted theoretical variogram model.}
+    \item{\code{exp_var}}{empirical variogram;}
+    \item{\code{var_model}}{theoretical variogram model; and}
+    \item{\code{sserr}}{sum of squares between the empirical variogram and the fitted theoretical variogram model.}
   }
 }
 \description{

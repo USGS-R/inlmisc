@@ -280,8 +280,10 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
     if (versions && requireNamespace("devtools", quietly=TRUE)) {
       for (i in which(is_on_repos)) {
         if (IsPackageInstalled(pkgs$Package[i], lib)) next
-        ans <- try(devtools::install_version(pkgs$Package[i], pkgs$Version[i],
-                                             type=type, quiet=quiet), silent=TRUE)
+        ans <- try({
+          devtools::install_version(pkgs$Package[i], pkgs$Version[i],
+                                    type=type, quiet=quiet)
+        }, silent=TRUE)
         if (inherits(ans, "try-error")) {
           is_on_repos[i] <- FALSE
           next
