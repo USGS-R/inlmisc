@@ -1,7 +1,5 @@
 # inlmisc 0.3.5.9000
 
-- Add `AutofitVariogram` function, used to automatically fit a variogram model.
-
 - Avoid importing all functions from a package.
 
 - Remove `AddCertificate` function, no longer needed with new version of R (3.4.3).
