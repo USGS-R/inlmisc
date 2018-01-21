@@ -121,7 +121,7 @@
 #' par(op)
 #'
 
-Grid2Polygons <- function(grd, zcol=1L, level=FALSE, at=NULL, cuts=20L,
+Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
                           pretty=FALSE, xlim=NULL, ylim=NULL, zlim=NULL,
                           ply=NULL) {
 

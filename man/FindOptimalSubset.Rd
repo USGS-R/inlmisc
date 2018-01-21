@@ -4,9 +4,9 @@
 \alias{FindOptimalSubset}
 \title{Genetic Algorithm for Subset Selection}
 \usage{
-FindOptimalSubset(n, k, Fitness, ..., popSize = 100L, migrationRate = 0.1,
-  migrationInterval = 10L, pcrossover = 0.8, pmutation = 0.1,
-  elitism = 0L, maxiter = 1000L, run = maxiter, suggestions = NULL,
+FindOptimalSubset(n, k, Fitness, ..., popSize = 100, migrationRate = 0.1,
+  migrationInterval = 10, pcrossover = 0.8, pmutation = 0.1,
+  elitism = 0, maxiter = 1000L, run = maxiter, suggestions = NULL,
   parallel = TRUE, seed = NULL)
 }
 \arguments{
