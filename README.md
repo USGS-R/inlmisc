@@ -23,7 +23,7 @@ You can install the stable version from [CRAN](https://CRAN.R-project.org/packag
 install.packages("inlmisc", dependencies = TRUE)
 ```
 
-Or use **devtools** to install the development version from GitHub.
+Or use the **devtools** package to install the development version from GitHub.
 
 ```r
 devtools::install_github("USGS-R/inlmisc", dependencies = TRUE)
