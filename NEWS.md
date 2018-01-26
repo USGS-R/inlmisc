@@ -1,5 +1,7 @@
 # inlmisc 0.3.5.9000
 
+- Add `GetTolColors` function, used to access color palettes by Paul Tol.
+
 - Avoid importing all functions from a package.
 
 - Remove `AddCertificate` function, no longer needed with new version of R (3.4.3).
