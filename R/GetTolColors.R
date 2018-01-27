@@ -20,7 +20,6 @@
 #'   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 2.2, 16 p.,
 #'   accesed January 26, 2018 at \url{https://personal.sron.nl/~pault/colourschemes.pdf}.
 #'
-#'
 #' @keywords color
 #'
 #' @export
@@ -66,7 +65,7 @@ GetTolColors <- function(n, alpha=1, plot=FALSE) {
 
   if (plot) {
     graphics::plot.default(0, 0, type="n", xlim=c(0, 1), ylim=c(0, 1), axes=FALSE, xlab="", ylab="")
-    graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border="light gray")
+    graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border="#D3D3D3")
   }
 
   return(col)
