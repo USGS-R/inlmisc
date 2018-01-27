@@ -2,7 +2,7 @@
 % Please edit documentation in R/GetTolColors.R
 \name{GetTolColors}
 \alias{GetTolColors}
-\title{Color Palettes for Qualitative Data}
+\title{Color Palette for Qualitative Data}
 \usage{
 GetTolColors(n, alpha = 1, plot = FALSE)
 }
@@ -15,14 +15,14 @@ Alpha transparency, parameter values range from 0 (fully transparent) to 1 (full
 Specify as \code{NULL} to exclude the alpha channel color component.}
 
 \item{plot}{'logical'.
-Whether is display the color palette.}
+Whether to display the color palette.}
 }
 \value{
-Returns a 'character' vector with elements of 7 or 9 characters,
+Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
   "#" followed by the red, blue, green, and optionally alpha values in hexadecimal.
 }
 \description{
-This function creates a vector of \code{n} contiguous colors from rainbow palettes by Paul Tol (2012).
+This function creates a vector of \code{n} contiguous colors from color schemes by Paul Tol (2012).
 }
 \examples{
 GetTolColors(7, plot = TRUE)
@@ -38,4 +38,4 @@ Tol, Paul, 2012, Colour Schemes:
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 }
-\keyword{utilities}
+\keyword{color}

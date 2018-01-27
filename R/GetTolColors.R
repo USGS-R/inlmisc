@@ -1,6 +1,6 @@
-#' Color Palettes for Qualitative Data
+#' Color Palette for Qualitative Data
 #'
-#' This function creates a vector of \code{n} contiguous colors from rainbow palettes by Paul Tol (2012).
+#' This function creates a vector of \code{n} contiguous colors from color schemes by Paul Tol (2012).
 #'
 #' @param n 'integer'.
 #'   Number of colors to be in the palette, the maximum is 21.
@@ -8,9 +8,9 @@
 #'   Alpha transparency, parameter values range from 0 (fully transparent) to 1 (fully opaque).
 #'   Specify as \code{NULL} to exclude the alpha channel color component.
 #' @param plot 'logical'.
-#'   Whether is display the color palette.
+#'   Whether to display the color palette.
 #'
-#' @return Returns a 'character' vector with elements of 7 or 9 characters,
+#' @return Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
 #'   "#" followed by the red, blue, green, and optionally alpha values in hexadecimal.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
@@ -21,7 +21,7 @@
 #'   accesed January 26, 2018 at \url{https://personal.sron.nl/~pault/colourschemes.pdf}.
 #'
 #'
-#' @keywords utilities
+#' @keywords color
 #'
 #' @export
 #'
@@ -37,7 +37,7 @@ GetTolColors <- function(n, alpha=1, plot=FALSE) {
   checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
   checkmate::assertFlag(plot)
 
-  # color sets copy/pasted from Peter Carl's blog post, accessed January 26, 2018 at
+  # color schemes copied from Peter Carl's blog post, accessed January 26, 2018 at
   # https://tradeblotter.wordpress.com/2013/02/28/the-paul-tol-21-color-salute/
   pal <- list(c("#4477AA"),
               c("#4477AA", "#CC6677"),
@@ -64,10 +64,8 @@ GetTolColors <- function(n, alpha=1, plot=FALSE) {
 
   if (is.finite(alpha)) col <- grDevices::adjustcolor(col, alpha.f=alpha)
 
-  # code for plotting is by Achim Zeileis, see colorspace package
   if (plot) {
-    graphics::plot.default(0, 0, type="n", xlim=c(0, 1), ylim=c(0, 1),
-                           axes=FALSE, xlab="", ylab="")
+    graphics::plot.default(0, 0, type="n", xlim=c(0, 1), ylim=c(0, 1), axes=FALSE, xlab="", ylab="")
     graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border="light gray")
   }
 
