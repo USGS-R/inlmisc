@@ -103,7 +103,7 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
       s[is_fix] <- formatC(x[is_fix], digits_fix, width=1, format="f", big.mark=big.mark)
     if (any(is_sci)) {
       m[is_sci] <- formatC(m[is_sci], digits_sci, width=1, format="f")
-      s[is_sci] <- sprintf("%s \\times 10^{%d}", m[is_sci], n[is_sci])
+      s[is_sci] <- sprintf("{%s} \\times 10^{%d}", m[is_sci], n[is_sci])
     }
     is <-  is_zero | is_fix | is_sci
     s[is] <- sprintf("%s%s%s", delimiter, s[is], delimiter)
