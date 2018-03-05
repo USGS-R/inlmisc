@@ -1,7 +1,7 @@
 #' Add Miscellaneous Web Map Elements
 #'
 #' These functions can be used to augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
-#' The \code{AddRefreshButton} function adds a button that sets the map view to the original extent.
+#' The \code{AddHomeButton} function adds a button that zooms to the initial map extent.
 #' The \code{AddClusterButton} function adds a button that toggles marker clusters between frozen and unfrozen states.
 #' The \code{AddSearchButton} function adds a search element that may be used to locate, and move to, a marker.
 #' And the \code{AddCircleLegend} function adds a map legend.
@@ -60,7 +60,7 @@
 #' map <- CreateWebMap("Topo")
 #' map <- leaflet::addMarkers(map, label = ~name, popup = ~name, clusterOptions = opt,
 #'                            clusterId = "cluster", group = "marker", data = spdf)
-#' map <- AddRefreshButton(map)
+#' map <- AddHomeButton(map)
 #' map <- AddClusterButton(map, clusterId = "cluster")
 #' map <- AddSearchButton(map, group = "marker", zoom = 15,
 #'                        textPlaceholder = "Search city names...")
@@ -83,7 +83,7 @@ NULL
 #' @rdname AddWebMapElements
 #' @export
 
-AddRefreshButton <- function(map, extent=NULL, position="topleft") {
+AddHomeButton <- function(map, extent=NULL, position="topleft") {
 
   # check arguments
   checkmate::assertClass(map, c("leaflet", "htmlwidget"))
@@ -99,8 +99,8 @@ AddRefreshButton <- function(map, extent=NULL, position="topleft") {
   js <- sprintf("function(btn, map) {
                    map.fitBounds([[%f, %f],[%f, %f]]);
                  }", e[3], e[1], e[4], e[2])
-  button <- leaflet::easyButton(icon="fa-refresh",
-                                title="Refresh view",
+  button <- leaflet::easyButton(icon="fa-home",
+                                title="Zoom to initial map extent",
                                 onClick=htmlwidgets::JS(js),
                                 position=position)
 
