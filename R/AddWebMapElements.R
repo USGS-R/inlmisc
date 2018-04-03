@@ -214,7 +214,8 @@ AddLegend <- function(map, labels, colors, radius, opacity=0.5, symbol=c("square
   else
     fmt <- "%s; border-radius:50%%; width:%fpx; height:%fpx; margin-top:4px;"
   col <- sprintf(fmt, colors, sizes, sizes)
-  fmt <- "<div style='display:inline-block; height:%fpx; line-height:%fpx; margin-top:4px;'>%s</div><br>"
+  fmt <- "<div style='display:inline-block; height:%fpx; line-height:%fpx; margin-top:4px;'>%s</div>"
+  if (utils::packageVersion("leaflet") >= 2) fmt <- paste0(fmt, "<br>")  # TODO(jcf): workaround
   lab <- sprintf(fmt, sizes, sizes, labels)
   if (!is.null(title))
     title <- sprintf("<div style='text-align:center;'>%s</div>", title)
