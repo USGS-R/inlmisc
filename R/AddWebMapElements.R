@@ -63,8 +63,7 @@
 #' map <- AddHomeButton(map)
 #' map <- AddClusterButton(map, clusterId = "cluster")
 #' map <- AddSearchButton(map, group = "marker", zoom = 15,
-#'                        textPlaceholder = "Search city names...",
-#'                        position = "bottomleft")
+#'                        textPlaceholder = "Search city names...")
 #' map
 #'
 #' labels <- c("Non-capital", "Capital")

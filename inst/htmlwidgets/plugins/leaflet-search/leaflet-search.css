@@ -1,4 +1,5 @@
 /*
+ * Code modified from:
  * Leaflet Control Search v2.3.7 - 2017-11-13
  *
  * Copyright 2017 Stefano Cudini
@@ -25,23 +26,23 @@
 	border-radius: 4px;
 	background-color: rgba(255, 255, 255, 0.8);
 	z-index:1000;
-	box-shadow: 0 1px 7px rgba(0,0,0,0.65);
+	box-sizing: border-box;
+	border: 2px solid rgba(0,0,0,0.2);
 	margin-left: 10px;
 	margin-top: 10px;
 }
 .leaflet-control-search.search-exp {/*expanded*/
-	box-shadow: 0 1px 7px #999;
-	background: #fff;
+	background:#fff;
 }
 .leaflet-control-search .search-input {
 	display:block;
 	float:left;
-	background: #fff;
-	border:1px solid #666;
+	background:#fff;
+	border:1px solid#666;
 	border-radius:2px;
 	height:18px;
 	padding:0 18px 0 2px;
-	margin:3px 0 3px 3px;
+	margin:5px 1px 5px 5px;
 }
 .leaflet-control-search.search-load .search-input {
 	background: url('./images/loader.gif') no-repeat center right #fff;
@@ -54,8 +55,8 @@
 	width:22px;
 	height:18px;
 	position:absolute;
-	right:22px;
-	margin:3px 0;
+	right:27px;
+	margin:5px 0;
 	background: url('./images/search-icon.png') no-repeat 0 -46px;
 	text-decoration:none;
 	filter: alpha(opacity=80);
@@ -78,13 +79,10 @@
 .leaflet-control-search .search-button {
 	display:block;
 	float:left;
-	width:26px;
-	height:26px;
-	background: url('./images/search-icon.png') no-repeat 2px 2px #fff;
+	width:30px;
+	height:30px;
+	background: url('./images/search-icon.png') no-repeat 4px 4px #fff;
 	border-radius:4px;
-}
-.leaflet-control-search .search-button:hover {
-	background: url('./images/search-icon.png') no-repeat 2px -22px #fafafa;
 }
 .leaflet-control-search .search-tooltip {
 	position:absolute;
@@ -95,7 +93,6 @@
 	padding-left: 0;
 	min-width:120px;
 	max-height:122px;
-	box-shadow: 1px 1px 6px rgba(0,0,0,0.4);
 	background-color: rgba(0, 0, 0, 0.25);
 	z-index:1010;
 	overflow-y:auto;
@@ -107,18 +104,18 @@
 	padding:2px 4px;
 	display:block;
 	color:black;
-	background: #eee;
+	background:#eee;
 	border-radius:.25em;
 	text-decoration:none;
 	white-space:nowrap;
 	vertical-align:center;
 }
 .leaflet-control-search .search-button:hover {
-	background-color: #f4f4f4;
+	background-color:#f4f4f4;
 }
 .leaflet-control-search .search-tip-select,
 .leaflet-control-search .search-tip:hover {
-	background-color: #fff;
+	background-color:#fff;
 }
 .leaflet-control-search .search-alert {
 	cursor:pointer;
@@ -130,5 +127,3 @@
 	font-weight:bold;
 	border-radius:.25em;
 }
-
-
