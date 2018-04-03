@@ -40,7 +40,7 @@ Five local directories are created under \code{path} and named after their inten
   Therefore, the conversion of gridded data between cartographic projections may introduce a new source of error.
 
   To install \file{zip.exe} on windows, download the latest binary version from the
-  \href{http://www.info-zip.org/Zip.html#Downloads}{Info-ZIP} website;
+  \href{https://www.7-zip.org/download.html}{Info-ZIP} website;
   select one of the given FTP locations, enter directory \file{win32}, download \file{zip300xn.zip}, and extract.
 }
 \examples{

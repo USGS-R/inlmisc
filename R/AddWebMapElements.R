@@ -63,7 +63,8 @@
 #' map <- AddHomeButton(map)
 #' map <- AddClusterButton(map, clusterId = "cluster")
 #' map <- AddSearchButton(map, group = "marker", zoom = 15,
-#'                        textPlaceholder = "Search city names...")
+#'                        textPlaceholder = "Search city names...",
+#'                        position = "bottomleft")
 #' map
 #'
 #' labels <- c("Non-capital", "Capital")
@@ -99,7 +100,7 @@ AddHomeButton <- function(map, extent=NULL, position="topleft") {
   js <- sprintf("function(btn, map) {
                    map.fitBounds([[%f, %f],[%f, %f]]);
                  }", e[3], e[1], e[4], e[2])
-  button <- leaflet::easyButton(icon="fa-home",
+  button <- leaflet::easyButton(icon="fa-home fa-lg",
                                 title="Zoom to initial map extent",
                                 onClick=htmlwidgets::JS(js),
                                 position=position)
@@ -186,7 +187,7 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
                                  version="2.3.7",
                                  src=src,
                                  script=c("leaflet-search.min.js", "leaflet-search-binding.js"),
-                                 stylesheet="leaflet-search.min.css"))
+                                 stylesheet="leaflet-search.css"))
 }
 
 
@@ -213,7 +214,7 @@ AddLegend <- function(map, labels, colors, radius, opacity=0.5, symbol=c("square
   else
     fmt <- "%s; border-radius:50%%; width:%fpx; height:%fpx; margin-top:4px;"
   col <- sprintf(fmt, colors, sizes, sizes)
-  fmt <- "<div style='display:inline-block; height:%fpx; line-height:%fpx; margin-top:4px;'>%s</div>"
+  fmt <- "<div style='display:inline-block; height:%fpx; line-height:%fpx; margin-top:4px;'>%s</div><br>"
   lab <- sprintf(fmt, sizes, sizes, labels)
   if (!is.null(title))
     title <- sprintf("<div style='text-align:center;'>%s</div>", title)
