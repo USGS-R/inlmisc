@@ -2,7 +2,7 @@
 #'
 #' These functions can be used to augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
 #' The \code{AddHomeButton} function adds a button that zooms to the initial map extent.
-#' The \code{AddClusterButton} function adds a button that toggles marker clusters between frozen and unfrozen states.
+#' The \code{AddClusterButton} function adds a button that toggles marker clusters on and off.
 #' The \code{AddSearchButton} function adds a search element that may be used to locate, and move to, a marker.
 #' And the \code{AddCircleLegend} function adds a map legend.
 #'
@@ -122,26 +122,26 @@ AddClusterButton <- function(map, clusterId, position="topleft") {
   # Javascript derived from https://rstudio.github.io/leaflet/morefeatures.html
   # accessed on 2017-11-06.
 
-  # unfrozen state
+  # disable clusters
   js <- sprintf("function(btn, map) {
                    var clusterManager = map.layerManager.getLayer('cluster', '%s');
-                   clusterManager.freezeAtZoom();
-                   btn.state('frozen-markers');
+                   clusterManager.disableClustering();
+                   btn.state('disable-cluster');
                  }", clusterId)
-  s0 <- leaflet::easyButtonState(stateName="unfrozen-markers",
-                                 icon="fa-circle-o",
-                                 title="Freeze clusters",
+  s0 <- leaflet::easyButtonState(stateName="enable-cluster",
+                                 icon="fa-circle",
+                                 title="Disable clustering",
                                  onClick=htmlwidgets::JS(js))
 
-  # frozen state
+  # enable clusters
   js <- sprintf("function(btn, map) {
                    var clusterManager = map.layerManager.getLayer('cluster', '%s');
-                   clusterManager.unfreeze();
-                   btn.state('unfrozen-markers');
+                   clusterManager.enableClustering();
+                   btn.state('enable-cluster');
                  }", clusterId)
-  s1 <- leaflet::easyButtonState(stateName="frozen-markers",
-                                 icon="fa-circle",
-                                 title="Unfreeze clusters",
+  s1 <- leaflet::easyButtonState(stateName="disable-cluster",
+                                 icon="fa-circle-o",
+                                 title="Enable clustering",
                                  onClick=htmlwidgets::JS(js))
 
   # create button
