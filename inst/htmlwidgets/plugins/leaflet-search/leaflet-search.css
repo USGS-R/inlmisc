@@ -1,8 +1,8 @@
 /*
  * Code modified from:
- * Leaflet Control Search v2.3.7 - 2017-11-13
+ * Leaflet Control Search v2.4.0 - 2018-03-13
  *
- * Copyright 2017 Stefano Cudini
+ * Copyright 2018 Stefano Cudini
  * stefano.cudini@gmail.com
  * http://labs.easyblog.it/
  *
@@ -24,14 +24,14 @@
   -moz-border-radius:4px;
   -webkit-border-radius:4px;
   border-radius:4px;
-  background-color:rgba(255, 255, 255, 0.2);
+  background-color:rgba(255,255,255,0.2);
   z-index:1000;
   box-sizing:border-box;
   border:2px solid rgba(0,0,0,0.2);
   margin-left:10px;
   margin-top:10px;
 }
-.leaflet-control-search.search-exp {/*expanded*/
+.leaflet-control-search.search-exp {
   background:#fff;
 }
 .leaflet-control-search .search-input {
@@ -67,7 +67,7 @@
   opacity:1;
 }
 .leaflet-control-search .search-cancel span {
-  display:none;/* comment for cancel button imageless */
+  display:none;
   font-size:18px;
   line-height:20px;
   color:#ccc;
@@ -93,8 +93,8 @@
   padding-left:0;
   min-width:120px;
   max-height:122px;
-  box-shadow:1px 1px 6px rgba(0, 0, 0, 0.4);
-  background-color:rgba(0, 0, 0, 0.25);
+  box-shadow:1px 1px 6px rgba(0,0,0,0.4);
+  background-color:rgba(0,0,0,0.25);
   z-index:1010;
   overflow-y:auto;
   overflow-x:hidden;

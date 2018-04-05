@@ -182,9 +182,9 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
 
 .SearchDependencies <- function() {
   src <- system.file("htmlwidgets/plugins/leaflet-search", package="inlmisc")
-  css <- if (utils::packageVersion("leaflet") < 2) "leaflet-search.min.css" else "leaflet-search.css"
+  css <- if (utils::packageVersion("leaflet") < 2) "leaflet-search-old.css" else "leaflet-search.css"
   list(htmltools::htmlDependency(name="leaflet-search",
-                                 version="2.3.7",
+                                 version="2.4.0",
                                  src=src,
                                  script=c("leaflet-search.min.js", "leaflet-search-binding.js"),
                                  stylesheet=css))
@@ -215,7 +215,6 @@ AddLegend <- function(map, labels, colors, radius, opacity=0.5, symbol=c("square
     fmt <- "%s; border-radius:50%%; width:%fpx; height:%fpx; margin-top:4px;"
   col <- sprintf(fmt, colors, sizes, sizes)
   fmt <- "<div style='display:inline-block; height:%fpx; line-height:%fpx; margin-top:4px;'>%s</div>"
-  if (utils::packageVersion("leaflet") >= 2) fmt <- paste0(fmt, "<br>")
   lab <- sprintf(fmt, sizes, sizes, labels)
   if (!is.null(title))
     title <- sprintf("<div style='text-align:center;'>%s</div>", title)
