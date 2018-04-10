@@ -1,8 +1,8 @@
 #' Add Miscellaneous Web Map Elements
 #'
 #' These functions can be used to augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
-#' The \code{AddRefreshButton} function adds a button that sets the map view to the original extent.
-#' The \code{AddClusterButton} function adds a button that toggles marker clusters between frozen and unfrozen states.
+#' The \code{AddHomeButton} function adds a button that zooms to the initial map extent.
+#' The \code{AddClusterButton} function adds a button that toggles marker clusters on and off.
 #' The \code{AddSearchButton} function adds a search element that may be used to locate, and move to, a marker.
 #' And the \code{AddCircleLegend} function adds a map legend.
 #'
@@ -60,7 +60,7 @@
 #' map <- CreateWebMap("Topo")
 #' map <- leaflet::addMarkers(map, label = ~name, popup = ~name, clusterOptions = opt,
 #'                            clusterId = "cluster", group = "marker", data = spdf)
-#' map <- AddRefreshButton(map)
+#' map <- AddHomeButton(map)
 #' map <- AddClusterButton(map, clusterId = "cluster")
 #' map <- AddSearchButton(map, group = "marker", zoom = 15,
 #'                        textPlaceholder = "Search city names...")
@@ -83,7 +83,7 @@ NULL
 #' @rdname AddWebMapElements
 #' @export
 
-AddRefreshButton <- function(map, extent=NULL, position="topleft") {
+AddHomeButton <- function(map, extent=NULL, position="topleft") {
 
   # check arguments
   checkmate::assertClass(map, c("leaflet", "htmlwidget"))
@@ -99,8 +99,8 @@ AddRefreshButton <- function(map, extent=NULL, position="topleft") {
   js <- sprintf("function(btn, map) {
                    map.fitBounds([[%f, %f],[%f, %f]]);
                  }", e[3], e[1], e[4], e[2])
-  button <- leaflet::easyButton(icon="fa-refresh",
-                                title="Refresh view",
+  button <- leaflet::easyButton(icon="fa-home fa-lg",
+                                title="Zoom to initial map extent",
                                 onClick=htmlwidgets::JS(js),
                                 position=position)
 
@@ -122,26 +122,26 @@ AddClusterButton <- function(map, clusterId, position="topleft") {
   # Javascript derived from https://rstudio.github.io/leaflet/morefeatures.html
   # accessed on 2017-11-06.
 
-  # unfrozen state
+  # disable clusters
   js <- sprintf("function(btn, map) {
                    var clusterManager = map.layerManager.getLayer('cluster', '%s');
-                   clusterManager.freezeAtZoom();
-                   btn.state('frozen-markers');
+                   clusterManager.disableClustering();
+                   btn.state('disable-cluster');
                  }", clusterId)
-  s0 <- leaflet::easyButtonState(stateName="unfrozen-markers",
-                                 icon="fa-circle-o",
-                                 title="Freeze clusters",
+  s0 <- leaflet::easyButtonState(stateName="enable-cluster",
+                                 icon="fa-circle",
+                                 title="Disable clustering",
                                  onClick=htmlwidgets::JS(js))
 
-  # frozen state
+  # enable clusters
   js <- sprintf("function(btn, map) {
                    var clusterManager = map.layerManager.getLayer('cluster', '%s');
-                   clusterManager.unfreeze();
-                   btn.state('unfrozen-markers');
+                   clusterManager.enableClustering();
+                   btn.state('enable-cluster');
                  }", clusterId)
-  s1 <- leaflet::easyButtonState(stateName="frozen-markers",
-                                 icon="fa-circle",
-                                 title="Unfreeze clusters",
+  s1 <- leaflet::easyButtonState(stateName="disable-cluster",
+                                 icon="fa-circle-o",
+                                 title="Enable clustering",
                                  onClick=htmlwidgets::JS(js))
 
   # create button
@@ -182,11 +182,12 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
 
 .SearchDependencies <- function() {
   src <- system.file("htmlwidgets/plugins/leaflet-search", package="inlmisc")
+  css <- if (utils::packageVersion("leaflet") < 2) "leaflet-search-old.css" else "leaflet-search.css"
   list(htmltools::htmlDependency(name="leaflet-search",
-                                 version="2.3.7",
+                                 version="2.4.0",
                                  src=src,
                                  script=c("leaflet-search.min.js", "leaflet-search-binding.js"),
-                                 stylesheet="leaflet-search.min.css"))
+                                 stylesheet=css))
 }
 
 

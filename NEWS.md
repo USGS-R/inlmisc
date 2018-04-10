@@ -1,4 +1,6 @@
-# inlmisc 0.3.5.9000
+# inlmisc 0.4.0
+
+- Add `GetTolColors` function, used to access color palettes by Paul Tol.
 
 - Avoid importing all functions from a package.
 
@@ -29,7 +31,7 @@
 
 - In `CreateWebMap` function, remove coordinates and zoom level information from top of map.
 
-- Add `AddRefreshButton`, `AddClusterButton`, and `AddSearchButton`, and `AddLegend` functions,
+- Add `AddHomeButton`, `AddClusterButton`, and `AddSearchButton`, and `AddLegend` functions,
   used to add additional web map elements.
 
 - In `FindOptimalSubset` function, allow integer chromosomes to be specified for the `suggestions` argument.

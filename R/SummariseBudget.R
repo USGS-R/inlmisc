@@ -91,14 +91,15 @@ SummariseBudget <- function(budget, desc, id=NULL) {
 
 
 .Summarise <- function(b, desc, id) {
-  FUN <- function(j) {
-    d <- data.frame(desc=j$desc, kper=j$kper, kstp=j$kstp, id=NA,
-                    flow=j$d[, "flow"], delt=j$delt,
-                    pertim=j$pertim, totim=j$totim, stringsAsFactors=FALSE)
-    if (!is.null(id) && id %in% colnames(j$d)) d$id <- j$d[, id]
-    return(d)
-  }
-  d <- dplyr::bind_rows(lapply(desc, function(i) dplyr::bind_rows(lapply(b[desc == i], FUN))))
+  d <- dplyr::bind_rows(lapply(desc, function(i) {
+    dplyr::bind_rows(lapply(b[desc == i], function(j) {
+      d <- data.frame(desc=j$desc, kper=j$kper, kstp=j$kstp, id=NA,
+                      flow=j$d[, "flow"], delt=j$delt,
+                      pertim=j$pertim, totim=j$totim, stringsAsFactors=FALSE)
+      if (!is.null(id) && id %in% colnames(j$d)) d$id <- j$d[, id]
+      return(d)
+    }))
+  }))
   d$desc <- as.factor(d$desc)
   if ("id" %in% colnames(d))
     grps <- dplyr::group_by_(d, "desc", "kper", "kstp", "id")

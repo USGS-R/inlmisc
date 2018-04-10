@@ -49,7 +49,7 @@
 #'                   scientific = TRUE, strip.dim = c(1, 14))
 #'
 
-AddGradientLegend <- function(breaks, pal, at=NULL, n=5L, labels=TRUE,
+AddGradientLegend <- function(breaks, pal, at=NULL, n=5, labels=TRUE,
                               scientific=FALSE, title=NULL,
                               loc=c("bottomleft", "topleft", "topright", "bottomright"),
                               inset=0, strip.dim=c(2, 8)) {

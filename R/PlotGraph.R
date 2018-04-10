@@ -111,7 +111,7 @@
 #'
 
 PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
-                      xn=5L, yn=5L, ylog=FALSE, type="s", lty=1, lwd=1,
+                      xn=5, yn=5, ylog=FALSE, type="s", lty=1, lwd=1,
                       pch=NULL, col=NULL, bg=NA, fill=NULL, pt.cex=1,
                       seq.date.by=NULL, scientific=NA,
                       conversion.factor=NULL, boxwex=0.8,

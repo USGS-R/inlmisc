@@ -153,7 +153,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
   formals(Print)$size <- "\\small"
   formals(Print)$NA.string <- na
   formals(Print)$sanitize.text.function <- identity
-  formals(Print)$sanitize.colnames.function <- function(x){x}
+  formals(Print)$sanitize.colnames.function <- function(x) {x}
   formals(Print)$include.rownames <- FALSE
   formals(Print)$math.style.exponents <- TRUE
   formals(Print)$format.args <- list(big.mark=",")
@@ -162,7 +162,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
 
   for (i in seq_along(n)) {
     if (i == 2) cat("\\captionsetup[table]{list=no}\n")
-    if (i == 1){
+    if (i == 1) {
       idxs <- 1:n[i]
       caption <- c(sprintf("%s\\par \\medskip [\\footnotesize{%s}]", cap1, cap2), cap1)
     } else {
