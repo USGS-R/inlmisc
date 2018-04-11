@@ -1,3 +1,7 @@
+# inlmisc 0.4.0.9000
+
+- ...
+
 # inlmisc 0.4.0
 
 - Add `GetTolColors` function, used to access color palettes by Paul Tol.
