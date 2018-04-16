@@ -1,6 +1,6 @@
 # inlmisc 0.4.0.9000
 
-- ...
+- Add `PrintFigure` function, used to print the Rnw (R and LaTeX) code associated with a figure.
 
 # inlmisc 0.4.0
 
