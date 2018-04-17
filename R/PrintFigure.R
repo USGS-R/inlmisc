@@ -38,7 +38,7 @@
 #' @export
 #'
 #' @examples
-#' fig <- sprintf("par(mar = c(2.1, 2.1, 0, 0)); plot(runif(%s))", 1:10)
+#' fig <- sprintf("par(mar = c(2.1, 2.1, 0, 0.1)); plot(runif(%s))", 1:10)
 #' headings <- sprintf("Example heading, n = %s", 1:10)
 #' title <- "Example title"
 #' PrintFigure(fig, 2, "id", title, headings, height = 2)
@@ -97,8 +97,7 @@ PrintFigure <- function(fig, n=length(fig), label="", title="", headings="", wid
       cat("  \\begin{subfigure}{\\textwidth}\n")
       cat(sprintf("    \\caption{{%s \\label{fig:%s}}}\n", headings[i], sublabel))
     }
-    cat(sprintf("    <<%s, echo=FALSE, results='asis', fig.width=%s, fig.height=%s>>=\n",
-                sublabel, width, height))
+    cat(sprintf("    <<%s, echo=FALSE, results='asis', fig.width=%s, fig.height=%s>>=\n", sublabel, width, height))
     cat(sprintf("    %s\n", fig[[i]]))
     cat("    @\n")
     if (np > 1) cat("  \\end{subfigure}\n")
