@@ -4,8 +4,8 @@
 \alias{PrintFigure}
 \title{Print as LaTeX Figure}
 \usage{
-PrintFigure(fig, n = length(fig), label = "", title = "", headings = "",
-  width = 7, height = 7)
+PrintFigure(fig, nr = 1, nc = 1, label = "", title = "",
+  headings = "", width = 7, height = 7)
 }
 \arguments{
 \item{fig}{'text'.
@@ -13,8 +13,8 @@ Vector of figure plotting commands written in \R.
 The length of the vector is either equal to the number of subfigures, or 1 when a single plot is desired.
 An element in the vector contains the commands for creating a single plot.}
 
-\item{n}{'integer'.
-Maximum number of subfigures to place on a page.}
+\item{nr, nc}{'integer'.
+Maximum number of rows and columns in the subfigure layout on a page.}
 
 \item{label}{'character'.
 String containing the LaTeX label anchor.
@@ -47,18 +47,21 @@ Requires \code{\\usepackage{caption}} and \code{\\usepackage{subcaption}}
   in the LaTeX preamble.
 }
 \examples{
-fig <- sprintf("par(mar = c(2.1, 2.1, 0, 0)); plot(runif(\%s))", 1:10)
-headings <- sprintf("Example heading, n = \%s", 1:10)
-title <- "Example title"
-PrintFigure(fig, 2, "id", title, headings, height = 2)
+fig <- sprintf("par(mar = c(2.1, 2.1, 0.1, 1.1)); plot(runif(\%s))", 10)
+title <- "Example of a figure caption."
+PrintFigure(fig, label = "id", title = title)
+
+fig <- sprintf("par(mar = c(2.1, 2.1, 0.1, 1.1)); plot(runif(\%s))", 1:10)
+headings <- sprintf("Example subfigure caption, n=\%s", 1:10)
+PrintFigure(fig, 3, 2, "id", title, headings, width = 3, height = 2)
 
 \dontrun{
 sink("figure-example.Rnw")
 cat("\\\\documentclass{article}",
-    "\\\\usepackage[labelsep=period,labelfont=bf]{caption}",
+    "\\\\usepackage[labelsep=period, labelfont=bf]{caption}",
     "\\\\usepackage{subcaption}",
     "\\\\begin{document}", sep = "\\n")
-PrintFigure(fig, 4, "id", title, headings, height = 2)
+PrintFigure(fig, 3, 2, "id", title, headings, width = 3, height = 2)
 cat("\\\\end{document}\\n")
 sink()
 knitr::knit2pdf("figure-example.Rnw", clean = TRUE)  # requires TeX installation
