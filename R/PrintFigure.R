@@ -8,7 +8,8 @@
 #'
 #' @param fig 'text'.
 #'   Vector of figure plotting commands written in \R.
-#'   The length of the vector is either equal to the number of subfigures, or 1 when a single plot is desired.
+#'   The length of the vector is either equal to the number of subfigures,
+#'   or 1 when a single plot is desired.
 #'   An element in the vector contains the commands for creating a single plot.
 #' @param nr,nc 'integer'.
 #'   Maximum number of rows and columns in the subfigure layout on a page.
