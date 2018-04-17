@@ -4,25 +4,30 @@
 \alias{PrintFigure}
 \title{Print as LaTeX Figure}
 \usage{
-PrintFigure(fig, n = length(fig), label = "id", title = "",
-  headings = "", width = 7, height = 7)
+PrintFigure(fig, n = length(fig), label = "", title = "", headings = "",
+  width = 7, height = 7)
 }
 \arguments{
 \item{fig}{'text'.
-Vector of figure plotting commands (written in \R).
-Each element in the vector contains the commands for a single plot.}
+Vector of figure plotting commands written in \R.
+The length of the vector is either equal to the number of subfigures, or 1 when a single plot is desired.
+An element in the vector contains the commands for creating a single plot.}
 
 \item{n}{'integer'.
 Maximum number of subfigures to place on a page.}
 
 \item{label}{'character'.
-String containing the LaTeX label anchor, the default is \code{"id"}.}
+String containing the LaTeX label anchor.
+Subfigures are labeled using a concatenation of the \code{label} argument and a letter.
+For example, specifying \code{label = "id"} for a figure composed of 3 subfigures results in:
+\code{"id_a"}, \code{"id_b"}, and \code{"id_c"} labels.}
 
 \item{title}{'character'.
 String containing the figure caption.}
 
 \item{headings}{'character'.
-Vector of subfigure headings, values are recycled as necessary to match the length of the \code{fig} argument.}
+Vector of subfigure captions, values are recycled as necessary
+to match the vector length of the \code{fig} argument.}
 
 \item{width, height}{'numeric'.
 Figure (or subfigure) width and height in inches, to be used in the graphics device.}
@@ -44,7 +49,8 @@ Requires \code{\\usepackage{caption}} and \code{\\usepackage{subcaption}}
 \examples{
 fig <- sprintf("par(mar = c(2.1, 2.1, 0, 0)); plot(runif(\%s))", 1:10)
 headings <- sprintf("Example heading, n = \%s", 1:10)
-PrintFigure(fig, n = 2, title = "Example title", headings = headings, height = 2)
+title <- "Example title"
+PrintFigure(fig, 2, "id", title, headings, height = 2)
 
 \dontrun{
 sink("figure-example.Rnw")
@@ -52,7 +58,7 @@ cat("\\\\documentclass{article}",
     "\\\\usepackage[labelsep=period,labelfont=bf]{caption}",
     "\\\\usepackage{subcaption}",
     "\\\\begin{document}", sep = "\\n")
-PrintFigure(fig, n = 4, title = "Example title", headings = headings, height = 2)
+PrintFigure(fig, 4, "id", title, headings, height = 2)
 cat("\\\\end{document}\\n")
 sink()
 knitr::knit2pdf("figure-example.Rnw", clean = TRUE)  # requires TeX installation
