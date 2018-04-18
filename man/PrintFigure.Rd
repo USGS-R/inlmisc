@@ -5,7 +5,7 @@
 \title{Print as LaTeX Figure}
 \usage{
 PrintFigure(fig, nr = 1, nc = 1, label = "", title = "",
-  headings = "", width = 7, height = 7)
+  headings = "")
 }
 \arguments{
 \item{fig}{'text'.
@@ -29,46 +29,40 @@ String containing the figure caption.}
 \item{headings}{'character'.
 Vector of subfigure captions, values are recycled as necessary
 to match the vector length of the \code{fig} argument.}
-
-\item{width, height}{'numeric'.
-Figure (or subfigure) width and height in inches, to be used in the graphics device.}
 }
 \value{
 Invisible \code{NULL}
 }
 \description{
-This function prints the Rnw (\R and LaTeX) code associated with the supplied figure.
+This function prints the LaTeX code associated with the supplied figure.
 A figure can be composed of several subfigures
 and passed to the function as text string(s) of \R plotting commands.
 The applied output format attempts to adhere to the design recommendations
 for figures in United States Geological Survey (USGS) publications.
 }
 \details{
-Requires \code{\\usepackage{caption}} and \code{\\usepackage{subcaption}}
-  in the LaTeX preamble.
+Requires \code{\\usepackage{caption}} and \code{\\usepackage{subcaption}} in the LaTeX preamble.
+  The width and height to be used in the graphics device are specified in the code-chunk options.
 }
 \examples{
-fig <- sprintf("par(mar = c(2.1, 2.1, 0.1, 1.1)); plot(runif(\%s))", 10)
-title <- "Example of a figure caption."
-PrintFigure(fig, label = "id", title = title)
-
-fig <- sprintf("par(mar = c(2.1, 2.1, 0.1, 1.1)); plot(runif(\%s))", 1:10)
-headings <- sprintf("Example subfigure caption, n=\%s", 1:10)
-PrintFigure(fig, 3, 2, "id", title, headings, width = 3, height = 2)
-
 \dontrun{
-sink("figure-example.Rnw")
 cat("\\\\documentclass{article}",
     "\\\\usepackage[labelsep=period, labelfont=bf]{caption}",
     "\\\\usepackage{subcaption}",
-    "\\\\begin{document}", sep = "\\n")
-PrintFigure(fig, 3, 2, "id", title, headings, width = 3, height = 2)
-cat("\\\\end{document}\\n")
-sink()
+    "\\\\begin{document}\\n",
+    "<<id, echo=FALSE, results='asis', fig.width=3, fig.height=2>>=",
+    "par(mar=c(2.1, 2.1, 0.1, 1.1))",
+    "fig <- sprintf('plot(runif(\%s))', 1:10)",
+    "headings <- sprintf('Subfigure caption, n=\%s', 1:10)",
+    "PrintFigure(fig, 3, 2, 'id', 'Figure caption.', headings)",
+    "@\\n",
+    "\\\\end{document}",
+    file = "figure-example.Rnw", sep = "\\n")
 knitr::knit2pdf("figure-example.Rnw", clean = TRUE)  # requires TeX installation
 system("open figure-example.pdf")
 
-file.remove("figure-example.Rnw", "figure-example.tex", "figure-example.pdf")
+unlink("figure-example.*")
+unlink("figure", recursive = TRUE)
 }
 
 }
