@@ -68,11 +68,12 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", headings="") {
   checkmate::assertString(title)
   checkmate::assertCharacter(headings, any.missing=FALSE, min.len=1, max.len=length(fig))
 
-  # maximum number of plots on a page
-  n <- nr * nc
-
   # total number of plots on all pages
   np <- length(fig)
+
+  # maximum number of plots on a page
+  n <- nr * nc
+  if (np < n) n <- np
 
   # recycle subfigure captions
   headings <- rep(headings, length.out=np)
