@@ -57,7 +57,7 @@ cat("\\\\documentclass{article}",
     "par(mar=c(2.1, 2.1, 0.1, 1.1))",
     "fig <- sprintf('plot(runif(\%s))', 1:10)",
     "headings <- sprintf('Subfigure caption, n=\%s', 1:10)",
-    "PrintFigure(fig, 3, 2, 'id', 'Figure caption.', headings)",
+    "PrintFigure(fig, 3, 2, 'id', title='Figure caption', headings=headings)",
     "@\\n",
     "\\\\end{document}",
     file = "figure-example.Rnw", sep = "\\n")
