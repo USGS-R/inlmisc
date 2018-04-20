@@ -20,6 +20,8 @@
 #'   \code{"id_a"}, \code{"id_b"}, and \code{"id_c"} labels.
 #' @param title 'character'.
 #'   String containing the figure caption.
+#' @param title_lof 'character'.
+#'   String containing the figure caption to be listed at the beginning of the paper in a \dQuote{List of Figures}.
 #' @param headings 'character'.
 #'   Vector of subfigure captions, values are recycled as necessary
 #'   to match the vector length of the \code{fig} argument.
@@ -58,7 +60,7 @@
 #' }
 #'
 
-PrintFigure <- function(fig, nr=1, nc=1, label="", title="", headings="") {
+PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title, headings="") {
 
   # check arguments
   checkmate::assertCharacter(fig, any.missing=FALSE, min.len=1)
@@ -66,6 +68,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", headings="") {
   checkmate::assertInt(nc, lower=1)
   checkmate::assertString(label)
   checkmate::assertString(title)
+  checkmate::assertString(title_lof)
   checkmate::assertCharacter(headings, any.missing=FALSE, min.len=1, max.len=length(fig))
 
   # total number of plots on all pages
@@ -112,7 +115,14 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", headings="") {
     cat("\n")
     if (np > 1) cat("  \\end{subfigure}\n")
 
-    if (!is.na(caption)) cat(sprintf("  \\caption{{%s}}\n", caption))
+    if (!is.na(caption)) {
+      caption_lof <- strwrap(title_lof, width=.Machine$integer.max)
+      if (caption == caption_lof || caption == "---Continued")
+        cat(sprintf("  \\caption{{%s}}\n", caption))
+      else
+        cat(sprintf("  \\caption[{%s}]{{%s}}\n", caption_lof, caption))
+    }
+
     if (i %% n == 0 || i == np) cat("\\end{figure}\n\n")
     if (i > n && i == np) cat("\\captionsetup[figure]{list=yes}\n\n")
   }

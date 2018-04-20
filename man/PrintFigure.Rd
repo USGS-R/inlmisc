@@ -5,7 +5,7 @@
 \title{Print as LaTeX Figure}
 \usage{
 PrintFigure(fig, nr = 1, nc = 1, label = "", title = "",
-  headings = "")
+  title_lof = title, headings = "")
 }
 \arguments{
 \item{fig}{'text'.
@@ -25,6 +25,9 @@ For example, specifying \code{label = "id"} for a figure composed of 3 subfigure
 
 \item{title}{'character'.
 String containing the figure caption.}
+
+\item{title_lof}{'character'.
+String containing the figure caption to be listed at the beginning of the paper in a \dQuote{List of Figures}.}
 
 \item{headings}{'character'.
 Vector of subfigure captions, values are recycled as necessary
