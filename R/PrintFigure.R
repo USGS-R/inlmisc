@@ -2,7 +2,7 @@
 #'
 #' This function prints the LaTeX code associated with the supplied figure.
 #' A figure can be composed of several subfigures
-#' and passed to the function as text string(s) of \R plotting commands.
+#' and passed to the function as \R plotting commands.
 #' The applied output format attempts to adhere to the design recommendations
 #' for figures in United States Geological Survey (USGS) publications.
 #'
@@ -12,7 +12,7 @@
 #'   or 1 when a single plot is desired.
 #'   An element in the vector contains the commands for creating a single plot.
 #' @param nr,nc 'integer'.
-#'   Maximum number of rows and columns in the subfigure layout on a page.
+#'   Maximum number of rows and columns in the subfigure layout on a page in the output document.
 #' @param label 'character'.
 #'   String containing the LaTeX label anchor.
 #'   Subfigures are labeled using a concatenation of the \code{label} argument and a letter.
@@ -21,14 +21,18 @@
 #' @param title 'character'.
 #'   String containing the figure caption.
 #' @param title_lof 'character'.
-#'   String containing the figure caption to be listed at the beginning of the paper in a \dQuote{List of Figures}.
+#'   String containing the figure caption to be listed at the beginning
+#'   of the paper in a \dQuote{List of Figures}.
 #' @param headings 'character'.
 #'   Vector of subfigure captions, values are recycled as necessary
 #'   to match the vector length of the \code{fig} argument.
 #'
 #' @details
 #'   Requires \code{\\usepackage{caption}} and \code{\\usepackage{subcaption}} in the LaTeX preamble.
-#'   The width and height to be used in the graphics device are specified in the code-chunk options.
+#'   The width and height, in inches, to be used in the graphics device (that is, a single plot)
+#'   are specified in the code-chunk options \code{fig.width} and \code{fig.height}, respectively.
+#'   And always write raw results from \R into the output document
+#'   by also specifying \code{results = "asis"} in the code-chunk options.
 #'
 #' @return Invisible \code{NULL}
 #'
@@ -47,7 +51,7 @@
 #'     "\\captionsetup[subfigure]{skip=-5pt, labelfont={bf, it}}",
 #'     "\\renewcommand{\\thesubfigure}{\\Alph{subfigure}}",
 #'     "\\begin{document}\n",
-#'     "<<id, echo=FALSE, results='asis', fig.width=3, fig.height=2>>=",
+#'     "<<id, echo=FALSE, fig.width=3, fig.height=2, results='asis'>>=",
 #'     "par(mar=c(2.1, 2.1, 1.1, 1.1))",
 #'     "fig <- sprintf('plot(runif(%s))', 1:10)",
 #'     "headings <- sprintf('Subfigure caption, n=%s', 1:10)",
