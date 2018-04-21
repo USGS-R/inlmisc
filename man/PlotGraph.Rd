@@ -113,7 +113,7 @@ Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 colu
     \code{(t, Inf)} for right censored,
     \code{(t, t)} for exact, and
     \code{(t1, t2)} for an interval.
-  Where infinity is represented as \code{Inf} or \code{NA}, and t is a numeric value.
+  Where infinity is represented as \code{Inf} or \code{NA}, and \code{t} is a numeric value.
 }
 \examples{
 n <- 50L
