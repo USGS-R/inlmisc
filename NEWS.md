@@ -1,5 +1,7 @@
 # inlmisc 0.4.0.9000
 
+- Update *leaflet-search.min.js* and *leaflet-search.css* files to version 2.8.0.
+
 - Add `PrintFigure` function, used to print the LaTeX code associated with a figure.
 
 # inlmisc 0.4.0
