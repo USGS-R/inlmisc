@@ -172,7 +172,7 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
   leaflet::invokeMethod(map,
                         data=leaflet::getMapData(map),
                         method="addSearchMarker",
-                        group,
+                        group,  # TODO(jcf): not working for leaflet::addCircleMarkers
                         position,
                         propertyName,
                         zoom,
