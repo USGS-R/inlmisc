@@ -182,12 +182,11 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
 
 .SearchDependencies <- function() {
   src <- system.file("htmlwidgets/plugins/leaflet-search", package="inlmisc")
-  css <- if (utils::packageVersion("leaflet") < 2) "leaflet-search-old.css" else "leaflet-search.css"
   list(htmltools::htmlDependency(name="leaflet-search",
-                                 version="2.4.0",
+                                 version="2.8.0",
                                  src=src,
                                  script=c("leaflet-search.min.js", "leaflet-search-binding.js"),
-                                 stylesheet=css))
+                                 stylesheet="leaflet-search.css"))
 }
 
 
