@@ -1,5 +1,10 @@
 # inlmisc 0.4.0.9000
 
+- In `AddInsetMap`, add "center" option for `loc` argument.
+
+- In `AddInsetMap`, add an optional `e` argument, a numeric vector describing
+  the extent of the smaller axis-aligned rectangle.
+
 - Update *leaflet-search.min.js* and *leaflet-search.css* files to version 2.8.0.
 
 - Add `PrintFigure` function, used to print the LaTeX code associated with a figure.

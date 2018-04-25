@@ -13,15 +13,15 @@
 #'   Identical to the \code{main.label} argument but for the plot extent rectangle.
 #' @param loc 'character'.
 #'   Position of the inset map in the main plot region:
-#'   "bottomleft", "topleft", "topright", or "bottomright" to denote scale location.
+#'   "bottomleft", "topleft", "topright", "bottomright", or "center" to denote scale location.
 #' @param inset 'numeric'.
 #'   Inset distance(s) from the margins as a fraction of the main plot region.
 #'   Defaults to 2 percent of the axis range.
 #' @param width 'numeric'.
 #'   Width of the inset map in inches.
-#'
-#' @details The smaller axis-aligned rectangle (relative to the larger map polygon) is defined by
-#'   the user coordinate extent of the main plot region, see \code{par("usr")}.
+#' @param e 'numeric'.
+#'   Vector of length 4 describing the extent of the smaller axis-aligned rectangle (relative to the larger map polygon).
+#'   Defaults to the user coordinate extent of the main plot region, see \code{par("usr")}.
 #'
 #' @return Used for the side-effect of a inset map drawn on the current graphics device.
 #'
@@ -48,26 +48,28 @@
 AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
                         main.label=list(label=NA, adj=NULL),
                         sub.label=list(label=NA, adj=NULL),
-                        loc=c("bottomleft", "topleft", "topright", "bottomright"),
-                        inset=0.02, width=NULL) {
+                        loc=c("bottomleft", "topleft", "topright", "bottomright", "center"),
+                        inset=0.02, width=NULL, e=NULL) {
+
+  checkmate::assertClass(p, "SpatialPolygons")
+  checkmate::assertCharacter(col, any.missing=FALSE, len=2)
+  checkmate::assertList(main.label)
+  checkmate::assertList(sub.label)
+  loc <- match.arg(loc)
+  checkmate::assertNumeric(inset, finite=TRUE, min.len=1, max.len=2)
+  checkmate::assertNumber(width, finite=TRUE, null.ok=TRUE)
+  checkmate::assertNumeric(e, finite=TRUE, len=4, null.ok=TRUE)
 
   op <- graphics::par(no.readonly=TRUE)
   on.exit(graphics::par(op))
 
-  loc <- match.arg(loc)
-
-  if (!inherits(p, c("SpatialPolygons", "SpatialPolygonsDataFrame")))
-    stop("polygon 'p' is the incorrect class")
-
   usr <- graphics::par("usr")
-  crds <- cbind(c(usr[1:2], usr[2:1], usr[1]),
-                c(rep(usr[3], 2), rep(usr[4], 2), usr[3]))
-  b <- sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(crds)), "bbox")),
-                           proj4string=raster::crs(p))
 
+  if (is.null(e)) e <- usr
+  crds <- cbind(c(e[1:2], e[2:1], e[1]), c(rep(e[3], 2), rep(e[4], 2), e[3]))
+  b <- sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(crds)), "bbox")), proj4string=raster::crs(p))
   if (length(rgeos::gIntersection(p, b)) == 0)
     stop("user coordinates of the plotting region do not intersect polygon")
-
   ext <- raster::extent(rgeos::gUnion(p, b))
 
   if (is.null(width)) {
@@ -89,6 +91,9 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
     loc <- c(usr[2] - padx - dx, usr[4] - pady - dy)
   } else if (loc == "bottomright") {
     loc <- c(usr[2] - padx - dx, usr[3] + pady)
+  } else if (loc == "center")  {
+    loc <- c(usr[1] + diff(usr[1:2]) / 2 - dx / 2,
+             usr[3] + diff(usr[3:4]) / 2 - dy / 2)
   }
 
   graphics::rect(loc[1], loc[2], loc[1] + dx, loc[2] + dy, col="#FFFFFFE7", border=NA)
