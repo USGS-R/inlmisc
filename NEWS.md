@@ -1,5 +1,7 @@
 # inlmisc 0.4.0.9000
 
+- In LaTeX "misc/preamble.tex" file, fix spacing after number in List of Figures and List of Tables.
+
 - In `AddInsetMap`, add "center" option for `loc` argument.
 
 - In `AddInsetMap`, add an optional `e` argument, a numeric vector describing

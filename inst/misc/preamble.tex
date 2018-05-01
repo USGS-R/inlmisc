@@ -1,33 +1,39 @@
-\usepackage[T1]{fontenc}
-\usepackage{mathptmx}
-\usepackage{amsfonts}
-\usepackage[scaled=0.92]{helvet}
+% Typography
+\usepackage[T1]{fontenc}          % font encoding
+\usepackage{mathptmx}             % define Times as default text font
+\usepackage{amsfonts}             % load American Mathematical Society fonts
+\usepackage[scaled=0.92]{helvet}  % load Helvetica font scaled so that it matches Times font
+\usepackage{textcomp}             % load Text Companion fonts
 
-\usepackage[tmargin=1.00in, bmargin=0.67in, lmargin=0.58in, rmargin=0.75in]{geometry}
-\usepackage{url}
-\usepackage[backend=bibtex, style=authoryear-comp, maxbibnames=99, maxcitenames=3, natbib=true, dashed=false]{biblatex}
-\usepackage{xpatch}
-\usepackage{xcolor}
-\usepackage{ragged2e}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{verbatimbox}
-\usepackage{titling}
-\usepackage{booktabs, dcolumn, tabularx}
-\usepackage{makecell}
-\usepackage{enumitem}
-\usepackage{amsmath}
-\usepackage{bm}
-\usepackage[pdftex]{lscape}
-\usepackage{xfrac}
-\usepackage{textcomp}
-\usepackage{array}
-\usepackage{tocloft}
-\usepackage{sectsty}
-\usepackage{fancyhdr}
-\usepackage[hidelinks, pdflang={en-US}]{hyperref}
+\usepackage[tmargin=1.00in, bmargin=0.67in, lmargin=0.58in, rmargin=0.75in]{geometry} % document dimensions
+\usepackage[pdftex]{lscape}  % place selected parts of a document in landscape
 
-%%% bibtex
+\usepackage{url}          % verbatim with url-sensitive line breaks
+\usepackage[backend=bibtex, style=authoryear-comp, maxbibnames=99, maxcitenames=3, natbib=true, dashed=false]{biblatex}  % bibliographic facilities
+\usepackage{xpatch}       % macro patching commands
+\usepackage{xcolor}       % color extensions
+\usepackage{ragged2e}     % set ragged text
+\usepackage{caption}      % customise captions in floating environments
+\usepackage{subcaption}   % support for sub-captions
+\usepackage{verbatimbox}  % deposit verbatim text in a box
+\usepackage{titling}      % control over the typesetting of the \maketitle command
+\usepackage{booktabs}     % enhances tables
+\usepackage{dcolumn}      % align on the decimal point of numbers in tabular columns
+\usepackage{tabularx}     % tabulars with adjustable-width columns
+\usepackage{makecell}     % tabular column heads and multilined cells
+\usepackage{array}        % extends the array and tabular environments
+\usepackage{enumitem}     % control layout of itemize, enumerate, description
+\usepackage{amsmath}      % American Mathematical Society mathematical facilities
+\usepackage{bm}           % access bold symbols in math mode
+\usepackage{xfrac}        % typset fractions
+\usepackage{tocloft}      % control Table of Contents, List of Figures, and List of Tables
+\usepackage{sectsty}      % control sectional headers
+\usepackage{fancyhdr}     % control page headers and footers
+\usepackage{indentfirst}  % indent first paragraph after section header
+
+\usepackage[hidelinks, pdflang={en-US}]{hyperref}  % support for hypertext links
+
+% bibliography
 
 \DefineBibliographyStrings{english}{andothers={and~others}}
 \setlength{\bibitemsep}{\baselineskip}
@@ -59,12 +65,12 @@
 
 \renewbibmacro*{journal+issuetitle}{%
   \usebibmacro{journal}%
-  \setunit*{\addcomma\space}% was: \setunit*{\addspace}
+  \setunit*{\addcomma\space}%
   \iffieldundef{series}
     {}
     {\newunit
      \printfield{series}%
-     \setunit{\addcomma\space}}% was: \setunit{\addspace}
+     \setunit{\addcomma\space}}%
   \usebibmacro{volume+number+eid}%
   \setunit{\addspace}%
   \usebibmacro{issue+date}%
@@ -80,7 +86,7 @@
   \printtext%
 }{}{}
 
-%%% maketitle
+% maketitle
 
 \pretitle{\begin{flushleft}\LARGE\bfseries\sffamily}
 \posttitle{\end{flushleft}\vspace{2ex}}
@@ -90,7 +96,7 @@
 \date{}
 \postdate{}
 
-%%%
+%
 
 \pagestyle{fancy}
 \renewcommand{\sectionmark}[1]{\markboth{#1}{}}
@@ -119,8 +125,9 @@
 
 \renewcommand\cftsecpagefont{\normalfont}
 
-\renewcommand\cftfigaftersnum{.}
-\renewcommand\cfttabaftersnum{.}
+\setlength{\cftfignumwidth}{2.55em}
+\renewcommand\cftfigaftersnum{. }
+\renewcommand\cfttabaftersnum{. }
 
 \setlength{\cftbeforesecskip}{0.1cm}
 \setlength{\cftbeforesubsecskip}{0.1cm}
@@ -151,10 +158,9 @@
 \widowpenalties 1 10000
 \raggedbottom
 
-%%% paragraph
+% paragraph
 
 \renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}
-\usepackage{indentfirst}
 \setlength\RaggedRightParindent{15pt}
 
 \makeatletter
