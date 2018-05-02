@@ -1,37 +1,55 @@
-% Typography
+% Fonts
 \usepackage[T1]{fontenc}          % font encoding
 \usepackage{mathptmx}             % define Times as default text font
 \usepackage{amsfonts}             % load American Mathematical Society fonts
 \usepackage[scaled=0.92]{helvet}  % load Helvetica font scaled so that it matches Times font
 \usepackage{textcomp}             % load Text Companion fonts
 
-\usepackage[tmargin=1.00in, bmargin=0.67in, lmargin=0.58in, rmargin=0.75in]{geometry} % document dimensions
+% Layout
+\usepackage[tmargin=1.00in, bmargin=0.67in, lmargin=0.58in, rmargin=0.75in]{geometry} % margins
 \usepackage[pdftex]{lscape}  % place selected parts of a document in landscape
+\usepackage{fancyhdr}        % control page headers and footers
 
-\usepackage{url}          % verbatim with url-sensitive line breaks
-\usepackage[backend=bibtex, style=authoryear-comp, maxbibnames=99, maxcitenames=3, natbib=true, dashed=false]{biblatex}  % bibliographic facilities
-\usepackage{xpatch}       % macro patching commands
-\usepackage{xcolor}       % color extensions
-\usepackage{ragged2e}     % set ragged text
-\usepackage{caption}      % customise captions in floating environments
-\usepackage{subcaption}   % support for sub-captions
-\usepackage{verbatimbox}  % deposit verbatim text in a box
-\usepackage{titling}      % control over the typesetting of the \maketitle command
+% Mathematics
+\usepackage{amsmath}  % American Mathematical Society mathematical facilities
+\usepackage{bm}       % access bold symbols in math mode
+\usepackage{xfrac}    % typset fractions
+
+% Contents
+\usepackage{titling}  % control over the typesetting of the \maketitle command
+\usepackage{tocloft}  % control Table of Contents, List of Figures, and List of Tables
+
+% Tables
+\usepackage{array}        % extends the array and tabular environments
 \usepackage{booktabs}     % enhances tables
-\usepackage{dcolumn}      % align on the decimal point of numbers in tabular columns
 \usepackage{tabularx}     % tabulars with adjustable-width columns
 \usepackage{makecell}     % tabular column heads and multilined cells
-\usepackage{array}        % extends the array and tabular environments
-\usepackage{enumitem}     % control layout of itemize, enumerate, description
-\usepackage{amsmath}      % American Mathematical Society mathematical facilities
-\usepackage{bm}           % access bold symbols in math mode
-\usepackage{xfrac}        % typset fractions
-\usepackage{tocloft}      % control Table of Contents, List of Figures, and List of Tables
-\usepackage{sectsty}      % control sectional headers
-\usepackage{fancyhdr}     % control page headers and footers
+\usepackage{verbatimbox}  % deposit verbatim text in a box
+\usepackage{dcolumn}      % align on the decimal point of numbers in tabular columns
+
+% Captions
+\usepackage{caption}     % customise captions in floating environments
+\usepackage{subcaption}  % support for sub-captions
+
+% Bibliography
+\usepackage{xpatch}  % macro patching commands
+\usepackage[backend=bibtex, style=authoryear-comp, maxbibnames=99, maxcitenames=3, natbib=true, dashed=false]{biblatex}
+
+% Sectioning
+\usepackage{sectsty}  % control sectional headers
 \usepackage{indentfirst}  % indent first paragraph after section header
 
+% Miscellaneous
+\usepackage{xcolor}    % control colors
+\usepackage{ragged2e}  % set ragged text
+\usepackage{enumitem}  % control layout of itemize, enumerate, description
+\usepackage{url}       % verbatim with url-sensitive line breaks
 \usepackage[hidelinks, pdflang={en-US}]{hyperref}  % support for hypertext links
+
+
+
+
+
 
 % bibliography
 
