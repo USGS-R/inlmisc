@@ -1,15 +1,15 @@
 % Fonts
-\usepackage[T1]{fontenc}          % font encoding
-\usepackage{mathptmx}             % define Times as default text font
-\usepackage{amsfonts}             % load American Mathematical Society fonts
-\usepackage[scaled=0.92]{helvet}  % load Helvetica font scaled so that it matches Times font
-\usepackage{textcomp}             % load Text Companion fonts
+\usepackage[T1]{fontenc}  % use Type 1 (PostScript) font encoding
+\usepackage{mathptmx}  % define Times as default text font, and provide maths support
+\usepackage{amsfonts}  % load American Mathematical Society fonts
+\usepackage{textcomp}  % load Text Companion fonts
 
-\renewcommand{\sfdefault}{lmss}
-\renewcommand{\ttdefault}{lmtt}
+\renewcommand{\sfdefault}{lmss}  % use 'Latin Modern Sans Serif' for san-serif (sans) font family
+\renewcommand{\ttdefault}{lmtt}  % use 'Latin Modern Sans Typewriter' for typewriter (mono) font family
+
 
 % Layout
-\usepackage[tmargin=1.00in, bmargin=0.67in, lmargin=0.58in, rmargin=0.75in]{geometry} % margins
+\usepackage[tmargin=1.00in, bmargin=0.67in, lmargin=0.58in, rmargin=0.75in]{geometry} % define margins
 \usepackage[pdftex]{lscape}  % place selected parts of a document in landscape
 
 % Headers
@@ -26,10 +26,10 @@
 \fancyhead[RO]{\normalfont\bfseries\sffamily \nouppercase{\leftmark} \quad \thepage}
 
 
-% Mathematics
+% Maths
 \usepackage{amsmath}  % American Mathematical Society mathematical facilities
-\usepackage{bm}       % access bold symbols in math mode
-\usepackage{xfrac}    % typset fractions
+\usepackage{bm}  % access bold symbols in math mode
+\usepackage{xfrac}  % typset fractions
 
 
 % Contents
@@ -63,16 +63,17 @@
 
 
 % Tables
-\usepackage{array}     % extends the array and tabular environments
+\usepackage{array}  % extends the array and tabular environments
 \usepackage{booktabs}  % enhances tables
+
 \usepackage{tabularx}  % tabulars with adjustable-width columns
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
-\usepackage{makecell}     % tabular column heads and multilined cells
+\usepackage{makecell}  % tabular column heads and multilined cells
 \usepackage{verbatimbox}  % deposit verbatim text in a box
-\usepackage{dcolumn}      % align on the decimal point of numbers in tabular columns
+\usepackage{dcolumn}  % align on the decimal point of numbers in tabular columns
 
 
 % Captions
@@ -82,7 +83,9 @@
 \captionsetup[subfigure]{skip=-5pt, labelfont={bf,it}}
 
 \usepackage{subcaption}  % support for sub-captions
-\renewcommand{\thesubfigure}{\Alph{subfigure}}
+\renewcommand{\thesubfigure}{\Alph{subfigure}}  % identify sub-figures with letter in sub-caption
+
+\setcounter{secnumdepth}{0}  % allow only \section in Table of Contents
 
 
 % Bibliography
@@ -138,45 +141,40 @@
 \subsectionfont{\large\bfseries\sffamily}
 \subsubsectionfont{\large\mdseries\sffamily}
 
+\widowpenalties 1 10000 % penalties that control line or page breaks
+
+\makeatletter  % align floating objects (e.g. figures) along the top of a page
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt plus 1fil}
+\makeatother
+
 \usepackage{indentfirst}  % indent first paragraph after section header
+
+\usepackage{ragged2e}  % set ragged text
+\setlength\RaggedRightParindent{15pt}  % sets the paragraph indentation
+
+\raggedbottom  % makes all pages the height of the text on that page
 
 
 % Color
 \usepackage{xcolor}  % control colors
-\definecolor{Red}{rgb}{0.7,0,0}
-\definecolor{Blue}{rgb}{0,0,0.8}
-
-
-% Ragged
-\usepackage{ragged2e}  % set ragged text
-\setlength\RaggedRightParindent{15pt}
-
-\raggedbottom
-
-% Penalties
-\widowpenalties 1 10000
+\definecolor{Red}{rgb}{0.7,0,0}  % define red
+\definecolor{Blue}{rgb}{0,0,0.8}  % define blue
 
 
 % Lists
 \usepackage{enumitem}  % control layout of itemize, enumerate, description
-\renewcommand*\descriptionlabel[1]{\hspace\leftmargin$#1$}
+\renewcommand*\descriptionlabel[1]{\hspace\leftmargin$#1$}  % make descriptions appear on left-hand side with an indent
 
 
-% R
-\newcommand{\R}{{\normalfont\textsf{R}}{}}
+% Miscellaneous
+\newcommand{\R}{{\normalfont\textsf{R}}{}}  % set format for R-programming character
 
-
-% Paragraph
-\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}
-\makeatletter
-\setlength{\@fptop}{0pt}
-\setlength{\@fpbot}{0pt plus 1fil}
-\makeatother
-\setcounter{secnumdepth}{0}
+\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{} % remove blank lines around code blocks
 
 
 % Links
 \usepackage{url}  % verbatim with url-sensitive line breaks
 
-\usepackage[hidelinks, pdflang={en-US}]{hyperref}  % support for hypertext links
-\hypersetup{colorlinks, urlcolor={Red}, linkcolor={Blue}, citecolor={Blue}, linktoc=page}
+\usepackage[hidelinks, pdflang={en-US}]{hyperref}  % support for hyperlinks
+\hypersetup{colorlinks, urlcolor={Red}, linkcolor={Blue}, citecolor={Blue}, linktoc=page}  % set font color for hyperlinks

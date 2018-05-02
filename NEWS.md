@@ -1,6 +1,8 @@
 # inlmisc 0.4.0.9000
 
-- Tidy LaTeX "misc/preamble.tex" file and include fix for spacing after number in List of Figures and List of Tables.
+- In "misc/preamble.tex" file: tidy code,
+  include fix for spacing after number in List of Figures and List of Tables,
+  and remove **helvet** package.
 
 - In `AddInsetMap`, add "center" option for `loc` argument.
 
