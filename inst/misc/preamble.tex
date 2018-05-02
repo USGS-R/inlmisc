@@ -9,7 +9,7 @@
 
 
 % Layout
-\usepackage[tmargin=1.00in, bmargin=0.67in, lmargin=0.58in, rmargin=0.75in]{geometry} % define margins
+\usepackage[tmargin=1.00in, bmargin=0.67in, lmargin=0.58in, rmargin=0.75in]{geometry}  % define margins
 \usepackage[pdftex]{lscape}  % place selected parts of a document in landscape
 
 
@@ -89,7 +89,7 @@
 \setcounter{secnumdepth}{0}  % allow only \section in Table of Contents
 
 
-% Bibliography
+% References
 \usepackage[backend=bibtex, style=authoryear-comp, maxbibnames=99, maxcitenames=3, natbib=true, dashed=false]{biblatex}
 \renewcommand\refname{References Cited}
 \DefineBibliographyStrings{english}{andothers={and~others}}
@@ -165,17 +165,15 @@
 % Miscellaneous
 \newcommand{\R}{{\normalfont\textsf{R}}{}}  % set format for R-programming character
 
-\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{} % remove blank lines around code blocks
-
-
-% Color
-\usepackage{xcolor}  % control colors
-\definecolor{Red}{rgb}{0.7,0,0}  % define red
-\definecolor{Blue}{rgb}{0,0,0.8}  % define blue
+\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}  % remove blank lines around code blocks
 
 
 % Links
 \usepackage{url}  % verbatim with url-sensitive line breaks
+
+\usepackage{xcolor}  % control colors
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
 
 \usepackage[hidelinks, pdflang={en-US}]{hyperref}  % support for hyperlinks
 \hypersetup{colorlinks, urlcolor={Red}, linkcolor={Blue}, citecolor={Blue}, linktoc=page}  % set font color for hyperlinks
