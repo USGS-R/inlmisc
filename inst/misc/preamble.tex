@@ -1,5 +1,12 @@
 % Fonts
-\usepackage[T1]{fontenc}  % use Type 1 (PostScript) font encoding
+\usepackage{ifxetex}  % provides conditional for checking if XeTeX is running
+\ifxetex
+  \usepackage{fontspec}  % adds interface for advanced font selection
+  \defaultfontfeatures{Ligatures=TeX}  % improves font behavior
+\else
+  \usepackage[T1]{fontenc}  % use Type 1 (PostScript) font encoding
+\fi
+
 \usepackage{mathptmx}  % define Times as default text font, and provide maths support
 \usepackage{amsfonts}  % load American Mathematical Society fonts
 \usepackage{textcomp}  % load Text Companion fonts
