@@ -1,3 +1,18 @@
+# inlmisc 0.4.0.9000
+
+- In "misc/preamble.tex" file: tidy code,
+  include fix for spacing after number in List of Figures and List of Tables,
+  and remove **helvet** package.
+
+- In `AddInsetMap`, add "center" option for `loc` argument.
+
+- In `AddInsetMap`, add an optional `e` argument, a numeric vector describing
+  the extent of the smaller axis-aligned rectangle.
+
+- Update *leaflet-search.min.js* and *leaflet-search.css* files to version 2.8.0.
+
+- Add `PrintFigure` function, used to print the LaTeX code associated with a figure.
+
 # inlmisc 0.4.0
 
 - Add `GetTolColors` function, used to access color palettes by Paul Tol.

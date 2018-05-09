@@ -1,97 +1,27 @@
-\usepackage[T1]{fontenc}
-\usepackage{mathptmx}
-\usepackage{amsfonts}
-\usepackage[scaled=0.92]{helvet}
+% Fonts
+\usepackage{ifxetex}  % provides conditional for checking if XeTeX is running
+\ifxetex
+  \usepackage{fontspec}  % adds interface for advanced font selection
+  \defaultfontfeatures{Ligatures=TeX}  % improves font behavior
+\else
+  \usepackage[T1]{fontenc}  % use Type 1 (PostScript) font encoding
+\fi
 
-\usepackage[tmargin=1.00in, bmargin=0.67in, lmargin=0.58in, rmargin=0.75in]{geometry}
-\usepackage{url}
-\usepackage[backend=bibtex, style=authoryear-comp, maxbibnames=99, maxcitenames=3, natbib=true, dashed=false]{biblatex}
-\usepackage{xpatch}
-\usepackage{xcolor}
-\usepackage{ragged2e}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{verbatimbox}
-\usepackage{titling}
-\usepackage{booktabs, dcolumn, tabularx}
-\usepackage{makecell}
-\usepackage{enumitem}
-\usepackage{amsmath}
-\usepackage{bm}
-\usepackage[pdftex]{lscape}
-\usepackage{xfrac}
-\usepackage{textcomp}
-\usepackage{array}
-\usepackage{tocloft}
-\usepackage{sectsty}
-\usepackage{fancyhdr}
-\usepackage[hidelinks, pdflang={en-US}]{hyperref}
+\usepackage{mathptmx}  % define Times as default text font, and provide maths support
+\usepackage{amsfonts}  % load American Mathematical Society fonts
+\usepackage{textcomp}  % load Text Companion fonts
 
-%%% bibtex
-
-\DefineBibliographyStrings{english}{andothers={and~others}}
-\setlength{\bibitemsep}{\baselineskip}
-
-\DeclareFieldFormat{title}{#1}
-\DeclareFieldFormat[article,thesis,report,incollection,inproceedings,misc]{title}{#1}
-\DeclareFieldFormat[incollection,inproceedings]{booktitle}{#1}
-
-\DeclareNameAlias{sortname}{last-first}
-\DeclareNameAlias{default}{last-first}
-
-\DefineBibliographyStrings{english}{page={p\adddot}, pages={p\adddot}}
-\DefineBibliographyStrings{english}{references={References Cited}}
-
-\renewcommand*{\newunitpunct}{\addcomma\space}
-\renewcommand*{\intitlepunct}{\space}
-
-\DeclareFieldFormat[article]{volume}{v.\addnbspace #1}
-\DeclareFieldFormat[article]{number}{no.\addnbspace #1}
-
-\DeclareFieldFormat[article]{journaltitle}{#1}
-
-\renewbibmacro*{volume+number+eid}{%
-  \printfield{volume}%
-  \setunit{\addcomma\space}%
-  \printfield{number}%
-  \setunit{\addcomma\space}%
-  \printfield{eid}}
-
-\renewbibmacro*{journal+issuetitle}{%
-  \usebibmacro{journal}%
-  \setunit*{\addcomma\space}% was: \setunit*{\addspace}
-  \iffieldundef{series}
-    {}
-    {\newunit
-     \printfield{series}%
-     \setunit{\addcomma\space}}% was: \setunit{\addspace}
-  \usebibmacro{volume+number+eid}%
-  \setunit{\addspace}%
-  \usebibmacro{issue+date}%
-  \setunit{\addcolon\space}%
-  \usebibmacro{issue}%
-  \newunit}
+\renewcommand{\sfdefault}{lmss}  % use 'Latin Modern Sans Serif' for san-serif (sans) font family
+\renewcommand{\ttdefault}{lmtt}  % use 'Latin Modern Sans Typewriter' for typewriter (mono) font family
 
 
-\xpatchbibmacro{date+extrayear}{%
-  \printtext[parens]%
-}{%
-  \setunit*{\addcomma\space}%
-  \printtext%
-}{}{}
+% Layout
+\usepackage[tmargin=1.00in, bmargin=0.67in, lmargin=0.58in, rmargin=0.75in]{geometry}  % define margins
+\usepackage[pdftex]{lscape}  % place selected parts of a document in landscape
 
-%%% maketitle
 
-\pretitle{\begin{flushleft}\LARGE\bfseries\sffamily}
-\posttitle{\end{flushleft}\vspace{2ex}}
-\preauthor{\begin{flushleft}\large\sffamily}
-\postauthor{\par\end{flushleft}}
-\predate{}
-\date{}
-\postdate{}
-
-%%%
-
+% Headers
+\usepackage{fancyhdr}  % control page headers and footers
 \pagestyle{fancy}
 \renewcommand{\sectionmark}[1]{\markboth{#1}{}}
 \renewcommand{\headrulewidth}{0pt}
@@ -103,11 +33,24 @@
 \fancyhead[LE]{\normalfont\bfseries\sffamily \thepage \quad Report Title}
 \fancyhead[RO]{\normalfont\bfseries\sffamily \nouppercase{\leftmark} \quad \thepage}
 
-\sectionfont{\Large\bfseries\sffamily}
-\subsectionfont{\large\bfseries\sffamily}
-\subsubsectionfont{\large\mdseries\sffamily}
 
-\renewcommand\refname{References Cited}
+% Maths
+\usepackage{amsmath}  % American Mathematical Society mathematical facilities
+\usepackage{bm}  % access bold symbols in math mode
+\usepackage{xfrac}  % typset fractions
+
+
+% Contents
+\usepackage{titling}  % control over the typesetting of the \maketitle command
+\pretitle{\begin{flushleft}\LARGE\bfseries\sffamily}
+\posttitle{\end{flushleft}\vspace{2ex}}
+\preauthor{\begin{flushleft}\large\sffamily}
+\postauthor{\par\end{flushleft}}
+\predate{}
+\date{}
+\postdate{}
+
+\usepackage{tocloft}  % control 'Table of Contents', 'List of Figures', and 'List of Tables'
 \renewcommand\cftsecfont{\sffamily}
 \renewcommand\cftsubsecfont{\sffamily}
 \renewcommand\cftsubsubsecfont{\sffamily}
@@ -116,50 +59,128 @@
 \renewcommand\cftlottitlefont{\Large\bfseries\sffamily}
 \renewcommand{\cftdotsep}{0.5}
 \renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
-
 \renewcommand\cftsecpagefont{\normalfont}
-
-\renewcommand\cftfigaftersnum{.}
-\renewcommand\cfttabaftersnum{.}
-
+\setlength{\cftfignumwidth}{2.55em}
+\renewcommand\cftfigaftersnum{. }
+\renewcommand\cfttabaftersnum{. }
 \setlength{\cftbeforesecskip}{0.1cm}
 \setlength{\cftbeforesubsecskip}{0.1cm}
 \setlength{\cftbeforesubsubsecskip}{0.1cm}
 \setlength{\cftbeforefigskip}{0.1cm}
 \setlength{\cftbeforetabskip}{0.1cm}
 
+
+% Tables
+\usepackage{array}  % extend the array and tabular environments
+\usepackage{booktabs}  % enhance tables
+
+\usepackage{tabularx}  % tabulars with adjustable-width columns
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
-\renewcommand{\sfdefault}{lmss}
-\renewcommand{\ttdefault}{lmtt}
+\usepackage{makecell}  % tabular column heads and multilined cells
+\usepackage{verbatimbox}  % deposit verbatim text in a box
+\usepackage{dcolumn}  % align on the decimal point of numbers in tabular columns
 
-\renewcommand*\descriptionlabel[1]{\hspace\leftmargin$#1$}
 
-\definecolor{Red}{rgb}{0.7,0,0}
-\definecolor{Blue}{rgb}{0,0,0.8}
-\hypersetup{colorlinks, urlcolor={Red}, linkcolor={Blue}, citecolor={Blue}, linktoc=page}
-
+% Captions
+\usepackage{caption}  % customise captions in floating environments
 \captionsetup[figure]{skip=5pt}
 \captionsetup{labelsep=period, labelfont=bf}
 \captionsetup[subfigure]{skip=-5pt, labelfont={bf,it}}
-\renewcommand{\thesubfigure}{\Alph{subfigure}}
 
-\newcommand{\R}{{\normalfont\textsf{R}}{}}
+\usepackage{subcaption}  % add support for sub-captions
+\renewcommand{\thesubfigure}{\Alph{subfigure}}  % identify sub-figures with letter in sub-caption
 
-\widowpenalties 1 10000
-\raggedbottom
+\setcounter{secnumdepth}{0}  % allow only \section in Table of Contents
 
-%%% paragraph
 
-\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}
-\usepackage{indentfirst}
-\setlength\RaggedRightParindent{15pt}
+% References
+\usepackage[backend=bibtex, style=authoryear-comp, maxbibnames=99, maxcitenames=3, natbib=true, dashed=false]{biblatex}
+\renewcommand\refname{References Cited}
+\DefineBibliographyStrings{english}{andothers={and~others}}
+\setlength{\bibitemsep}{\baselineskip}
+\DeclareFieldFormat{title}{#1}
+\DeclareFieldFormat[article,thesis,report,incollection,inproceedings,misc]{title}{#1}
+\DeclareFieldFormat[incollection,inproceedings]{booktitle}{#1}
+\DeclareNameAlias{sortname}{last-first}
+\DeclareNameAlias{default}{last-first}
+\DefineBibliographyStrings{english}{page={p\adddot}, pages={p\adddot}}
+\DefineBibliographyStrings{english}{references={References Cited}}
+\renewcommand*{\newunitpunct}{\addcomma\space}
+\renewcommand*{\intitlepunct}{\space}
+\DeclareFieldFormat[article]{volume}{v.\addnbspace #1}
+\DeclareFieldFormat[article]{number}{no.\addnbspace #1}
+\DeclareFieldFormat[article]{journaltitle}{#1}
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \setunit{\addcomma\space}%
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\renewbibmacro*{journal+issuetitle}{%
+  \usebibmacro{journal}%
+  \setunit*{\addcomma\space}%
+  \iffieldundef{series}
+    {}
+    {\newunit
+     \printfield{series}%
+     \setunit{\addcomma\space}}%
+  \usebibmacro{volume+number+eid}%
+  \setunit{\addspace}%
+  \usebibmacro{issue+date}%
+  \setunit{\addcolon\space}%
+  \usebibmacro{issue}%
+  \newunit}
 
-\makeatletter
+\usepackage{xpatch}  % macro patching commands
+\xpatchbibmacro{date+extrayear}{%
+  \printtext[parens]%
+}{%
+  \setunit*{\addcomma\space}%
+  \printtext%
+}{}{}
+
+
+% Sectioning
+\usepackage{sectsty}  % control sectional headers
+\sectionfont{\Large\bfseries\sffamily}
+\subsectionfont{\large\bfseries\sffamily}
+\subsubsectionfont{\large\mdseries\sffamily}
+
+\widowpenalties 1 10000 % penalties that control line or page breaks
+
+\makeatletter  % align floating objects (e.g. figures) along the top of a page
 \setlength{\@fptop}{0pt}
 \setlength{\@fpbot}{0pt plus 1fil}
 \makeatother
 
-\setcounter{secnumdepth}{0}
+\usepackage{indentfirst}  % indent first paragraph after section header
+
+\usepackage{ragged2e}  % control ragged text
+\setlength\RaggedRightParindent{15pt}  % set paragraph indentation
+
+\raggedbottom  % make all pages the height of the text on that page
+
+
+% Lists
+\usepackage{enumitem}  % control layout of itemize, enumerate, description
+\renewcommand*\descriptionlabel[1]{\hspace\leftmargin$#1$}  % make descriptions appear on left-hand side with an indent
+
+
+% Miscellaneous
+\newcommand{\R}{{\normalfont\textsf{R}}{}}  % set format for R-programming character
+
+\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}  % remove blank lines around code blocks
+
+
+% Links
+\usepackage{url}  % verbatim with url-sensitive line breaks
+
+\usepackage{xcolor}  % control colors
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\usepackage[hidelinks, pdflang={en-US}]{hyperref}  % support for hyperlinks
+\hypersetup{colorlinks, urlcolor={Red}, linkcolor={Blue}, citecolor={Blue}, linktoc=page}  % set font color for hyperlinks

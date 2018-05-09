@@ -71,7 +71,7 @@
 #'     \code{(t, Inf)} for right censored,
 #'     \code{(t, t)} for exact, and
 #'     \code{(t1, t2)} for an interval.
-#'   Where infinity is represented as \code{Inf} or \code{NA}, and t is a numeric value.
+#'   Where infinity is represented as \code{Inf} or \code{NA}, and \code{t} is a numeric value.
 #'
 #' @return Used for the side-effect of a new plot generated.
 #'
