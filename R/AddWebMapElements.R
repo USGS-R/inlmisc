@@ -171,7 +171,7 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
   map$dependencies <- c(map$dependencies, .SearchDependencies())
   leaflet::invokeMethod(map,
                         data=leaflet::getMapData(map),
-                        method="addSearchMarker",  # TODO(jcf): not working for leaflet::addCircleMarkers
+                        method="addSearchMarker",
                         group,
                         position,
                         propertyName,
@@ -186,7 +186,7 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
                                  version="2.8.0",
                                  src=src,
                                  script=c("leaflet-search.min.js", "leaflet-search-binding.js"),
-                                 stylesheet="leaflet-search.css"))
+                                 stylesheet="leaflet-search.min.css"))
 }
 
 
