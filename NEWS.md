@@ -1,5 +1,7 @@
 # inlmisc 0.4.0.9000
 
+- In `AddInsetMap`, add `bty` argument, determines if a box is to be drawn around the inset map.
+
 - In "misc/preamble.tex" file: tidy code,
   include fix for spacing after number in List of Figures and List of Tables,
   and remove **helvet** package.
@@ -9,7 +11,7 @@
 - In `AddInsetMap`, add an optional `e` argument, a numeric vector describing
   the extent of the smaller axis-aligned rectangle.
 
-- Update *leaflet-search.min.js* and *leaflet-search.css* files to version 2.8.0.
+- Update *leaflet-search.min.js* and *leaflet-search.min.css* files to version 2.8.0.
 
 - Add `PrintFigure` function, used to print the LaTeX code associated with a figure.
 

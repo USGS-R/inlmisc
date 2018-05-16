@@ -22,6 +22,9 @@
 #' @param e 'numeric'.
 #'   Vector of length 4 describing the extent of the smaller axis-aligned rectangle (relative to the larger map polygon).
 #'   Defaults to the user coordinate extent of the main plot region, see \code{par("usr")}.
+#' @param bty 'character'.
+#'   The type of box to be drawn about the inset map.
+#'   A value of \code{"o"} (the default) results in a box and a value of \code{"n"} supresses the box.
 #'
 #' @return Used for the side-effect of a inset map drawn on the current graphics device.
 #'
@@ -49,7 +52,7 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
                         main.label=list(label=NA, adj=NULL),
                         sub.label=list(label=NA, adj=NULL),
                         loc=c("bottomleft", "topleft", "topright", "bottomright", "center"),
-                        inset=0.02, width=NULL, e=NULL) {
+                        inset=0.02, width=NULL, e=NULL, bty=c("o", "n")) {
 
   checkmate::assertClass(p, "SpatialPolygons")
   checkmate::assertCharacter(col, any.missing=FALSE, len=2)
@@ -59,6 +62,7 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
   checkmate::assertNumeric(inset, finite=TRUE, min.len=1, max.len=2)
   checkmate::assertNumber(width, finite=TRUE, null.ok=TRUE)
   checkmate::assertNumeric(e, finite=TRUE, len=4, null.ok=TRUE)
+  bty <- match.arg(bty)
 
   op <- graphics::par(no.readonly=TRUE)
   on.exit(graphics::par(op))
@@ -119,7 +123,7 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
     graphics::text(x[1], x[2], labels=sub.label[[1]], adj=sub.label$adj, cex=0.6)
   }
 
-  graphics::box(lwd=0.5)
+  if (bty != "n") graphics::box(lwd=0.5)
 
   invisible(NULL)
 }

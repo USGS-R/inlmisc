@@ -7,7 +7,7 @@
 AddInsetMap(p, col = c("#D8D8D8", "#BFA76F"), main.label = list(label = NA,
   adj = NULL), sub.label = list(label = NA, adj = NULL),
   loc = c("bottomleft", "topleft", "topright", "bottomright", "center"),
-  inset = 0.02, width = NULL, e = NULL)
+  inset = 0.02, width = NULL, e = NULL, bty = c("o", "n"))
 }
 \arguments{
 \item{p}{'SpatialPolygons'.
@@ -37,6 +37,10 @@ Width of the inset map in inches.}
 \item{e}{'numeric'.
 Vector of length 4 describing the extent of the smaller axis-aligned rectangle (relative to the larger map polygon).
 Defaults to the user coordinate extent of the main plot region, see \code{par("usr")}.}
+
+\item{bty}{'character'.
+The type of box to be drawn about the inset map.
+A value of \code{"o"} (the default) results in a box and a value of \code{"n"} supresses the box.}
 }
 \value{
 Used for the side-effect of a inset map drawn on the current graphics device.
