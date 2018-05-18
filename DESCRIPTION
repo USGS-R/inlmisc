@@ -37,7 +37,6 @@ Suggests:
     doRNG,
     githubinstall,
     httr,
-    maps,
     testthat
 License: CC0
 Copyright: This software is in the public domain because it contains materials
