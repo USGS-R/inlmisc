@@ -37,15 +37,12 @@
 #' @export
 #'
 #' @examples
-#' nc <- rgdal::readOGR(system.file("shapes/sids.shp", package = "maptools")[1],
-#'                      p4s = "+proj=longlat +datum=NAD27")
-#' bb <- sp::bbox(nc[100, ])
-#' xlim <- grDevices::extendrange(bb["x", ])
-#' ylim <- grDevices::extendrange(bb["y", ])
-#' PlotMap(raster::crs(nc), xlim = xlim, ylim = ylim, dms.tick = TRUE)
-#' sp::plot(nc, add = TRUE)
-#' AddInsetMap(nc, width = 3, main.label = list("North Carolina", adj = c(1.8, 3)),
-#'             sub.label = list("Map area", adj = c(1.5, 0.5)), loc = "topright")
+#' id <- rgdal::readOGR(system.file("extdata/id.geojson", package = "inlmisc")[1])
+#' ext <- c(-113.4005, -112.2764, 43.30, 44.11)
+#' PlotMap(id, xlim = ext[1:2], ylim = ext[3:4], dms.tick = TRUE)
+#' sp::plot(id, add = TRUE)
+#' inlmisc::AddInsetMap(id, width = 2, main.label = list("IDAHO", adj = c(0, -10)),
+#'                      sub.label=list("Map area", adj = c(0, -4)), loc = "topright")
 #'
 
 AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
