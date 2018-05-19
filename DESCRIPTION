@@ -36,7 +36,6 @@ Suggests:
     doParallel,
     doRNG,
     githubinstall,
-    httr,
     testthat
 License: CC0
 Copyright: This software is in the public domain because it contains materials

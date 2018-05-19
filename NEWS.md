@@ -1,6 +1,6 @@
 # inlmisc 0.4.0.9000
 
-- Remove dependency of the **maps** and **maptools** packages.
+- Remove **httr**, **maps**, and **maptools** from suggested packages.
 
 - In `AddInsetMap`, add `bty` argument, determines if a box is to be drawn around the inset map.
 
