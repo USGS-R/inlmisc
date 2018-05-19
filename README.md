@@ -9,11 +9,12 @@
 ## Overview
 
 The [R](https://www.r-project.org/) package **inlmisc** is a collection of functions for creating high-level graphics,
-performing raster-based analysis, processing [MODFLOW](https://water.usgs.gov/ogw/modflow/)-based models, etc.
+performing raster-based analysis, processing [MODFLOW](https://water.usgs.gov/ogw/modflow/)-based models,
+selecting subsets using a genetic algorithm, creating interactive web maps, and other miscellaneous tasks.
 Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
 Idaho National Laboratory (INL) [Project Office](https://www.usgs.gov/centers/id-water/science/idaho-national-laboratory-project-office "USGS INL Project Office").
-Additional information about the package functions can be found within the
-[R Documentation](https://www.rdocumentation.org/packages/inlmisc).
+Additional information about the package can be found on its
+[RDocumentation](https://www.rdocumentation.org/packages/inlmisc) page.
 
 ## Install
 
@@ -37,11 +38,11 @@ Please consider reporting bugs and asking questions on the [Issues page](https:/
 
 This information is preliminary or provisional and is subject to revision.
 It is being provided to meet the need for timely best science.
-The information has not received final approval by the U.S. Geological Survey (USGS)
+The information has not received final approval by the USGS
 and is provided on the condition that neither the USGS nor the U.S. Government
 shall be held liable for any damages resulting from the authorized or unauthorized use of the information.
 
-Although this software program has been used by the U.S. Geological Survey (USGS),
+Although this software program has been used by the USGS,
 no warranty, expressed or implied, is made by the USGS or the U.S. Government
 as to the accuracy and functioning of the program and related program material
 nor shall the fact of distribution constitute any such warranty,

@@ -4,9 +4,9 @@ Version: 0.4.0.9000
 Authors@R: person(given=c("Jason", "C."), family="Fisher", role=c("aut", "cre"), email="jfisher@usgs.gov", comment=c(ORCID="0000-0001-9032-8912"))
 Description: A collection of functions for creating high-level graphics,
     performing raster-based analysis, processing MODFLOW-based models,
-    subset selection using a genetic algorithm, etc.
-    Used to support packages and scripts written by researchers at the
-    United States Geological Survey (USGS)
+    selecting subsets using a genetic algorithm, creating interactive web maps,
+    and other miscellaneous tasks. Used to support packages and scripts written
+    by researchers at the United States Geological Survey (USGS)
     Idaho National Laboratory (INL) Project Office.
 Depends:
     R (>= 3.2.0)
@@ -36,9 +36,7 @@ Suggests:
     doParallel,
     doRNG,
     githubinstall,
-    httr,
-    maps,
-    maptools,
+    roxygen2,
     testthat
 License: CC0
 Copyright: This software is in the public domain because it contains materials

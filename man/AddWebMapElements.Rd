@@ -80,13 +80,11 @@ The \code{AddSearchButton} function adds a search element that may be used to lo
 And the \code{AddCircleLegend} function adds a map legend.
 }
 \examples{
-df <- maps::us.cities
-spdf <- sp::SpatialPointsDataFrame(df[, c("long", "lat")], data = df,
-                                   proj4string = sp::CRS("+init=epsg:4326"))
+city <- rgdal::readOGR(system.file("extdata/city.geojson", package = "inlmisc")[1])
 opt <- leaflet::markerClusterOptions(showCoverageOnHover = FALSE)
 map <- CreateWebMap("Topo")
 map <- leaflet::addMarkers(map, label = ~name, popup = ~name, clusterOptions = opt,
-                           clusterId = "cluster", group = "marker", data = spdf)
+                           clusterId = "cluster", group = "marker", data = city)
 map <- AddHomeButton(map)
 map <- AddClusterButton(map, clusterId = "cluster")
 map <- AddSearchButton(map, group = "marker", zoom = 15,
@@ -95,11 +93,11 @@ map
 
 labels <- c("Non-capital", "Capital")
 colors <- c("green", "red")
-fillColor <- colors[(spdf@data$capital > 0) + 1L]
+fillColor <- colors[(city@data$capital > 0) + 1L]
 map <- CreateWebMap("Topo")
 map <- leaflet::addCircleMarkers(map, radius = 6, color = "white", weight = 1,
                                  opacity = 1, fillColor = fillColor, fillOpacity = 1,
-                                 fill = TRUE, data = spdf)
+                                 fill = TRUE, data = city)
 map <- AddLegend(map, labels = labels, colors = colors, radius = 5,
                  opacity = 1, symbol = "circle")
 map
