@@ -124,11 +124,14 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
     if (inherits(x, "tbl_df")) x <- as.data.frame(x)
     if (missing(y)) y <- x[, -1]
     x <- x[, 1]
+  } else if (missing(y)) {
+    y <- x
+    x <- seq_along(x)
   }
   y <- as.matrix(y)
 
   if (type == "i") {
-    if (ncol(y) != 2) stop("interval censored data requires 2 columns for argument y")
+    if (ncol(y) != 2) stop("interval-censored data requires 2 columns for argument y")
     y[!is.finite(y)] <- NA
   }
 
@@ -138,12 +141,10 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
       xat <- seq(xlim[1], xlim[2], length.out=xn)
     else
       xat <- seq(xlim[1], xlim[2], seq.date.by)
-
   } else if (inherits(x, c("character", "factor"))) {
     x <- seq_along(x)
     xat <- x
     xlim <- grDevices::extendrange(x)
-
   } else {
     if (is.numeric(xlim)) {
       xat <- pretty(xlim, n=xn)
@@ -372,7 +373,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
       }
     }
 
-  } else {
+  } else if (type != "n") {
     graphics::matplot(x, y, xaxt="n", yaxt="n", type=type, lty=lty, lwd=lwd,
                       pch=pch, col=col, bg=bg, cex=pt.cex, add=TRUE, verbose=FALSE)
   }

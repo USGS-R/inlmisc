@@ -1,5 +1,9 @@
 # inlmisc 0.4.0.9000
 
+- In `PlotGraph` function, fix bug that resulted in an error when `type = "n"`.
+
+- Make **roxygen2** a suggested package.
+
 - Remove **httr**, **maps**, and **maptools** from suggested packages.
 
 - In `AddInsetMap`, add `bty` argument, determines if a box is to be drawn around the inset map.
