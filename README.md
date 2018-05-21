@@ -13,8 +13,6 @@ performing raster-based analysis, processing [MODFLOW](https://water.usgs.gov/og
 selecting subsets using a genetic algorithm, creating interactive web maps, and other miscellaneous tasks.
 Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
 Idaho National Laboratory (INL) [Project Office](https://www.usgs.gov/centers/id-water/science/idaho-national-laboratory-project-office "USGS INL Project Office").
-Additional information about the package can be found on its
-[RDocumentation](https://www.rdocumentation.org/packages/inlmisc) page.
 
 ## Install
 
