@@ -6,9 +6,10 @@
 #' @param asp 'numeric'.
 #'   \emph{y/x} aspect ratio for spatial axes.
 #' @param unit 'character'.
-#'   Axis unit of measurement, for example "METERS".
+#'   Axis label for unit of measurement, for example "METERS".
 #' @param is.lonlat 'logical'.
-#'   If true, plot coordinates are in longitude and latitude.
+#'   Whether plot coordinates are in longitude and latitude.
+#'   If true, scale values are in units of kilometers.
 #' @param loc 'character'.
 #'   Position of the scale bar in the plot region:
 #'   "bottomleft", "topleft", "topright", or "bottomright" to denote scale location.
@@ -36,12 +37,20 @@
 AddScaleBar <- function(asp=1, unit=NULL, is.lonlat=FALSE,
                         loc=c("bottomleft", "topleft", "topright", "bottomright"),
                         offset=c(0, 0), lab.vert.exag=NULL) {
+
+  checkmate::assertNumber(asp, finite=TRUE, null.ok=TRUE)
+  checkmate::assertString(unit, null.ok=TRUE)
+  checkmate::assertFlag(is.lonlat)
   loc <- match.arg(loc)
+  checkmate::assertNumeric(offset, any.missing=FALSE, len=2)
+  checkmate::assertFlag(lab.vert.exag, null.ok=TRUE)
+
   usr <- graphics::par("usr")
   pin <- graphics::par("pin")
 
   if (is.null(asp)) asp <- pin[2] / pin[1]
 
+  # calculate length of scale bar
   if (is.lonlat) {
     y <- (usr[3] + usr[4]) / 2
     xaxp <- graphics::par("xaxp")
@@ -49,12 +58,12 @@ AddScaleBar <- function(asp=1, unit=NULL, is.lonlat=FALSE,
     dm1 <- sp::spDistsN1(cbind(0, y), c(dx1, y), longlat=TRUE)
     dm2 <- diff(pretty(c(0, dm1), 1)[1:2])
     d <- (dx1 * dm2) / dm1
-    label <- paste(format(dm2), "km")
   } else {
     d <- diff(pretty(usr[1:2]))[1]
-    label <- format(d, big.mark=",")
-    if (!is.null(unit)) label <- paste(label, unit)
   }
+
+  label <- format(d, big.mark=",")
+  if (!is.null(unit)) label <- paste(label, unit)
 
   padx <- 0.05 * (usr[2] - usr[1])
   pady <- 0.05 * (usr[2] - usr[1]) / asp

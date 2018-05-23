@@ -13,10 +13,11 @@ AddScaleBar(asp = 1, unit = NULL, is.lonlat = FALSE,
 \emph{y/x} aspect ratio for spatial axes.}
 
 \item{unit}{'character'.
-Axis unit of measurement, for example "METERS".}
+Axis label for unit of measurement, for example "METERS".}
 
 \item{is.lonlat}{'logical'.
-If true, plot coordinates are in longitude and latitude.}
+Whether plot coordinates are in longitude and latitude.
+If true, scale values are in units of kilometers.}
 
 \item{loc}{'character'.
 Position of the scale bar in the plot region:
