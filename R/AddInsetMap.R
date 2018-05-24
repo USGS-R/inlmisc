@@ -86,22 +86,22 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
   pady <- inset[2] * diff(usr[3:4])
 
   if (loc == "bottomleft") {
-    loc <- c(usr[1] + padx, usr[3] + pady)
+    xy <- c(usr[1] + padx, usr[3] + pady)
   } else if (loc == "topleft") {
-    loc <- c(usr[1] + padx, usr[4] - pady - dy)
+    xy <- c(usr[1] + padx, usr[4] - pady - dy)
   } else if (loc == "topright") {
-    loc <- c(usr[2] - padx - dx, usr[4] - pady - dy)
+    xy <- c(usr[2] - padx - dx, usr[4] - pady - dy)
   } else if (loc == "bottomright") {
-    loc <- c(usr[2] - padx - dx, usr[3] + pady)
+    xy <- c(usr[2] - padx - dx, usr[3] + pady)
   } else if (loc == "center")  {
-    loc <- c(usr[1] + diff(usr[1:2]) / 2 - dx / 2,
-             usr[3] + diff(usr[3:4]) / 2 - dy / 2)
+    xy <- c(usr[1] + diff(usr[1:2]) / 2 - dx / 2,
+            usr[3] + diff(usr[3:4]) / 2 - dy / 2)
   }
 
-  graphics::rect(loc[1], loc[2], loc[1] + dx, loc[2] + dy, col="#FFFFFFE7", border=NA)
+  graphics::rect(xy[1], xy[2], xy[1] + dx, xy[2] + dy, col="#FFFFFFE7", border=NA)
 
-  plt <- c(graphics::grconvertX(c(loc[1], loc[1] + dx), "user", "nfc"),
-           graphics::grconvertY(c(loc[2], loc[2] + dy), "user", "nfc"))
+  plt <- c(graphics::grconvertX(c(xy[1], xy[1] + dx), "user", "nfc"),
+           graphics::grconvertY(c(xy[2], xy[2] + dy), "user", "nfc"))
   graphics::par(plt=plt, bg="#FFFFFFCC", new=TRUE)
 
   xlim <- range(ext[1:2])

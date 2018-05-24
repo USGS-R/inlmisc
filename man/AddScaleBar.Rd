@@ -21,13 +21,14 @@ If true, scale values are in units of kilometers.}
 
 \item{loc}{'character'.
 Position of the scale bar in the plot region:
-"bottomleft", "topleft", "topright", or "bottomright" to denote scale location.}
+\code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or
+\code{"bottomright"} to denote scale location.}
 
 \item{offset}{'numeric'.
 The x and y adjustments of the scale bar, in inches.}
 
 \item{lab.vert.exag}{'logical'.
-If true, a label is drawn specifying the vertical exaggeration.}
+Whether a label is drawn specifying the vertical exaggeration.}
 }
 \value{
 Used for the side-effect of a scale bar drawn on the current graphics device.

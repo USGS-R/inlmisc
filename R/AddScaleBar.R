@@ -12,11 +12,12 @@
 #'   If true, scale values are in units of kilometers.
 #' @param loc 'character'.
 #'   Position of the scale bar in the plot region:
-#'   "bottomleft", "topleft", "topright", or "bottomright" to denote scale location.
+#'   \code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or
+#'   \code{"bottomright"} to denote scale location.
 #' @param offset 'numeric'.
 #'   The x and y adjustments of the scale bar, in inches.
 #' @param lab.vert.exag 'logical'.
-#'   If true, a label is drawn specifying the vertical exaggeration.
+#'   Whether a label is drawn specifying the vertical exaggeration.
 #'
 #' @return Used for the side-effect of a scale bar drawn on the current graphics device.
 #'
@@ -45,62 +46,55 @@ AddScaleBar <- function(asp=1, unit=NULL, is.lonlat=FALSE,
   checkmate::assertNumeric(offset, any.missing=FALSE, len=2)
   checkmate::assertFlag(lab.vert.exag, null.ok=TRUE)
 
-  usr <- graphics::par("usr")
-  pin <- graphics::par("pin")
+  usr  <- graphics::par("usr")   # extremes of the plotting region (x1, x2, y1, y2)
+  pin  <- graphics::par("pin")   # plot dimensions in inches (width, height)
+  xaxp <- graphics::par("xaxp")  # extreme tick marks and number of intervals (x1, x2, n)
 
-  if (is.null(asp)) asp <- pin[2] / pin[1]
+  if (is.null(asp)) asp <- pin[2] / pin[1]  # aspect ratio
 
   # calculate length of scale bar
   if (is.lonlat) {
-    y <- (usr[3] + usr[4]) / 2
-    xaxp <- graphics::par("xaxp")
-    dx1 <- diff(xaxp[1:2]) / xaxp[3]
-    dm1 <- sp::spDistsN1(cbind(0, y), c(dx1, y), longlat=TRUE)
-    dm2 <- diff(pretty(c(0, dm1), 1)[1:2])
-    d <- (dx1 * dm2) / dm1
+    y <- mean(usr[3:4])  # y/latitude at center of plot
+    dx1 <- diff(xaxp[1:2]) / xaxp[3]  # distance between tick marks in x/longitude direction
+    dm1 <- sp::spDistsN1(cbind(0, y), c(dx1, y), longlat=TRUE)  # euclidean distance between tick marks
+    dm2 <- diff(range(pretty(c(0, dm1))))  # pretty euclidean distance
+    d <- (dx1 * dm2) / dm1  # pretty x/longitude length of scale bar
   } else {
-    d <- diff(pretty(usr[1:2]))[1]
+    d <- diff(pretty(usr[1:2]))[1]  # pretty x length of scale bar
   }
 
-  label <- format(d, big.mark=",")
-  if (!is.null(unit)) label <- paste(label, unit)
+  # create scale-bar labels
+  label <- c("0", paste(c(format(d, big.mark=","), unit), collapse=" "))
 
+  # determine plot coordinate for 0 on scale bar
   padx <- 0.05 * (usr[2] - usr[1])
   pady <- 0.05 * (usr[2] - usr[1]) / asp
   if (loc == "bottomleft") {
-    loc <- c(usr[1] + padx, usr[3] + pady)
+    xy <- c(usr[1] + padx, usr[3] + pady)
   } else if (loc == "topleft") {
-    loc <- c(usr[1] + padx, usr[4] - pady)
+    xy <- c(usr[1] + padx, usr[4] - pady)
   } else if (loc == "topright") {
-    loc <- c(usr[2] - padx - d, usr[4] - pady)
+    xy <- c(usr[2] - padx - d, usr[4] - pady)
   } else if (loc == "bottomright") {
-    loc <- c(usr[2] - padx - d, usr[3] + pady)
+    xy <- c(usr[2] - padx - d, usr[3] + pady)
   }
-  loc[1] <- loc[1] + offset[1] * (diff(usr[1:2]) / pin[1])
-  loc[2] <- loc[2] + offset[2] * (diff(usr[3:4]) / pin[2])
+  xy <- c(xy[1] + offset[1] * (diff(usr[1:2]) / pin[1]),
+          xy[2] + offset[2] * (diff(usr[3:4]) / pin[2]))
 
-  divs <- 1L
-  for (i in 5:3) {
-    if (d %% i == 0) {
-      divs <- i
-      break
-    }
-  }
-  xat <- seq(loc[1], loc[1] + d, length.out=(divs + 1L))
-  tcl <- (diff(usr[1:2]) * 0.01) / asp
+  # draw axis and tick marks
+  xat <- xy[1] + pretty(c(0, d))  # x of tick marks
+  tcl <- (diff(usr[1:2]) * 0.01) / asp  # y length of tick marks
+  graphics::lines(rbind(c(xy[1], xy[2]), c(xy[1] + d, xy[2])), lwd=0.5)
+  for (i in xat) graphics::lines(rbind(c(i, xy[2]), c(i, xy[2] + tcl)), lwd=0.5)
 
-  graphics::lines(rbind(c(loc[1], loc[2]), c(loc[1] + d, loc[2])), lwd=0.5)
-  for (i in xat) graphics::lines(rbind(c(i, loc[2]), c(i, loc[2] + tcl)), lwd=0.5)
-  graphics::text(loc[1], loc[2] + tcl, "0", adj=c(0.5, -0.5), cex=0.7)
-  graphics::text(loc[1] + d, loc[2] + tcl, label, adj=c(0.3, -0.5), cex=0.7)
+  # draw label strings at extremes of scale bar
+  graphics::text(xy[1], xy[2] + tcl, label[1], adj=c(0.5, -0.5), cex=0.7)
+  graphics::text(xy[1] + d, xy[2] + tcl, label[2], adj=c(0.3, -0.5), cex=0.7)
 
-  if (is.logical(lab.vert.exag)) {
-    add.label <- lab.vert.exag
-  } else {
-    add.label <- if (asp > 20) TRUE else FALSE
-  }
-  if (add.label) {
+  # draw vertical exaggeration label
+  if (is.null(lab.vert.exag)) lab.vert.exag <- asp > 20
+  if (lab.vert.exag) {
     txt <- sprintf("VERTICAL EXAGGERATION x%s", asp)
-    graphics::text(loc[1] + d / 2, loc[2], txt, cex=0.7, pos=1)
+    graphics::text(xy[1] + d / 2, xy[2], txt, cex=0.7, pos=1)
   }
 }
