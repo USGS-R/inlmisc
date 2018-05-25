@@ -6,18 +6,19 @@
 \usage{
 AddScaleBar(asp = 1, unit = NULL, is.lonlat = FALSE,
   loc = c("bottomleft", "topleft", "topright", "bottomright"), offset = c(0,
-  0), lab.vert.exag = NULL)
+  0), lab.vert.exag = NULL, conv.fact = NULL)
 }
 \arguments{
 \item{asp}{'numeric'.
 \emph{y/x} aspect ratio for spatial axes.}
 
 \item{unit}{'character'.
-Axis label for unit of measurement, for example "METERS".}
+Axis label for ground unit, for example "METERS".}
 
 \item{is.lonlat}{'logical'.
 Whether plot coordinates are in longitude and latitude.
-If true, scale values are in units of kilometers.}
+If true, ground units are in kilometers and distances are
+calculated using the Great Circle (WGS84 ellipsoid) distance method.}
 
 \item{loc}{'character'.
 Position of the scale bar in the plot region:
@@ -25,21 +26,33 @@ Position of the scale bar in the plot region:
 \code{"bottomright"} to denote scale location.}
 
 \item{offset}{'numeric'.
-The x and y adjustments of the scale bar, in inches.}
+A vector of length 2 indicating the \emph{x} and \emph{y} adjustments
+of the scale bar, in inches.}
 
 \item{lab.vert.exag}{'logical'.
-Whether a label is drawn specifying the vertical exaggeration.}
+Whether to draw a label indicating the vertical exaggeration.}
+
+\item{conv.fact}{'numeric'.
+A conversion factor for changing the ground units.}
 }
 \value{
 Used for the side-effect of a scale bar drawn on the current graphics device.
 }
 \description{
 This function can be used to add a scale bar to a plot.
+This shows directly on the map the corresponding ground distance.
 }
 \examples{
-plot(-100:100, -100:100, type = "n", xlab = "x", ylab = "y", asp = 2)
-AddScaleBar(2, unit = "FEET", loc = "topleft")
-AddScaleBar(2, unit = "METERS", loc = "bottomright", offset = c(-0.2, 0))
+plot(-100:100, -100:100, type = "n", xlab = "x in meters", ylab = "y in meters", asp = 2)
+AddScaleBar(unit = "METERS", loc = "topleft")
+AddScaleBar(asp = 2, unit = "METERS", loc = "topright", offset = c(-0.2, 0),
+            lab.vert.exag = TRUE)
+AddScaleBar(unit = "FEET", loc = "bottomleft", conv.fact = 3.28)
+
+plot(c(-38.31, -35.5), c(40.96, 37.5), type = "n",
+     xlab = "longitude", ylab = "latitude", asp = 1)
+AddScaleBar(unit = "km", is.lonlat = TRUE)
+AddScaleBar(unit = "mi", is.lonlat = TRUE, loc = "topright", conv.fact = 0.621371)
 
 }
 \seealso{
