@@ -1,5 +1,7 @@
 # inlmisc 0.4.0.9000
 
+- In `AddScaleBar` function, non-backward compatable changes to arguments and improved formatting.
+
 - In `PlotGraph` function, fix bug that resulted in an error when `type = "n"`.
 
 - Make **roxygen2** a suggested package.

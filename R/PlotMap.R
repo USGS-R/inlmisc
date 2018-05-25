@@ -578,8 +578,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   if (!is.null(scale.loc)) {
     txt <- strsplit(proj4string(r), " ")[[1]]
     unit <- sub("^\\+units=", "", grep("^\\+units=", txt, value=TRUE))
-    lonlat <- "+proj=longlat" %in% txt
-    AddScaleBar(asp, unit, lonlat, scale.loc)
+    longlat <- "+proj=longlat" %in% txt
+    AddScaleBar(unit=unit, longlat=longlat, loc=scale.loc)
   }
 
   if (!is.null(arrow.loc)) .AddNorthArrow(arrow.loc, r@crs, cex)

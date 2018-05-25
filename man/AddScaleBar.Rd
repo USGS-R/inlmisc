@@ -4,21 +4,24 @@
 \alias{AddScaleBar}
 \title{Add Scale Bar to Plot}
 \usage{
-AddScaleBar(asp = 1, unit = NULL, is.lonlat = FALSE,
-  loc = c("bottomleft", "topleft", "topright", "bottomright"), offset = c(0,
-  0), lab.vert.exag = NULL, conv.fact = NULL)
+AddScaleBar(unit = NULL, conv.fact = NULL, vert.exag = NULL,
+  longlat = FALSE, loc = c("bottomleft", "topleft", "topright",
+  "bottomright"), offset = NULL)
 }
 \arguments{
-\item{asp}{'numeric'.
-\emph{y/x} aspect ratio for spatial axes.}
-
 \item{unit}{'character'.
 Axis label for ground unit, for example "METERS".}
 
-\item{is.lonlat}{'logical'.
-Whether plot coordinates are in longitude and latitude.
-If true, ground units are in kilometers and distances are
-calculated using the Great Circle (WGS84 ellipsoid) distance method.}
+\item{conv.fact}{'numeric'.
+A conversion factor for changing the ground units.}
+
+\item{vert.exag}{'logical', 'character', or 'numeric'.
+A logical value indicating whether to include a vertical exaggeration label;
+or a custom \emph{y/x} aspect ratio to include in this label.}
+
+\item{longlat}{'logical'.
+If true, plot coordinates are in longitude and latitude,
+and ground units are in kilometers.}
 
 \item{loc}{'character'.
 Position of the scale bar in the plot region:
@@ -28,12 +31,6 @@ Position of the scale bar in the plot region:
 \item{offset}{'numeric'.
 A vector of length 2 indicating the \emph{x} and \emph{y} adjustments
 of the scale bar, in inches.}
-
-\item{lab.vert.exag}{'logical'.
-Whether to draw a label indicating the vertical exaggeration.}
-
-\item{conv.fact}{'numeric'.
-A conversion factor for changing the ground units.}
 }
 \value{
 Used for the side-effect of a scale bar drawn on the current graphics device.
@@ -44,19 +41,19 @@ This shows directly on the map the corresponding ground distance.
 }
 \examples{
 plot(-100:100, -100:100, type = "n", xlab = "x in meters", ylab = "y in meters", asp = 2)
+AddScaleBar()
 AddScaleBar(unit = "METERS", loc = "topleft")
-AddScaleBar(asp = 2, unit = "METERS", loc = "topright", offset = c(-0.2, 0),
-            lab.vert.exag = TRUE)
-AddScaleBar(unit = "FEET", loc = "bottomleft", conv.fact = 3.28)
+AddScaleBar(unit = "METERS", vert.exag = TRUE, loc = "topright", offset = c(-0.2, 0))
+AddScaleBar(unit = "FEET", conv.fact = 3.28084, loc = "bottomright")
 
 plot(c(-38.31, -35.5), c(40.96, 37.5), type = "n",
      xlab = "longitude", ylab = "latitude", asp = 1)
-AddScaleBar(unit = "km", is.lonlat = TRUE)
-AddScaleBar(unit = "mi", is.lonlat = TRUE, loc = "topright", conv.fact = 0.621371)
+AddScaleBar(unit = "km", longlat = TRUE)
+AddScaleBar(unit = "mi", conv.fact = 0.621371, longlat = TRUE, loc = "topright")
 
 }
 \seealso{
-\code{\link{PlotCrossSection}}, \code{\link{PlotMap}}
+\code{\link{PlotMap}}, \code{\link{PlotCrossSection}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
