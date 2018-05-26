@@ -57,10 +57,11 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   checkmate::qassert(vert.exag, c("B1", "S1", "N1", "0"))
   checkmate::assertNumber(conv.fact, finite=TRUE, null.ok=TRUE)
 
-  usr  <- graphics::par("usr")   # extremes of the plotting region (x1, x2, y1, y2)
   pin  <- graphics::par("pin")   # plot dimensions in inches (width, height)
   xaxp <- graphics::par("xaxp")  # extreme tick marks and number of intervals (x1, x2, n)
-  asp <- (diff(usr[1:2]) / pin[1]) / (diff(usr[3:4]) / pin[2])  # y/x aspect ratio
+  usr  <- graphics::par("usr")   # extremes of the plotting region (x1, x2, y1, y2)
+  ran <- c(diff(usr[1:2]), diff(usr[3:4]))  # plotting range on x and y axis
+  asp <- (ran[1] / pin[1]) / (ran[2] / pin[2])  # y/x aspect ratio
 
   if (is.null(conv.fact)) conv.fact <- 1
   if (is.null(vert.exag)) {
@@ -107,8 +108,8 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   } else if (loc == "bottomright") {
     xy <- c(usr[2] - pad[1] - d, usr[3] + pad[2])
   }
-  xy <- c(xy[1] + offset[1] * diff(usr[1:2]) / pin[1],
-          xy[2] + offset[2] * diff(usr[3:4]) / pin[2])
+  xy <- c(xy[1] + offset[1] * ran[1] / pin[1],
+          xy[2] + offset[2] * ran[2] / pin[2])
 
   # draw axis and tick marks
   xat <- xy[1] + at  # x of tick marks
@@ -135,8 +136,8 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   checkmate::assertIntegerish(base, lower=1, upper=10, any.missing=FALSE,
                               min.len=2, unique=TRUE, sorted=TRUE)
   n <- floor(log10(abs(x)))
-  m <- x / 10^n
+  m1 <- x / 10^n
   vec <- c(0, utils::head(base, -1) + diff(base) / 2)
-  m_new <- base[findInterval(m, vec)]
-  return(m_new * 10^n)
+  m2 <- base[findInterval(m1, vec)]
+  return(m2 * 10^n)
 }
