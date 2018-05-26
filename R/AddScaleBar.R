@@ -4,15 +4,17 @@
 #' This function can be used to add a scale bar to a plot.
 #'
 #' @param unit 'character'.
-#'   Axis label for ground unit, for example "METERS".
+#'   Unit of measurement for scale distances, for example "METERS".
 #' @param conv.fact 'numeric'.
-#'   A conversion factor for changing the ground units.
+#'   A conversion factor for changing the unit of measurement of the plotting region.
+#'   For example, if the unit of measurement for the user coordinates of the plotting region are in meters,
+#'   specify 3.28084 feet per meter to display scale distances in feet.
 #' @param vert.exag 'logical', 'character', or 'numeric'.
 #'   A logical value indicating whether to include a vertical exaggeration label;
 #'   or a custom \emph{y/x} aspect ratio to include in this label.
 #' @param longlat 'logical'.
-#'   If true, plot coordinates are in longitude and latitude,
-#'   and scale-bar units are in kilometers.
+#'   Whether plot coordinates are in longitude and latitude;
+#'   if true, scale distances are in kilometers.
 #'   Scale distances are calculated at the maps latitude midpoint
 #'   using the Great Circle distance (WGS84 ellipsoid) method.
 #' @param loc 'character'.
@@ -60,8 +62,8 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   pin  <- graphics::par("pin")   # plot dimensions in inches (width, height)
   xaxp <- graphics::par("xaxp")  # extreme tick marks and number of intervals (x1, x2, n)
   usr  <- graphics::par("usr")   # extremes of the plotting region (x1, x2, y1, y2)
-  ran <- c(diff(usr[1:2]), diff(usr[3:4]))  # plotting range on x and y axis
-  asp <- (ran[1] / pin[1]) / (ran[2] / pin[2])  # y/x aspect ratio
+  pusr <- c(diff(usr[1:2]), diff(usr[3:4]))  # plot dimensions in user coordinates (width, height)
+  asp <- (pusr[1] / pin[1]) / (pusr[2] / pin[2])  # y/x aspect ratio
 
   if (is.null(conv.fact)) conv.fact <- 1
   if (is.null(vert.exag)) {
@@ -70,31 +72,32 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
     asp <- vert.exag
     vert.exag <- TRUE
   }
-  if (is.null(offset)) offset <- 0; offset <- rep_len(offset, 2)
+  if (is.null(offset)) offset <- 0
+  offset <- rep_len(offset, 2)
 
-  # calculate length of scale-bar axis
+  # calculate length of scale-bar axis in user coordinates
   dx <- diff(xaxp[1:2]) / xaxp[3]  # x distance between tick marks
   if (longlat) {
-    y <- mean(usr[3:4])  # y at center of plot
-    dm1 <- sp::spDistsN1(cbind(0, y), c(dx, y), longlat=TRUE) * conv.fact  # ground distance between tick marks
+    y <- mean(usr[3:4])  # latitude at center of plot
+    dm1 <- sp::spDistsN1(cbind(0, y), c(dx, y), longlat=TRUE) * conv.fact  # distance between tick marks in scale units
     bp <- pretty(c(0, .Round(dm1)))  # pretty breakpoints
-    dm2 <- diff(range(bp))  # pretty ground distance
+    dm2 <- diff(range(bp))  # pretty distance between tick marks in scale units
     lab_val <- dm2  # label value
-    d <- dx * dm2 / dm1  # x length of scale bar
-    at <- d * bp / max(bp)  # tick-mark locations on scale-bar axis
+    d <- dx * dm2 / dm1  # length of scale bar in user coordinates
+    at <- d * bp / max(bp)  # tick-mark locations in scale distances
   } else {
-    at <- pretty(c(0, .Round(dx * conv.fact)))  # tick-mark locations on scale-bar axis
-    d <- diff(range(at))
+    at <- pretty(c(0, .Round(dx * conv.fact)))  # tick-mark locations on scale bar
+    d <- diff(range(at))  # x length of scale bar
     lab_val <- d  # label value
-    at <- at / conv.fact
-    d <- d / conv.fact
+    at <- at / conv.fact  # tick-mark locations in scale distances
+    d <- d / conv.fact  # length of scale bar in user coordinates
   }
 
   # create scale-bar labels
   lab_val <- format(lab_val, big.mark=",")
-  label <-  paste(c(lab_val, unit), collapse=" ")
+  lab <-  paste(c(lab_val, unit), collapse=" ")
 
-  # determine plot coordinate at 0 on scale bar
+  # determine plot coordinate at 0 scale distance
   sw <- graphics::strwidth("M", units="user", cex=1)  # x string width
   sh <- graphics::strheight("M", units="user", cex=1)  # y string height
   pad <- c(sw * ifelse(grepl("left$", loc), 2, 3),
@@ -108,22 +111,21 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   } else if (loc == "bottomright") {
     xy <- c(usr[2] - pad[1] - d, usr[3] + pad[2])
   }
-  xy <- c(xy[1] + offset[1] * ran[1] / pin[1],
-          xy[2] + offset[2] * ran[2] / pin[2])
+  xy <- c(xy[1] + offset[1] * pusr[1] / pin[1], xy[2] + offset[2] * pusr[2] / pin[2])
 
   # draw axis and tick marks
-  xat <- xy[1] + at  # x of tick marks
-  tcl <- sh * 0.4  # y length of tick marks
+  xat <- xy[1] + at  # x of tick marks in user coordinates
+  tcl <- sh * 0.4  # y length of tick marks in user coordinates
 
   graphics::lines(rbind(c(xy[1], xy[2]), c(xy[1] + d, xy[2])), lwd=0.5)
   for (i in xat) graphics::lines(rbind(c(i, xy[2]), c(i, xy[2] + tcl)), lwd=0.5)
 
   # draw label strings at extremes of scale bar
-  sw_val <- graphics::strwidth(lab_val, units="user", cex=0.7)
+  lab_val_sw <- graphics::strwidth(lab_val, units="user", cex=0.7)
   graphics::text(xy[1], xy[2] + tcl, "0", adj=c(0.5, -0.6), cex=0.7)
-  graphics::text(xy[1] + d - sw_val / 2, xy[2] + tcl, label, adj=c(0, -0.6), cex=0.7)
+  graphics::text(xy[1] + d - lab_val_sw / 2, xy[2] + tcl, lab, adj=c(0, -0.6), cex=0.7)
 
-  # draw vertical exaggeration label
+  # draw label explaining vertical exaggeration
   if (vert.exag) {
     txt <- sprintf("VERTICAL EXAGGERATION x%s", asp)
     graphics::text(xy[1] + d / 2, xy[2], txt, cex=0.7, pos=1)

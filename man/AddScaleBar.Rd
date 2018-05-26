@@ -10,18 +10,20 @@ AddScaleBar(unit = NULL, conv.fact = NULL, vert.exag = NULL,
 }
 \arguments{
 \item{unit}{'character'.
-Axis label for ground unit, for example "METERS".}
+Unit of measurement for scale distances, for example "METERS".}
 
 \item{conv.fact}{'numeric'.
-A conversion factor for changing the ground units.}
+A conversion factor for changing the unit of measurement of the plotting region.
+For example, if the unit of measurement for the user coordinates of the plotting region are in meters,
+specify 3.28084 feet per meter to display scale distances in feet.}
 
 \item{vert.exag}{'logical', 'character', or 'numeric'.
 A logical value indicating whether to include a vertical exaggeration label;
 or a custom \emph{y/x} aspect ratio to include in this label.}
 
 \item{longlat}{'logical'.
-If true, plot coordinates are in longitude and latitude,
-and scale-bar units are in kilometers.
+Whether plot coordinates are in longitude and latitude;
+if true, scale distances are in kilometers.
 Scale distances are calculated at the maps latitude midpoint
 using the Great Circle distance (WGS84 ellipsoid) method.}
 
