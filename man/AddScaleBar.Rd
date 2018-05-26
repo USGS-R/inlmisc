@@ -39,7 +39,6 @@ Used for the side-effect of a scale bar drawn on the current graphics device.
 }
 \description{
 This function can be used to add a scale bar to a plot.
-This shows directly on the map the corresponding ground distance.
 }
 \examples{
 plot(-100:100, -100:100, type = "n", xlab = "x in meters", ylab = "y in meters", asp = 2)

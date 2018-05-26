@@ -2,7 +2,6 @@
 #' Add Scale Bar to Plot
 #'
 #' This function can be used to add a scale bar to a plot.
-#' This shows directly on the map the corresponding ground distance.
 #'
 #' @param unit 'character'.
 #'   Axis label for ground unit, for example "METERS".
