@@ -13,7 +13,9 @@
 #'   or a custom \emph{y/x} aspect ratio to include in this label.
 #' @param longlat 'logical'.
 #'   If true, plot coordinates are in longitude and latitude,
-#'   and ground units are in kilometers.
+#'   and scale-bar units are in kilometers.
+#'   Scale distances are calculated at the maps latitude midpoint
+#'   using the Great Circle distance (WGS84 ellipsoid) method.
 #' @param loc 'character'.
 #'   Position of the scale bar in the plot region:
 #'   \code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or
@@ -75,15 +77,13 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   if (longlat) {
     y <- mean(usr[3:4])  # y at center of plot
     dm1 <- sp::spDistsN1(cbind(0, y), c(dx, y), longlat=TRUE) * conv.fact  # ground distance between tick marks
-    bp <- pretty(c(0, dm1))  # pretty breakpoints
+    bp <- pretty(c(0, .Round(dm1)))  # pretty breakpoints
     dm2 <- diff(range(bp))  # pretty ground distance
     lab_val <- dm2  # label value
-
     d <- dx * dm2 / dm1  # x length of scale bar
     at <- d * bp / max(bp)  # tick-mark locations on scale-bar axis
-
   } else {
-    at <- pretty(c(0, dx * conv.fact))  # tick-mark locations on scale-bar axis
+    at <- pretty(c(0, .Round(dx * conv.fact)))  # tick-mark locations on scale-bar axis
     d <- diff(range(at))
     lab_val <- d  # label value
     at <- at / conv.fact
@@ -91,7 +91,8 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   }
 
   # create scale-bar labels
-  label <-  paste(c(format(lab_val, big.mark=","), unit), collapse=" ")
+  lab_val <- format(lab_val, big.mark=",")
+  label <-  paste(c(lab_val, unit), collapse=" ")
 
   # determine plot coordinate at 0 on scale bar
   sw <- graphics::strwidth("M", units="user", cex=1)  # x string width
@@ -118,7 +119,7 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   for (i in xat) graphics::lines(rbind(c(i, xy[2]), c(i, xy[2] + tcl)), lwd=0.5)
 
   # draw label strings at extremes of scale bar
-  sw_val <- graphics::strwidth(format(lab_val), units="user", cex=0.7)
+  sw_val <- graphics::strwidth(lab_val, units="user", cex=0.7)
   graphics::text(xy[1], xy[2] + tcl, "0", adj=c(0.5, -0.6), cex=0.7)
   graphics::text(xy[1] + d - sw_val / 2, xy[2] + tcl, label, adj=c(0, -0.6), cex=0.7)
 
@@ -127,4 +128,16 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
     txt <- sprintf("VERTICAL EXAGGERATION x%s", asp)
     graphics::text(xy[1] + d / 2, xy[2], txt, cex=0.7, pos=1)
   }
+}
+
+
+.Round <- function(x, base=c(1, 2, 5, 10)) {
+  checkmate::assertNumeric(x, finite=TRUE, min.len=1)
+  checkmate::assertIntegerish(base, lower=1, upper=10, any.missing=FALSE,
+                              min.len=2, unique=TRUE, sorted=TRUE)
+  n <- floor(log10(abs(x)))
+  m <- x / 10^n
+  vec <- c(0, utils::head(base, -1) + diff(base) / 2)
+  m_new <- base[findInterval(m, vec)]
+  return(m_new * 10^n)
 }

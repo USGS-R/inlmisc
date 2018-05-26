@@ -21,7 +21,9 @@ or a custom \emph{y/x} aspect ratio to include in this label.}
 
 \item{longlat}{'logical'.
 If true, plot coordinates are in longitude and latitude,
-and ground units are in kilometers.}
+and scale-bar units are in kilometers.
+Scale distances are calculated at the maps latitude midpoint
+using the Great Circle distance (WGS84 ellipsoid) method.}
 
 \item{loc}{'character'.
 Position of the scale bar in the plot region:
