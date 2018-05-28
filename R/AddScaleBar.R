@@ -75,30 +75,31 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   offset <- rep_len(offset, 2)
 
   # calculate length of scale-bar axis in user coordinates
-  dx <- diff(xaxp[1:2]) / xaxp[3]  # x distance between tick marks
+  dx <- diff(xaxp[1:2]) / xaxp[3]  # x distance between plot tick marks
   if (longlat) {
     y <- mean(usr[3:4])  # latitude at center of plot
-    dm1 <- sp::spDistsN1(cbind(0, y), c(dx, y), longlat=TRUE) * conv.fact  # distance between tick marks in scale units
-    bp <- pretty(c(0, .Round(dm1)))  # pretty breakpoints
-    dm2 <- diff(range(bp))  # pretty distance between tick marks in scale units
-    lab_val <- dm2  # label value
-    len <- dx * dm2 / dm1  # length of scale bar in user coordinates
-    at <- len * bp / max(bp)  # tick-mark locations in scale distances
+    ds1 <- sp::spDistsN1(cbind(0, y), c(dx, y), longlat=TRUE) # distance between plot tick marks in kilometers
+    ds1 <- ds1 * conv.fact  # distance between plot tick marks in scale units
+    bp <- pretty(c(0, .Round(ds1)))  # pretty breakpoints
+    ds2 <- diff(range(bp))  # pretty distance between plot tick marks in scale units
+    lab_val <- ds2  # number label for last tick mark on scale
+    len <- dx * ds2 / ds1  # length of scale bar in user units
+    at <- len * bp / max(bp)  # scale tick-mark distances in user units
   } else {
-    at <- pretty(c(0, .Round(dx * conv.fact)))  # tick-mark locations on scale bar
-    len <- diff(range(at))  # x length of scale bar
-    lab_val <- len  # label value
-    at <- at / conv.fact  # tick-mark locations in scale distances
-    len <- len / conv.fact  # length of scale bar in user coordinates
+    at <- pretty(c(0, .Round(dx * conv.fact)))  # scale tick-mark locations in scale units
+    len <- diff(range(at))  # length of scale bar in user coordinates
+    lab_val <- len  # number label for last tick mark on scale
+    at <- at / conv.fact  # scale tick-mark distances in user units
+    len <- len / conv.fact  # length of scale bar in user units
   }
 
   # create scale-bar labels
   lab_val <- format(lab_val, big.mark=",")
   lab <-  paste(c(lab_val, unit), collapse=" ")
 
-  # determine plot coordinate at 0 scale distance
-  sw <- graphics::strwidth("M", units="user", cex=1)  # x string width
-  sh <- graphics::strheight("M", units="user", cex=1)  # y string height
+  # determine user coordinate at origin of scale
+  sw <- graphics::strwidth("M", units="user", cex=1)  # string width in user units
+  sh <- graphics::strheight("M", units="user", cex=1)  # string height in user units
   pad <- c(sw * ifelse(grepl("left$", loc), 2, 3),
            sh * ifelse(grepl("^top",  loc), 3, 2))
   if (loc == "bottomleft") {
@@ -115,7 +116,6 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   # draw axis and tick marks
   xat <- xy[1] + at  # x of tick marks in user coordinates
   tcl <- sh * 0.4  # y length of tick marks in user coordinates
-
   graphics::lines(rbind(c(xy[1], xy[2]), c(xy[1] + len, xy[2])), lwd=0.5)
   for (i in xat) graphics::lines(rbind(c(i, xy[2]), c(i, xy[2] + tcl)), lwd=0.5)
 
