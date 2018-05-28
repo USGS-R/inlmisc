@@ -10,31 +10,30 @@ AddScaleBar(unit = NULL, conv.fact = NULL, vert.exag = NULL,
 }
 \arguments{
 \item{unit}{'character'.
-Unit of measurement for scale distances, for example "METERS".}
+Label describing the unit of measurement of scale distances, for example "METERS".}
 
 \item{conv.fact}{'numeric'.
-A conversion factor for changing the unit of measurement of the plotting region.
-For example, if the unit of measurement for the user coordinates of the plotting region are in meters,
-specify 3.28084 feet per meter to display scale distances in feet.}
+Conversion factor for changing the unit of measurement for scale distances.
+For example, if user coordinates of the plotting region are in meters,
+specify \code{3.28084} to display scale distances in feet.}
 
-\item{vert.exag}{'logical', 'character', or 'numeric'.
-A logical value indicating whether to include a vertical exaggeration label;
+\item{vert.exag}{'logical', 'numeric', or 'character'.
+Either a logical value indicating whether to include a vertical exaggeration label;
 or a custom \emph{y/x} aspect ratio to include in this label.}
 
 \item{longlat}{'logical'.
-Whether plot coordinates are in longitude and latitude;
+Whether user coordinates of the plotting region are in longitude and latitude;
 if true, scale distances are in kilometers.
-Scale distances are calculated at the maps latitude midpoint
+Note that scale distances are calculated at the maps latitude midpoint
 using the Great Circle distance (WGS84 ellipsoid) method.}
 
 \item{loc}{'character'.
-Position of the scale bar in the plot region:
-\code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or
-\code{"bottomright"} to denote scale location.}
+Position of the scale bar in the plot region specified by keyword:
+\code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"}.}
 
 \item{offset}{'numeric'.
-A vector of length 2 indicating the \emph{x} and \emph{y} adjustments
-of the scale bar, in inches.}
+Vector of length 2 indicating the \emph{x} and \emph{y} adjustments
+to the position of the scale bar, in inches.}
 }
 \value{
 Used for the side-effect of a scale bar drawn on the current graphics device.
