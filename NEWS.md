@@ -1,5 +1,7 @@
 # inlmisc 0.4.0.9000
 
+- In `PlotGraph` function, add `main` argument for placing a title at the top of the plot.
+
 - In `AddScaleBar` function, non-backward compatable changes to arguments and improved formatting.
 
 - In `PlotGraph` function, fix bug that resulted in an error when `type = "n"`.

@@ -120,7 +120,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     stop("number of value layers is greater than the number of geometry layers")
 
   transect <- sp::spTransform(transect, raster::crs(rs))
-  rs <- raster::crop(rs, raster::extent(as.vector(t(bbox(transect)))), snap="out")
+  rs <- raster::crop(rs, raster::extent(as.vector(t(sp::bbox(transect)))), snap="out")
   layer.names <- unique(c(geo.lays, val.lays, wt.lay))
   eat <- ExtractAlongTransect(transect, raster::subset(rs, layer.names))
 
@@ -310,10 +310,10 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   }
 
   yat <- pretty(ylim)
-  ylabs <- prettyNum(yat, big.mark=",")
+  scipen <- getOption("scipen", default=0)
+  ylabs <- ToScientific(yat, scipen=scipen, type="plotmath")
   graphics::axis(4, at=yat, labels=FALSE, lwd=0, lwd.ticks=lwd, tcl=tcl)
-  graphics::axis(2, at=yat, labels=ylabs, lwd=0, lwd.ticks=lwd, tcl=tcl,
-                 cex.axis=cex, las=1)
+  graphics::axis(2, at=yat, labels=ylabs, lwd=0, lwd.ticks=lwd, tcl=tcl, cex.axis=cex, las=1)
 
   if (!is.null(ylab)) {
     line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]

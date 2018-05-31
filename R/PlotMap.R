@@ -285,8 +285,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (!all(is.na(r[]))) r <- raster::trim(r)
-  xran <- bbox(r)[1, ]
-  yran <- bbox(r)[2, ]
+  xran <- sp::bbox(r)[1, ]
+  yran <- sp::bbox(r)[2, ]
   if (extend.xy) {
     default.xl <- range(pretty(xran))
     default.yl <- range(pretty(yran))
@@ -422,8 +422,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
                                              c(xl[2], yl[2])))), ID="al4")
     sl <- sp::SpatialLines(al, proj4string=r@crs)
     sl.dd <- sp::spTransform(sl, sp::CRS("+init=epsg:4326"))
-    e.dd <- pretty(range(bbox(sl.dd)[1, ]))
-    n.dd <- pretty(range(bbox(sl.dd)[2, ]))
+    e.dd <- pretty(range(sp::bbox(sl.dd)[1, ]))
+    n.dd <- pretty(range(sp::bbox(sl.dd)[2, ]))
     grd.dd <- sp::gridlines(sl.dd, easts=e.dd, norths=n.dd, ndiscr=1000)
 
     pts.dd <- rgeos::gIntersection(sl.dd, grd.dd, byid=TRUE)
@@ -446,8 +446,9 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     at2[[2]] <- pretty(yl)
     at2[[3]] <- at2[[1]]
     at2[[4]] <- at2[[2]]
-    xlabs <- prettyNum(at2[[1]], big.mark=",")
-    ylabs <- prettyNum(at2[[2]], big.mark=",")
+    scipen <- getOption("scipen", default=0)
+    xlabs <- ToScientific(at2[[1]], scipen=scipen, type="plotmath")
+    ylabs <- ToScientific(at2[[2]], scipen=scipen, type="plotmath")
     if (extend.xy) ylabs[length(ylabs)] <- ""
   }
 

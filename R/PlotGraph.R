@@ -12,6 +12,8 @@
 #' @param ylab 'character'.
 #'   Vector of length 2 giving the title for the 1st and 2nd-\emph{y} axes.
 #'   The title for the 2nd-\emph{y} axis is optional and requires \code{conversion.factor} be specified.
+#' @param main 'character'.
+#'   Main title for the plot.
 #' @param xlim 'numeric' or 'Date'.
 #'   Vector of length 2 giving the minimum and maximum values for the \emph{x}-axis.
 #' @param xn,yn 'integer'.
@@ -88,7 +90,8 @@
 #' x <- as.Date("2008-07-12") + 1:n
 #' y <- sample.int(n, replace = TRUE)
 #' PlotGraph(x, y, ylab = paste("Random number in", c("meters", "feet")),
-#'           type = "p", pch = 16, scientific = FALSE, conversion.factor = 3.28)
+#'           main = "Main Title", type = "p", pch = 16, scientific = FALSE,
+#'           conversion.factor = 3.28)
 #'
 #' y <- data.frame(lapply(1:3, function(i) sample(n, replace = TRUE)))
 #' PlotGraph(x, y, ylab = "Random number", pch = 1, seq.date.by = "days",
@@ -107,10 +110,8 @@
 #'                 y1 = c(1, 2, NA, NA, 4, 3, 2, pi))
 #' PlotGraph(d, type = "i", ylim = c(0, 5))
 #'
-#' graphics.off()
-#'
 
-PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
+PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
                       xn=5, yn=5, ylog=FALSE, type="s", lty=1, lwd=1,
                       pch=NULL, col=NULL, bg=NA, fill=NULL, pt.cex=1,
                       seq.date.by=NULL, scientific=NA,
@@ -119,6 +120,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
 
   scientific <- as.logical(scientific)
   scientific <- rep(scientific, length.out=3)
+  scipen <- getOption("scipen", default=0)
 
   if (inherits(x, c("data.frame", "matrix"))) {
     if (inherits(x, "tbl_df")) x <- as.data.frame(x)
@@ -173,8 +175,9 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
   lty <- rep_len(lty, length.out=n)
   lwd <- rep_len(lwd, length.out=n)
 
-  mar <- c(2.3, 4.1, 0.5, 4.1)
-  if (is.null(conversion.factor)) mar[4] <- 2.1
+  mar <- c(2.3, 4.1, 1.5, 4.1)
+  if (missing(main)) mar[3] <- mar[3] - 1
+  if (is.null(conversion.factor)) mar[4] <- mar[4] - 2
   mgp <- c(3.2, 0.2, 0)  # cumulative axis margin line: title, labels, and line
   op <- graphics::par(mar=mar, mgp=mgp)
   line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]
@@ -240,7 +243,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
     graphics::axis.Date(3, at=xat, tcl=tcl, labels=FALSE, lwd=-1, lwd.ticks=0.5)
   } else {
     if (is.na(scientific[1])) {
-      xlabels <- formatC(xat, big.mark=",")
+      xlabels <- ToScientific(xat, scipen=scipen, type="plotmath")
     } else if (scientific[1]) {
       digits <- format.info(as.numeric(xat))[2]
       while (TRUE) {
@@ -257,7 +260,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
     graphics::axis(3, at=xat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
   }
   if (is.na(scientific[2])) {
-    ylabels <- formatC(yat, big.mark=",")
+    ylabels <- ToScientific(yat, scipen=scipen, type="plotmath")
   } else if (scientific[2]) {
       digits <- format.info(as.numeric(yat))[2]
       while (TRUE) {
@@ -281,7 +284,8 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
                 graphics::par("mgp")[2]
     graphics::title(ylab=ylab[1], cex.lab=cex, line=mar.line)
   }
-
+  if (!missing(main))
+    graphics::title(main=list(main, cex=0.8, font=2, col="#1F1F1F"))
   if (is.null(conversion.factor)) {
     graphics::axis(4, at=yat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
   } else {
@@ -289,10 +293,10 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
     if (ylog)
       yat <- grDevices::axisTicks(log10(range(yat * conversion.factor)), TRUE, nint=yn)
     else
-      yat <-  pretty(yat * conversion.factor, n=yn)
+      yat <- pretty(yat * conversion.factor, n=yn)
 
     if (is.na(scientific[3])) {
-      ylabels <- formatC(yat, big.mark=",")
+      ylabels <- ToScientific(yat, scipen=scipen, type="plotmath")
     } else if (scientific[3]) {
       digits <- format.info(as.numeric(yat))[2]
       while (TRUE) {

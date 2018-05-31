@@ -51,12 +51,12 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
                         loc=c("bottomleft", "topleft", "topright", "bottomright"),
                         offset=NULL) {
 
-  checkmate::assertString(unit, null.ok=TRUE)
+  checkmate::assertCharacter(unit, all.missing=FALSE, min.len=1, max.len=2, null.ok=TRUE)
+  checkmate::assertNumeric(conv.fact, all.missing=FALSE, min.len=1, max.len=2, null.ok=TRUE)
+  checkmate::qassert(vert.exag, c("B1", "S1", "N1", "0"))
   checkmate::assertFlag(longlat)
   loc <- match.arg(loc)
   checkmate::assertNumeric(offset, finite=TRUE, min.len=1, max.len=2, null.ok=TRUE)
-  checkmate::qassert(vert.exag, c("B1", "S1", "N1", "0"))
-  checkmate::assertNumber(conv.fact, finite=TRUE, null.ok=TRUE)
 
   pin  <- graphics::par("pin")   # plot dimensions in inches (width, height)
   xaxp <- graphics::par("xaxp")  # extreme tick marks and number of intervals (x1, x2, n)
@@ -64,7 +64,8 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   pusr <- c(diff(usr[1:2]), diff(usr[3:4]))  # plot dimensions in user units (width, height)
   asp <- (pusr[1] / pin[1]) / (pusr[2] / pin[2])  # y/x aspect ratio
 
-  if (is.null(conv.fact)) conv.fact <- 1
+  if (is.null(unit)) unit <- rep(as.character(NA), 2)
+  if (is.null(conv.fact)) conv.fact <- c(1, NA)
   if (is.null(vert.exag)) {
     vert.exag <- ifelse(asp > 20, TRUE, FALSE)
   } else if (!is.logical(vert.exag)) {
@@ -79,23 +80,23 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   if (longlat) {
     y <- mean(usr[3:4])  # latitude at center of plot
     ds1 <- sp::spDistsN1(cbind(0, y), c(dx, y), longlat=TRUE) # distance between plot tick marks in kilometers
-    ds1 <- ds1 * conv.fact  # distance between plot tick marks in scale units
+    ds1 <- ds1 * conv.fact[1]  # distance between plot tick marks in scale units
     bp <- pretty(c(0, .Round(ds1)))  # pretty breakpoints
     ds2 <- diff(range(bp))  # pretty distance between plot tick marks in scale units
     lab_val <- ds2  # number label for last tick mark on scale
     len <- dx * ds2 / ds1  # length of scale bar in user units
     at <- len * bp / max(bp)  # scale tick-mark distances in user units
   } else {
-    at <- pretty(c(0, .Round(dx * conv.fact)))  # scale tick-mark locations in scale units
+    at <- pretty(c(0, .Round(dx * conv.fact[1])))  # scale tick-mark locations in scale units
     len <- diff(range(at))  # length of scale bar in user units
     lab_val <- len  # number label for last tick mark on scale
-    at <- at / conv.fact  # scale tick-mark distances in user units
-    len <- len / conv.fact  # length of scale bar in user units
+    at <- at / conv.fact[1]  # scale tick-mark distances in user units
+    len <- len / conv.fact[1]  # length of scale bar in user units
   }
 
   # create scale-bar labels
   lab_val <- format(lab_val, big.mark=",")
-  lab <-  paste(c(lab_val, unit), collapse=" ")
+  lab <-  ifelse(is.na(unit[1]), lab_val, paste(lab_val, unit[1]))
 
   # determine user coordinate at origin of scale
   sw <- graphics::strwidth("M", units="user", cex=1)  # string width in user units

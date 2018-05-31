@@ -4,11 +4,11 @@
 \alias{PlotGraph}
 \title{Plot Method for Graphs}
 \usage{
-PlotGraph(x, y, xlab, ylab, asp = NA, xlim = NULL, ylim = NULL, xn = 5,
-  yn = 5, ylog = FALSE, type = "s", lty = 1, lwd = 1, pch = NULL,
-  col = NULL, bg = NA, fill = NULL, pt.cex = 1, seq.date.by = NULL,
-  scientific = NA, conversion.factor = NULL, boxwex = 0.8,
-  center.date.labels = FALSE, bg.polygon = NULL)
+PlotGraph(x, y, xlab, ylab, main, asp = NA, xlim = NULL, ylim = NULL,
+  xn = 5, yn = 5, ylog = FALSE, type = "s", lty = 1, lwd = 1,
+  pch = NULL, col = NULL, bg = NA, fill = NULL, pt.cex = 1,
+  seq.date.by = NULL, scientific = NA, conversion.factor = NULL,
+  boxwex = 0.8, center.date.labels = FALSE, bg.polygon = NULL)
 }
 \arguments{
 \item{x, y}{'Date', 'numeric', 'matrix', or 'data.frame'.
@@ -22,6 +22,9 @@ Title for \emph{x} axis.}
 \item{ylab}{'character'.
 Vector of length 2 giving the title for the 1st and 2nd-\emph{y} axes.
 The title for the 2nd-\emph{y} axis is optional and requires \code{conversion.factor} be specified.}
+
+\item{main}{'character'.
+Main title for the plot.}
 
 \item{asp}{'numeric'.
 \emph{y/x} aspect ratio for spatial axes.
@@ -120,7 +123,8 @@ n <- 50L
 x <- as.Date("2008-07-12") + 1:n
 y <- sample.int(n, replace = TRUE)
 PlotGraph(x, y, ylab = paste("Random number in", c("meters", "feet")),
-          type = "p", pch = 16, scientific = FALSE, conversion.factor = 3.28)
+          main = "Main Title", type = "p", pch = 16, scientific = FALSE,
+          conversion.factor = 3.28)
 
 y <- data.frame(lapply(1:3, function(i) sample(n, replace = TRUE)))
 PlotGraph(x, y, ylab = "Random number", pch = 1, seq.date.by = "days",
@@ -138,8 +142,6 @@ d <- data.frame(x = as.Date("2008-07-12") + 1:8 * 1000,
                 y0 = c(NA, NA, 1, 3, 1, 4, 2, pi),
                 y1 = c(1, 2, NA, NA, 4, 3, 2, pi))
 PlotGraph(d, type = "i", ylim = c(0, 5))
-
-graphics.off()
 
 }
 \seealso{
