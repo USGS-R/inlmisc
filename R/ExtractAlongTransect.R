@@ -72,7 +72,7 @@ ExtractAlongTransect <- function(transect, r) {
   if (inherits(transect, "SpatialLines"))
     transect <- methods::as(transect, "SpatialPoints")
 
-  crs <- sp::CRS(proj4string(r))
+  crs <- raster::crs(r)
 
   v <- sp::coordinates(sp::spTransform(transect, crs))
   if (length(v) < 2) stop("number of vertices in transect is < 2")

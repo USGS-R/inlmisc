@@ -85,7 +85,9 @@ The increment of the date sequence, see the \code{by} argument in the \code{\lin
 \item{scientific}{'logical'.
 Vector of length 3 that indicates if axes labels should be encoded in nice scientific format.
 Vector elements correspond to the \emph{x}-axis, \code{y}-axis, and second \emph{y}-axis labels.
-Values are recycled as necessary.}
+Values are recycled as necessary.
+Missing values correspond to the current default penalty (see \code{\link{options}("scipen")})
+to be applied when deciding to print numeric values in fixed or scientific notation.}
 
 \item{conversion.factor}{'numeric'.
 A conversion factor for the 2nd-\emph{y} axis.}
@@ -132,7 +134,7 @@ PlotGraph(x, y, ylab = "Random number", pch = 1, seq.date.by = "days",
 
 y <- sapply(1:3, function(i) sample((1:100) + i * 100, n, replace = TRUE))
 m <- cbind(as.numeric(x), y)
-col <- c("red", "gold", "green")
+col <- GetTolColors(3)
 PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b", pch = 15:17,
           col = col, pt.cex = 0.9)
 legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,

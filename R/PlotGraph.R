@@ -54,6 +54,8 @@
 #'   Vector of length 3 that indicates if axes labels should be encoded in nice scientific format.
 #'   Vector elements correspond to the \emph{x}-axis, \code{y}-axis, and second \emph{y}-axis labels.
 #'   Values are recycled as necessary.
+#'   Missing values correspond to the current default penalty (see \code{\link{options}("scipen")})
+#'   to be applied when deciding to print numeric values in fixed or scientific notation.
 #' @param conversion.factor 'numeric'.
 #'   A conversion factor for the 2nd-\emph{y} axis.
 #' @param boxwex 'numeric'.
@@ -99,7 +101,7 @@
 #'
 #' y <- sapply(1:3, function(i) sample((1:100) + i * 100, n, replace = TRUE))
 #' m <- cbind(as.numeric(x), y)
-#' col <- c("red", "gold", "green")
+#' col <- GetTolColors(3)
 #' PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b", pch = 15:17,
 #'           col = col, pt.cex = 0.9)
 #' legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
@@ -274,6 +276,7 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
   }
   graphics::axis(2, at=yat, labels=ylabels, tcl=tcl, las=1, cex.axis=cex,
                  lwd=-1, lwd.ticks=0.5)
+
   if (!missing(xlab)) {
     mar.line <- sum(graphics::par("mgp")[2:3]) + graphics::par("mgp")[2] + cex
     graphics::title(xlab=xlab, cex.lab=cex, line=mar.line)
@@ -284,8 +287,8 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
                 graphics::par("mgp")[2]
     graphics::title(ylab=ylab[1], cex.lab=cex, line=mar.line)
   }
-  if (!missing(main))
-    graphics::title(main=list(main, cex=0.8, font=2, col="#1F1F1F"))
+  if (!missing(main)) graphics::title(main=list(main, cex=0.8, font=1))
+
   if (is.null(conversion.factor)) {
     graphics::axis(4, at=yat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
   } else {

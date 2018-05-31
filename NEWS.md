@@ -1,5 +1,9 @@
 # inlmisc 0.4.0.9000
 
+- Remove **colorspace** from suggested packages and replace with **viridisLite**.
+
+- In `ToScientific` function, better identify whether to print numeric values in fixed or scientific notation.
+
 - In `PlotGraph` function, add `main` argument for placing a title at the top of the plot.
 
 - In `AddScaleBar` function, non-backward compatable changes to arguments and improved formatting.

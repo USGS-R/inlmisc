@@ -68,7 +68,6 @@ As an alternative, consider using the \code{\link[raster]{rasterToPolygons}} fun
 }
 \examples{
 # Example 1
-
 z <- c(1.1,  1.5,  4.2,  4.1,  4.3,  4.7,
        1.2,  1.4,  4.8,  4.8,   NA,  4.1,
        1.7,  4.2,  1.4,  4.8,  4.0,  4.4,
@@ -90,7 +89,6 @@ points(x = x, y = y, pch = 16)
 text(cbind(xc, yc), labels = z)
 text(cbind(x = x + 0.1, y = rev(y + 0.1)),
      labels = 1:((m + 1) * (n + 1)), cex = 0.6)
-
 at <- 1:ceiling(max(z, na.rm = TRUE))
 plys <- Grid2Polygons(grd, level = TRUE, at = at)
 cols <- rainbow(length(plys), alpha = 0.3)
@@ -98,7 +96,6 @@ sp::plot(plys, add = TRUE, col = cols)
 zz <- plys[[1]]
 legend("top", legend = zz, fill = cols, bty = "n", xpd = TRUE,
        inset = c(0, -0.1), ncol = length(plys))
-
 v1 <- rbind(c( 1.2, 0.5), c(5.8, 1.7), c( 2.5, 5.1), c( 1.2, 0.5))
 v2 <- rbind(c( 2.5, 2.5), c(3.4, 1.8), c( 3.7, 3.1), c( 2.5, 2.5))
 v3 <- rbind(c(-0.3, 3.3), c(1.7, 5.1), c(-1.0, 7.0), c(-0.3, 3.3))
@@ -111,7 +108,6 @@ cols <- rainbow(length(zz), alpha = 0.6)[zz \%in\% plys[[1]]]
 sp::plot(plys, col = cols, add = TRUE)
 
 # Example 2
-
 data(meuse.grid, package = "sp")
 sp::coordinates(meuse.grid) <- ~ x + y
 sp::gridded(meuse.grid) <- TRUE
@@ -120,7 +116,6 @@ meuse.plys <- Grid2Polygons(meuse.grid, "dist", level = FALSE)
 op <- par(mfrow = c(1, 2), oma = rep(0, 4), mar = rep(0, 4))
 sp::plot(meuse.plys, col = heat.colors(length(meuse.plys)))
 title("level = FALSE", line = -7)
-
 meuse.plys.lev <- Grid2Polygons(meuse.grid, "dist", level = TRUE)
 sp::plot(meuse.plys.lev, col = heat.colors(length(meuse.plys.lev)))
 title("level = TRUE", line = -7)

@@ -25,20 +25,19 @@
 #'
 #' @keywords utilities
 #'
-#' @importFrom rgeos gIntersection gDifference
-#'
 #' @export
 #'
 #' @examples
-#' m1a <- matrix(c(17.5, 24.7, 22.6, 16.5, 55.1, 55.0, 61.1, 59.7), nrow = 4, ncol = 2)
+#' m1a <- rbind(c(17.5, 55.1), c(24.7, 55.0), c(22.6, 61.1),
+#'              c(16.5, 59.7), c(17.5, 55.1))
 #' m1b <- m1a
 #' m1b[, 1] <- m1b[, 1] + 11
 #' p1 <- sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(m1a, FALSE),
 #'                                                  sp::Polygon(m1b, FALSE)), 1)))
 #' sp::plot(p1, col = "blue")
 #'
-#' m2a <- matrix(c(19.6, 35.7, 28.2, 60.0, 58.8, 64.4), nrow = 3, ncol = 2)
-#' m2b <- matrix(c(20.6, 30.9, 27.3, 56.2, 53.8, 51.4), nrow = 3, ncol = 2)
+#' m2a <- rbind(c(19.6, 60.0), c(35.7, 58.8), c(28.2, 64.4), c(19.6, 60.0))
+#' m2b <- rbind(c(20.6, 56.2), c(30.9, 53.8), c(27.3, 51.4), c(20.6, 56.2))
 #' p2 <- sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(m2a, FALSE),
 #'                                                  sp::Polygon(m2b, FALSE)), 2)))
 #' sp::plot(p2, col = "red", add = TRUE)
@@ -85,7 +84,12 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
       if (is.numeric(buffer.width))
         y.intersect <- rgeos::gBuffer(y.intersect, width=buffer.width)
 
-      x.geo <- do.call(cmd, list(x[i], rgeos::gUnaryUnion(y.intersect), byid=TRUE))
+      spgeom2 <- rgeos::gUnaryUnion(y.intersect)
+      if (cmd == "gIntersection")
+        x.geo <- rgeos::gIntersection(x[i], spgeom2, byid=TRUE)
+      else
+        x.geo <- rgeos::gDifference(x[i], spgeom2, byid=TRUE)
+
       if (inherits(x.geo, "SpatialCollections"))
         x.geo <- rgeos::gUnaryUnion(x.geo@polyobj)
 

@@ -60,26 +60,19 @@ Used for the side-effect of a color key drawn on the current graphics device.
 This function can be used to add a color key to a plot.
 }
 \examples{
-dev.new(width = 7, height = 2)
+op <- par(mfrow = c(7, 1), omi = c(1, 1, 1, 1), mar = c(2, 3, 2, 3))
 AddColorKey(is.categorical = FALSE, breaks = 0:10,
             explanation = "Example description of data variable.")
-
 AddColorKey(is.categorical = FALSE, breaks = 0:1000, at = pretty(0:1000))
-
 AddColorKey(is.categorical = FALSE, breaks = c(0, 1, 2, 4, 8, 16))
-
 breaks <- c(pi * 10^(-5:5))
 AddColorKey(is.categorical = FALSE, breaks = breaks, log = TRUE)
-
 is <- as.logical(seq_along(breaks) \%\% 2)
 AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
             scipen = NULL, log = TRUE)
-
 AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
-
-AddColorKey(is.categorical = TRUE, col = grDevices::terrain.colors(5))
-
-dev.off()
+AddColorKey(is.categorical = TRUE, col = GetTolColors(5))
+par(op)
 
 }
 \seealso{

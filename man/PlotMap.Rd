@@ -204,7 +204,7 @@ PlotMap(r, pal = terrain.colors, scale.loc = "bottomright",
         useRaster = TRUE)
 
 r <- raster::raster(system.file("external/test.grd", package = "raster"))
-Pal <- colorspace::rainbow_hcl
+Pal <- function(n) viridisLite::magma(n, begin = 0.3)
 breaks <- seq(0, 2000, by = 200)
 PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
         scale.loc = "bottomright", contour.lines = list(col = "#1F1F1F"),

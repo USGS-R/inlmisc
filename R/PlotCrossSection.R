@@ -144,13 +144,10 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   at <- NULL
   if (!is.null(cell.values)) {
     if (!is.function(pal)) {
-      if (requireNamespace("colorspace", quietly=TRUE)) {
-        pal <- function(n) {
-          colorspace::rainbow_hcl(n, start=0.0, end=(360 * (n - 1) / n) * 0.8)
-        }
-      } else {
+      if (requireNamespace("viridisLite", quietly=TRUE))
+        pal <- viridisLite::viridis
+      else
         pal <- function(n) grDevices::rainbow(n, start=0.0, end=0.8)
-      }
     }
     if (is.categorical) {
       unique.vals <- sort(unique(cell.values))
