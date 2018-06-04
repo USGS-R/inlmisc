@@ -15,9 +15,9 @@
 #'   Maximum number of rows and columns in the subfigure layout on a page in the output document.
 #' @param label 'character'.
 #'   String containing the LaTeX label anchor.
-#'   Subfigures are labeled using a concatenation of the \code{label} argument and a letter.
+#'   Subfigures are labeled using a concatenation of the \code{label} argument and an index number.
 #'   For example, specifying \code{label = "id"} for a figure composed of 3 subfigures results in:
-#'   \code{"id_a"}, \code{"id_b"}, and \code{"id_c"} labels.
+#'   labels \code{"id-1"}, \code{"id-2"}, and \code{"id-3"}.
 #' @param title 'character'.
 #'   String containing the figure caption.
 #' @param title_lof 'character'.
@@ -53,8 +53,8 @@
 #'     "\\begin{document}\n",
 #'     "<<id, echo=FALSE, fig.width=3, fig.height=2, results='asis'>>=",
 #'     "par(mar=c(2.1, 2.1, 1.1, 1.1))",
-#'     "fig <- sprintf('plot(runif(%s))', 1:10)",
-#'     "headings <- sprintf('Subfigure caption, n=%s', 1:10)",
+#'     "fig <- sprintf('plot(runif(%s))', 1:9)",
+#'     "headings <- sprintf('Subfigure caption, n=%s', 1:9)",
 #'     "PrintFigure(fig, 3, 2, 'id', title='Figure caption', headings=headings)",
 #'     "@\n",
 #'     "\\end{document}",
@@ -88,10 +88,11 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title, he
   # recycle subfigure captions
   headings <- rep(headings, length.out=np)
 
+  # make subfigure labels unique
+  if (np > 1) label <- sprintf("%s-%s", label, 1:np)
+
   cat("\n")
   for (i in seq_len(np)) {
-    sublabel <- if (np > 1) sprintf("%s_%s", label, letters[i]) else label
-
     if (i == n) {
       caption <- strwrap(title, width=.Machine$integer.max)
     } else if (i > n && ((i %% n) == 0 || i == np)) {
@@ -113,7 +114,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title, he
 
     if (np > 1) {
       cat(sprintf("  \\begin{subfigure}{%.2f\\textwidth}\n", 1 / nc))
-      cat(sprintf("    \\caption{{%s \\label{fig:%s}}}\n", headings[i], sublabel))
+      cat(sprintf("    \\caption{{%s \\label{fig:%s}}}\n", headings[i], label[i]))
     }
 
     # evaluate plotting commands

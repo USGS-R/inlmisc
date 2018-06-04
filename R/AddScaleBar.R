@@ -81,13 +81,13 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
     y <- mean(usr[3:4])  # latitude at center of plot
     ds1 <- sp::spDistsN1(cbind(0, y), c(dx, y), longlat=TRUE) # distance between plot tick marks in kilometers
     ds1 <- ds1 * conv.fact[1]  # distance between plot tick marks in scale units
-    bp <- pretty(c(0, .Round(ds1)))  # pretty breakpoints
+    bp <- pretty(c(0, .Round(ds1)), min.n=2)  # pretty breakpoints
     ds2 <- diff(range(bp))  # pretty distance between plot tick marks in scale units
     lab_val <- ds2  # number label for last tick mark on scale
     len <- dx * ds2 / ds1  # length of scale bar in user units
     at <- len * bp / max(bp)  # scale tick-mark distances in user units
   } else {
-    at <- pretty(c(0, .Round(dx * conv.fact[1])))  # scale tick-mark locations in scale units
+    at <- pretty(c(0, .Round(dx * conv.fact[1])), min.n=2)  # scale tick-mark locations in scale units
     len <- diff(range(at))  # length of scale bar in user units
     lab_val <- len  # number label for last tick mark on scale
     at <- at / conv.fact[1]  # scale tick-mark distances in user units

@@ -151,9 +151,9 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
     xlim <- grDevices::extendrange(x)
   } else {
     if (is.numeric(xlim)) {
-      xat <- pretty(xlim, n=xn)
+      xat <- pretty(xlim, n=xn, min.n=2)
     } else {
-      xat <- pretty(range(x, na.rm=TRUE), n=xn)
+      xat <- pretty(range(x, na.rm=TRUE), n=xn, min.n=2)
       xlim <- range(xat)
     }
   }
@@ -162,12 +162,12 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
     if (ylog)
       yat <- grDevices::axisTicks(log10(ylim), TRUE, nint=yn)
     else
-      yat <- pretty(ylim, n=yn)
+      yat <- pretty(ylim, n=yn, min.n=2)
   } else {
     if (ylog)
       yat <- grDevices::axisTicks(log10(range(y)), TRUE, nint=yn)
     else
-      yat <- pretty(range(y, na.rm=TRUE), n=yn)
+      yat <- pretty(range(y, na.rm=TRUE), n=yn, min.n=2)
     ylim <- range(yat)
   }
 
@@ -287,7 +287,7 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
                 graphics::par("mgp")[2]
     graphics::title(ylab=ylab[1], cex.lab=cex, line=mar.line)
   }
-  if (!missing(main)) graphics::title(main=list(main, cex=0.8, font=1))
+  if (!missing(main)) graphics::title(main=list(main, cex=cex, font=1))
 
   if (is.null(conversion.factor)) {
     graphics::axis(4, at=yat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
@@ -296,7 +296,7 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
     if (ylog)
       yat <- grDevices::axisTicks(log10(range(yat * conversion.factor)), TRUE, nint=yn)
     else
-      yat <- pretty(yat * conversion.factor, n=yn)
+      yat <- pretty(yat * conversion.factor, n=yn, min.n=2)
 
     if (is.na(scientific[3])) {
       ylabels <- ToScientific(yat, scipen=scipen, type="plotmath")
