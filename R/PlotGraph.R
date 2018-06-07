@@ -287,7 +287,7 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
                 graphics::par("mgp")[2]
     graphics::title(ylab=ylab[1], cex.lab=cex, line=mar.line)
   }
-  if (!missing(main)) graphics::title(main=list(main, cex=cex, font=1))
+  if (!missing(main)) graphics::title(main=list(main, cex=cex, font=1), line=0.5)
 
   if (is.null(conversion.factor)) {
     graphics::axis(4, at=yat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
