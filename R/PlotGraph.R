@@ -151,7 +151,10 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
     xlim <- grDevices::extendrange(x)
   } else {
     if (is.numeric(xlim)) {
-      xat <- pretty(xlim, n=xn, min.n=2)
+      for (i in c(0, -1, 1, 0)) {
+        xat <- grDevices::axisTicks(xlim, FALSE, nint=xn + i)
+        if (xat[1] == xlim[1] & xat[length(xat)] == xlim[2]) break
+      }
     } else {
       xat <- pretty(range(x, na.rm=TRUE), n=xn, min.n=2)
       xlim <- range(xat)
@@ -159,10 +162,12 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
   }
 
   if (is.numeric(ylim)) {
-    if (ylog)
-      yat <- grDevices::axisTicks(log10(ylim), TRUE, nint=yn)
-    else
-      yat <- pretty(ylim, n=yn, min.n=2)
+    usr <- if (ylog) log10(ylim) else ylim
+    if (usr[1] == -Inf) usr[1] <- 0
+    for (i in c(0, -1, 1, 0)) {
+      yat <- grDevices::axisTicks(usr, ylog, nint=yn + i)
+      if (yat[1] == ylim[1] & yat[length(yat)] == ylim[2]) break
+    }
   } else {
     if (ylog)
       yat <- grDevices::axisTicks(log10(range(y)), TRUE, nint=yn)
@@ -293,10 +298,10 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
     graphics::axis(4, at=yat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
   } else {
 
-    if (ylog)
-      yat <- grDevices::axisTicks(log10(range(yat * conversion.factor)), TRUE, nint=yn)
-    else
-      yat <- pretty(yat * conversion.factor, n=yn, min.n=2)
+    usr <- graphics::par("usr")[3:4] * conversion.factor
+    if (ylog) usr <- log10(usr)
+    if (usr[1] == -Inf) usr[1] <- 0
+    yat <- grDevices::axisTicks(usr, ylog, nint=yn)
 
     if (is.na(scientific[3])) {
       ylabels <- ToScientific(yat, scipen=scipen, type="plotmath")
@@ -327,12 +332,14 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
   x <- x[is.x]
   y <- y[is.x, , drop=FALSE]
   y[y < ylim[1] & y > ylim[2]] <- NA
-
-  if (type %in% c("w", "box")) {  # box-and-whisker plot
+  
+  # box-and-whisker plot
+  if (type %in% c("w", "box")) {  
     graphics::boxplot(y, xaxt="n", yaxt="n", range=0, varwidth=TRUE, boxwex=boxwex,
                       col=col, border="#333333", add=TRUE, at=x)
-
-  } else if (type == "i") {  # interval censored plot
+  
+  # interval censored plot
+  } else if (type == "i") {  
     arg <- list(length=0.015, angle=90, lwd=lwd, col=col)
     is <- is.na(y[, 1]) & !is.na(y[, 2])  # left censored
     if (any(is)) {
@@ -361,8 +368,9 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
       y0 <- y[is, 1]
       graphics::points(x0, y0, pch=pch, col=col, bg=bg, cex=pt.cex)
     }
-
-  } else if (type == "s") {  # stair steps plot
+  
+  # stair steps plot
+  } else if (type == "s") {  
     for (i in seq_len(ncol(y))) {
       xx <- as.numeric(x)
       yy <- as.numeric(y[, i])

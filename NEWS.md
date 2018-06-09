@@ -1,5 +1,7 @@
 # inlmisc 0.4.0.9000
 
+- In `PlotGraph` function, improve placement of tick marks.
+
 - Remove **colorspace** from suggested packages and replace with **viridisLite**.
 
 - In `ToScientific` function, better identify whether to print numeric values in fixed or scientific notation.
