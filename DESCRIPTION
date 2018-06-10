@@ -5,9 +5,9 @@ Authors@R: person(given=c("Jason", "C."), family="Fisher", role=c("aut", "cre"),
 Description: A collection of functions for creating high-level graphics,
     performing raster-based analysis, processing MODFLOW-based models,
     selecting subsets using a genetic algorithm, creating interactive web maps,
-    and other miscellaneous tasks. Used to support packages and scripts written
-    by researchers at the United States Geological Survey (USGS)
-    Idaho National Laboratory (INL) Project Office.
+    etc. Used to support packages and scripts written by researchers at the
+    United States Geological Survey (USGS) Idaho National Laboratory (INL)
+    Project Office.
 Depends:
     R (>= 3.2.0)
 Imports:
