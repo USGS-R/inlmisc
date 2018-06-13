@@ -5,7 +5,7 @@
 \title{Print as LaTeX Figure}
 \usage{
 PrintFigure(fig, nr = 1, nc = 1, label = "", title = "",
-  title_lof = title, headings = "")
+  title_lof = title, headings = "", fig_pos = "")
 }
 \arguments{
 \item{fig}{'text'.
@@ -33,6 +33,9 @@ of the paper in a \dQuote{List of Figures}.}
 \item{headings}{'character'.
 Vector of subfigure captions, values are recycled as necessary
 to match the vector length of the \code{fig} argument.}
+
+\item{fig_pos}{'character'.
+String for the figure position arrangement to be used in \code{\\begin{figure}[fig_pos]}.}
 }
 \value{
 Invisible \code{NULL}

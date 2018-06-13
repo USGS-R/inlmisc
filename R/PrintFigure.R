@@ -26,6 +26,8 @@
 #' @param headings 'character'.
 #'   Vector of subfigure captions, values are recycled as necessary
 #'   to match the vector length of the \code{fig} argument.
+#' @param fig_pos 'character'.
+#'   String for the figure position arrangement to be used in \code{\\begin{figure}[fig_pos]}.
 #'
 #' @details
 #'   Requires \code{\\usepackage{caption}} and \code{\\usepackage{subcaption}} in the LaTeX preamble.
@@ -67,7 +69,8 @@
 #' }
 #'
 
-PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title, headings="") {
+PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title, 
+                        headings="", fig_pos="") {
 
   # check arguments
   checkmate::assertCharacter(fig, any.missing=FALSE, min.len=1)
@@ -77,6 +80,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title, he
   checkmate::assertString(title)
   checkmate::assertString(title_lof)
   checkmate::assertCharacter(headings, any.missing=FALSE, min.len=1, max.len=length(fig))
+  checkmate::assertString(fig_pos)
 
   # total number of plots on all pages
   np <- length(fig)
@@ -85,7 +89,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title, he
   n <- nr * nc
   if (np < n) n <- np
 
-  # recycle subfigure captions
+  # recycle subfigure caption
   headings <- rep(headings, length.out=np)
 
   # make subfigure labels unique
@@ -104,7 +108,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title, he
     if (i == n + 1L) cat("\\captionsetup[figure]{list=no}\n\n")
 
     if ((i - 1L) %% n == 0) {
-      cat("\\begin{figure}\n")
+      cat(sprintf("\\begin{figure}[%s]\n", fig_pos))
       if (i > 1) cat("  \\ContinuedFloat\n")
     } else if ((i - 1L) %% nc == 0) {
       cat("  \\par\\bigskip\n")
