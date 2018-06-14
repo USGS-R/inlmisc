@@ -41,8 +41,7 @@
 #' AddScaleBar(unit = "METERS", vert.exag = TRUE, loc = "topright", offset = c(-0.2, 0))
 #' AddScaleBar(unit = "FEET", conv.fact = 3.28084, loc = "bottomright")
 #'
-#' plot(c(-38.31, -35.5), c(40.96, 37.5), type = "n",
-#'      xlab = "longitude", ylab = "latitude", asp = 1)
+#' plot(c(-38.31, -35.5), c(40.96, 37.5), type = "n", xlab = "longitude", ylab = "latitude")
 #' AddScaleBar(unit = "km", longlat = TRUE)
 #' AddScaleBar(unit = "mi", conv.fact = 0.621371, longlat = TRUE, loc = "topright")
 #'
