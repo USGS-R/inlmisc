@@ -26,8 +26,18 @@
 #' @param headings 'character'.
 #'   Vector of subfigure captions, values are recycled as necessary
 #'   to match the vector length of the \code{fig} argument.
-#' @param fig_pos 'character'.
-#'   String for the figure position arrangement to be used in \code{\\begin{figure}[fig_pos]}.
+#' @param pos 'character'.
+#'   String for the placement specifiers to be used in \code{\\begin{figure}[pos]}.
+#'   The specifiers can consist of the following characters in any order:
+#'   \itemize{
+#'     \item \code{"h"} place the float about at the same point it occurs in the source text;
+#'     \item \code{"t"} position at the top of the page;
+#'     \item \code{"b"} position at the bottom of the page;
+#'     \item \code{"p"} put on a special page for floats only; 
+#'     \item \code{"!"} override internal parameters LaTeX uses for determining float positions; and
+#'     \item \code{"H"} places the float at precisely the location in the source text.
+#'       Requires \code{\\usepackage{float}} in the LaTeX preamble.
+#'   }
 #'
 #' @details
 #'   Requires \code{\\usepackage{caption}} and \code{\\usepackage{subcaption}} in the LaTeX preamble.
@@ -70,7 +80,7 @@
 #'
 
 PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title, 
-                        headings="", fig_pos="") {
+                        headings="", pos="") {
 
   # check arguments
   checkmate::assertCharacter(fig, any.missing=FALSE, min.len=1)
@@ -80,7 +90,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
   checkmate::assertString(title)
   checkmate::assertString(title_lof)
   checkmate::assertCharacter(headings, any.missing=FALSE, min.len=1, max.len=length(fig))
-  checkmate::assertString(fig_pos)
+  checkmate::assertString(pos)
 
   # total number of plots on all pages
   np <- length(fig)
@@ -108,7 +118,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
     if (i == n + 1L) cat("\\captionsetup[figure]{list=no}\n\n")
 
     if ((i - 1L) %% n == 0) {
-      cat(sprintf("\\begin{figure}[%s]\n", fig_pos))
+      cat(sprintf("\\begin{figure}[%s]\n", pos))
       if (i > 1) cat("  \\ContinuedFloat\n")
     } else if ((i - 1L) %% nc == 0) {
       cat("  \\par\\bigskip\n")
@@ -136,6 +146,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
     }
 
     if (i %% n == 0 || i == np) cat("\\end{figure}\n\n")
+    
     if (i > n && i == np) cat("\\captionsetup[figure]{list=yes}\n\n")
   }
 

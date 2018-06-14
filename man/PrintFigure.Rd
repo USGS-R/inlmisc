@@ -5,7 +5,7 @@
 \title{Print as LaTeX Figure}
 \usage{
 PrintFigure(fig, nr = 1, nc = 1, label = "", title = "",
-  title_lof = title, headings = "", fig_pos = "")
+  title_lof = title, headings = "", pos = "")
 }
 \arguments{
 \item{fig}{'text'.
@@ -34,8 +34,18 @@ of the paper in a \dQuote{List of Figures}.}
 Vector of subfigure captions, values are recycled as necessary
 to match the vector length of the \code{fig} argument.}
 
-\item{fig_pos}{'character'.
-String for the figure position arrangement to be used in \code{\\begin{figure}[fig_pos]}.}
+\item{pos}{'character'.
+String for the placement specifiers to be used in \code{\\begin{figure}[pos]}.
+The specifiers can consist of the following characters in any order:
+\itemize{
+  \item \code{"h"} place the float about at the same point it occurs in the source text;
+  \item \code{"t"} position at the top of the page;
+  \item \code{"b"} position at the bottom of the page;
+  \item \code{"p"} put on a special page for floats only; 
+  \item \code{"!"} override internal parameters LaTeX uses for determining float positions; and
+  \item \code{"H"} places the float at precisely the location in the source text.
+    Requires \code{\\usepackage{float}} in the LaTeX preamble.
+}}
 }
 \value{
 Invisible \code{NULL}
