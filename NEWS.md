@@ -6,7 +6,7 @@
 
 - In `ToScientific` function, better identify whether to print numeric values in fixed or scientific notation.
 
-- In `AddScaleBar` function, made non-backward compatible changes to arguments and improved formatting.
+- In `AddScaleBar` function, non-backward compatible changes to arguments and formatting improvements.
 
 - In `PlotGraph` function: fix bug that resulted in an error when `type = "n"`; and
   add `main` argument for placing a title at the top of the plot.
@@ -220,7 +220,7 @@
 
 - Change NEWS file to markdown format.
 
-- Remove "misc" folder from ".Rbuildignore", adds the "misc/preamble.tex" file back to the package build.
+- Remove *misc* folder from *.Rbuildignore* file, adds the *misc/preamble.tex* file back to the package build.
 
 # inlmisc 0.2.1
 
