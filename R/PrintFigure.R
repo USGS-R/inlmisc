@@ -35,8 +35,8 @@
 #'     \item \code{"b"} position at the bottom of the page;
 #'     \item \code{"p"} put on a special page for floats only; 
 #'     \item \code{"!"} override internal parameters LaTeX uses for determining float positions; and
-#'     \item \code{"H"} places the float at precisely the location in the source text.
-#'       Requires \code{\\usepackage{float}} in the LaTeX preamble.
+#'     \item \code{"H"} places the float at precisely the location in the source text,
+#'       requires \code{\\usepackage{float}} in the LaTeX preamble.
 #'   }
 #'
 #' @details
