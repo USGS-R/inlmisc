@@ -25,9 +25,10 @@
 #' @export
 #'
 #' @examples
+#' op <- par(mfrow = c(2, 1), oma = c(1, 1, 1, 1))
 #' GetTolColors(7, plot = TRUE)
-#'
 #' GetTolColors(21, alpha = 0.85, plot = TRUE)
+#' par(op)
 #'
 
 GetTolColors <- function(n, alpha=1, plot=FALSE) {

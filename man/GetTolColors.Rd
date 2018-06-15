@@ -25,9 +25,10 @@ Returns a 'character' vector of length \code{n} with elements of 7 or 9 characte
 This function creates a vector of \code{n} contiguous colors from color schemes by Paul Tol (2012).
 }
 \examples{
+op <- par(mfrow = c(2, 1), oma = c(1, 1, 1, 1))
 GetTolColors(7, plot = TRUE)
-
 GetTolColors(21, alpha = 0.85, plot = TRUE)
+par(op)
 
 }
 \references{

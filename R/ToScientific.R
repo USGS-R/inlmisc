@@ -78,8 +78,8 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   if (is.null(scipen)) {
     is_sci <- is.finite(x)
   } else {
-    op <- options(scipen=scipen); on.exit(options(op))
-    is_sci <- grepl("e", formatC(x)) & is.finite(x)
+    fmt <- prettyNum(x, scientific=scipen)
+    is_sci <- grepl("e", fmt) & is.finite(x)
   }
   is_fix <- !is_sci & is_finite
 

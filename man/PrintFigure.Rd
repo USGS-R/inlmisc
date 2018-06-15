@@ -5,7 +5,7 @@
 \title{Print as LaTeX Figure}
 \usage{
 PrintFigure(fig, nr = 1, nc = 1, label = "", title = "",
-  title_lof = title, headings = "")
+  title_lof = title, headings = "", pos = "")
 }
 \arguments{
 \item{fig}{'text'.
@@ -19,9 +19,9 @@ Maximum number of rows and columns in the subfigure layout on a page in the outp
 
 \item{label}{'character'.
 String containing the LaTeX label anchor.
-Subfigures are labeled using a concatenation of the \code{label} argument and a letter.
+Subfigures are labeled using a concatenation of the \code{label} argument and an index number.
 For example, specifying \code{label = "id"} for a figure composed of 3 subfigures results in:
-\code{"id_a"}, \code{"id_b"}, and \code{"id_c"} labels.}
+labels \code{"id-1"}, \code{"id-2"}, and \code{"id-3"}.}
 
 \item{title}{'character'.
 String containing the figure caption.}
@@ -33,6 +33,19 @@ of the paper in a \dQuote{List of Figures}.}
 \item{headings}{'character'.
 Vector of subfigure captions, values are recycled as necessary
 to match the vector length of the \code{fig} argument.}
+
+\item{pos}{'character'.
+String for the placement specifiers to be used in \code{\\begin{figure}[pos]}.
+The specifiers can consist of the following characters in any order:
+\itemize{
+  \item \code{"h"} place the float about at the same point it occurs in the source text;
+  \item \code{"t"} position at the top of the page;
+  \item \code{"b"} position at the bottom of the page;
+  \item \code{"p"} put on a special page for floats only; 
+  \item \code{"!"} override internal parameters LaTeX uses for determining float positions; and
+  \item \code{"H"} places the float at precisely the location in the source text.
+    Requires \code{\\usepackage{float}} in the LaTeX preamble.
+}}
 }
 \value{
 Invisible \code{NULL}
@@ -62,8 +75,8 @@ cat("\\\\documentclass{article}",
     "\\\\begin{document}\\n",
     "<<id, echo=FALSE, fig.width=3, fig.height=2, results='asis'>>=",
     "par(mar=c(2.1, 2.1, 1.1, 1.1))",
-    "fig <- sprintf('plot(runif(\%s))', 1:10)",
-    "headings <- sprintf('Subfigure caption, n=\%s', 1:10)",
+    "fig <- sprintf('plot(runif(\%s))', 1:9)",
+    "headings <- sprintf('Subfigure caption, n=\%s', 1:9)",
     "PrintFigure(fig, 3, 2, 'id', title='Figure caption', headings=headings)",
     "@\\n",
     "\\\\end{document}",

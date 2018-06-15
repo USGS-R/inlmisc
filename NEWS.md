@@ -1,5 +1,17 @@
 # inlmisc 0.4.0.9000
 
+- In LaTeX preamble: add **float** package; provides the H float modifier option.
+
+- In `PlotGraph` function, improve placement of tick marks.
+
+- Remove **colorspace** from suggested packages and replace with **viridisLite**.
+
+- In `ToScientific` function, better identify whether to print numeric values in fixed or scientific notation.
+
+- In `PlotGraph` function, add `main` argument for placing a title at the top of the plot.
+
+- In `AddScaleBar` function, non-backward compatible changes to arguments and improved formatting.
+
 - In `PlotGraph` function, fix bug that resulted in an error when `type = "n"`.
 
 - Make **roxygen2** a suggested package.
@@ -45,7 +57,7 @@
 
 - In `ToScientific` function, add `big.mark` argument with default value of `","`.
 
-- In `ToScientific` function, fix bug that formated `0` as `NA` when `type = "plotmath"`.
+- In `ToScientific` function, fix bug that formatted `0` as `NA` when `type = "plotmath"`.
 
 - In `CreateWebMap` function, pass `...` arguments to `leaflet::leaflet` function,
   these arguments were previously passed to the `leaflet::leafletOptions` function.
@@ -131,7 +143,7 @@
 
 - Add **bm** and **makecell** packages to LaTeX preamble.
 
-- Changes in `PlotGraph` function inlclude:
+- Changes in `PlotGraph` function include:
   Add option for plotting interval censored data by specifying `type = "i"`.
   Select box-and-whisker plot using `type = "w"`, was previously `type = "box"`.
   Default for `seq.date.by` argument changed from `"year"` to `NULL`.
@@ -179,7 +191,7 @@
 - In `PlotMap` and `PlotCrossSection` functions, fix layout so color key dimensions don't change on resize.
 
 - In `PlotMap` function, add `file.close` argument.
-  A logical that idicates if the graphics device driver should be shut down when the function exits.
+  A logical that indicates if the graphics device driver should be shut down when the function exits.
 
 - In `AddBubbles` function, allow `z` argument to be an object of class `factor`.
 

@@ -399,7 +399,7 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
 #' @export
 #'
 #' @examples
-#' IsPackageInstalled(c("inlmisc", "csimlni", "colorspace"))
+#' IsPackageInstalled(c("inlmisc", "csimlni", "viridisLite"))
 #'
 
 IsPackageInstalled <- function(x, lib=.libPaths()) {

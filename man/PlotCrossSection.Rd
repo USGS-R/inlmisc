@@ -139,11 +139,9 @@ r2 <- min(r1[]) - r1 / 10
 r3 <- r1 - r2
 rs <- raster::stack(r1, r2, r3)
 names(rs) <- c("r1", "r2", "r3")
-
 xy <- rbind(c(2667508, 6479501), c(2667803, 6479214), c(2667508, 6478749))
 transect <- sp::SpatialLines(list(sp::Lines(list(sp::Line(xy)), ID = "Transect")),
                              proj4string = raster::crs(rs))
-
 raster::plot(r1)
 lines(transect)
 raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
@@ -151,10 +149,11 @@ raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
 
 explanation <- "Vertical thickness between layers, in meters."
 PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
-                 ylab="Elevation", asp = 5, unit = "METERS", explanation = explanation)
+                 ylab = "Elevation", asp = 5, unit = "METERS",
+                 explanation = explanation)
 
 val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
-                        ylab="Elevation", asp = 5, unit = "METERS",
+                        ylab = "Elevation", asp = 5, unit = "METERS",
                         explanation = explanation, file = "Rplots.png")
 print(val)
 

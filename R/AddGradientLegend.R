@@ -43,8 +43,8 @@
 #' AddGradientLegend(breaks, rainbow, title = "Title")
 #' AddGradientLegend(breaks, rainbow, title = "Title", inset = c(0.2, 0.1))
 #' breaks <- seq(0, 2e+06, length.out = 5)
-#' AddGradientLegend(breaks, rainbow, loc = "topright", inset = 0.1)
-#' pal <- function(...) rev(rainbow(...))  # reverse colors in palette
+#' AddGradientLegend(breaks, GetTolColors, loc = "topright", inset = 0.1)
+#' pal <- function(...) rev(GetTolColors(...))  # reverse colors in palette
 #' AddGradientLegend(breaks, pal, loc = "bottomright", inset = c(0.2, 0.1),
 #'                   scientific = TRUE, strip.dim = c(1, 14))
 #'

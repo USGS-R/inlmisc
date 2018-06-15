@@ -168,7 +168,7 @@
 #'         useRaster = TRUE)
 #'
 #' r <- raster::raster(system.file("external/test.grd", package = "raster"))
-#' Pal <- colorspace::rainbow_hcl
+#' Pal <- function(n) viridisLite::magma(n, begin = 0.3)
 #' breaks <- seq(0, 2000, by = 200)
 #' PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
 #'         scale.loc = "bottomright", contour.lines = list(col = "#1F1F1F"),
@@ -285,8 +285,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (!all(is.na(r[]))) r <- raster::trim(r)
-  xran <- bbox(r)[1, ]
-  yran <- bbox(r)[2, ]
+  xran <- sp::bbox(r)[1, ]
+  yran <- sp::bbox(r)[2, ]
   if (extend.xy) {
     default.xl <- range(pretty(xran))
     default.yl <- range(pretty(yran))
@@ -371,11 +371,15 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     if (length(col) != n) stop("number of specified colors is incorrect")
     cols <- col
   } else {
-    if (is.function(pal)) {
+    if (n == 0) {
+      cols <- as.character()
+    } else if (is.function(pal)) {
       cols <- pal(n)
+    } else if (raster::is.factor(r)) {
+      cols <- GetTolColors(n)
     } else {
-      if (requireNamespace("colorspace", quietly=TRUE))
-        cols <- colorspace::rainbow_hcl(n, start=0.0, end=(360 * (n - 1) / n) * 0.8)
+      if (requireNamespace("viridisLite", quietly=TRUE))
+        cols <- viridisLite::viridis(n)
       else
         cols <- grDevices::rainbow(n, start=0.0, end=0.8)
     }
@@ -384,10 +388,9 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
   # plot color key
   if (draw.key & n > 0) {
-    is.categorical <- raster::is.factor(r)
     at <- if (is.null(labels$at)) at1 else labels$at
     if (is.null(labels$labels))
-      labels <- if (is.categorical) raster::levels(r)[[1]][, "att"] else TRUE
+      labels <- if (raster::is.factor(r)) raster::levels(r)[[1]][, "att"] else TRUE
     else
       labels <- labels$labels
     AddColorKey(mai=mai1, is.categorical=raster::is.factor(r),
@@ -422,8 +425,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
                                              c(xl[2], yl[2])))), ID="al4")
     sl <- sp::SpatialLines(al, proj4string=r@crs)
     sl.dd <- sp::spTransform(sl, sp::CRS("+init=epsg:4326"))
-    e.dd <- pretty(range(bbox(sl.dd)[1, ]))
-    n.dd <- pretty(range(bbox(sl.dd)[2, ]))
+    e.dd <- pretty(range(sp::bbox(sl.dd)[1, ]))
+    n.dd <- pretty(range(sp::bbox(sl.dd)[2, ]))
     grd.dd <- sp::gridlines(sl.dd, easts=e.dd, norths=n.dd, ndiscr=1000)
 
     pts.dd <- rgeos::gIntersection(sl.dd, grd.dd, byid=TRUE)
@@ -446,8 +449,9 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     at2[[2]] <- pretty(yl)
     at2[[3]] <- at2[[1]]
     at2[[4]] <- at2[[2]]
-    xlabs <- prettyNum(at2[[1]], big.mark=",")
-    ylabs <- prettyNum(at2[[2]], big.mark=",")
+    scipen <- getOption("scipen", default=0)
+    xlabs <- ToScientific(at2[[1]], scipen=scipen, type="plotmath")
+    ylabs <- ToScientific(at2[[2]], scipen=scipen, type="plotmath")
     if (extend.xy) ylabs[length(ylabs)] <- ""
   }
 
@@ -576,10 +580,10 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (!is.null(scale.loc)) {
-    txt <- strsplit(proj4string(r), " ")[[1]]
+    txt <- strsplit(sp::proj4string(r), " ")[[1]]
     unit <- sub("^\\+units=", "", grep("^\\+units=", txt, value=TRUE))
-    lonlat <- "+proj=longlat" %in% txt
-    AddScaleBar(asp, unit, lonlat, scale.loc)
+    longlat <- "+proj=longlat" %in% txt
+    AddScaleBar(unit=unit, longlat=longlat, loc=scale.loc)
   }
 
   if (!is.null(arrow.loc)) .AddNorthArrow(arrow.loc, r@crs, cex)

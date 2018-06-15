@@ -4,29 +4,36 @@
 \alias{AddScaleBar}
 \title{Add Scale Bar to Plot}
 \usage{
-AddScaleBar(asp = 1, unit = NULL, is.lonlat = FALSE,
-  loc = c("bottomleft", "topleft", "topright", "bottomright"), offset = c(0,
-  0), lab.vert.exag = NULL)
+AddScaleBar(unit = NULL, conv.fact = NULL, vert.exag = NULL,
+  longlat = FALSE, loc = c("bottomleft", "topleft", "topright",
+  "bottomright"), offset = NULL)
 }
 \arguments{
-\item{asp}{'numeric'.
-\emph{y/x} aspect ratio for spatial axes.}
-
 \item{unit}{'character'.
-Axis unit of measurement, for example "METERS".}
+Label describing the unit of measurement of scale distances, for example "METERS".}
 
-\item{is.lonlat}{'logical'.
-If true, plot coordinates are in longitude and latitude.}
+\item{conv.fact}{'numeric'.
+Conversion factor for changing the unit of measurement for scale distances.
+For example, if user coordinates of the plotting region are in meters,
+specify \code{3.28084} to display scale distances in feet.}
+
+\item{vert.exag}{'logical', 'numeric', or 'character'.
+Either a logical value indicating whether to include a vertical exaggeration label;
+or a custom \emph{y/x} aspect ratio to include in this label.}
+
+\item{longlat}{'logical'.
+Whether user coordinates of the plotting region are in longitude and latitude;
+if true, scale distances are in kilometers.
+Note that scale distances are calculated at the maps latitude midpoint
+using the Great Circle distance (WGS84 ellipsoid) method.}
 
 \item{loc}{'character'.
-Position of the scale bar in the plot region:
-"bottomleft", "topleft", "topright", or "bottomright" to denote scale location.}
+Position of the scale bar in the plot region specified by keyword:
+\code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"}.}
 
 \item{offset}{'numeric'.
-The x and y adjustments of the scale bar, in inches.}
-
-\item{lab.vert.exag}{'logical'.
-If true, a label is drawn specifying the vertical exaggeration.}
+Vector of length 2 indicating the \emph{x} and \emph{y} adjustments
+to the position of the scale bar, in inches.}
 }
 \value{
 Used for the side-effect of a scale bar drawn on the current graphics device.
@@ -35,13 +42,19 @@ Used for the side-effect of a scale bar drawn on the current graphics device.
 This function can be used to add a scale bar to a plot.
 }
 \examples{
-plot(-100:100, -100:100, type = "n", xlab = "x", ylab = "y", asp = 2)
-AddScaleBar(2, unit = "FEET", loc = "topleft")
-AddScaleBar(2, unit = "METERS", loc = "bottomright", offset = c(-0.2, 0))
+plot(-100:100, -100:100, type = "n", xlab = "x in meters", ylab = "y in meters", asp = 2)
+AddScaleBar()
+AddScaleBar(unit = "METERS", loc = "topleft")
+AddScaleBar(unit = "METERS", vert.exag = TRUE, loc = "topright", offset = c(-0.2, 0))
+AddScaleBar(unit = "FEET", conv.fact = 3.28084, loc = "bottomright")
+
+plot(c(-38.31, -35.5), c(40.96, 37.5), type = "n", xlab = "longitude", ylab = "latitude")
+AddScaleBar(unit = "km", longlat = TRUE)
+AddScaleBar(unit = "mi", conv.fact = 0.621371, longlat = TRUE, loc = "topright")
 
 }
 \seealso{
-\code{\link{PlotCrossSection}}, \code{\link{PlotMap}}
+\code{\link{PlotMap}}, \code{\link{PlotCrossSection}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

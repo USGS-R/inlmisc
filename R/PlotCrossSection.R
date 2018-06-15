@@ -78,11 +78,9 @@
 #' r3 <- r1 - r2
 #' rs <- raster::stack(r1, r2, r3)
 #' names(rs) <- c("r1", "r2", "r3")
-#'
 #' xy <- rbind(c(2667508, 6479501), c(2667803, 6479214), c(2667508, 6478749))
 #' transect <- sp::SpatialLines(list(sp::Lines(list(sp::Line(xy)), ID = "Transect")),
 #'                              proj4string = raster::crs(rs))
-#'
 #' raster::plot(r1)
 #' lines(transect)
 #' raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
@@ -90,10 +88,11 @@
 #'
 #' explanation <- "Vertical thickness between layers, in meters."
 #' PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
-#'                  ylab="Elevation", asp = 5, unit = "METERS", explanation = explanation)
+#'                  ylab = "Elevation", asp = 5, unit = "METERS",
+#'                  explanation = explanation)
 #'
 #' val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
-#'                         ylab="Elevation", asp = 5, unit = "METERS",
+#'                         ylab = "Elevation", asp = 5, unit = "METERS",
 #'                         explanation = explanation, file = "Rplots.png")
 #' print(val)
 #'
@@ -121,7 +120,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     stop("number of value layers is greater than the number of geometry layers")
 
   transect <- sp::spTransform(transect, raster::crs(rs))
-  rs <- raster::crop(rs, raster::extent(as.vector(t(bbox(transect)))), snap="out")
+  rs <- raster::crop(rs, raster::extent(as.vector(t(sp::bbox(transect)))), snap="out")
   layer.names <- unique(c(geo.lays, val.lays, wt.lay))
   eat <- ExtractAlongTransect(transect, raster::subset(rs, layer.names))
 
@@ -145,13 +144,10 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   at <- NULL
   if (!is.null(cell.values)) {
     if (!is.function(pal)) {
-      if (requireNamespace("colorspace", quietly=TRUE)) {
-        pal <- function(n) {
-          colorspace::rainbow_hcl(n, start=0.0, end=(360 * (n - 1) / n) * 0.8)
-        }
-      } else {
+      if (requireNamespace("viridisLite", quietly=TRUE))
+        pal <- viridisLite::viridis
+      else
         pal <- function(n) grDevices::rainbow(n, start=0.0, end=0.8)
-      }
     }
     if (is.categorical) {
       unique.vals <- sort(unique(cell.values))
@@ -311,10 +307,10 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   }
 
   yat <- pretty(ylim)
-  ylabs <- prettyNum(yat, big.mark=",")
+  scipen <- getOption("scipen", default=0)
+  ylabs <- ToScientific(yat, scipen=scipen, type="plotmath")
   graphics::axis(4, at=yat, labels=FALSE, lwd=0, lwd.ticks=lwd, tcl=tcl)
-  graphics::axis(2, at=yat, labels=ylabs, lwd=0, lwd.ticks=lwd, tcl=tcl,
-                 cex.axis=cex, las=1)
+  graphics::axis(2, at=yat, labels=ylabs, lwd=0, lwd.ticks=lwd, tcl=tcl, cex.axis=cex, las=1)
 
   if (!is.null(ylab)) {
     line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]
@@ -361,7 +357,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   }
   graphics::par(xpd=FALSE)
 
-  AddScaleBar(asp, unit, loc="bottomright", offset=c(-0.3, 0))
+  vert.exag <- ifelse(asp == 1, NULL, asp)
+  AddScaleBar(unit=unit, vert.exag=vert.exag, loc="bottomright", offset=c(-0.3, 0))
 
   invisible(list(din=graphics::par("din"), usr=usr, heights=c(h2, h1) / h))
 }

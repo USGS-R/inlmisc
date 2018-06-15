@@ -12,6 +12,8 @@
 #' @param ylab 'character'.
 #'   Vector of length 2 giving the title for the 1st and 2nd-\emph{y} axes.
 #'   The title for the 2nd-\emph{y} axis is optional and requires \code{conversion.factor} be specified.
+#' @param main 'character'.
+#'   Main title for the plot.
 #' @param xlim 'numeric' or 'Date'.
 #'   Vector of length 2 giving the minimum and maximum values for the \emph{x}-axis.
 #' @param xn,yn 'integer'.
@@ -52,6 +54,8 @@
 #'   Vector of length 3 that indicates if axes labels should be encoded in nice scientific format.
 #'   Vector elements correspond to the \emph{x}-axis, \code{y}-axis, and second \emph{y}-axis labels.
 #'   Values are recycled as necessary.
+#'   Missing values correspond to the current default penalty (see \code{\link{options}("scipen")})
+#'   to be applied when deciding to print numeric values in fixed or scientific notation.
 #' @param conversion.factor 'numeric'.
 #'   A conversion factor for the 2nd-\emph{y} axis.
 #' @param boxwex 'numeric'.
@@ -88,7 +92,8 @@
 #' x <- as.Date("2008-07-12") + 1:n
 #' y <- sample.int(n, replace = TRUE)
 #' PlotGraph(x, y, ylab = paste("Random number in", c("meters", "feet")),
-#'           type = "p", pch = 16, scientific = FALSE, conversion.factor = 3.28)
+#'           main = "Main Title", type = "p", pch = 16, scientific = FALSE,
+#'           conversion.factor = 3.28)
 #'
 #' y <- data.frame(lapply(1:3, function(i) sample(n, replace = TRUE)))
 #' PlotGraph(x, y, ylab = "Random number", pch = 1, seq.date.by = "days",
@@ -96,7 +101,7 @@
 #'
 #' y <- sapply(1:3, function(i) sample((1:100) + i * 100, n, replace = TRUE))
 #' m <- cbind(as.numeric(x), y)
-#' col <- c("red", "gold", "green")
+#' col <- GetTolColors(3)
 #' PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b", pch = 15:17,
 #'           col = col, pt.cex = 0.9)
 #' legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
@@ -107,10 +112,8 @@
 #'                 y1 = c(1, 2, NA, NA, 4, 3, 2, pi))
 #' PlotGraph(d, type = "i", ylim = c(0, 5))
 #'
-#' graphics.off()
-#'
 
-PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
+PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
                       xn=5, yn=5, ylog=FALSE, type="s", lty=1, lwd=1,
                       pch=NULL, col=NULL, bg=NA, fill=NULL, pt.cex=1,
                       seq.date.by=NULL, scientific=NA,
@@ -119,6 +122,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
 
   scientific <- as.logical(scientific)
   scientific <- rep(scientific, length.out=3)
+  scipen <- getOption("scipen", default=0)
 
   if (inherits(x, c("data.frame", "matrix"))) {
     if (inherits(x, "tbl_df")) x <- as.data.frame(x)
@@ -147,23 +151,28 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
     xlim <- grDevices::extendrange(x)
   } else {
     if (is.numeric(xlim)) {
-      xat <- pretty(xlim, n=xn)
+      for (i in c(0, -1, 1, 0)) {
+        xat <- grDevices::axisTicks(xlim, FALSE, nint=xn + i)
+        if (xat[1] == xlim[1] & xat[length(xat)] == xlim[2]) break
+      }
     } else {
-      xat <- pretty(range(x, na.rm=TRUE), n=xn)
+      xat <- pretty(range(x, na.rm=TRUE), n=xn, min.n=2)
       xlim <- range(xat)
     }
   }
 
   if (is.numeric(ylim)) {
-    if (ylog)
-      yat <- grDevices::axisTicks(log10(ylim), TRUE, nint=yn)
-    else
-      yat <- pretty(ylim, n=yn)
+    usr <- if (ylog) log10(ylim) else ylim
+    if (usr[1] == -Inf) usr[1] <- 0
+    for (i in c(0, -1, 1, 0)) {
+      yat <- grDevices::axisTicks(usr, ylog, nint=yn + i)
+      if (yat[1] == ylim[1] & yat[length(yat)] == ylim[2]) break
+    }
   } else {
     if (ylog)
       yat <- grDevices::axisTicks(log10(range(y)), TRUE, nint=yn)
     else
-      yat <- pretty(range(y, na.rm=TRUE), n=yn)
+      yat <- pretty(range(y, na.rm=TRUE), n=yn, min.n=2)
     ylim <- range(yat)
   }
 
@@ -173,8 +182,9 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
   lty <- rep_len(lty, length.out=n)
   lwd <- rep_len(lwd, length.out=n)
 
-  mar <- c(2.3, 4.1, 0.5, 4.1)
-  if (is.null(conversion.factor)) mar[4] <- 2.1
+  mar <- c(2.3, 4.1, 1.5, 4.1)
+  if (missing(main)) mar[3] <- mar[3] - 1
+  if (is.null(conversion.factor)) mar[4] <- mar[4] - 2
   mgp <- c(3.2, 0.2, 0)  # cumulative axis margin line: title, labels, and line
   op <- graphics::par(mar=mar, mgp=mgp)
   line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]
@@ -240,7 +250,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
     graphics::axis.Date(3, at=xat, tcl=tcl, labels=FALSE, lwd=-1, lwd.ticks=0.5)
   } else {
     if (is.na(scientific[1])) {
-      xlabels <- formatC(xat, big.mark=",")
+      xlabels <- ToScientific(xat, scipen=scipen, type="plotmath")
     } else if (scientific[1]) {
       digits <- format.info(as.numeric(xat))[2]
       while (TRUE) {
@@ -257,7 +267,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
     graphics::axis(3, at=xat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
   }
   if (is.na(scientific[2])) {
-    ylabels <- formatC(yat, big.mark=",")
+    ylabels <- ToScientific(yat, scipen=scipen, type="plotmath")
   } else if (scientific[2]) {
       digits <- format.info(as.numeric(yat))[2]
       while (TRUE) {
@@ -271,6 +281,7 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
   }
   graphics::axis(2, at=yat, labels=ylabels, tcl=tcl, las=1, cex.axis=cex,
                  lwd=-1, lwd.ticks=0.5)
+
   if (!missing(xlab)) {
     mar.line <- sum(graphics::par("mgp")[2:3]) + graphics::par("mgp")[2] + cex
     graphics::title(xlab=xlab, cex.lab=cex, line=mar.line)
@@ -281,18 +292,19 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
                 graphics::par("mgp")[2]
     graphics::title(ylab=ylab[1], cex.lab=cex, line=mar.line)
   }
+  if (!missing(main)) graphics::title(main=list(main, cex=cex, font=1), line=0.5)
 
   if (is.null(conversion.factor)) {
     graphics::axis(4, at=yat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
   } else {
 
-    if (ylog)
-      yat <- grDevices::axisTicks(log10(range(yat * conversion.factor)), TRUE, nint=yn)
-    else
-      yat <-  pretty(yat * conversion.factor, n=yn)
+    usr <- graphics::par("usr")[3:4] * conversion.factor
+    if (ylog) usr <- log10(usr)
+    if (usr[1] == -Inf) usr[1] <- 0
+    yat <- grDevices::axisTicks(usr, ylog, nint=yn)
 
     if (is.na(scientific[3])) {
-      ylabels <- formatC(yat, big.mark=",")
+      ylabels <- ToScientific(yat, scipen=scipen, type="plotmath")
     } else if (scientific[3]) {
       digits <- format.info(as.numeric(yat))[2]
       while (TRUE) {
@@ -320,12 +332,14 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
   x <- x[is.x]
   y <- y[is.x, , drop=FALSE]
   y[y < ylim[1] & y > ylim[2]] <- NA
-
-  if (type %in% c("w", "box")) {  # box-and-whisker plot
+  
+  # box-and-whisker plot
+  if (type %in% c("w", "box")) {  
     graphics::boxplot(y, xaxt="n", yaxt="n", range=0, varwidth=TRUE, boxwex=boxwex,
                       col=col, border="#333333", add=TRUE, at=x)
-
-  } else if (type == "i") {  # interval censored plot
+  
+  # interval censored plot
+  } else if (type == "i") {  
     arg <- list(length=0.015, angle=90, lwd=lwd, col=col)
     is <- is.na(y[, 1]) & !is.na(y[, 2])  # left censored
     if (any(is)) {
@@ -354,8 +368,9 @@ PlotGraph <- function(x, y, xlab, ylab, asp=NA, xlim=NULL, ylim=NULL,
       y0 <- y[is, 1]
       graphics::points(x0, y0, pch=pch, col=col, bg=bg, cex=pt.cex)
     }
-
-  } else if (type == "s") {  # stair steps plot
+  
+  # stair steps plot
+  } else if (type == "s") {  
     for (i in seq_len(ncol(y))) {
       xx <- as.numeric(x)
       yy <- as.numeric(y[, i])
