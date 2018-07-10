@@ -11,7 +11,7 @@
 - In `PlotGraph` function: fix bug that resulted in an error when `type = "n"`; and
   add `main` argument for placing a title at the top of the plot.
 
-- Make **roxygen2** a suggested package.
+- Make **gstat** and **roxygen2** suggested packages.
 
 - Remove **httr**, **maps**, and **maptools** from suggested packages.
 
