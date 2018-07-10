@@ -211,7 +211,7 @@ PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
 AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371), 
             loc = "bottomright", offset = c(-0.4, 0.1))
 AddGradientLegend(breaks, Pal, at = breaks, title = "Explanation", loc = "topleft",
-                  inset = c(0.1, 0.1), strip.dim = c(2, 20))
+                  inset = 0.05, strip.dim = c(2, 20))
 
 out <- PlotMap(r, dms.tick = TRUE, file = "Rplots1.pdf")
 print(out)
