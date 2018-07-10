@@ -1,6 +1,4 @@
-# inlmisc 0.4.0.9000
-
-- In LaTeX preamble: add **float** package; provides the H float modifier option.
+# inlmisc 0.4.0.9000 
 
 - In `PlotGraph` function, improve placement of tick marks.
 
@@ -8,26 +6,22 @@
 
 - In `ToScientific` function, better identify whether to print numeric values in fixed or scientific notation.
 
-- In `PlotGraph` function, add `main` argument for placing a title at the top of the plot.
+- In `AddScaleBar` function, non-backward compatible argument changes and formatting improvements.
 
-- In `AddScaleBar` function, non-backward compatible changes to arguments and improved formatting.
-
-- In `PlotGraph` function, fix bug that resulted in an error when `type = "n"`.
+- In `PlotGraph` function: fix bug that resulted in an error when `type = "n"`; and
+  add `main` argument for placing a title at the top of the plot.
 
 - Make **roxygen2** a suggested package.
 
 - Remove **httr**, **maps**, and **maptools** from suggested packages.
 
-- In `AddInsetMap`, add `bty` argument, determines if a box is to be drawn around the inset map.
+- In *misc/preamble.tex* file: tidy code;
+  include fix for spacing after number in List of Figures and List of Tables;
+  remove **helvet** package; and add **float** package, provides the H float modifier option.
 
-- In "misc/preamble.tex" file: tidy code,
-  include fix for spacing after number in List of Figures and List of Tables,
-  and remove **helvet** package.
-
-- In `AddInsetMap`, add "center" option for `loc` argument.
-
-- In `AddInsetMap`, add an optional `e` argument, a numeric vector describing
-  the extent of the smaller axis-aligned rectangle.
+- In `AddInsetMap`: add an optional `e` argument, a numeric vector describing
+  the extent of the smaller axis-aligned rectangle; add "center" option for `loc` argument; and
+  add `bty` argument, determines if a box is to be drawn around the inset map.
 
 - Update *leaflet-search.min.js* and *leaflet-search.min.css* files to version 2.8.0.
 
@@ -77,7 +71,7 @@
 
 - In `PlotMap` function, fix bug introduced by previous fix of raster range calculation.
 
-- Made `AddCertificate` an 'internal' function.
+- Made `AddCertificate` an internal function.
 
 - Add argument checks using **checkmate** package.
 
@@ -226,7 +220,7 @@
 
 - Change NEWS file to markdown format.
 
-- Remove "misc" folder from ".Rbuildignore", adds the "misc/preamble.tex" file back to the package build.
+- Remove *misc* folder from *.Rbuildignore* file, adds the *misc/preamble.tex* file back to the package build.
 
 # inlmisc 0.2.1
 
