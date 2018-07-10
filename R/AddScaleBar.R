@@ -1,14 +1,17 @@
 
 #' Add Scale Bar to Plot
 #'
-#' This function can be used to add a scale bar to a plot.
+#' This function can be used to add a scale bar (also known as a rake scale) to a plot.
 #'
 #' @param unit 'character'.
-#'   Label describing the unit of measurement of scale distances, for example "METERS".
+#'   Vector of length 1 or 2.
+#'   Label(s) describing the unit of measurement of scale distances, such as "METERS".
 #' @param conv.fact 'numeric'.
-#'   Conversion factor for changing the unit of measurement for scale distances.
+#'   Vector of length 1 or 2.
+#'   Conversion factor(s) for changing the unit of measurement for scale distances.
 #'   For example, if user coordinates of the plotting region are in meters,
 #'   specify \code{3.28084} to display scale distances in feet.
+#'   Specify a second conversion factor to create a dual-unit scale bar.
 #' @param vert.exag 'logical', 'numeric', or 'character'.
 #'   Either a logical value indicating whether to include a vertical exaggeration label;
 #'   or a custom \emph{y/x} aspect ratio to include in this label.
@@ -38,12 +41,16 @@
 #' plot(-100:100, -100:100, type = "n", xlab = "x in meters", ylab = "y in meters", asp = 2)
 #' AddScaleBar()
 #' AddScaleBar(unit = "METERS", loc = "topleft")
-#' AddScaleBar(unit = "METERS", vert.exag = TRUE, loc = "topright", offset = c(-0.2, 0))
-#' AddScaleBar(unit = "FEET", conv.fact = 3.28084, loc = "bottomright")
+#' AddScaleBar(unit = c("METERS", "FEET"), conv.fact = c(1, 3.28084), 
+#'             loc = "topright", offset = c(-0.2, 0))
+#' AddScaleBar(unit = c("METERS", "FEET"), conv.fact = c(1, 3.28084), vert.exag = TRUE,
+#'             loc = "bottomright", offset = c(-0.2, 0.2))
 #'
 #' plot(c(-38.31, -35.5), c(40.96, 37.5), type = "n", xlab = "longitude", ylab = "latitude")
-#' AddScaleBar(unit = "km", longlat = TRUE)
-#' AddScaleBar(unit = "mi", conv.fact = 0.621371, longlat = TRUE, loc = "topright")
+#' AddScaleBar(unit = "KILOMETERS", longlat = TRUE)
+#' AddScaleBar(unit = "MILES", conv.fact = 0.621371, longlat = TRUE, loc = "topright")
+#' AddScaleBar(unit = c("KILOMETERS", "MILES"), conv.fact = c(1, 0.621371), 
+#'             longlat = TRUE, loc = "topleft")
 #'
 
 AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE,
@@ -82,20 +89,20 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
     ds1 <- ds1 * conv.fact[1]  # distance between plot tick marks in scale units
     bp <- pretty(c(0, .Round(ds1)), min.n=2)  # pretty breakpoints
     ds2 <- diff(range(bp))  # pretty distance between plot tick marks in scale units
-    lab_val <- ds2  # number label for last tick mark on scale
+    val <- ds2  # number label for last tick mark on scale
     len <- dx * ds2 / ds1  # length of scale bar in user units
     at <- len * bp / max(bp)  # scale tick-mark distances in user units
   } else {
     at <- pretty(c(0, .Round(dx * conv.fact[1])), min.n=2)  # scale tick-mark locations in scale units
     len <- diff(range(at))  # length of scale bar in user units
-    lab_val <- len  # number label for last tick mark on scale
-    at <- at / conv.fact[1]  # scale tick-mark distances in user units
+    val <- len  # number label for last tick mark on scale
     len <- len / conv.fact[1]  # length of scale bar in user units
+    at <- at / conv.fact[1]  # scale tick-mark distances in user units
   }
 
   # create scale-bar labels
-  lab_val <- format(lab_val, big.mark=",")
-  lab <-  ifelse(is.na(unit[1]), lab_val, paste(lab_val, unit[1]))
+  val <- format(val, big.mark=",")
+  lab <- ifelse(is.na(unit[1]), val, paste(val, unit[1]))
 
   # determine user coordinate at origin of scale
   sw <- graphics::strwidth("M", units="user", cex=1)  # string width in user units
@@ -120,14 +127,28 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   for (i in xat) graphics::lines(rbind(c(i, xy[2]), c(i, xy[2] + tcl)), lwd=0.5)
 
   # draw tick-mark labels at extremes of scale bar
-  lab_val_sw <- graphics::strwidth(lab_val, units="user", cex=0.7)
+  val_sw <- graphics::strwidth(val, units="user", cex=0.7)
   graphics::text(xy[1], xy[2] + tcl, "0", adj=c(0.5, -0.6), cex=0.7)
-  graphics::text(xy[1] + len - lab_val_sw / 2, xy[2] + tcl, lab, adj=c(0, -0.6), cex=0.7)
+  graphics::text(xy[1] + len - val_sw / 2, xy[2] + tcl, lab, adj=c(0, -0.6), cex=0.7)
+  
+  # add scale for dual units
+  if (!is.na(conv.fact[2])) {
+    at <- grDevices::axisTicks(c(0, len * conv.fact[2]), log=FALSE, nint=4)
+    val <- format(utils::tail(at, 1), big.mark=",")
+    lab <- ifelse(is.na(unit[2]), val, paste(val, unit[2]))
+    xat <- xy[1] + at / conv.fact[2]
+    val_sw <- graphics::strwidth(val, units="user", cex=0.7)
+    for (i in xat) graphics::lines(rbind(c(i, xy[2]), c(i, xy[2] - tcl)), lwd=0.5)
+    graphics::text(xy[1], xy[2] - tcl, "0", adj=c(0.5, 1.4), cex=0.7)
+    graphics::text(utils::tail(xat, 1) - val_sw / 2, xy[2] - tcl, 
+                   lab, adj=c(0, 1.4), cex=0.7)
+  }
 
   # draw label explaining vertical exaggeration beneath scale bar
   if (vert.exag) {
     txt <- sprintf("VERTICAL EXAGGERATION x%s", asp)
-    graphics::text(xy[1] + len / 2, xy[2], txt, cex=0.7, pos=1)
+    y <- xy[2] - if (is.na(conv.fact[2])) 0 else sh
+    graphics::text(xy[1] + len / 2, y, txt, cex=0.7, pos=1)
   }
 }
 

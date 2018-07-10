@@ -10,12 +10,15 @@ AddScaleBar(unit = NULL, conv.fact = NULL, vert.exag = NULL,
 }
 \arguments{
 \item{unit}{'character'.
-Label describing the unit of measurement of scale distances, for example "METERS".}
+Vector of length 1 or 2.
+Label(s) describing the unit of measurement of scale distances, such as "METERS".}
 
 \item{conv.fact}{'numeric'.
-Conversion factor for changing the unit of measurement for scale distances.
+Vector of length 1 or 2.
+Conversion factor(s) for changing the unit of measurement for scale distances.
 For example, if user coordinates of the plotting region are in meters,
-specify \code{3.28084} to display scale distances in feet.}
+specify \code{3.28084} to display scale distances in feet.
+Specify a second conversion factor to create a dual-unit scale bar.}
 
 \item{vert.exag}{'logical', 'numeric', or 'character'.
 Either a logical value indicating whether to include a vertical exaggeration label;
@@ -39,18 +42,22 @@ to the position of the scale bar, in inches.}
 Used for the side-effect of a scale bar drawn on the current graphics device.
 }
 \description{
-This function can be used to add a scale bar to a plot.
+This function can be used to add a scale bar (also known as a rake scale) to a plot.
 }
 \examples{
 plot(-100:100, -100:100, type = "n", xlab = "x in meters", ylab = "y in meters", asp = 2)
 AddScaleBar()
 AddScaleBar(unit = "METERS", loc = "topleft")
-AddScaleBar(unit = "METERS", vert.exag = TRUE, loc = "topright", offset = c(-0.2, 0))
-AddScaleBar(unit = "FEET", conv.fact = 3.28084, loc = "bottomright")
+AddScaleBar(unit = c("METERS", "FEET"), conv.fact = c(1, 3.28084), 
+            loc = "topright", offset = c(-0.2, 0))
+AddScaleBar(unit = c("METERS", "FEET"), conv.fact = c(1, 3.28084), vert.exag = TRUE,
+            loc = "bottomright", offset = c(-0.2, 0.2))
 
 plot(c(-38.31, -35.5), c(40.96, 37.5), type = "n", xlab = "longitude", ylab = "latitude")
-AddScaleBar(unit = "km", longlat = TRUE)
-AddScaleBar(unit = "mi", conv.fact = 0.621371, longlat = TRUE, loc = "topright")
+AddScaleBar(unit = "KILOMETERS", longlat = TRUE)
+AddScaleBar(unit = "MILES", conv.fact = 0.621371, longlat = TRUE, loc = "topright")
+AddScaleBar(unit = c("KILOMETERS", "MILES"), conv.fact = c(1, 0.621371), 
+            longlat = TRUE, loc = "topleft")
 
 }
 \seealso{

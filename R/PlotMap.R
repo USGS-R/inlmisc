@@ -171,8 +171,9 @@
 #' Pal <- function(n) viridisLite::magma(n, begin = 0.3)
 #' breaks <- seq(0, 2000, by = 200)
 #' PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
-#'         scale.loc = "bottomright", contour.lines = list(col = "#1F1F1F"),
-#'         draw.key = FALSE, simplify = 0)
+#'         contour.lines = list(col = "#1F1F1F"), draw.key = FALSE, simplify = 0)
+#' AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371), 
+#'             loc = "bottomright", offset = c(-0.4, 0.1))
 #' AddGradientLegend(breaks, Pal, at = breaks, title = "Explanation", loc = "topleft",
 #'                   inset = c(0.1, 0.1), strip.dim = c(2, 20))
 #'
