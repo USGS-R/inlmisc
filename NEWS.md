@@ -6,7 +6,7 @@
 
 - In `ToScientific` function, better identify whether to print numeric values in fixed or scientific notation.
 
-- In `AddScaleBar` function, non-backward compatible changes to arguments and formatting improvements.
+- In `AddScaleBar` function, non-backward compatible argument changes and formatting improvements.
 
 - In `PlotGraph` function: fix bug that resulted in an error when `type = "n"`; and
   add `main` argument for placing a title at the top of the plot.

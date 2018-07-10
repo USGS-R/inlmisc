@@ -18,7 +18,7 @@ Vector of length 1 or 2.
 Conversion factor(s) for changing the unit of measurement for scale distances.
 For example, if user coordinates of the plotting region are in meters,
 specify \code{3.28084} to display scale distances in feet.
-Specify a second conversion factor to create a dual-unit scale bar.}
+Include a second conversion factor to create a dual-unit scale bar.}
 
 \item{vert.exag}{'logical', 'numeric', or 'character'.
 Either a logical value indicating whether to include a vertical exaggeration label;
