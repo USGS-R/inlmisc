@@ -1,4 +1,4 @@
-# inlmisc 0.4.0.9000 
+# inlmisc 0.4.1
 
 - In `PlotGraph` function, improve placement of tick marks.
 

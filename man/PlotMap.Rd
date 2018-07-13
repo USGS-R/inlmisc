@@ -207,11 +207,11 @@ credit <- paste("Data collected in a flood plain of the river Meuse,",
                 "\\nand iterpolated on a grid with 40-meter by 40-meter spacing",
                 "using inverse distance weighting.")
 PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
-        contour.lines = list(col = "#1F1F1F"), credit = credit, 
+        contour.lines = list(col = "#1F1F1F"), credit = credit,
         draw.key = FALSE, simplify = 0)
-AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371), 
+AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371),
             loc = "bottomright", offset = c(-0.4, 0.1))
-AddGradientLegend(breaks, Pal, at = breaks, 
+AddGradientLegend(breaks, Pal, at = breaks,
                   title = "Topsoil zinc\\nconcentration\\n(ppm)", loc = "topleft",
                   inset = c(0.05, 0.1), strip.dim = c(2, 20))
 
@@ -222,9 +222,9 @@ r <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
                     crs = "+init=epsg:27200")
 credit <- paste("Digitized from a topographic map by Ross Ihaka",
                 "on a grid with 10-meter by 10-meter spacing.")
-explanation <- "Topographic information on Auckland's Maunga Whau volcano."
-PlotMap(r, pal = terrain.colors, scale.loc = "bottomright",
-        explanation = explanation, credit = credit, shade = list(alpha = 0.3), 
+explanation <- "Elevation on Auckland's Maunga Whau volcano, in meters."
+PlotMap(r, extend.z = TRUE, pal = terrain.colors, scale.loc = "bottomright",
+        explanation = explanation, credit = credit, shade = list(alpha = 0.3),
         contour.lines = list(col = "#1F1F1F"), useRaster = TRUE)
 
 out <- PlotMap(r, file = "Rplots1.pdf")

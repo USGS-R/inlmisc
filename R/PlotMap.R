@@ -155,7 +155,7 @@
 #' rat <- cbind(raster::levels(r)[[1]], land.cover = c("Pine", "Oak", "Meadow"))
 #' levels(r) <- rat
 #' PlotMap(r)
-#' 
+#'
 #' data(meuse, meuse.grid, package = "sp")
 #' sp::coordinates(meuse.grid) <- ~x+y
 #' sp::proj4string(meuse.grid) <- sp::CRS("+init=epsg:28992")
@@ -171,14 +171,14 @@
 #'                 "\nand iterpolated on a grid with 40-meter by 40-meter spacing",
 #'                 "using inverse distance weighting.")
 #' PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
-#'         contour.lines = list(col = "#1F1F1F"), credit = credit, 
+#'         contour.lines = list(col = "#1F1F1F"), credit = credit,
 #'         draw.key = FALSE, simplify = 0)
-#' AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371), 
+#' AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371),
 #'             loc = "bottomright", offset = c(-0.4, 0.1))
-#' AddGradientLegend(breaks, Pal, at = breaks, 
+#' AddGradientLegend(breaks, Pal, at = breaks,
 #'                   title = "Topsoil zinc\nconcentration\n(ppm)", loc = "topleft",
 #'                   inset = c(0.05, 0.1), strip.dim = c(2, 20))
-#' 
+#'
 #' m <- t(datasets::volcano)[61:1, ]
 #' x <- seq(from = 6478705, length.out = 87, by = 10)
 #' y <- seq(from = 2667405, length.out = 61, by = 10)
@@ -186,19 +186,19 @@
 #'                     crs = "+init=epsg:27200")
 #' credit <- paste("Digitized from a topographic map by Ross Ihaka",
 #'                 "on a grid with 10-meter by 10-meter spacing.")
-#' explanation <- "Topographic information on Auckland's Maunga Whau volcano."
-#' PlotMap(r, pal = terrain.colors, scale.loc = "bottomright",
-#'         explanation = explanation, credit = credit, shade = list(alpha = 0.3), 
+#' explanation <- "Elevation on Auckland's Maunga Whau volcano, in meters."
+#' PlotMap(r, extend.z = TRUE, pal = terrain.colors, scale.loc = "bottomright",
+#'         explanation = explanation, credit = credit, shade = list(alpha = 0.3),
 #'         contour.lines = list(col = "#1F1F1F"), useRaster = TRUE)
-#' 
+#'
 #' out <- PlotMap(r, file = "Rplots1.pdf")
 #' print(out)
-#' 
+#'
 #' pdf(file = "Rplots2.pdf", width = out$din[1], height = out$din[2])
 #' PlotMap(r)
 #' raster::contour(r, col = "white", add = TRUE)
 #' dev.off()
-#' 
+#'
 #' file.remove(c("Rplots1.pdf", "Rplots2.pdf"))
 #' graphics.off()
 #'
@@ -515,7 +515,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
       rr <- r * zfact
       hs <- raster::hillShade(slope=raster::terrain(rr),
                               aspect=raster::terrain(rr, opt="aspect"),
-                              angle=angle, direction=direc)
+                              angle=angle,
+                              direction=direc)
       raster::image(hs, maxpixels=length(hs), useRaster=TRUE,
                     col=grDevices::grey(0:255 / 255, alpha=alpha), add=TRUE)
     }
