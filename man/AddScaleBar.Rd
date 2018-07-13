@@ -10,15 +10,15 @@ AddScaleBar(unit = NULL, conv.fact = NULL, vert.exag = NULL,
 }
 \arguments{
 \item{unit}{'character'.
-Vector of length 1 or 2.
-Label(s) describing the unit of measurement of scale distances, such as "METERS".}
+Vector of length 1 or 2 giving the
+label(s) describing the unit of measurement of scale distances, such as "METERS".}
 
 \item{conv.fact}{'numeric'.
-Vector of length 1 or 2.
-Conversion factor(s) for changing the unit of measurement for scale distances.
+Vector of length 1 or 2 giving the
+conversion factor(s) for changing the unit of measurement for scale distances.
 For example, if user coordinates of the plotting region are in meters,
 specify \code{3.28084} to display scale distances in feet.
-Include a second conversion factor to create a dual-unit scale bar.}
+A dual-unit scale bar is created by specifying a second conversion factor.}
 
 \item{vert.exag}{'logical', 'numeric', or 'character'.
 Either a logical value indicating whether to include a vertical exaggeration label;
