@@ -4,11 +4,16 @@
 \alias{GetTolColors}
 \title{Color Palette for Qualitative Data}
 \usage{
-GetTolColors(n, alpha = 1, plot = FALSE)
+GetTolColors(n, scheme = c("bright", "vibrant", "muted", "light"),
+  alpha = NULL, plot = FALSE)
 }
 \arguments{
 \item{n}{'integer'.
-Number of colors to be in the palette, the maximum is 21.}
+Number of colors to be in the palette, the maximum is based on the specified color scheme.}
+
+\item{scheme}{'character'.
+Qualitative color scheme:
+\code{"bright"}, \code{"vibrant"}, \code{"muted"}, or \code{"light"}.}
 
 \item{alpha}{'numeric'.
 Alpha transparency, parameter values range from 0 (fully transparent) to 1 (fully opaque).
@@ -22,19 +27,22 @@ Returns a 'character' vector of length \code{n} with elements of 7 or 9 characte
   "#" followed by the red, blue, green, and optionally alpha values in hexadecimal.
 }
 \description{
-This function creates a vector of \code{n} contiguous colors from color schemes by Paul Tol (2012).
+This function creates a vector of \code{n} contiguous colors from
+qualitative color schemes by Paul Tol (2018).
 }
 \examples{
-op <- par(mfrow = c(2, 1), oma = c(1, 1, 1, 1))
-GetTolColors(7, plot = TRUE)
-GetTolColors(21, alpha = 0.85, plot = TRUE)
+op <- par(mfrow = c(4, 1), oma = c(1, 1, 1, 1))
+GetTolColors(7, scheme = "bright",  plot = TRUE)
+GetTolColors(7, scheme = "vibrant", plot = TRUE)
+GetTolColors(9, scheme = "muted",   plot = TRUE)
+GetTolColors(9, scheme = "light",   plot = TRUE)
 par(op)
 
 }
 \references{
-Tol, Paul, 2012, Colour Schemes:
-  SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 2.2, 16 p.,
-  accesed January 26, 2018 at \url{https://personal.sron.nl/~pault/colourschemes.pdf}.
+Tol, Paul, 2018, Colour Schemes:
+  SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.0, 17 p.,
+  accesed July 18, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
