@@ -1,4 +1,6 @@
-# inlmisc 0.4.1
+# inlmisc 0.4.2
+
+- In `GetTolColors` function, revise color schemes based on issue 3.0 of technical note.
 
 - In `PlotGraph` function, improve placement of tick marks.
 
