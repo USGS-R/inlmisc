@@ -9,12 +9,13 @@ GetTolColors(n, scheme = c("bright", "vibrant", "muted", "light", "rainbow"),
 }
 \arguments{
 \item{n}{'integer'.
-Number of colors to be in the palette, the maximum value is based on the specified color scheme.}
+Number of colors to be in the palette, the maximum value is
+dependent on the specified color scheme.}
 
 \item{scheme}{'character'.
-Color scheme: select
-\code{"bright"}, \code{"vibrant"}, \code{"muted"}, or \code{"light"} for sequential colors; and
-\code{"rainbow"} for discrete colors.
+Color scheme: select \code{"bright"}, \code{"vibrant"},
+\code{"muted"}, or \code{"light"} for qualitative colors; and
+\code{"rainbow"} for sequential colors.
 Where \code{n < 8} for \code{"bright"} and \code{"vibrant"},
 \code{n < 10} for \code{"muted"} and \code{"light"}, and
 \code{n < 24} for \code{"rainbow"}.}
@@ -31,8 +32,8 @@ Returns a 'character' vector of length \code{n} with elements of 7 or 9 characte
   \code{"#"} followed by the red, blue, green, and optionally alpha values in hexadecimal.
 }
 \description{
-This function creates a vector of \code{n} contiguous colors from
-color schemes by Paul Tol (2018).
+This function creates a vector of \code{n} colors from
+qualitative and sequential color schemes by Paul Tol (2018).
 }
 \examples{
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
@@ -42,6 +43,8 @@ GetTolColors( 9, scheme = "muted",   plot = TRUE)
 GetTolColors( 9, scheme = "light",   plot = TRUE)
 GetTolColors(23, scheme = "rainbow", plot = TRUE)
 par(op)
+
+GetTolColors(10, scheme = "rainbow", alpha = 0.5, plot = TRUE)
 
 }
 \references{

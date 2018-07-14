@@ -1,14 +1,15 @@
 #' Tol Color Palettes
 #'
-#' This function creates a vector of \code{n} contiguous colors from
-#' color schemes by Paul Tol (2018).
+#' This function creates a vector of \code{n} colors from
+#' qualitative and sequential color schemes by Paul Tol (2018).
 #'
 #' @param n 'integer'.
-#'   Number of colors to be in the palette, the maximum value is based on the specified color scheme.
+#'   Number of colors to be in the palette, the maximum value is
+#'   dependent on the specified color scheme.
 #' @param scheme 'character'.
-#'   Color scheme: select
-#'   \code{"bright"}, \code{"vibrant"}, \code{"muted"}, or \code{"light"} for sequential colors; and
-#'   \code{"rainbow"} for discrete colors.
+#'   Color scheme: select \code{"bright"}, \code{"vibrant"},
+#'   \code{"muted"}, or \code{"light"} for qualitative colors; and
+#'   \code{"rainbow"} for sequential colors.
 #'   Where \code{n < 8} for \code{"bright"} and \code{"vibrant"},
 #'   \code{n < 10} for \code{"muted"} and \code{"light"}, and
 #'   \code{n < 24} for \code{"rainbow"}.
@@ -40,6 +41,8 @@
 #' GetTolColors( 9, scheme = "light",   plot = TRUE)
 #' GetTolColors(23, scheme = "rainbow", plot = TRUE)
 #' par(op)
+#'
+#' GetTolColors(10, scheme = "rainbow", alpha = 0.5, plot = TRUE)
 #'
 
 GetTolColors <- function(n, scheme=c("bright", "vibrant", "muted", "light", "rainbow"),
@@ -143,10 +146,11 @@ GetTolColors <- function(n, scheme=c("bright", "vibrant", "muted", "light", "rai
   }
 
   col <- if (scheme == "rainbow") pal[idx[[n]]] else pal[1:n]
+  labels <- names(col)
 
   if (!is.null(alpha)) {
     col <- grDevices::adjustcolor(col, alpha.f=alpha)
-    names(col) <- names(pal)[1:n]
+    names(col) <- labels
   }
 
   if (plot) {
@@ -154,7 +158,7 @@ GetTolColors <- function(n, scheme=c("bright", "vibrant", "muted", "light", "rai
                            axes=FALSE, xlab="", ylab="", main=scheme)
     graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border="#D3D3D3")
     at <- 0:(n - 1) / n + (1 / (2 * n))
-    graphics::axis(1, at=at, labels=names(col), tick=FALSE)
+    graphics::axis(1, at=at, labels=labels, tick=FALSE)
   }
 
   return(col)
