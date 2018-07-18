@@ -1,6 +1,6 @@
 # inlmisc 0.4.2.9000
 
-- ...
+- In `GetTolColors` function, add additional schemes for interpolated colors.
 
 # inlmisc 0.4.2
 
