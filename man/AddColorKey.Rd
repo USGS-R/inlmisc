@@ -71,7 +71,7 @@ is <- as.logical(seq_along(breaks) \%\% 2)
 AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
             scipen = NULL, log = TRUE)
 AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
-AddColorKey(is.categorical = TRUE, col = GetTolColors(5))
+AddColorKey(is.categorical = TRUE, col = GetTolColors(5, scheme = "bright"))
 par(op)
 
 }

@@ -55,7 +55,7 @@
 #' AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
 #'             scipen = NULL, log = TRUE)
 #' AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
-#' AddColorKey(is.categorical = TRUE, col = GetTolColors(5))
+#' AddColorKey(is.categorical = TRUE, col = GetTolColors(5, scheme = "bright"))
 #' par(op)
 #'
 
@@ -80,7 +80,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
   }
 
   if (missing(col))
-    col <- grDevices::rainbow(length(breaks) - 1L, start=0.0, end=0.8)
+    col <- GetTolColors(length(breaks) - 1L, start=0.0, end=0.8)
 
   if (is.null(at)) at <- breaks
 

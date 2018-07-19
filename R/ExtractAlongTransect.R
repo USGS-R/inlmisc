@@ -51,7 +51,7 @@
 #' ylim <- range(vapply(segs, function(i) range(i@data[, "value"], na.rm = TRUE), c(0, 0)))
 #' plot(NA, type = "n", xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim)
 #' for (i in seq_along(segs)) lines(segs[[i]]@data[, c("dist", "value")],
-#'                                  col = rainbow(length(segs))[i])
+#'                                  col = GetTolColors(length(segs))[i])
 #' coords <- sp::coordinates(transect)
 #' n <- length(transect)
 #' d <- cumsum(c(0, as.matrix(dist((coords)))[cbind(1:(n - 1), 2:n)]))

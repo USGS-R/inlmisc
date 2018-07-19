@@ -89,7 +89,7 @@ GetTolColors( 34, scheme = "smooth rainbow",   plot = TRUE)
 GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
 par(op)
 
-# Cover schemes
+# Cover scheme
 GetTolColors(14, scheme = "ground cover", plot = TRUE)
 
 # Alpha transparency
