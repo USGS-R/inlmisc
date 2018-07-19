@@ -8,7 +8,8 @@
 #'   dependent on the specified color scheme, see \sQuote{Details} section.
 #' @param scheme 'character'.
 #'   Color scheme: select
-#'     \code{"bright"}, \code{"vibrant"}, \code{"muted"}, or \code{"light"} for qualitative colors;
+#'     \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
+#'       \code{"dark"}, or \code{"light"} for qualitative colors;
 #'     \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors;
 #'     \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors; and
 #'     \code{"ground cover"} for global land cover classification.
@@ -30,13 +31,14 @@
 #'   \code{n < 8} for \code{"bright"} and \code{"vibrant"};
 #'   \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
 #'   \code{n < 24} for \code{"discrete rainbow"}.
-#'   The \code{"ground cover"} color scheme is intended to be accessed in its entirety (\code{n = 14})
-#'   and subset using element names.
+#'   The \code{"ground cover"} (\code{n = 14}), \code{"pale"} (\code{n = 6}),
+#'   and \code{"dark"} (\code{n = 6}) schemes are intended to be
+#'   accessed in their entirety and subset using element names.
 #'
 #' @return Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
 #'   \code{"#"} followed by the red, blue, green, and optionally alpha values in hexadecimal.
-#'   For some schemes the returned object includes a \code{"bad"} attribute,
-#'   the color meant to be used for bad data.
+#'   For some schemes the returned object includes a \code{"bad"} attribute that
+#'   indicates the color assigned to bad data.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -51,31 +53,57 @@
 #'
 #' @examples
 #'
-#' col <- GetTolColors(100); print(col)
+#' col <- GetTolColors(3); print(col)
 #' attr(col, "bad")
 #'
-#' # Qualitative
-#' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
-#' GetTolColors(7, scheme = "bright", plot = TRUE)
+#' # Qualitative schemes
+#' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+#' GetTolColors(7, scheme = "bright",  plot = TRUE)
 #' GetTolColors(7, scheme = "vibrant", plot = TRUE)
-#' GetTolColors(9, scheme = "muted", plot = TRUE)
-#' GetTolColors(9, scheme = "light", plot = TRUE)
-#'
-#' # Diverging
-#' GetTolColors(255, scheme = "sunset", plot = TRUE)
-#' GetTolColors(255, scheme = "BuRd", plot = TRUE)
-#' GetTolColors(255, scheme = "PRGn", plot = TRUE)
-#' GetTolColors( 11, scheme = "PRGn", plot = TRUE)
-#'
-#' # Sequential
-#' GetTolColors(255, scheme = "YlOrBr", plot = TRUE)
-#' GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
-#' GetTolColors(255, scheme = "smooth rainbow", plot = TRUE)
-#' GetTolColors(255, scheme = "smooth rainbow", start = 0.5, plot = TRUE)
+#' GetTolColors(9, scheme = "muted",   plot = TRUE)
+#' GetTolColors(6, scheme = "pale",    plot = TRUE)
+#' GetTolColors(6, scheme = "dark",    plot = TRUE)
+#' GetTolColors(9, scheme = "light",   plot = TRUE)
 #' par(op)
 #'
-#' # Cover
+#' # Diverging schemes
+#' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+#' GetTolColors( 11, scheme = "sunset", plot = TRUE)
+#' GetTolColors(255, scheme = "sunset", plot = TRUE)
+#' GetTolColors(  9, scheme = "BuRd",   plot = TRUE)
+#' GetTolColors(255, scheme = "BuRd",   plot = TRUE)
+#' GetTolColors(  9, scheme = "PRGn",   plot = TRUE)
+#' GetTolColors(255, scheme = "PRGn",   plot = TRUE)
+#' par(op)
+#'
+#' # Sequential schemes
+#' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+#' GetTolColors(  9, scheme = "YlOrBr",           plot = TRUE)
+#' GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
+#' GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors( 34, scheme = "smooth rainbow",   plot = TRUE)
+#' GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
+#' par(op)
+#'
+#' # Cover schemes
 #' GetTolColors(14, scheme = "ground cover", plot = TRUE)
+#'
+#' # Alpha transparency
+#' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+#' GetTolColors(34, alpha = 1.0, plot = TRUE)
+#' GetTolColors(34, alpha = 0.8, plot = TRUE)
+#' GetTolColors(34, alpha = 0.6, plot = TRUE)
+#' GetTolColors(34, alpha = 0.4, plot = TRUE)
+#' GetTolColors(34, alpha = 0.2, plot = TRUE)
+#' par(op)
+#'
+#' # Color levels
+#' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+#' GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
+#' GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
+#' GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
+#' GetTolColors(255, start = 0.2, end = 0.8, plot = TRUE)
+#' par(op)
 #'
 
 GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
@@ -84,6 +112,8 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
   nmax <- c("bright"           = 7,    # qualitative
             "vibrant"          = 7,
             "muted"            = 9,
+            "pale"             = 6,
+            "dark"             = 6,
             "light"            = 9,
             "sunset"           = Inf,  # diverging
             "BuRd"             = Inf,
@@ -130,6 +160,20 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "olive"        = "#999933",
              "purple"       = "#AA4499")
     bad <- "#DDDDDD"
+  } else if (scheme == "pale") {
+    pal <- c("pale blue"    = "#BBCCEE",
+             "pale cyan"    = "#CCEEFF",
+             "pale green"   = "#CCDDAA",
+             "pale yellow"  = "#EEEEBB",
+             "pale red"     = "#FFCCCC",
+             "pale grey"    = "#DDDDDD")
+  } else if (scheme == "dark") {
+    pal <- c("dark blue"    = "#222255",
+             "dark cyan"    = "#225555",
+             "dark green"   = "#225522",
+             "dark yellow"  = "#666633",
+             "dark red"     = "#663333",
+             "dark grey"    = "#555555")
   } else if (scheme == "light") {
     pal <- c("libht blue"   = "#77AADD",
              "orange"       = "#EE8866",
@@ -270,7 +314,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "urban and built"             = "#BB0011")
   }
 
-  if (scheme %in% c("bright", "vibrant", "muted", "light", "ground cover")) {
+  if (scheme %in% c("bright", "vibrant", "muted", "pale", "dark", "light", "ground cover")) {
     col <- pal[1:n]
   } else if (scheme == "discrete rainbow") {
     idx <- list(c(10),
@@ -307,23 +351,30 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
 
   labels <- names(col)
   if (!is.null(alpha)) {
-    col <- grDevices::adjustcolor(col, alpha.f=alpha)
-    names(col) <- labels
+    col <- grDevices::adjustcolor(col, alpha.f=alpha); names(col) <- labels
+    if (!is.null(bad)) bad <- grDevices::adjustcolor(bad, alpha.f=alpha)
   }
 
   attr(col, "bad") <- bad
 
   if (plot) {
+    if (any(is <- c(!is.null(alpha), start > 0 | end < 1))) {
+      txt <- c(paste0("alpha = ", alpha), paste0("start = ", start, ", end = ", end))
+      main <- sprintf("%s (%s)", scheme, paste(txt[is], collapse=", "))
+    } else {
+      main <- scheme
+    }
     graphics::plot.default(0, 0, type="n", xlim=c(0, 1), ylim=c(0, 1),
-                           axes=FALSE, xlab="", ylab="", main=scheme)
-    border <- "#D3D3D3"
+                           axes=FALSE, xlab="", ylab="", main=main)
     if (n > 50) {
-      border <- NA
+      border <- NA  # continuous
       labels <- FALSE
+    } else {
+      border <- "#D3D3D3"  # discrete
     }
     graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border=border)
     at <- 0:(n - 1) / n + 1 / (2 * n)
-    graphics::axis(1, at=at, labels=labels, tick=FALSE)
+    graphics::axis(1, at=at, labels=labels, tick=FALSE, mgp=c(3, 0.2, 0))
   }
 
   return(col)

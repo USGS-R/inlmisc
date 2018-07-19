@@ -14,7 +14,8 @@ dependent on the specified color scheme, see \sQuote{Details} section.}
 
 \item{scheme}{'character'.
 Color scheme: select
-  \code{"bright"}, \code{"vibrant"}, \code{"muted"}, or \code{"light"} for qualitative colors;
+  \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
+    \code{"dark"}, or \code{"light"} for qualitative colors;
   \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors;
   \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors; and
   \code{"ground cover"} for global land cover classification.}
@@ -38,8 +39,8 @@ Whether to display the color palette.}
 \value{
 Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
   \code{"#"} followed by the red, blue, green, and optionally alpha values in hexadecimal.
-  For some schemes the returned object includes a \code{"bad"} attribute,
-  the color meant to be used for bad data.
+  For some schemes the returned object includes a \code{"bad"} attribute that
+  indicates the color assigned to bad data.
 }
 \description{
 This function creates a vector of \code{n} colors from
@@ -50,36 +51,63 @@ Limits on the maximum number of discrete colors for a scheme are:
   \code{n < 8} for \code{"bright"} and \code{"vibrant"};
   \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
   \code{n < 24} for \code{"discrete rainbow"}.
-  The \code{"ground cover"} color scheme is intended to be accessed in its entirety (\code{n = 14})
-  and subset using element names.
+  The \code{"ground cover"} (\code{n = 14}), \code{"pale"} (\code{n = 6}),
+  and \code{"dark"} (\code{n = 6}) schemes are intended to be
+  accessed in their entirety and subset using element names.
 }
 \examples{
 
-col <- GetTolColors(100); print(col)
+col <- GetTolColors(3); print(col)
 attr(col, "bad")
 
-# Qualitative
-op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
-GetTolColors(7, scheme = "bright", plot = TRUE)
+# Qualitative schemes
+op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+GetTolColors(7, scheme = "bright",  plot = TRUE)
 GetTolColors(7, scheme = "vibrant", plot = TRUE)
-GetTolColors(9, scheme = "muted", plot = TRUE)
-GetTolColors(9, scheme = "light", plot = TRUE)
-
-# Diverging
-GetTolColors(255, scheme = "sunset", plot = TRUE)
-GetTolColors(255, scheme = "BuRd", plot = TRUE)
-GetTolColors(255, scheme = "PRGn", plot = TRUE)
-GetTolColors( 11, scheme = "PRGn", plot = TRUE)
-
-# Sequential
-GetTolColors(255, scheme = "YlOrBr", plot = TRUE)
-GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors(255, scheme = "smooth rainbow", plot = TRUE)
-GetTolColors(255, scheme = "smooth rainbow", start = 0.5, plot = TRUE)
+GetTolColors(9, scheme = "muted",   plot = TRUE)
+GetTolColors(6, scheme = "pale",    plot = TRUE)
+GetTolColors(6, scheme = "dark",    plot = TRUE)
+GetTolColors(9, scheme = "light",   plot = TRUE)
 par(op)
 
-# Cover
+# Diverging schemes
+op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+GetTolColors( 11, scheme = "sunset", plot = TRUE)
+GetTolColors(255, scheme = "sunset", plot = TRUE)
+GetTolColors(  9, scheme = "BuRd",   plot = TRUE)
+GetTolColors(255, scheme = "BuRd",   plot = TRUE)
+GetTolColors(  9, scheme = "PRGn",   plot = TRUE)
+GetTolColors(255, scheme = "PRGn",   plot = TRUE)
+par(op)
+
+# Sequential schemes
+op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+GetTolColors(  9, scheme = "YlOrBr",           plot = TRUE)
+GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
+GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
+GetTolColors( 34, scheme = "smooth rainbow",   plot = TRUE)
+GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
+par(op)
+
+# Cover schemes
 GetTolColors(14, scheme = "ground cover", plot = TRUE)
+
+# Alpha transparency
+op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+GetTolColors(34, alpha = 1.0, plot = TRUE)
+GetTolColors(34, alpha = 0.8, plot = TRUE)
+GetTolColors(34, alpha = 0.6, plot = TRUE)
+GetTolColors(34, alpha = 0.4, plot = TRUE)
+GetTolColors(34, alpha = 0.2, plot = TRUE)
+par(op)
+
+# Color levels
+op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
+GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
+GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
+GetTolColors(255, start = 0.2, end = 0.8, plot = TRUE)
+par(op)
 
 }
 \references{
