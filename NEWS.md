@@ -1,6 +1,8 @@
 # inlmisc 0.4.2.9000
 
-- In `GetTolColors` function, add additional schemes for interpolated colors.
+- In `GetTolColors` function: add color schemes;
+  change default scheme from `"bright"` to `"smooth rainbow"`;
+  add `start`, `end`, and `...` arguments.
 
 # inlmisc 0.4.2
 
