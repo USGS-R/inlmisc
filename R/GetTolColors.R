@@ -79,7 +79,7 @@
 #'
 
 GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
-                         start = 0, end = 1, ..., plot=FALSE) {
+                         start=0, end=1, ..., plot=FALSE) {
 
   nmax <- c("bright"           = 7,    # qualitative
             "vibrant"          = 7,
