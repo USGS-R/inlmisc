@@ -367,10 +367,10 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
     graphics::plot.default(0, 0, type="n", xlim=c(0, 1), ylim=c(0, 1),
                            axes=FALSE, xlab="", ylab="", main=main)
     if (n > 50) {
-      border <- NA  # continuous
+      border <- NA
       labels <- FALSE
     } else {
-      border <- "#D3D3D3"  # discrete
+      border <- "#D3D3D3"
     }
     graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border=border)
     at <- 0:(n - 1) / n + 1 / (2 * n)
