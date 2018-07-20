@@ -17,13 +17,13 @@
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 #'   Specify as \code{NULL} to exclude the alpha channel color component.
 #' @param start,end 'numeric'.
-#'   Starting and ending level in the palette, respectively.
+#'   Starting and ending color level in the palette, respectively.
 #'   Specified as a number in the interval from 0 to 1.
 #'   Applies only to interpolated color schemes:
 #'   \code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, and \code{"smooth rainbow"}.
 #' @param ...
-#'   Additional arguments to be passed to the \code{\link[grDevices]{colorRamp}} function.
-#'   Applies only to interpolated color schemes.
+#'   Additional arguments to be passed to the \code{\link[grDevices]{colorRamp}} function
+#'   and used to interpolate a color scheme.
 #' @param plot 'logical'.
 #'   Whether to display the color palette.
 #'
@@ -31,8 +31,8 @@
 #'   \code{n < 8} for \code{"bright"} and \code{"vibrant"};
 #'   \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
 #'   \code{n < 24} for \code{"discrete rainbow"}.
-#'   The \code{"ground cover"} (\code{n = 14}), \code{"pale"} (\code{n = 6}),
-#'   and \code{"dark"} (\code{n = 6}) schemes are intended to be
+#'   Schemes \code{"ground cover"} (\code{n = 14}), \code{"pale"} (\code{n = 6}),
+#'   and \code{"dark"} (\code{n = 6}) are intended to be
 #'   accessed in their entirety and subset using element names.
 #'
 #' @return Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
@@ -90,11 +90,11 @@
 #'
 #' # Alpha transparency
 #' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
-#' GetTolColors(34, alpha = 1.0, plot = TRUE)
-#' GetTolColors(34, alpha = 0.8, plot = TRUE)
-#' GetTolColors(34, alpha = 0.6, plot = TRUE)
-#' GetTolColors(34, alpha = 0.4, plot = TRUE)
-#' GetTolColors(34, alpha = 0.2, plot = TRUE)
+#' GetTolColors(23, scheme = "discrete rainbow", alpha = 1.0, plot = TRUE)
+#' GetTolColors(23, scheme = "discrete rainbow", alpha = 0.8, plot = TRUE)
+#' GetTolColors(23, scheme = "discrete rainbow", alpha = 0.6, plot = TRUE)
+#' GetTolColors(23, scheme = "discrete rainbow", alpha = 0.4, plot = TRUE)
+#' GetTolColors(23, scheme = "discrete rainbow", alpha = 0.2, plot = TRUE)
 #' par(op)
 #'
 #' # Color levels
