@@ -57,7 +57,7 @@
 #' attr(col, "bad")
 #'
 #' # Qualitative schemes
-#' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+#' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
 #' GetTolColors(7, scheme = "bright",  plot = TRUE)
 #' GetTolColors(7, scheme = "vibrant", plot = TRUE)
 #' GetTolColors(9, scheme = "muted",   plot = TRUE)
@@ -67,7 +67,7 @@
 #' par(op)
 #'
 #' # Diverging schemes
-#' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+#' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
 #' GetTolColors( 11, scheme = "sunset", plot = TRUE)
 #' GetTolColors(255, scheme = "sunset", plot = TRUE)
 #' GetTolColors(  9, scheme = "BuRd",   plot = TRUE)
@@ -77,7 +77,7 @@
 #' par(op)
 #'
 #' # Sequential schemes
-#' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+#' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
 #' GetTolColors(  9, scheme = "YlOrBr",           plot = TRUE)
 #' GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
 #' GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
@@ -89,16 +89,16 @@
 #' GetTolColors(14, scheme = "ground cover", plot = TRUE)
 #'
 #' # Alpha transparency
-#' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
-#' GetTolColors(23, scheme = "discrete rainbow", alpha = 1.0, plot = TRUE)
-#' GetTolColors(23, scheme = "discrete rainbow", alpha = 0.8, plot = TRUE)
-#' GetTolColors(23, scheme = "discrete rainbow", alpha = 0.6, plot = TRUE)
-#' GetTolColors(23, scheme = "discrete rainbow", alpha = 0.4, plot = TRUE)
-#' GetTolColors(23, scheme = "discrete rainbow", alpha = 0.2, plot = TRUE)
+#' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
+#' GetTolColors(34, alpha = 1.0, plot = TRUE)
+#' GetTolColors(34, alpha = 0.8, plot = TRUE)
+#' GetTolColors(34, alpha = 0.6, plot = TRUE)
+#' GetTolColors(34, alpha = 0.4, plot = TRUE)
+#' GetTolColors(34, alpha = 0.2, plot = TRUE)
 #' par(op)
 #'
 #' # Color levels
-#' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+#' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
 #' GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
 #' GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
 #' GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
@@ -364,17 +364,21 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
     } else {
       main <- scheme
     }
-    graphics::plot.default(0, 0, type="n", xlim=c(0, 1), ylim=c(0, 1),
-                           axes=FALSE, xlab="", ylab="", main=main)
-    if (n > 50) {
+    op <- graphics::par(mar = c(3, 2, 2, 2)); on.exit(graphics::par(op))
+    graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
+                           xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
+                           xlab="", ylab="")
+    if (n > 50) {  # criterion for when to stop showing tick labels
       border <- NA
       labels <- FALSE
     } else {
       border <- "#D3D3D3"
+      labels <- gsub(" ", "\n", labels)
     }
-    graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border=border)
-    at <- 0:(n - 1) / n + 1 / (2 * n)
-    graphics::axis(1, at=at, labels=labels, tick=FALSE, mgp=c(3, 0.2, 0))
+    graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border=border, lwd=0.5)
+    graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels,
+                   tick=FALSE, line=-0.5, padj=1, mgp=c(3, 0, 0))
+    graphics::box(lwd=0.5, col="#D3D3D3")
   }
 
   return(col)

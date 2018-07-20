@@ -61,7 +61,7 @@ col <- GetTolColors(3); print(col)
 attr(col, "bad")
 
 # Qualitative schemes
-op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
 GetTolColors(7, scheme = "bright",  plot = TRUE)
 GetTolColors(7, scheme = "vibrant", plot = TRUE)
 GetTolColors(9, scheme = "muted",   plot = TRUE)
@@ -71,7 +71,7 @@ GetTolColors(9, scheme = "light",   plot = TRUE)
 par(op)
 
 # Diverging schemes
-op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
 GetTolColors( 11, scheme = "sunset", plot = TRUE)
 GetTolColors(255, scheme = "sunset", plot = TRUE)
 GetTolColors(  9, scheme = "BuRd",   plot = TRUE)
@@ -81,7 +81,7 @@ GetTolColors(255, scheme = "PRGn",   plot = TRUE)
 par(op)
 
 # Sequential schemes
-op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
 GetTolColors(  9, scheme = "YlOrBr",           plot = TRUE)
 GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
 GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
@@ -93,16 +93,16 @@ par(op)
 GetTolColors(14, scheme = "ground cover", plot = TRUE)
 
 # Alpha transparency
-op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
-GetTolColors(23, scheme = "discrete rainbow", alpha = 1.0, plot = TRUE)
-GetTolColors(23, scheme = "discrete rainbow", alpha = 0.8, plot = TRUE)
-GetTolColors(23, scheme = "discrete rainbow", alpha = 0.6, plot = TRUE)
-GetTolColors(23, scheme = "discrete rainbow", alpha = 0.4, plot = TRUE)
-GetTolColors(23, scheme = "discrete rainbow", alpha = 0.2, plot = TRUE)
+op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
+GetTolColors(34, alpha = 1.0, plot = TRUE)
+GetTolColors(34, alpha = 0.8, plot = TRUE)
+GetTolColors(34, alpha = 0.6, plot = TRUE)
+GetTolColors(34, alpha = 0.4, plot = TRUE)
+GetTolColors(34, alpha = 0.2, plot = TRUE)
 par(op)
 
 # Color levels
-op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
+op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
 GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
 GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
 GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
