@@ -86,7 +86,9 @@
 #' par(op)
 #'
 #' # Cover scheme
+#' op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
 #' GetTolColors(14, scheme = "ground cover", plot = TRUE)
+#' par(op)
 #'
 #' # Alpha transparency
 #' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
