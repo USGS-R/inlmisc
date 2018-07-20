@@ -367,8 +367,8 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
     op <- graphics::par(mar = c(3, 2, 2, 2)); on.exit(graphics::par(op))
     graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
                            xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
-                           xlab="", ylab="")
-    if (n > 50) {  # criterion for when to stop showing tick labels
+                           xlab="", ylab="", col.main="#333333")
+    if (n > 50) {  # criterion for showing tick labels
       border <- NA
       labels <- FALSE
     } else {
@@ -377,7 +377,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
     }
     graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border=border, lwd=0.5)
     graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels,
-                   tick=FALSE, line=-0.5, padj=1, mgp=c(3, 0, 0))
+                   tick=FALSE, line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
     graphics::box(lwd=0.5, col="#D3D3D3")
   }
 
