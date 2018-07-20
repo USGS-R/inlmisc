@@ -4,25 +4,34 @@
 \alias{GetTolColors}
 \title{Tol Color Palettes}
 \usage{
-GetTolColors(n, scheme = c("bright", "vibrant", "muted", "light", "rainbow"),
-  alpha = NULL, plot = FALSE)
+GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
+  end = 1, ..., plot = FALSE)
 }
 \arguments{
 \item{n}{'integer'.
 Number of colors to be in the palette, the maximum value is
-dependent on the specified color scheme.}
+dependent on the specified color scheme, see \sQuote{Details} section.}
 
 \item{scheme}{'character'.
-Color scheme: select \code{"bright"}, \code{"vibrant"},
-\code{"muted"}, or \code{"light"} for qualitative colors; and
-\code{"rainbow"} for sequential colors.
-Where \code{n < 8} for \code{"bright"} and \code{"vibrant"},
-\code{n < 10} for \code{"muted"} and \code{"light"}, and
-\code{n < 24} for \code{"rainbow"}.}
+Color scheme: select
+  \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
+    \code{"dark"}, or \code{"light"} for qualitative colors;
+  \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors;
+  \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors; and
+  \code{"ground cover"} for global land cover classification.}
 
 \item{alpha}{'numeric'.
 Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 Specify as \code{NULL} to exclude the alpha channel color component.}
+
+\item{start, end}{'numeric'.
+Starting and ending color level in the palette, respectively.
+Specified as a number in the interval from 0 to 1.
+Applies only to interpolated color schemes:
+\code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, and \code{"smooth rainbow"}.}
+
+\item{...}{Additional arguments to be passed to the \code{\link[grDevices]{colorRamp}} function
+and used to interpolate a color scheme.}
 
 \item{plot}{'logical'.
 Whether to display the color palette.}
@@ -30,21 +39,77 @@ Whether to display the color palette.}
 \value{
 Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
   \code{"#"} followed by the red, blue, green, and optionally alpha values in hexadecimal.
+  For some schemes the returned object includes a \code{"bad"} attribute that
+  indicates the color assigned to bad data.
 }
 \description{
 This function creates a vector of \code{n} colors from
-qualitative and sequential color schemes by Paul Tol (2018).
+qualitative, diverging, and sequential color schemes by Paul Tol (2018).
+}
+\details{
+Limits on the maximum number of discrete colors for a scheme are:
+  \code{n < 8} for \code{"bright"} and \code{"vibrant"};
+  \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
+  \code{n < 24} for \code{"discrete rainbow"}.
+  Schemes \code{"ground cover"} (\code{n = 14}), \code{"pale"} (\code{n = 6}),
+  and \code{"dark"} (\code{n = 6}) are intended to be
+  accessed in their entirety and subset using element names.
 }
 \examples{
-op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0), mai = c(0.4, 0, 0.4, 0))
-GetTolColors( 7, scheme = "bright",  plot = TRUE)
-GetTolColors( 7, scheme = "vibrant", plot = TRUE)
-GetTolColors( 9, scheme = "muted",   plot = TRUE)
-GetTolColors( 9, scheme = "light",   plot = TRUE)
-GetTolColors(23, scheme = "rainbow", plot = TRUE)
+
+col <- GetTolColors(3); print(col)
+attr(col, "bad")
+
+# Qualitative schemes
+op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
+GetTolColors(7, scheme = "bright",  plot = TRUE)
+GetTolColors(7, scheme = "vibrant", plot = TRUE)
+GetTolColors(9, scheme = "muted",   plot = TRUE)
+GetTolColors(6, scheme = "pale",    plot = TRUE)
+GetTolColors(6, scheme = "dark",    plot = TRUE)
+GetTolColors(9, scheme = "light",   plot = TRUE)
 par(op)
 
-GetTolColors(10, scheme = "rainbow", alpha = 0.5, plot = TRUE)
+# Diverging schemes
+op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
+GetTolColors( 11, scheme = "sunset", plot = TRUE)
+GetTolColors(255, scheme = "sunset", plot = TRUE)
+GetTolColors(  9, scheme = "BuRd",   plot = TRUE)
+GetTolColors(255, scheme = "BuRd",   plot = TRUE)
+GetTolColors(  9, scheme = "PRGn",   plot = TRUE)
+GetTolColors(255, scheme = "PRGn",   plot = TRUE)
+par(op)
+
+# Sequential schemes
+op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
+GetTolColors(  9, scheme = "YlOrBr",           plot = TRUE)
+GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
+GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
+GetTolColors( 34, scheme = "smooth rainbow",   plot = TRUE)
+GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
+par(op)
+
+# Cover scheme
+op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
+GetTolColors(14, scheme = "ground cover", plot = TRUE)
+par(op)
+
+# Alpha transparency
+op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
+GetTolColors(34, alpha = 1.0, plot = TRUE)
+GetTolColors(34, alpha = 0.8, plot = TRUE)
+GetTolColors(34, alpha = 0.6, plot = TRUE)
+GetTolColors(34, alpha = 0.4, plot = TRUE)
+GetTolColors(34, alpha = 0.2, plot = TRUE)
+par(op)
+
+# Color levels
+op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
+GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
+GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
+GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
+GetTolColors(255, start = 0.2, end = 0.8, plot = TRUE)
+par(op)
 
 }
 \references{

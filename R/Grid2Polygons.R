@@ -85,7 +85,7 @@
 #'      labels = 1:((m + 1) * (n + 1)), cex = 0.6)
 #' at <- 1:ceiling(max(z, na.rm = TRUE))
 #' plys <- Grid2Polygons(grd, level = TRUE, at = at)
-#' cols <- rainbow(length(plys), alpha = 0.3)
+#' cols <- GetTolColors(length(plys), alpha = 0.3)
 #' sp::plot(plys, add = TRUE, col = cols)
 #' zz <- plys[[1]]
 #' legend("top", legend = zz, fill = cols, bty = "n", xpd = TRUE,
@@ -98,7 +98,7 @@
 #' p3 <- sp::Polygon(v3, hole = FALSE)
 #' p <- sp::SpatialPolygons(list(sp::Polygons(list(p1, p2, p3), 1)))
 #' plys <- Grid2Polygons(grd, level = TRUE, at = at, ply = p)
-#' cols <- rainbow(length(zz), alpha = 0.6)[zz %in% plys[[1]]]
+#' cols <- GetTolColors(length(zz), alpha = 0.6)[zz %in% plys[[1]]]
 #' sp::plot(plys, col = cols, add = TRUE)
 #'
 #' # Example 2

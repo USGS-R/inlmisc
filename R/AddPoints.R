@@ -119,7 +119,8 @@
 #'           quantile.breaks = TRUE, add = FALSE)
 #'
 #' z <- as.factor(rep(c("dog", "cat", "ant", "pig", "bat"), length.out = n))
-#' AddPoints(x, z = z, bg = GetTolColors(nlevels(z), alpha = 0.8), add = FALSE)
+#' bg <- GetTolColors(nlevels(z), scheme = "bright", alpha = 0.8)
+#' AddPoints(x, z = z, bg = bg, add = FALSE)
 #'
 #' AddPoints(x, legend.loc = NULL, add = FALSE)
 #'

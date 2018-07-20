@@ -389,12 +389,12 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     } else if (is.function(pal)) {
       cols <- pal(n)
     } else if (raster::is.factor(r)) {
-      cols <- GetTolColors(n)
+      cols <- GetTolColors(n, scheme="bright")
     } else {
       if (requireNamespace("viridisLite", quietly=TRUE))
         cols <- viridisLite::viridis(n)
       else
-        cols <- grDevices::rainbow(n, start=0.0, end=0.8)
+        cols <- GetTolColors(n, start=0.0, end=0.8)
     }
   }
   if (!all(.AreColors(cols))) stop("colors are not valid")

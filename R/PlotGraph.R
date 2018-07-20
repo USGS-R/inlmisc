@@ -101,7 +101,7 @@
 #'
 #' y <- sapply(1:3, function(i) sample((1:100) + i * 100, n, replace = TRUE))
 #' m <- cbind(as.numeric(x), y)
-#' col <- GetTolColors(3)
+#' col <- GetTolColors(3, scheme = "bright")
 #' PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b", pch = 15:17,
 #'           col = col, pt.cex = 0.9)
 #' legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
@@ -178,7 +178,7 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
 
   n <- ifelse(type == "i", 1, ncol(y))
   if (!is.character(col) && !is.logical(col))
-    col <- if (is.function(col)) col(n) else grDevices::rainbow(n, start=0.0, end=0.8)
+    col <- if (is.function(col)) col(n) else GetTolColors(n, start=0.0, end=0.8)
   lty <- rep_len(lty, length.out=n)
   lwd <- rep_len(lwd, length.out=n)
 
@@ -332,14 +332,14 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
   x <- x[is.x]
   y <- y[is.x, , drop=FALSE]
   y[y < ylim[1] & y > ylim[2]] <- NA
-  
+
   # box-and-whisker plot
-  if (type %in% c("w", "box")) {  
+  if (type %in% c("w", "box")) {
     graphics::boxplot(y, xaxt="n", yaxt="n", range=0, varwidth=TRUE, boxwex=boxwex,
                       col=col, border="#333333", add=TRUE, at=x)
-  
+
   # interval censored plot
-  } else if (type == "i") {  
+  } else if (type == "i") {
     arg <- list(length=0.015, angle=90, lwd=lwd, col=col)
     is <- is.na(y[, 1]) & !is.na(y[, 2])  # left censored
     if (any(is)) {
@@ -368,9 +368,9 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
       y0 <- y[is, 1]
       graphics::points(x0, y0, pch=pch, col=col, bg=bg, cex=pt.cex)
     }
-  
+
   # stair steps plot
-  } else if (type == "s") {  
+  } else if (type == "s") {
     for (i in seq_len(ncol(y))) {
       xx <- as.numeric(x)
       yy <- as.numeric(y[, i])
