@@ -5,7 +5,7 @@
 \title{Tol Color Palettes}
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
-  end = 1, ..., plot = FALSE)
+  end = 1, bias = 1, reverse = FALSE, plot = FALSE)
 }
 \arguments{
 \item{n}{'integer'.
@@ -30,8 +30,12 @@ Specified as a number in the interval from 0 to 1.
 Applies only to interpolated color schemes:
 \code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, and \code{"smooth rainbow"}.}
 
-\item{...}{Additional arguments to be passed to the \code{\link[grDevices]{colorRamp}} function
-and used to interpolate a color scheme.}
+\item{bias}{'numeric'.
+Interpolation control variable where larger values result in more widely spaced colors at the high end.
+See \code{\link[grDevices]{colorRamp}} function for details.}
+
+\item{reverse}{'logical'.
+Whether to reverse colors in the palette.}
 
 \item{plot}{'logical'.
 Whether to display the color palette.}
@@ -120,6 +124,23 @@ GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
 GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
 GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
 GetTolColors(255, start = 0.2, end = 0.8, plot = TRUE)
+par(op)
+
+# Bias
+op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
+GetTolColors(255, bias = 0.4, plot = TRUE)
+GetTolColors(255, bias = 0.6, plot = TRUE)
+GetTolColors(255, bias = 0.8, plot = TRUE)
+GetTolColors(255, bias = 1.0, plot = TRUE)
+GetTolColors(255, bias = 1.2, plot = TRUE)
+GetTolColors(255, bias = 1.4, plot = TRUE)
+GetTolColors(255, bias = 1.6, plot = TRUE)
+par(op)
+
+# Reverse
+op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0))
+GetTolColors(23, reverse = FALSE, plot = TRUE)
+GetTolColors(23, reverse = TRUE,  plot = TRUE)
 par(op)
 
 }
