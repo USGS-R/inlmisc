@@ -33,8 +33,8 @@
 #'   \code{n < 8} for \code{"bright"} and \code{"vibrant"};
 #'   \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
 #'   \code{n < 24} for \code{"discrete rainbow"}.
-#'   Schemes \code{"ground cover"} (\code{n = 14}), \code{"pale"} (\code{n = 6}),
-#'   and \code{"dark"} (\code{n = 6}) are intended to be
+#'   Schemes \code{"pale"} (\code{n = 6}),  \code{"dark"} (\code{n = 6}),
+#'   and \code{"ground cover"} (\code{n = 14}) are intended to be
 #'   accessed in their entirety and subset using color names.
 #'
 #' @return Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
