@@ -53,7 +53,7 @@ Limits on the maximum number of discrete colors for a scheme are:
   \code{n < 24} for \code{"discrete rainbow"}.
   Schemes \code{"ground cover"} (\code{n = 14}), \code{"pale"} (\code{n = 6}),
   and \code{"dark"} (\code{n = 6}) are intended to be
-  accessed in their entirety and subset using element names.
+  accessed in their entirety and subset using color names.
 }
 \examples{
 
@@ -92,6 +92,17 @@ par(op)
 # Cover scheme
 op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
 GetTolColors(14, scheme = "ground cover", plot = TRUE)
+par(op)
+
+# Discrete rainbow
+op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
+GetTolColors( 2, scheme = "discrete rainbow", plot = TRUE)
+GetTolColors( 4, scheme = "discrete rainbow", plot = TRUE)
+GetTolColors( 6, scheme = "discrete rainbow", plot = TRUE)
+GetTolColors( 8, scheme = "discrete rainbow", plot = TRUE)
+GetTolColors(10, scheme = "discrete rainbow", plot = TRUE)
+GetTolColors(15, scheme = "discrete rainbow", plot = TRUE)
+GetTolColors(23, scheme = "discrete rainbow", plot = TRUE)
 par(op)
 
 # Alpha transparency

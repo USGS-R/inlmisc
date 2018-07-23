@@ -33,7 +33,7 @@
 #'   \code{n < 24} for \code{"discrete rainbow"}.
 #'   Schemes \code{"ground cover"} (\code{n = 14}), \code{"pale"} (\code{n = 6}),
 #'   and \code{"dark"} (\code{n = 6}) are intended to be
-#'   accessed in their entirety and subset using element names.
+#'   accessed in their entirety and subset using color names.
 #'
 #' @return Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
 #'   \code{"#"} followed by the red, blue, green, and optionally alpha values in hexadecimal.
@@ -88,6 +88,17 @@
 #' # Cover scheme
 #' op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
 #' GetTolColors(14, scheme = "ground cover", plot = TRUE)
+#' par(op)
+#'
+#' # Discrete rainbow
+#' op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
+#' GetTolColors( 2, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors( 4, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors( 6, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors( 8, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors(10, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors(15, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors(23, scheme = "discrete rainbow", plot = TRUE)
 #' par(op)
 #'
 #' # Alpha transparency
@@ -360,12 +371,11 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
   attr(col, "bad") <- bad
 
   if (plot) {
-    if (any(is <- c(!is.null(alpha), start > 0 | end < 1))) {
-      txt <- c(paste0("alpha = ", alpha), paste0("start = ", start, ", end = ", end))
-      main <- sprintf("%s (%s)", scheme, paste(txt[is], collapse=", "))
-    } else {
-      main <- scheme
-    }
+    txt <- c(paste0("n = ", n),
+             paste0("alpha = ", alpha),
+             paste0("start = ", start, ", end = ", end))
+    is <- c(TRUE, !is.null(alpha), start > 0 | end < 1)
+    main <- sprintf("%s (%s)", scheme, paste(txt[is], collapse=", "))
     op <- graphics::par(mar = c(3, 2, 2, 2)); on.exit(graphics::par(op))
     graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
                            xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
