@@ -21,9 +21,11 @@
 #'   Specified as a number in the interval from 0 to 1.
 #'   Applies only to interpolated color schemes:
 #'   \code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, and \code{"smooth rainbow"}.
-#' @param ...
-#'   Additional arguments to be passed to the \code{\link[grDevices]{colorRamp}} function
-#'   and used to interpolate a color scheme.
+#' @param bias 'numeric'.
+#'   Interpolation bias where larger values result in more widely spaced colors at the high end.
+#'   See \code{\link[grDevices]{colorRamp}} function for details.
+#' @param reverse 'logical'.
+#'   Whether to reverse colors in the palette.
 #' @param plot 'logical'.
 #'   Whether to display the color palette.
 #'
@@ -31,9 +33,9 @@
 #'   \code{n < 8} for \code{"bright"} and \code{"vibrant"};
 #'   \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
 #'   \code{n < 24} for \code{"discrete rainbow"}.
-#'   Schemes \code{"ground cover"} (\code{n = 14}), \code{"pale"} (\code{n = 6}),
-#'   and \code{"dark"} (\code{n = 6}) are intended to be
-#'   accessed in their entirety and subset using element names.
+#'   Schemes \code{"pale"} (\code{n = 6}),  \code{"dark"} (\code{n = 6}),
+#'   and \code{"ground cover"} (\code{n = 14}) are intended to be
+#'   accessed in their entirety and subset using color names.
 #'
 #' @return Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
 #'   \code{"#"} followed by the red, blue, green, and optionally alpha values in hexadecimal.
@@ -56,7 +58,18 @@
 #' col <- GetTolColors(3); print(col)
 #' attr(col, "bad")
 #'
-#' # Qualitative schemes
+#' # Number of colors (n)
+#' op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
+#' GetTolColors( 2, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors( 4, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors( 6, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors( 8, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors(10, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors(15, scheme = "discrete rainbow", plot = TRUE)
+#' GetTolColors(23, scheme = "discrete rainbow", plot = TRUE)
+#' par(op)
+#'
+#' # Qualitative color schemes (scheme)
 #' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
 #' GetTolColors(7, scheme = "bright",  plot = TRUE)
 #' GetTolColors(7, scheme = "vibrant", plot = TRUE)
@@ -66,7 +79,7 @@
 #' GetTolColors(9, scheme = "light",   plot = TRUE)
 #' par(op)
 #'
-#' # Diverging schemes
+#' # Diverging color schemes (scheme)
 #' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
 #' GetTolColors( 11, scheme = "sunset", plot = TRUE)
 #' GetTolColors(255, scheme = "sunset", plot = TRUE)
@@ -76,7 +89,7 @@
 #' GetTolColors(255, scheme = "PRGn",   plot = TRUE)
 #' par(op)
 #'
-#' # Sequential schemes
+#' # Sequential color schemes (scheme)
 #' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
 #' GetTolColors(  9, scheme = "YlOrBr",           plot = TRUE)
 #' GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
@@ -85,12 +98,12 @@
 #' GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
 #' par(op)
 #'
-#' # Cover scheme
+#' # Cover color scheme (scheme)
 #' op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
 #' GetTolColors(14, scheme = "ground cover", plot = TRUE)
 #' par(op)
 #'
-#' # Alpha transparency
+#' # Alpha transparency (alpha)
 #' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
 #' GetTolColors(34, alpha = 1.0, plot = TRUE)
 #' GetTolColors(34, alpha = 0.8, plot = TRUE)
@@ -99,7 +112,7 @@
 #' GetTolColors(34, alpha = 0.2, plot = TRUE)
 #' par(op)
 #'
-#' # Color levels
+#' # Color levels (start, end)
 #' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
 #' GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
 #' GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
@@ -107,9 +120,27 @@
 #' GetTolColors(255, start = 0.2, end = 0.8, plot = TRUE)
 #' par(op)
 #'
+#' # Interpolation bias (bias)
+#' op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
+#' GetTolColors(255, bias = 0.4, plot = TRUE)
+#' GetTolColors(255, bias = 0.6, plot = TRUE)
+#' GetTolColors(255, bias = 0.8, plot = TRUE)
+#' GetTolColors(255, bias = 1.0, plot = TRUE)
+#' GetTolColors(255, bias = 1.2, plot = TRUE)
+#' GetTolColors(255, bias = 1.4, plot = TRUE)
+#' GetTolColors(255, bias = 1.6, plot = TRUE)
+#' par(op)
+#'
+#' # Reverse colors (reverse)
+#' op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
+#' GetTolColors(10, reverse = FALSE, plot = TRUE)
+#' GetTolColors(10, reverse = TRUE,  plot = TRUE)
+#' par(op)
+#'
 
-GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
-                         start=0, end=1, ..., plot=FALSE) {
+GetTolColors <- function(n, scheme="smooth rainbow",
+                         alpha=NULL, start=0, end=1, bias=1, reverse=FALSE,
+                         plot=FALSE) {
 
   nmax <- c("bright"           = 7,    # qualitative
             "vibrant"          = 7,
@@ -131,6 +162,8 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
   checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
   checkmate::assertNumber(start, lower=0, upper=1, finite=TRUE)
   checkmate::assertNumber(end, lower=start, upper=1, finite=TRUE)
+  checkmate::qassert(bias, "N1(0,)")
+  checkmate::assertFlag(reverse)
   checkmate::assertFlag(plot)
 
   bad <- NULL
@@ -315,7 +348,6 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "bare ground"                 = "#FFEE88",
              "urban and built"             = "#BB0011")
   }
-
   if (scheme %in% c("bright", "vibrant", "muted", "pale", "dark", "light", "ground cover")) {
     col <- pal[1:n]
   } else if (scheme == "discrete rainbow") {
@@ -347,9 +379,11 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
     norm <- (seq_along(pal) - 1) / (length(pal) - 1)
     idxs <- seq.int(which.min(abs(norm - start)), which.min(abs(norm - end)), 1)
     if (length(idxs) < 2) stop("problem with 'start' and (or) 'end' argument(s)")
-    col <- grDevices::colorRampPalette(pal[idxs], ...)(n)
+    col <- grDevices::colorRampPalette(pal[idxs], bias=bias)(n)
     names(col) <- seq_along(col)
   }
+
+  if (reverse) col <- rev(col)
 
   labels <- names(col)
   if (!is.null(alpha)) {
@@ -360,12 +394,13 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
   attr(col, "bad") <- bad
 
   if (plot) {
-    if (any(is <- c(!is.null(alpha), start > 0 | end < 1))) {
-      txt <- c(paste0("alpha = ", alpha), paste0("start = ", start, ", end = ", end))
-      main <- sprintf("%s (%s)", scheme, paste(txt[is], collapse=", "))
-    } else {
-      main <- scheme
-    }
+    txt <- c(paste0("n = ", n),
+             paste0("alpha = ", alpha),
+             paste0("start = ", start, ", end = ", end),
+             paste0("bias = ", bias),
+             paste0("reverse = ", reverse))
+    is <- c(TRUE, !is.null(alpha), start > 0 | end < 1, bias != 1, reverse)
+    main <- sprintf("%s (%s)", scheme, paste(txt[is], collapse=", "))
     op <- graphics::par(mar = c(3, 2, 2, 2)); on.exit(graphics::par(op))
     graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
                            xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
