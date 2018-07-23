@@ -31,7 +31,7 @@ Applies only to interpolated color schemes:
 \code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, and \code{"smooth rainbow"}.}
 
 \item{bias}{'numeric'.
-Interpolation control variable where larger values result in more widely spaced colors at the high end.
+Interpolation bias where larger values result in more widely spaced colors at the high end.
 See \code{\link[grDevices]{colorRamp}} function for details.}
 
 \item{reverse}{'logical'.
@@ -64,41 +64,7 @@ Limits on the maximum number of discrete colors for a scheme are:
 col <- GetTolColors(3); print(col)
 attr(col, "bad")
 
-# Qualitative schemes
-op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-GetTolColors(7, scheme = "bright",  plot = TRUE)
-GetTolColors(7, scheme = "vibrant", plot = TRUE)
-GetTolColors(9, scheme = "muted",   plot = TRUE)
-GetTolColors(6, scheme = "pale",    plot = TRUE)
-GetTolColors(6, scheme = "dark",    plot = TRUE)
-GetTolColors(9, scheme = "light",   plot = TRUE)
-par(op)
-
-# Diverging schemes
-op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-GetTolColors( 11, scheme = "sunset", plot = TRUE)
-GetTolColors(255, scheme = "sunset", plot = TRUE)
-GetTolColors(  9, scheme = "BuRd",   plot = TRUE)
-GetTolColors(255, scheme = "BuRd",   plot = TRUE)
-GetTolColors(  9, scheme = "PRGn",   plot = TRUE)
-GetTolColors(255, scheme = "PRGn",   plot = TRUE)
-par(op)
-
-# Sequential schemes
-op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-GetTolColors(  9, scheme = "YlOrBr",           plot = TRUE)
-GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
-GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors( 34, scheme = "smooth rainbow",   plot = TRUE)
-GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
-par(op)
-
-# Cover scheme
-op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
-GetTolColors(14, scheme = "ground cover", plot = TRUE)
-par(op)
-
-# Discrete rainbow
+# Number of colors (n)
 op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
 GetTolColors( 2, scheme = "discrete rainbow", plot = TRUE)
 GetTolColors( 4, scheme = "discrete rainbow", plot = TRUE)
@@ -109,7 +75,41 @@ GetTolColors(15, scheme = "discrete rainbow", plot = TRUE)
 GetTolColors(23, scheme = "discrete rainbow", plot = TRUE)
 par(op)
 
-# Alpha transparency
+# Qualitative color schemes (scheme)
+op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
+GetTolColors(7, scheme = "bright",  plot = TRUE)
+GetTolColors(7, scheme = "vibrant", plot = TRUE)
+GetTolColors(9, scheme = "muted",   plot = TRUE)
+GetTolColors(6, scheme = "pale",    plot = TRUE)
+GetTolColors(6, scheme = "dark",    plot = TRUE)
+GetTolColors(9, scheme = "light",   plot = TRUE)
+par(op)
+
+# Diverging color schemes (scheme)
+op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
+GetTolColors( 11, scheme = "sunset", plot = TRUE)
+GetTolColors(255, scheme = "sunset", plot = TRUE)
+GetTolColors(  9, scheme = "BuRd",   plot = TRUE)
+GetTolColors(255, scheme = "BuRd",   plot = TRUE)
+GetTolColors(  9, scheme = "PRGn",   plot = TRUE)
+GetTolColors(255, scheme = "PRGn",   plot = TRUE)
+par(op)
+
+# Sequential color schemes (scheme)
+op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
+GetTolColors(  9, scheme = "YlOrBr",           plot = TRUE)
+GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
+GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
+GetTolColors( 34, scheme = "smooth rainbow",   plot = TRUE)
+GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
+par(op)
+
+# Cover color scheme (scheme)
+op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
+GetTolColors(14, scheme = "ground cover", plot = TRUE)
+par(op)
+
+# Alpha transparency (alpha)
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
 GetTolColors(34, alpha = 1.0, plot = TRUE)
 GetTolColors(34, alpha = 0.8, plot = TRUE)
@@ -118,7 +118,7 @@ GetTolColors(34, alpha = 0.4, plot = TRUE)
 GetTolColors(34, alpha = 0.2, plot = TRUE)
 par(op)
 
-# Color levels
+# Color levels (start, end)
 op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
 GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
 GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
@@ -126,7 +126,7 @@ GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
 GetTolColors(255, start = 0.2, end = 0.8, plot = TRUE)
 par(op)
 
-# Bias
+# Interpolation bias (bias)
 op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
 GetTolColors(255, bias = 0.4, plot = TRUE)
 GetTolColors(255, bias = 0.6, plot = TRUE)
@@ -137,10 +137,10 @@ GetTolColors(255, bias = 1.4, plot = TRUE)
 GetTolColors(255, bias = 1.6, plot = TRUE)
 par(op)
 
-# Reverse
-op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0))
-GetTolColors(23, reverse = FALSE, plot = TRUE)
-GetTolColors(23, reverse = TRUE,  plot = TRUE)
+# Reverse colors (reverse)
+op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
+GetTolColors(10, reverse = FALSE, plot = TRUE)
+GetTolColors(10, reverse = TRUE,  plot = TRUE)
 par(op)
 
 }
