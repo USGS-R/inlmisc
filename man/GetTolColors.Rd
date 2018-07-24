@@ -2,7 +2,7 @@
 % Please edit documentation in R/GetTolColors.R
 \name{GetTolColors}
 \alias{GetTolColors}
-\title{Tol Color Palettes}
+\title{Tol Color Schemes}
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
   end = 1, bias = 1, reverse = FALSE, plot = FALSE)
@@ -15,14 +15,15 @@ dependent on the specified color scheme, see \sQuote{Details} section.}
 \item{scheme}{'character'.
 Color scheme: select
   \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
-    \code{"dark"}, or \code{"light"} for qualitative colors;
+  \code{"dark"}, or \code{"light"} for qualitative colors;
   \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors;
   \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors; and
-  \code{"ground cover"} for global land cover classification.}
+  \code{"ground cover"} for the \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
+  global land cover classification (Hansen and others, 1998).}
 
 \item{alpha}{'numeric'.
 Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
-Specify as \code{NULL} to exclude the alpha channel color component.}
+Specify as \code{NULL} to exclude the alpha channel value from the color name.}
 
 \item{start, end}{'numeric'.
 Starting and ending color level in the palette, respectively.
@@ -35,16 +36,17 @@ Interpolation bias where larger values result in more widely spaced colors at th
 See \code{\link[grDevices]{colorRamp}} function for details.}
 
 \item{reverse}{'logical'.
-Whether to reverse colors in the palette.}
+Whether to reverse the direction of colors in the palette.}
 
 \item{plot}{'logical'.
 Whether to display the color palette.}
 }
 \value{
-Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
+Returns a 'character' vector of \code{n} color names---each
+  name is 7 or 9 characters and formatted as
   \code{"#"} followed by the red, blue, green, and optionally alpha values in hexadecimal.
-  For some schemes the returned object includes a \code{"bad"} attribute that
-  indicates the color assigned to bad data.
+  For some color schemes the returned object includes a \code{"bad"} attribute giving
+  the color assigned to bad data.
 }
 \description{
 This function creates a vector of \code{n} colors from
@@ -145,7 +147,11 @@ par(op)
 
 }
 \references{
-Tol, Paul, 2018, Colour Schemes:
+Hansen, M., DeFries, R., Townshend, J.R.G., and Sohlberg, R., 1998,
+  UMD Global Land Cover Classification, 1 Kilometer, 1.0:
+  Department of Geography, University of Maryland, College Park, Maryland, 1981-1994.
+
+  Tol, Paul, 2018, Colour Schemes:
   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.0, 17 p.,
   accessed July 18, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
 }

@@ -1,4 +1,4 @@
-#' Tol Color Palettes
+#' Tol Color Schemes
 #'
 #' This function creates a vector of \code{n} colors from
 #' qualitative, diverging, and sequential color schemes by Paul Tol (2018).
@@ -9,13 +9,14 @@
 #' @param scheme 'character'.
 #'   Color scheme: select
 #'     \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
-#'       \code{"dark"}, or \code{"light"} for qualitative colors;
+#'     \code{"dark"}, or \code{"light"} for qualitative colors;
 #'     \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors;
 #'     \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors; and
-#'     \code{"ground cover"} for global land cover classification.
+#'     \code{"ground cover"} for the \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
+#'     global land cover classification (Hansen and others, 1998).
 #' @param alpha 'numeric'.
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
-#'   Specify as \code{NULL} to exclude the alpha channel color component.
+#'   Specify as \code{NULL} to exclude the alpha channel value from the color name.
 #' @param start,end 'numeric'.
 #'   Starting and ending color level in the palette, respectively.
 #'   Specified as a number in the interval from 0 to 1.
@@ -25,7 +26,7 @@
 #'   Interpolation bias where larger values result in more widely spaced colors at the high end.
 #'   See \code{\link[grDevices]{colorRamp}} function for details.
 #' @param reverse 'logical'.
-#'   Whether to reverse colors in the palette.
+#'   Whether to reverse the direction of colors in the palette.
 #' @param plot 'logical'.
 #'   Whether to display the color palette.
 #'
@@ -37,14 +38,19 @@
 #'   and \code{"ground cover"} (\code{n = 14}) are intended to be
 #'   accessed in their entirety and subset using color names.
 #'
-#' @return Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
+#' @return Returns a 'character' vector of \code{n} color names---each
+#'   name is 7 or 9 characters and formatted as
 #'   \code{"#"} followed by the red, blue, green, and optionally alpha values in hexadecimal.
-#'   For some schemes the returned object includes a \code{"bad"} attribute that
-#'   indicates the color assigned to bad data.
+#'   For some color schemes the returned object includes a \code{"bad"} attribute giving
+#'   the color assigned to bad data.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
 #' @references
+#'   Hansen, M., DeFries, R., Townshend, J.R.G., and Sohlberg, R., 1998,
+#'   UMD Global Land Cover Classification, 1 Kilometer, 1.0:
+#'   Department of Geography, University of Maryland, College Park, Maryland, 1981-1994.
+#'
 #'   Tol, Paul, 2018, Colour Schemes:
 #'   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.0, 17 p.,
 #'   accessed July 18, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
