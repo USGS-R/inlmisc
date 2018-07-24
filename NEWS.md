@@ -1,6 +1,9 @@
 # inlmisc 0.4.2.9000
 
-- In `FindOptimalSubset` function, add `monitor` argument.
+- In `PlotGraph` function, add `xpd` argument, determines
+  whether point and (or) line symbols are clipped to the plot region.
+
+- In `FindOptimalSubset` function, add `monitor` argument to check on status of GA run.
 
 - In `GetTolColors` function: add color schemes;
   change default scheme from `"bright"` to `"smooth rainbow"`;

@@ -48,6 +48,8 @@
 #'   Vector of fill colors for areas beneath (or above, direction towards 0) lines of \code{type = "l"} or \code{type = "s"}.
 #' @param pt.cex 'numeric'.
 #'   Expansion factor for the points.
+#' @param xpd 'logical'.
+#'   If false, point and (or) line symbols are clipped to the plot region.
 #' @param seq.date.by 'character', 'numeric', or 'difftime'.
 #'   The increment of the date sequence, see the \code{by} argument in the \code{\link{seq.Date}} function for all possible ways this can be specified.
 #' @param scientific 'logical'.
@@ -115,7 +117,7 @@
 
 PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
                       xn=5, yn=5, ylog=FALSE, type="s", lty=1, lwd=1,
-                      pch=NULL, col=NULL, bg=NA, fill=NULL, pt.cex=1,
+                      pch=NULL, col=NULL, bg=NA, fill=NULL, pt.cex=1, xpd=FALSE,
                       seq.date.by=NULL, scientific=NA,
                       conversion.factor=NULL, boxwex=0.8,
                       center.date.labels=FALSE, bg.polygon=NULL) {
@@ -177,8 +179,15 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
   }
 
   n <- ifelse(type == "i", 1, ncol(y))
-  if (!is.character(col) && !is.logical(col))
-    col <- if (is.function(col)) col(n) else GetTolColors(n, start=0.0, end=0.8)
+  if (!is.character(col) && !is.logical(col)) {
+    if (is.function(col)) {
+      col <- col(n)
+    } else {
+      scheme <- if (n > 7) "smooth rainbow" else "bright"
+      col <- GetTolColors(n, scheme=scheme)
+    }
+  }
+
   lty <- rep_len(lty, length.out=n)
   lwd <- rep_len(lwd, length.out=n)
 
@@ -186,7 +195,7 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
   if (missing(main)) mar[3] <- mar[3] - 1
   if (is.null(conversion.factor)) mar[4] <- mar[4] - 2
   mgp <- c(3.2, 0.2, 0)  # cumulative axis margin line: title, labels, and line
-  op <- graphics::par(mar=mar, mgp=mgp)
+  graphics::par(mar=mar, mgp=mgp, xpd=xpd)
   line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]
 
   graphics::plot.new()
@@ -203,8 +212,8 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
     graphics::polygon(bg.polygon$x, col=bg.col, border=NA)
   }
 
-  graphics::abline(v=xat, col="lightgrey", lwd=0.5)
-  graphics::abline(h=yat, col="lightgrey", lwd=0.5)
+  graphics::abline(v=xat, col="lightgrey", lwd=0.5, xpd=FALSE)
+  graphics::abline(h=yat, col="lightgrey", lwd=0.5, xpd=FALSE)
 
   if (type %in% c("l", "s") & is.character(fill)) {
     for (i in seq_len(ncol(y))) {

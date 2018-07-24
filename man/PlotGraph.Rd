@@ -7,8 +7,9 @@
 PlotGraph(x, y, xlab, ylab, main, asp = NA, xlim = NULL, ylim = NULL,
   xn = 5, yn = 5, ylog = FALSE, type = "s", lty = 1, lwd = 1,
   pch = NULL, col = NULL, bg = NA, fill = NULL, pt.cex = 1,
-  seq.date.by = NULL, scientific = NA, conversion.factor = NULL,
-  boxwex = 0.8, center.date.labels = FALSE, bg.polygon = NULL)
+  xpd = FALSE, seq.date.by = NULL, scientific = NA,
+  conversion.factor = NULL, boxwex = 0.8, center.date.labels = FALSE,
+  bg.polygon = NULL)
 }
 \arguments{
 \item{x, y}{'Date', 'numeric', 'matrix', or 'data.frame'.
@@ -78,6 +79,9 @@ Vector of fill colors for areas beneath (or above, direction towards 0) lines of
 
 \item{pt.cex}{'numeric'.
 Expansion factor for the points.}
+
+\item{xpd}{'logical'.
+If false, point and (or) line symbols are clipped to the plot region.}
 
 \item{seq.date.by}{'character', 'numeric', or 'difftime'.
 The increment of the date sequence, see the \code{by} argument in the \code{\link{seq.Date}} function for all possible ways this can be specified.}
