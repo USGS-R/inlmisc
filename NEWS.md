@@ -1,7 +1,8 @@
 # inlmisc 0.4.2.9000
 
-- In `PlotGraph` function, add `xpd` argument, determines
-  whether point and (or) line symbols are clipped to the plot region.
+- In `PlotGraph` function: add `xpd` argument, determines
+  whether point and (or) line symbols are clipped to the plot region;
+  and change default color scheme.
 
 - In `FindOptimalSubset` function, add `monitor` argument to check on status of GA run.
 
