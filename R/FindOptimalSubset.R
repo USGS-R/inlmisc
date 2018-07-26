@@ -112,7 +112,8 @@
 #'   return(value)
 #' }
 #' \dontrun{
-#' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10, seed = seed)
+#' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10,
+#'                          monitor = GA::gaislMonitor, seed = seed)
 #' plot(out[["ga_output"]])
 #' summary(out[["ga_output"]])
 #' print(out[["solution"]])
