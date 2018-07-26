@@ -49,7 +49,7 @@
 #'   The \pkg{parallel} and \pkg{doParallel} packages must be
 #'   installed for parallel computing to work.
 #' @param monitor 'Function'.
-#'   A function that takes as input the current state of the \code{\link[=gaisl-class]{gaisl}} object,
+#'   A function that takes as input the current state of the \code{\link[=gaisl-class]{gaisl-class}} object,
 #'   and is run at each epoch of the islands GA search.
 #' @param seed 'integer'.
 #'   Random number generator state for random number generation, used to replicate the results.
