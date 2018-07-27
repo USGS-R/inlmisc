@@ -75,7 +75,9 @@ Colors are used cyclically.}
 Vector of background colors for the open plot symbols given by \code{pch = 21:25} as in \code{\link{points}}.}
 
 \item{fill}{'character'.
-Vector of fill colors for areas beneath (or above, direction towards 0) lines of \code{type = "l"} or \code{type = "s"}.}
+Vector of colors for basic filled area plots, that is,
+the fill color applied to the area beneath (or above, always towards zero) the line.
+Suitable for plot \code{type = "l"}, \code{"b"}, and \code{"s"}.}
 
 \item{pt.cex}{'numeric'.
 Expansion factor for the points.}
