@@ -6,13 +6,14 @@
 \usage{
 PlotMap(r, layer = 1, att = NULL, n = NULL, breaks = NULL,
   xlim = NULL, ylim = NULL, zlim = NULL, asp = NULL,
-  extend.xy = FALSE, extend.z = FALSE, reg.axs = TRUE, dms.tick = FALSE,
-  bg.lines = FALSE, bg.image = NULL, bg.image.alpha = 1, pal = NULL,
-  col = NULL, max.dev.dim = c(43, 56), labels = NULL, scale.loc = NULL,
-  arrow.loc = NULL, explanation = NULL, credit = NULL, shade = NULL,
+  extend.xy = FALSE, extend.z = FALSE, reg.axs = TRUE,
+  dms.tick = FALSE, bg.lines = FALSE, bg.image = NULL,
+  bg.image.alpha = 1, pal = NULL, col = NULL, max.dev.dim = c(43,
+  56), labels = NULL, scale.loc = NULL, arrow.loc = NULL,
+  explanation = NULL, credit = NULL, shade = NULL,
   contour.lines = NULL, rivers = NULL, lakes = NULL, roads = NULL,
-  draw.key = NULL, draw.raster = TRUE, file = NULL, close.file = TRUE,
-  useRaster, simplify)
+  draw.key = NULL, draw.raster = TRUE, file = NULL,
+  close.file = TRUE, useRaster, simplify)
 }
 \arguments{
 \item{r}{'Raster*', 'Spatial*', or 'CRS'.

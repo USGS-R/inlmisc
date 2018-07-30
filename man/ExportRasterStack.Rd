@@ -4,8 +4,8 @@
 \alias{ExportRasterStack}
 \title{Export Raster Stack}
 \usage{
-ExportRasterStack(rs, path, zip = "", col = GetTolColors(255, start = 0, end
-  = 0.8))
+ExportRasterStack(rs, path, zip = "", col = GetTolColors(255, start =
+  0, end = 0.8))
 }
 \arguments{
 \item{rs}{'RasterStack'.

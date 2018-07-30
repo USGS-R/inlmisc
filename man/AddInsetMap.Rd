@@ -4,8 +4,8 @@
 \alias{AddInsetMap}
 \title{Add Inset Map to Plot}
 \usage{
-AddInsetMap(p, col = c("#D8D8D8", "#BFA76F"), main.label = list(label = NA,
-  adj = NULL), sub.label = list(label = NA, adj = NULL),
+AddInsetMap(p, col = c("#D8D8D8", "#BFA76F"), main.label = list(label =
+  NA, adj = NULL), sub.label = list(label = NA, adj = NULL),
   loc = c("bottomleft", "topleft", "topright", "bottomright", "center"),
   inset = 0.02, width = NULL, e = NULL, bty = c("o", "n"))
 }

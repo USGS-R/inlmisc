@@ -9,7 +9,8 @@ RecreateLibrary(file = "R-packages.tsv", lib = .libPaths()[1],
   repos = getOption("repos"), snapshot = FALSE, local = NULL,
   versions = FALSE, github = FALSE, parallel = TRUE, quiet = FALSE)
 
-SavePackageDetails(file = "R-packages.tsv", lib = .libPaths(), pkg = NULL)
+SavePackageDetails(file = "R-packages.tsv", lib = .libPaths(),
+  pkg = NULL)
 }
 \arguments{
 \item{file}{'character'.

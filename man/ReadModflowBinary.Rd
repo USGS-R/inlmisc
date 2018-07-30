@@ -4,8 +4,8 @@
 \alias{ReadModflowBinary}
 \title{Read MODFLOW Binary File}
 \usage{
-ReadModflowBinary(path, data.type = c("array", "flow"), endian = c("little",
-  "big"), rm.totim.0 = FALSE)
+ReadModflowBinary(path, data.type = c("array", "flow"),
+  endian = c("little", "big"), rm.totim.0 = FALSE)
 }
 \arguments{
 \item{path}{'character'.

@@ -7,10 +7,11 @@
 PlotCrossSection(transect, rs, geo.lays = names(rs), val.lays = NULL,
   wt.lay = NULL, asp = 1, ylim = NULL, max.dev.dim = c(43, 56),
   n = NULL, breaks = NULL, pal = NULL, col = NULL, ylab = NULL,
-  unit = NULL, id = c("A", "A'"), labels = NULL, explanation = NULL,
-  features = NULL, max.feature.dist = Inf, draw.key = TRUE,
-  draw.sep = TRUE, is.categorical = FALSE, contour.lines = NULL,
-  bg.col = "#E1E1E1", wt.col = "#FFFFFFD8", file = NULL)
+  unit = NULL, id = c("A", "A'"), labels = NULL,
+  explanation = NULL, features = NULL, max.feature.dist = Inf,
+  draw.key = TRUE, draw.sep = TRUE, is.categorical = FALSE,
+  contour.lines = NULL, bg.col = "#E1E1E1", wt.col = "#FFFFFFD8",
+  file = NULL)
 }
 \arguments{
 \item{transect}{'SpatialLines'.

@@ -4,13 +4,14 @@
 \alias{AddPoints}
 \title{Add Points to Plot}
 \usage{
-AddPoints(x, y = NULL, z = NULL, zcol = 1, crs = NULL, xlim = NULL,
-  ylim = NULL, zlim = NULL, inches = c(0, 0.2),
-  scaling = c("perceptual", "mathematical", "radius"), bg = "#1F1F1FCB",
-  bg.neg = NULL, fg = NA, lwd = 0.25, cex = 0.7, format = NULL,
-  legend.loc = "topright", inset = 0.02, breaks = NULL,
-  break.labels = NULL, quantile.breaks = FALSE, make.intervals = FALSE,
-  title = NULL, subtitle = NULL, add = TRUE, ...)
+AddPoints(x, y = NULL, z = NULL, zcol = 1, crs = NULL,
+  xlim = NULL, ylim = NULL, zlim = NULL, inches = c(0, 0.2),
+  scaling = c("perceptual", "mathematical", "radius"),
+  bg = "#1F1F1FCB", bg.neg = NULL, fg = NA, lwd = 0.25,
+  cex = 0.7, format = NULL, legend.loc = "topright", inset = 0.02,
+  breaks = NULL, break.labels = NULL, quantile.breaks = FALSE,
+  make.intervals = FALSE, title = NULL, subtitle = NULL,
+  add = TRUE, ...)
 }
 \arguments{
 \item{x, y}{numeric or 'SpatialPoints*'.

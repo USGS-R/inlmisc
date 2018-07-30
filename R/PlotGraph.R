@@ -45,9 +45,14 @@
 #' @param bg 'character'.
 #'   Vector of background colors for the open plot symbols given by \code{pch = 21:25} as in \code{\link{points}}.
 #' @param fill 'character'.
-#'   Vector of colors for basic filled area plots, that is,
-#'   the fill color applied to the area beneath (or above, always towards zero) the line.
-#'   Suitable for plot \code{type = "l"}, \code{"b"}, and \code{"s"}.
+#'   Used to create filled area plots. Specify
+#'   \code{"tozeroy"} to fill to zero on the \emph{y}-axis;
+#'   \code{"tominy"} to fill to the minimum \emph{y} value in the plotting region; and
+#'   \code{"tomaxy"} to fill to the maximum.
+#'   Requires plot \code{type = "l"}, \code{"b"}, and \code{"s"}.
+#' @param fillcolor 'character'.
+#'   Vector of colors for basic filled area plots.
+#'   Defaults to a half-transparent variant of the line color (\code{col}).
 #' @param pt.cex 'numeric'.
 #'   Expansion factor for the points.
 #' @param xpd 'logical'.
@@ -119,10 +124,13 @@
 
 PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
                       xn=5, yn=5, ylog=FALSE, type="s", lty=1, lwd=1,
-                      pch=NULL, col=NULL, bg=NA, fill=NULL, pt.cex=1, xpd=FALSE,
-                      seq.date.by=NULL, scientific=NA,
+                      pch=NULL, col=NULL, bg=NA, fill="none", fillcolor=NULL,
+                      pt.cex=1, xpd=FALSE, seq.date.by=NULL, scientific=NA,
                       conversion.factor=NULL, boxwex=0.8,
                       center.date.labels=FALSE, bg.polygon=NULL) {
+
+  fill <- match.arg(fill, c("none", "tozeroy", "tominy", "tomaxy"))
+  checkmate::assertCharacter(fillcolor, null.ok=TRUE)
 
   scientific <- as.logical(scientific)
   scientific <- rep(scientific, length.out=3)
@@ -217,7 +225,8 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
   graphics::abline(v=xat, col="lightgrey", lwd=0.5, xpd=FALSE)
   graphics::abline(h=yat, col="lightgrey", lwd=0.5, xpd=FALSE)
 
-  if (type %in% c("l", "b", "s") & is.character(fill)) {
+  if (type %in% c("l", "b", "s") && fill != "none") {
+    if (is.null(fillcolor)) fillcolor <- grDevices::adjustcolor(col, alpha.f=0.5)
     for (i in seq_len(ncol(y))) {
       if (is.na(fill[i])) next
       xx <- as.numeric(x)
@@ -238,9 +247,15 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
         }
         xxx <- c(xxx, utils::tail(xxx, 1), xxx[1])
         ylim <- sort(graphics::par("usr")[3:4])
-        ymin <- if (ylim[1] < 0 & ylim[2] > 0) 0 else ylim[which.min(abs(ylim))]
+        if (fill == "tozeroy") {
+          ymin <- 0
+        } else if (fill == "tominy") {
+          ymin <- ylim[1]
+        } else if (fill == "tomaxy") {
+          ymin <- ylim[2]
+        }
         yyy <- c(yyy, rep(ymin, 2))
-        graphics::polygon(xxx, yyy, col=fill[i], border=NA)
+        graphics::polygon(xxx, yyy, col=fillcolor[i], border=NA, xpd=FALSE)
       }
     }
   }
