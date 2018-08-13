@@ -3,7 +3,8 @@
 - In `PlotGraph` function: add `xpd` argument, determines
   whether point and (or) line symbols are clipped to the plot region;
   change default color scheme;
-  change contents of `fill` argument (non-backward compatible) and add a `fillcolor` argument.
+  change contents of `fill` argument (non-backward compatible) and add a `fillcolor` argument;
+  provide `main` argument a default value of `NULL`.
 
 - In `FindOptimalSubset` function, add `monitor` argument to check on status of GA run.
 

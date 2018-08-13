@@ -122,7 +122,7 @@
 #' PlotGraph(d, type = "i", ylim = c(0, 5))
 #'
 
-PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
+PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
                       xn=5, yn=5, ylog=FALSE, type="s", lty=1, lwd=1,
                       pch=NULL, col=NULL, bg=NA, fill="none", fillcolor=NULL,
                       pt.cex=1, xpd=FALSE, seq.date.by=NULL, scientific=NA,
@@ -202,7 +202,7 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
   lwd <- rep_len(lwd, length.out=n)
 
   mar <- c(2.3, 4.1, 1.5, 4.1)
-  if (missing(main)) mar[3] <- mar[3] - 1
+  if (is.null(main)) mar[3] <- mar[3] - 1
   if (is.null(conversion.factor)) mar[4] <- mar[4] - 2
   mgp <- c(3.2, 0.2, 0)  # cumulative axis margin line: title, labels, and line
   graphics::par(mar=mar, mgp=mgp, xpd=xpd)
@@ -318,7 +318,7 @@ PlotGraph <- function(x, y, xlab, ylab, main, asp=NA, xlim=NULL, ylim=NULL,
                 graphics::par("mgp")[2]
     graphics::title(ylab=ylab[1], cex.lab=cex, line=mar.line)
   }
-  if (!missing(main)) graphics::title(main=list(main, cex=cex, font=1), line=0.5)
+  if (!is.null(main)) graphics::title(main=list(main, cex=cex, font=1), line=0.5)
 
   if (is.null(conversion.factor)) {
     graphics::axis(4, at=yat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
