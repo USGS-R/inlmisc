@@ -201,7 +201,7 @@ meuse.grid <- raster::raster(meuse.grid, layer = "soil")
 model <- gstat::gstat(id = "zinc", formula = zinc~1, locations = ~x+y, data = meuse)
 r <- raster::interpolate(meuse.grid, model)
 r <- raster::mask(r, meuse.grid)
-Pal <- function(n) viridisLite::viridis(n, begin = 0.2)
+Pal <- function(n) GetTolColors(n, start=0.3, end=0.9)
 breaks <- seq(0, 2000, by = 200)
 credit <- paste("Data collected in a flood plain of the river Meuse,",
                 "near the village of Stein (Netherlands),",

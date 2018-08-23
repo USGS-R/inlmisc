@@ -1,5 +1,7 @@
 # inlmisc 0.4.2.9000
 
+- Remove **viridisLite** from suggested packages.
+
 - Add the internal function `GetInsetLocation`, used to determine
   the location for a inset in the main plot region.
 

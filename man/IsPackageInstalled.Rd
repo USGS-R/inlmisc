@@ -20,7 +20,7 @@ A 'logical' vector the length of argument \code{x}.
 This function checks whether a package(s) is installed under the library tree(s).
 }
 \examples{
-IsPackageInstalled(c("inlmisc", "csimlni", "viridisLite"))
+IsPackageInstalled(c("inlmisc", "csimlni", "devtools"))
 
 }
 \author{

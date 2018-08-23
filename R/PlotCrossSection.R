@@ -143,12 +143,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
 
   at <- NULL
   if (!is.null(cell.values)) {
-    if (!is.function(pal)) {
-      if (requireNamespace("viridisLite", quietly=TRUE))
-        pal <- viridisLite::viridis
-      else
-        pal <- function(n) GetTolColors(n, start=0.0, end=0.8)
-    }
+    if (!is.function(pal))
+      pal <- function(n) GetTolColors(n, start=0.3, end=0.9)
     if (is.categorical) {
       unique.vals <- sort(unique(cell.values))
       at <- seq_along(unique.vals)
