@@ -1,5 +1,10 @@
 # inlmisc 0.4.2.9000
 
+- Add the internal function `GetInsetLocation`, used to determine
+  the location for a inset in the main plot region.
+
+- In `AddPoints` function: add `bty`, `draw.legend`, and `draw.points` arguments.
+
 - In `PlotGraph` function: add `xpd` argument, determines
   whether point and (or) line symbols are clipped to the plot region;
   change default color scheme;

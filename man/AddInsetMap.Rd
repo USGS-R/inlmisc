@@ -6,8 +6,8 @@
 \usage{
 AddInsetMap(p, col = c("#D8D8D8", "#BFA76F"), main.label = list(label =
   NA, adj = NULL), sub.label = list(label = NA, adj = NULL),
-  loc = c("bottomleft", "topleft", "topright", "bottomright", "center"),
-  inset = 0.02, width = NULL, e = NULL, bty = c("o", "n"))
+  loc = "topright", inset = 0.02, width = NULL, e = NULL,
+  bty = c("o", "n"))
 }
 \arguments{
 \item{p}{'SpatialPolygons'.
@@ -24,8 +24,8 @@ The text label and position (x and y adjustment of the label) for the large map,
 Identical to the \code{main.label} argument but for the plot extent rectangle.}
 
 \item{loc}{'character'.
-Position of the inset map in the main plot region:
-"bottomleft", "topleft", "topright", "bottomright", or "center" to denote scale location.}
+Position of the inset map in the main plot region;
+see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
 \item{inset}{'numeric'.
 Inset distance(s) from the margins as a fraction of the main plot region.

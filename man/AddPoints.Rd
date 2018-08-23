@@ -9,12 +9,13 @@ AddPoints(x, y = NULL, z = NULL, zcol = 1, crs = NULL,
   scaling = c("perceptual", "mathematical", "radius"),
   bg = "#1F1F1FCB", bg.neg = NULL, fg = NA, lwd = 0.25,
   cex = 0.7, format = NULL, legend.loc = "topright", inset = 0.02,
-  breaks = NULL, break.labels = NULL, quantile.breaks = FALSE,
-  make.intervals = FALSE, title = NULL, subtitle = NULL,
+  bty = c("o", "n"), breaks = NULL, break.labels = NULL,
+  quantile.breaks = FALSE, make.intervals = FALSE, title = NULL,
+  subtitle = NULL, draw.legend = TRUE, draw.points = FALSE,
   add = TRUE, ...)
 }
 \arguments{
-\item{x, y}{numeric or 'SpatialPoints*'.
+\item{x, y}{'numeric' or 'SpatialPoints*'.
 The x and y coordinates for the centers of the circle symbols.
 If numeric, can be specified in any way which is accepted by \code{\link{xy.coords}}.}
 
@@ -40,12 +41,15 @@ Vector of length 2 giving the z limits for the plot.}
 
 \item{inches}{'numeric'.
 Vector of length 2 giving the radii limits for the drawn circle symbol.
-Alternatively, a single number can be given resulting in a fixed radius being used for all circle symbols;
-this overrides proportional circles and the function behaves like the \code{\link{points}} function.}
+Alternatively, a single number can be given resulting in
+a fixed radius being used for all circle symbols;
+this overrides proportional circles and the function
+behaves like the \code{\link{points}} function.}
 
 \item{scaling}{'character'.
 Selects the scaling algorithm to use for symbol mapping.
-Specify "perceptual" or "mathematical" for proportional scaling (Tanimura and others, 2006),
+Specify \code{"perceptual"} or \code{"mathematical"} for
+proportional scaling (Tanimura and others, 2006),
 or "radius" for scaling symbol size to radius (usually a bad idea).}
 
 \item{bg}{'character' or 'function'.
@@ -73,12 +77,17 @@ Character expansion factor for legend labels.}
 Formatting for legend values, see \code{\link{formatC}} for options.}
 
 \item{legend.loc}{'character'.
-Position of the legend in the main plot region:
-"bottomleft", "topleft", "topright", or "bottomright" to denote legend location.}
+Position of the legend in the main plot region;
+see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
 \item{inset}{'numeric'.
 Inset distance of the legend from the margins as a fraction of the main plot region.
 Defaults to 2 percent of the axis range.}
+
+\item{bty}{'character'.
+The type of box to be drawn about the legend.
+A value of \code{"o"} (the default) results in a box and
+a value of \code{"n"} supresses the box.}
 
 \item{breaks}{'numeric'.
 Set of finite breakpoints for the legend circle symbols.}
@@ -99,6 +108,12 @@ Main title to be placed at the top of the legend.}
 
 \item{subtitle}{'character'.
 Legend subtitle to be placed below the main title.}
+
+\item{draw.legend}{'logical'.
+If true, a legend is drawn.}
+
+\item{draw.points}{'logical'.
+If true, the circle symobls are drawn.}
 
 \item{add}{'logical'.
 If true, circle symbols (and an optional legend) are added to an existing plot.}
@@ -148,7 +163,7 @@ z <- as.factor(rep(c("dog", "cat", "ant", "pig", "bat"), length.out = n))
 bg <- GetTolColors(nlevels(z), scheme = "bright", alpha = 0.8)
 AddPoints(x, z = z, bg = bg, add = FALSE)
 
-AddPoints(x, legend.loc = NULL, add = FALSE)
+AddPoints(x, draw.legend = FALSE, add = FALSE)
 
 }
 \references{

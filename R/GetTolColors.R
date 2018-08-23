@@ -162,7 +162,6 @@ GetTolColors <- function(n, scheme="smooth rainbow",
             "smooth rainbow"   = Inf,
             "ground cover"     = 14)   # cover
   schemes <- names(nmax)
-
   scheme <- match.arg(scheme, schemes)
   checkmate::assertInt(n, lower=1, upper=nmax[scheme])
   checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
@@ -171,6 +170,9 @@ GetTolColors <- function(n, scheme="smooth rainbow",
   checkmate::qassert(bias, "N1(0,)")
   checkmate::assertFlag(reverse)
   checkmate::assertFlag(plot)
+
+  if (nmax[scheme] < Inf && (start > 0 | end < 1))
+    warning("'start' and 'end' apply only to interpolated color schemes")
 
   bad <- NULL
 

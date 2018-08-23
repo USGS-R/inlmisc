@@ -5,8 +5,8 @@
 \title{Add Color Gradient Legend to Plot}
 \usage{
 AddGradientLegend(breaks, pal, at = NULL, n = 5, labels = TRUE,
-  scientific = FALSE, title = NULL, loc = c("bottomleft", "topleft",
-  "topright", "bottomright"), inset = 0, strip.dim = c(2, 8))
+  scientific = FALSE, title = NULL, loc = "bottomleft",
+  inset = 0.02, strip.dim = c(2, 8))
 }
 \arguments{
 \item{breaks}{'numeric'.
@@ -34,11 +34,12 @@ see \code{\link{ToScientific}} for details.}
 Title to be placed at the top of the legend.}
 
 \item{loc}{'character'.
-Position of the legend in the main plot region:
-"bottomleft", "topleft", "topright", or "bottomright" to denote legend location.}
+Position of the legend in the main plot region;
+see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
 \item{inset}{'numeric'.
-Inset distance(s) from the margins as a fraction of the plot region.}
+Inset distance(s) from the margins as a fraction of the main plot region.
+Defaults to 2 percent of the axis range.}
 
 \item{strip.dim}{'numeric'.
 Dimensions of the color strip, in picas.}
@@ -52,11 +53,11 @@ This function can be used to add a continuous color gradient legend strip to a p
 \examples{
 plot(NA, xlim = c(0, 100), ylim = c(-10, 10), xlab = "", ylab = "")
 breaks <- 0:200
-AddGradientLegend(breaks, rainbow, title = "Title")
-AddGradientLegend(breaks, rainbow, title = "Title", inset = c(0.2, 0.1))
+AddGradientLegend(breaks, GetTolColors, title = "Title")
+AddGradientLegend(breaks, GetTolColors, title = "Title", inset = c(0.2, 0.1))
 breaks <- seq(0, 2e+06, length.out = 5)
-AddGradientLegend(breaks, GetTolColors, loc = "topright", inset = 0.1)
-pal <- function(...) rev(GetTolColors(...))  # reverse colors in palette
+AddGradientLegend(breaks, rainbow, loc = "topright", inset = 0.1)
+pal <- function(...) rev(rainbow(...))  # reverse colors in palette
 AddGradientLegend(breaks, pal, loc = "bottomright", inset = c(0.2, 0.1),
                   scientific = TRUE, strip.dim = c(1, 14))
 

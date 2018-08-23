@@ -630,8 +630,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   dd <- rbind(dd[1, ], c(dd[1, 1],  dd[1, 2] + d.dd))
   sp.xy <- sp::spTransform(sp::SpatialPoints(dd, proj4string=crs.dd), crs)
   xy <- sp.xy@coords
-  padx <- 0.1 * (usr[2] - usr[1])
-  pady <- 0.1 * (usr[4] - usr[3])
+  padx <- 0.1 * diff(usr[1:2])
+  pady <- 0.1 * diff(usr[3:4])
   if (loc %in% c("bottomleft", "topleft"))
     x0 <- usr[1] + padx
   else
