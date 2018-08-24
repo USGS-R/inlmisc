@@ -153,7 +153,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     } else {
       if (!is.numeric(n)) n <- 200L
       if (!is.numeric(breaks)) {
-        at <- pretty(cell.values, n=8)
+        at <- pretty(cell.values)
         breaks <- seq(min(at), max(at), length.out=n)
       }
       intervals <- findInterval(cell.values, breaks, all.inside=TRUE)

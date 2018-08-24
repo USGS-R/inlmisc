@@ -269,7 +269,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     n <- 0
   } else {
     zran <- range(r[], na.rm=TRUE)
-    default.zl <- if (extend.z) range(pretty(zran, n=6)) else zran
+    default.zl <- if (extend.z) range(pretty(zran)) else zran
     if (raster::is.factor(r)) {
       at1 <- raster::levels(r)[[1]][, "ID"]
       breaks <- c(0.5, at1 + 0.5)
@@ -284,7 +284,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
       if (is.null(breaks)) {
         if (is.null(n) || n > 200L) {
           breaks <- seq(zl[1], zl[2], length.out=200L)
-          at1 <- pretty(if (extend.z) zran else zl, n=6)
+          at1 <- pretty(if (extend.z) zran else zl)
         } else {
           breaks <- pretty(zl, n=n)
           at1 <- breaks

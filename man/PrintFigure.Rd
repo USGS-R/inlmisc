@@ -32,7 +32,8 @@ of the paper in a \dQuote{List of Figures}.}
 
 \item{headings}{'character'.
 Vector of subfigure captions, values are recycled as necessary
-to match the vector length of the \code{fig} argument.}
+to match the vector length of the \code{fig} argument.
+To exclude a subfigure caption specify its vector element as \code{NA}.}
 
 \item{pos}{'character'.
 String for the placement specifiers to be used in \code{\\begin{figure}[pos]}.
@@ -41,7 +42,7 @@ The specifiers can consist of the following characters in any order:
   \item \code{"h"} place the float about at the same point it occurs in the source text;
   \item \code{"t"} position at the top of the page;
   \item \code{"b"} position at the bottom of the page;
-  \item \code{"p"} put on a special page for floats only; 
+  \item \code{"p"} put on a special page for floats only;
   \item \code{"!"} override internal parameters LaTeX uses for determining float positions; and
   \item \code{"H"} places the float at precisely the location in the source text,
     requires \code{\\usepackage{float}} in the LaTeX preamble.

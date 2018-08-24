@@ -214,7 +214,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
   z <- z[is.lim]
 
   # breaks
-  if (is.null(breaks)) breaks <- pretty(z, n=6)
+  if (is.null(breaks)) breaks <- pretty(z)
   if (quantile.breaks) {
     breaks <- stats::quantile(z, probs=seq(0, 1, 0.25))
     if (is.null(break.labels)) {
@@ -362,8 +362,6 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     ipadx <- graphics::strwidth("M", cex=cex)
     ipady <- ipadx * asp
     lab.width <- max(graphics::strwidth(break.labels, cex=cex))
-    padx <- inset * diff(usr[1:2])
-    pady <- inset * diff(usr[3:4])
 
     r1 <- r0
     r1[r1 < (ipadx / 2)] <- ipadx / 2
@@ -386,15 +384,14 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       dy <- dy + subtitle.height
     }
 
-    loc <- GetInsetLocation(dx, dy, loc=legend.loc, padx=padx, pady=pady)
+    loc <- GetInsetLocation(dx, dy, loc=legend.loc, inset=inset)
 
     if (bty == "o")
       graphics::rect(loc[1], loc[2], loc[1] + dx, loc[2] + dy, col="#FFFFFFE7",
                      border="black", lwd=0.5)
     x <- rep(loc[1] + ipadx + max(r0), length(r0))
     y <- loc[2] + s
-    graphics::symbols(x, y, circles=r0, bg=cols0, fg=fg.col0, inches=FALSE,
-                      lwd=lwd, add=TRUE)
+    graphics::symbols(x, y, circles=r0, bg=cols0, fg=fg.col0, inches=FALSE, lwd=lwd, add=TRUE)
 
     graphics::text(loc[1] + ipadx + max(r0) * 2 + ipadx, y, break.labels, adj=c(0, 0.5), cex=cex)
     if (!is.null(title))

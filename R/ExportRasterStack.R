@@ -46,7 +46,7 @@
 #'
 
 ExportRasterStack <- function(rs, path, zip="",
-                              col=GetTolColors(255, start=0.0, end=0.8)) {
+                              col=GetTolColors(255, start=0.3, end=0.9)) {
 
   dir.create(path, showWarnings=FALSE, recursive=TRUE)
 
