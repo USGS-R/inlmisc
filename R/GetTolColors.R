@@ -27,6 +27,10 @@
 #'   See \code{\link[grDevices]{colorRamp}} function for details.
 #' @param reverse 'logical'.
 #'   Whether to reverse the direction of colors in the palette.
+#' @param fmt 'character'.
+#'   Format for returned color names.
+#'   Specify as \code{"HEX"} (the default) to express color components in hexadecimal (00 to FF)
+#'   or \code{"RGB"} in decimal (0 to 255), see \sQuote{Value} section for details.
 #' @param plot 'logical'.
 #'   Whether to display the color palette.
 #'
@@ -38,11 +42,12 @@
 #'   and \code{"ground cover"} (\code{n = 14}) are intended to be
 #'   accessed in their entirety and subset using color names.
 #'
-#' @return Returns a 'character' vector of \code{n} color names---each
-#'   name is 7 or 9 characters and formatted as
-#'   \code{"#"} followed by the red, blue, green, and optionally alpha values in hexadecimal.
+#' @return If \code{fmt = "HEX"} returns a 'character' vector of \code{n} color names in hexadecimal format.
+#'   A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}.
+#'   And if \code{fmt = "RGB"} an integer 'matrix' is returned with \code{n} rows and
+#'   three or four (when \code{alpha} is specified) columns.
 #'   For some color schemes the returned object includes a \code{"bad"} attribute giving
-#'   the color assigned to bad data.
+#'   the color name assigned to bad data.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -61,8 +66,8 @@
 #'
 #' @examples
 #'
-#' col <- GetTolColors(3); print(col)
-#' attr(col, "bad")
+#' col <- GetTolColors(5); print(col)
+#' GetTolColors(5, fmt = "RGB")
 #'
 #' # Number of colors (n)
 #' op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
@@ -146,7 +151,7 @@
 
 GetTolColors <- function(n, scheme="smooth rainbow",
                          alpha=NULL, start=0, end=1, bias=1, reverse=FALSE,
-                         plot=FALSE) {
+                         fmt=c("HEX", "RGB"), plot=FALSE) {
 
   nmax <- c("bright"           = 7,    # qualitative
             "vibrant"          = 7,
@@ -169,6 +174,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
   checkmate::assertNumber(end, lower=start, upper=1, finite=TRUE)
   checkmate::qassert(bias, "N1(0,)")
   checkmate::assertFlag(reverse)
+  fmt <- match.arg(fmt)
   checkmate::assertFlag(plot)
 
   if (nmax[scheme] < Inf && (start > 0 | end < 1))
@@ -202,7 +208,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "teal"         = "#44AA99",
              "olive"        = "#999933",
              "purple"       = "#AA4499")
-    bad <- "#DDDDDD"
+    bad <- c("bad"          = "#DDDDDD")
   } else if (scheme == "pale") {
     pal <- c("pale blue"    = "#BBCCEE",
              "pale cyan"    = "#CCEEFF",
@@ -239,7 +245,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "9"            = "#F67E4B",
              "10"           = "#DD3D2D",
              "11"           = "#A50026")
-    bad <- "#FFFFFF"
+    bad <- c("bad"          = "#FFFFFF")
   } else if (scheme == "BuRd") {
     pal <- c("1"            = "#2166AC",
              "2"            = "#4393C3",
@@ -250,7 +256,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "7"            = "#F4A582",
              "8"            = "#D6604D",
              "9"            = "#B2182B")
-    bad <- "#FFEE99"
+    bad <- c("bad"          = "#FFEE99")
   } else if (scheme == "PRGn") {
     pal <- c("1"            = "#762A83",
              "2"            = "#9970AB",
@@ -261,7 +267,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "7"            = "#ACD39E",
              "8"            = "#5AAE61",
              "9"            = "#1B7837")
-    bad <- "#FFEE99"
+    bad <- c("bad"          = "#FFEE99")
   } else if (scheme == "YlOrBr") {
     pal <- c("1"            = "#FFFFE5",
              "2"            = "#FFF7BC",
@@ -272,7 +278,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "7"            = "#CC4C02",
              "8"            = "#993404",
              "9"            = "#662506")
-    bad <- "#888888"
+    bad <- c("bad"          = "#888888")
   } else if (scheme == "discrete rainbow") {
     pal <- c("1"            = "#E8ECFB",
              "2"            = "#D9CCE3",
@@ -303,7 +309,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "27"           = "#A5170E",
              "28"           = "#72190E",
              "29"           = "#42150A")
-    bad <- "#777777"
+    bad <- c("bad"          = "#777777")
   } else if (scheme == "smooth rainbow") {
     pal <- c("1"            = "#E8ECFB",
              "2"            = "#DDD8EF",
@@ -339,7 +345,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "32"           = "#95211B",
              "33"           = "#721E17",
              "34"           = "#521A13")
-    bad <- "#666666"
+    bad <- c("bad"          = "#666666")
   } else if (scheme == "ground cover") {
     pal <- c("water"                       = "#5566AA",
              "evergreen needleleaf forest" = "#117733",
@@ -399,8 +405,6 @@ GetTolColors <- function(n, scheme="smooth rainbow",
     if (!is.null(bad)) bad <- grDevices::adjustcolor(bad, alpha.f=alpha)
   }
 
-  attr(col, "bad") <- bad
-
   if (plot) {
     txt <- c(paste0("n = ", n),
              paste0("alpha = ", alpha),
@@ -426,6 +430,13 @@ GetTolColors <- function(n, scheme="smooth rainbow",
     graphics::box(lwd=0.5, col="#D3D3D3")
     return(invisible(col))
   }
+
+  if (fmt == "RGB") {
+    col <- t(grDevices::col2rgb(col, alpha=!is.null(alpha)))
+    if (!is.null(bad)) bad <- t(grDevices::col2rgb(bad, alpha=!is.null(alpha)))
+  }
+
+  attr(col, "bad") <- bad
 
   return(col)
 }

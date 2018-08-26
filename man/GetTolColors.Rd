@@ -5,7 +5,8 @@
 \title{Tol Color Schemes}
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
-  end = 1, bias = 1, reverse = FALSE, plot = FALSE)
+  end = 1, bias = 1, reverse = FALSE, fmt = c("HEX", "RGB"),
+  plot = FALSE)
 }
 \arguments{
 \item{n}{'integer'.
@@ -38,15 +39,21 @@ See \code{\link[grDevices]{colorRamp}} function for details.}
 \item{reverse}{'logical'.
 Whether to reverse the direction of colors in the palette.}
 
+\item{fmt}{'character'.
+Format for returned color names.
+Specify as \code{"HEX"} (the default) to express color components in hexadecimal (00 to FF)
+or \code{"RGB"} in decimal (0 to 255), see \sQuote{Value} section for details.}
+
 \item{plot}{'logical'.
 Whether to display the color palette.}
 }
 \value{
-Returns a 'character' vector of \code{n} color names---each
-  name is 7 or 9 characters and formatted as
-  \code{"#"} followed by the red, blue, green, and optionally alpha values in hexadecimal.
+If \code{fmt = "HEX"} returns a 'character' vector of \code{n} color names in hexadecimal format.
+  A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}.
+  And if \code{fmt = "RGB"} an integer 'matrix' is returned with \code{n} rows and
+  three or four (when \code{alpha} is specified) columns.
   For some color schemes the returned object includes a \code{"bad"} attribute giving
-  the color assigned to bad data.
+  the color name assigned to bad data.
 }
 \description{
 This function creates a vector of \code{n} colors from
@@ -63,8 +70,8 @@ Limits on the maximum number of discrete colors for a scheme are:
 }
 \examples{
 
-col <- GetTolColors(3); print(col)
-attr(col, "bad")
+col <- GetTolColors(5); print(col)
+GetTolColors(5, fmt = "RGB")
 
 # Number of colors (n)
 op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
