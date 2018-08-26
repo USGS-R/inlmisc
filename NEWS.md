@@ -2,8 +2,8 @@
 
 - Remove **viridisLite** from suggested packages.
 
-- Add the internal function `GetInsetLocation`, used to determine
-  the location for a inset in the main plot region.
+- Add `GetInsetLocation` function, used to determine
+  the location for a inset graphics in the main plot region.
 
 - In `AddPoints` function: add `bty`, `draw.legend`, and `draw.points` arguments.
 

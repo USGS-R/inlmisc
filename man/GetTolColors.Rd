@@ -125,7 +125,7 @@ op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
 GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
 GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
 GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
-GetTolColors(255, start = 0.2, end = 0.8, plot = TRUE)
+GetTolColors(255, start = 0.3, end = 0.9, plot = TRUE)
 par(op)
 
 # Interpolation bias (bias)

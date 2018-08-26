@@ -41,7 +41,7 @@
 #' plot(-100:100, -100:100, type = "n", xlab = "x in meters", ylab = "y in meters", asp = 2)
 #' AddScaleBar()
 #' AddScaleBar(unit = "METERS", loc = "topleft")
-#' AddScaleBar(unit = c("METERS", "FEET"), conv.fact = c(1, 3.28084), 
+#' AddScaleBar(unit = c("METERS", "FEET"), conv.fact = c(1, 3.28084),
 #'             loc = "topright", offset = c(-0.2, 0))
 #' AddScaleBar(unit = c("METERS", "FEET"), conv.fact = c(1, 3.28084), vert.exag = TRUE,
 #'             loc = "bottomright", offset = c(-0.2, 0.2))
@@ -49,7 +49,7 @@
 #' plot(c(-38.31, -35.5), c(40.96, 37.5), type = "n", xlab = "longitude", ylab = "latitude")
 #' AddScaleBar(unit = "KILOMETERS", longlat = TRUE)
 #' AddScaleBar(unit = "MILES", conv.fact = 0.621371, longlat = TRUE, loc = "topright")
-#' AddScaleBar(unit = c("KILOMETERS", "MILES"), conv.fact = c(1, 0.621371), 
+#' AddScaleBar(unit = c("KILOMETERS", "MILES"), conv.fact = c(1, 0.621371),
 #'             longlat = TRUE, loc = "topleft")
 #'
 
@@ -109,6 +109,13 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   sh <- graphics::strheight("M", units="user", cex=1)  # string height in user units
   pad <- c(sw * ifelse(grepl("left$", loc), 2, 3),
            sh * ifelse(grepl("^top",  loc), 3, 2))
+
+
+
+
+
+
+
   if (loc == "bottomleft") {
     xy <- c(usr[1] + pad[1], usr[3] + pad[2])
   } else if (loc == "topleft") {
@@ -120,6 +127,11 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   }
   xy <- c(xy[1] + offset[1] * pusr[1] / pin[1], xy[2] + offset[2] * pusr[2] / pin[2])
 
+
+
+
+
+
   # draw axis and tick marks
   xat <- xy[1] + at  # x of tick marks in user coordinates
   tcl <- sh * 0.4  # y length of tick marks in user coordinates
@@ -130,7 +142,7 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   val_sw <- graphics::strwidth(val, units="user", cex=0.7)
   graphics::text(xy[1], xy[2] + tcl, "0", adj=c(0.5, -0.6), cex=0.7)
   graphics::text(xy[1] + len - val_sw / 2, xy[2] + tcl, lab, adj=c(0, -0.6), cex=0.7)
-  
+
   # add scale for dual units
   if (!is.na(conv.fact[2])) {
     at <- grDevices::axisTicks(c(0, len * conv.fact[2]), log=FALSE, nint=4)
@@ -140,7 +152,7 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
     val_sw <- graphics::strwidth(val, units="user", cex=0.7)
     for (i in xat) graphics::lines(rbind(c(i, xy[2]), c(i, xy[2] - tcl)), lwd=0.5)
     graphics::text(xy[1], xy[2] - tcl, "0", adj=c(0.5, 1.4), cex=0.7)
-    graphics::text(utils::tail(xat, 1) - val_sw / 2, xy[2] - tcl, 
+    graphics::text(utils::tail(xat, 1) - val_sw / 2, xy[2] - tcl,
                    lab, adj=c(0, 1.4), cex=0.7)
   }
 

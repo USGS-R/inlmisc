@@ -13,7 +13,7 @@ AddInsetMap(p, col = c("#D8D8D8", "#BFA76F"), main.label = list(label =
 \item{p}{'SpatialPolygons'.
 Polygon describing the large map.}
 
-\item{col}{'list'.
+\item{col}{'character'.
 Vector of length 2 giving the colors for filling the large map polygon \code{p} and the smaller plot extent rectangle.}
 
 \item{main.label}{'list'.

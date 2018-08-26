@@ -123,7 +123,7 @@
 #' GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
 #' GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
 #' GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
-#' GetTolColors(255, start = 0.2, end = 0.8, plot = TRUE)
+#' GetTolColors(255, start = 0.3, end = 0.9, plot = TRUE)
 #' par(op)
 #'
 #' # Interpolation bias (bias)
@@ -424,6 +424,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
     graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels,
                    tick=FALSE, line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
     graphics::box(lwd=0.5, col="#D3D3D3")
+    return(invisible(col))
   }
 
   return(col)
