@@ -220,7 +220,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "teal"         = "#44AA99",
              "olive"        = "#999933",
              "purple"       = "#AA4499")
-    bad <- "#DDDDDD"
+    bad <- c("pale grey"    = "#DDDDDD")
   } else if (scheme == "pale") {
     pal <- c("pale blue"    = "#BBCCEE",
              "pale cyan"    = "#CCEEFF",
@@ -257,7 +257,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "9"            = "#F67E4B",
              "10"           = "#DD3D2D",
              "11"           = "#A50026")
-    bad <- "#FFFFFF"
+    bad <- c("1"            = "#FFFFFF")
   } else if (scheme == "BuRd") {
     pal <- c("1"            = "#2166AC",
              "2"            = "#4393C3",
@@ -268,7 +268,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "7"            = "#F4A582",
              "8"            = "#D6604D",
              "9"            = "#B2182B")
-    bad <- "#FFEE99"
+    bad <- c("1"            = "#FFEE99")
   } else if (scheme == "PRGn") {
     pal <- c("1"            = "#762A83",
              "2"            = "#9970AB",
@@ -279,7 +279,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "7"            = "#ACD39E",
              "8"            = "#5AAE61",
              "9"            = "#1B7837")
-    bad <- "#FFEE99"
+    bad <- c("1"            = "#FFEE99")
   } else if (scheme == "YlOrBr") {
     pal <- c("1"            = "#FFFFE5",
              "2"            = "#FFF7BC",
@@ -290,7 +290,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "7"            = "#CC4C02",
              "8"            = "#993404",
              "9"            = "#662506")
-    bad <- "#888888"
+    bad <- c("1"            = "#888888")
   } else if (scheme == "discrete rainbow") {
     pal <- c("1"            = "#E8ECFB",
              "2"            = "#D9CCE3",
@@ -321,7 +321,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "27"           = "#A5170E",
              "28"           = "#72190E",
              "29"           = "#42150A")
-    bad <- "#777777"
+    bad <- c("1"            = "#777777")
   } else if (scheme == "smooth rainbow") {
     pal <- c("1"            = "#E8ECFB",
              "2"            = "#DDD8EF",
@@ -357,7 +357,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "32"           = "#95211B",
              "33"           = "#721E17",
              "34"           = "#521A13")
-    bad <- "#666666"
+    bad <- c("1"            = "#666666")
   } else if (scheme == "ground cover") {
     pal <- c("water"                       = "#5566AA",
              "evergreen needleleaf forest" = "#117733",
@@ -416,21 +416,26 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
     if (!is.null(bad)) bad <- .SimulateBlindness(bad, type=blindness)
   }
 
-  labels <- names(col)
   if (!is.null(alpha)) {
-    col <- grDevices::adjustcolor(col, alpha.f=alpha); names(col) <- labels
-    if (!is.null(bad)) bad <- grDevices::adjustcolor(bad, alpha.f=alpha)
+    lab <- names(col)
+    col <- grDevices::adjustcolor(col, alpha.f=alpha); names(col) <- lab
+    if (!is.null(bad)) {
+      lab <- names(bad)
+      bad <- grDevices::adjustcolor(bad, alpha.f=alpha); names(bad) <- lab
+    }
   }
 
   if (plot) {
     txt <- c(paste0("n = ", n),
+             paste0("scheme = '", scheme, "'"),
              paste0("alpha = ", alpha),
              paste0("start = ", start, ", end = ", end),
              paste0("bias = ", bias),
              paste0("reverse = ", reverse),
-             paste0("blindness = ", blindness))
-    is <- c(TRUE, !is.null(alpha), start > 0 | end < 1, bias != 1, reverse, blindness != "none")
-    main <- sprintf("%s (%s)", scheme, paste(txt[is], collapse=", "))
+             paste0("blindness = '", blindness, "'"))
+    is <- c(TRUE, TRUE, !is.null(alpha), start > 0 | end < 1,
+            bias != 1, reverse, blindness != "none")
+    main <- paste(txt[is], collapse=", ")
     op <- graphics::par(mar = c(3, 2, 2, 2)); on.exit(graphics::par(op))
     graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
                            xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
@@ -440,11 +445,11 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
       labels <- FALSE
     } else {
       border <- "#D3D3D3"
-      labels <- gsub(" ", "\n", labels)
+      labels <- gsub(" ", "\n", names(col))
     }
     graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border=border, lwd=0.5)
-    graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels,
-                   tick=FALSE, line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
+    graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels, tick=FALSE,
+                   line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
     graphics::box(lwd=0.5, col="#D3D3D3")
     return(invisible(col))
   }
@@ -468,7 +473,6 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
   type <- match.arg(type)
 
   rgb <- grDevices::col2rgb(col)
-
   if (type == "green") {
     r <- apply(rgb, 2, function(x) {
       (4211 + 0.677 * x["green"]^2.2 + 0.2802 * x["red"]^2.2)^(1 / 2.2)
@@ -484,7 +488,6 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
       (782.7 + 0.992052 * x["blue"]^2.2 - 0.003974 * x["green"]^2.2 + 0.003974 * x["red"]^2.2)^(1 / 2.2)
     })
   }
-
   col <- grDevices::rgb(r, r, b, names=names(col), maxColorValue=255)
 
   return(col)
