@@ -33,6 +33,9 @@
 #'   or \code{"RGB"} in decimal (0 to 255), see \sQuote{Value} section for details.
 #' @param plot 'logical'.
 #'   Whether to display the color palette.
+#' @param blindness 'character'.
+#'   Type of color blindness to simulate in the plot.
+#'   Specify \code{"none"} (the default), \code{"green"}, or \code{"red"}.
 #'
 #' @details Limits on the maximum number of discrete colors for a scheme are:
 #'   \code{n < 8} for \code{"bright"} and \code{"vibrant"};
@@ -148,10 +151,18 @@
 #' GetTolColors(10, reverse = TRUE,  plot = TRUE)
 #' par(op)
 #'
+#' # Color blindness (blindness)
+#' op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
+#' GetTolColors(34, plot = TRUE, blindness = "none")
+#' GetTolColors(34, plot = TRUE, blindness = "green")
+#' GetTolColors(34, plot = TRUE, blindness = "red")
+#' par(op)
+#'
 
-GetTolColors <- function(n, scheme="smooth rainbow",
-                         alpha=NULL, start=0, end=1, bias=1, reverse=FALSE,
-                         fmt=c("HEX", "RGB"), plot=FALSE) {
+GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
+                         start=0, end=1, bias=1, reverse=FALSE,
+                         fmt=c("HEX", "RGB"), plot=FALSE,
+                         blindness=c("none", "green", "red")) {
 
   nmax <- c("bright"           = 7,    # qualitative
             "vibrant"          = 7,
@@ -176,6 +187,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
   checkmate::assertFlag(reverse)
   fmt <- match.arg(fmt)
   checkmate::assertFlag(plot)
+  blindness <- match.arg(blindness)
 
   if (nmax[scheme] < Inf && (start > 0 | end < 1))
     warning("'start' and 'end' apply only to interpolated color schemes")
@@ -410,8 +422,9 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              paste0("alpha = ", alpha),
              paste0("start = ", start, ", end = ", end),
              paste0("bias = ", bias),
-             paste0("reverse = ", reverse))
-    is <- c(TRUE, !is.null(alpha), start > 0 | end < 1, bias != 1, reverse)
+             paste0("reverse = ", reverse),
+             paste0("blindness = ", blindness))
+    is <- c(TRUE, !is.null(alpha), start > 0 | end < 1, bias != 1, reverse, blindness != "none")
     main <- sprintf("%s (%s)", scheme, paste(txt[is], collapse=", "))
     op <- graphics::par(mar = c(3, 2, 2, 2)); on.exit(graphics::par(op))
     graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
@@ -424,6 +437,28 @@ GetTolColors <- function(n, scheme="smooth rainbow",
       border <- "#D3D3D3"
       labels <- gsub(" ", "\n", labels)
     }
+
+    # simulate color blindness
+    if (blindness != "none") {
+      rgb <- grDevices::col2rgb(col)
+      if (blindness == "green") {
+        r <- apply(rgb, 2, function(x) {
+          (4211 + 0.677 * x["green"]^2.2 + 0.2802 * x["red"]^2.2)^(1 / 2.2)
+        })
+        b <- apply(rgb, 2, function(x) {
+          (4211 + 0.95724 * x["blue"]^2.2 + 0.02138 * x["green"]^2.2 - 0.02138 * x["red"]^2.2)^(1 / 2.2)
+        })
+      } else if (blindness == "red") {
+        r <- apply(rgb, 2, function(x) {
+          (782.7 + 0.8806 * x["green"]^2.2 + 0.1115 * x["red"]^2.2)^(1 / 2.2)
+        })
+        b <- apply(rgb, 2, function(x) {
+          (782.7 + 0.992052 * x["blue"]^2.2 - 0.003974 * x["green"]^2.2 + 0.003974 * x["red"]^2.2)^(1 / 2.2)
+        })
+      }
+      col <- grDevices::rgb(r, r, b, alpha, names=names(col), maxColorValue=255)
+    }
+
     graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border=border, lwd=0.5)
     graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels,
                    tick=FALSE, line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")

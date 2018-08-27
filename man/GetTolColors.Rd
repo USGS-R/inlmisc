@@ -6,7 +6,7 @@
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
   end = 1, bias = 1, reverse = FALSE, fmt = c("HEX", "RGB"),
-  plot = FALSE)
+  plot = FALSE, blindness = c("none", "green", "red"))
 }
 \arguments{
 \item{n}{'integer'.
@@ -46,6 +46,10 @@ or \code{"RGB"} in decimal (0 to 255), see \sQuote{Value} section for details.}
 
 \item{plot}{'logical'.
 Whether to display the color palette.}
+
+\item{blindness}{'character'.
+Type of color blindness to simulate in the plot.
+Specify \code{"none"} (the default), \code{"green"}, or \code{"red"}.}
 }
 \value{
 If \code{fmt = "HEX"} returns a 'character' vector of \code{n} color names in hexadecimal format.
@@ -150,6 +154,13 @@ par(op)
 op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
 GetTolColors(10, reverse = FALSE, plot = TRUE)
 GetTolColors(10, reverse = TRUE,  plot = TRUE)
+par(op)
+
+# Color blindness (blindness)
+op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
+GetTolColors(34, plot = TRUE, blindness = "none")
+GetTolColors(34, plot = TRUE, blindness = "green")
+GetTolColors(34, plot = TRUE, blindness = "red")
 par(op)
 
 }
