@@ -77,17 +77,6 @@ Limits on the maximum number of discrete colors for a scheme are:
 col <- GetTolColors(5); print(col)
 GetTolColors(5, fmt = "RGB")
 
-# Number of colors (n)
-op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
-GetTolColors( 2, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors( 4, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors( 6, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors( 8, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors(10, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors(15, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors(23, scheme = "discrete rainbow", plot = TRUE)
-par(op)
-
 # Qualitative color schemes (scheme)
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
 GetTolColors(7, scheme = "bright",  plot = TRUE)
