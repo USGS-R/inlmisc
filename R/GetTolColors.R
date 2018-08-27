@@ -208,7 +208,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "teal"         = "#44AA99",
              "olive"        = "#999933",
              "purple"       = "#AA4499")
-    bad <- c("bad"          = "#DDDDDD")
+    bad <- "#DDDDDD"
   } else if (scheme == "pale") {
     pal <- c("pale blue"    = "#BBCCEE",
              "pale cyan"    = "#CCEEFF",
@@ -245,7 +245,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "9"            = "#F67E4B",
              "10"           = "#DD3D2D",
              "11"           = "#A50026")
-    bad <- c("bad"          = "#FFFFFF")
+    bad <- "#FFFFFF"
   } else if (scheme == "BuRd") {
     pal <- c("1"            = "#2166AC",
              "2"            = "#4393C3",
@@ -256,7 +256,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "7"            = "#F4A582",
              "8"            = "#D6604D",
              "9"            = "#B2182B")
-    bad <- c("bad"          = "#FFEE99")
+    bad <- "#FFEE99"
   } else if (scheme == "PRGn") {
     pal <- c("1"            = "#762A83",
              "2"            = "#9970AB",
@@ -267,7 +267,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "7"            = "#ACD39E",
              "8"            = "#5AAE61",
              "9"            = "#1B7837")
-    bad <- c("bad"          = "#FFEE99")
+    bad <- "#FFEE99"
   } else if (scheme == "YlOrBr") {
     pal <- c("1"            = "#FFFFE5",
              "2"            = "#FFF7BC",
@@ -278,7 +278,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "7"            = "#CC4C02",
              "8"            = "#993404",
              "9"            = "#662506")
-    bad <- c("bad"          = "#888888")
+    bad <- "#888888"
   } else if (scheme == "discrete rainbow") {
     pal <- c("1"            = "#E8ECFB",
              "2"            = "#D9CCE3",
@@ -309,7 +309,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "27"           = "#A5170E",
              "28"           = "#72190E",
              "29"           = "#42150A")
-    bad <- c("bad"          = "#777777")
+    bad <- "#777777"
   } else if (scheme == "smooth rainbow") {
     pal <- c("1"            = "#E8ECFB",
              "2"            = "#DDD8EF",
@@ -345,7 +345,7 @@ GetTolColors <- function(n, scheme="smooth rainbow",
              "32"           = "#95211B",
              "33"           = "#721E17",
              "34"           = "#521A13")
-    bad <- c("bad"          = "#666666")
+    bad <- "#666666"
   } else if (scheme == "ground cover") {
     pal <- c("water"                       = "#5566AA",
              "evergreen needleleaf forest" = "#117733",
@@ -433,7 +433,8 @@ GetTolColors <- function(n, scheme="smooth rainbow",
 
   if (fmt == "RGB") {
     col <- t(grDevices::col2rgb(col, alpha=!is.null(alpha)))
-    if (!is.null(bad)) bad <- t(grDevices::col2rgb(bad, alpha=!is.null(alpha)))
+    if (!is.null(bad))
+      bad <- t(grDevices::col2rgb(bad, alpha=!is.null(alpha)))
   }
 
   attr(col, "bad") <- bad
