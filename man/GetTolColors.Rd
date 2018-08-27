@@ -5,8 +5,8 @@
 \title{Tol Color Schemes}
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
-  end = 1, bias = 1, reverse = FALSE, fmt = c("HEX", "RGB"),
-  plot = FALSE, blindness = c("none", "green", "red"))
+  end = 1, bias = 1, reverse = FALSE, blindness = c("none",
+  "green", "red"), fmt = c("HEX", "RGB"), plot = FALSE)
 }
 \arguments{
 \item{n}{'integer'.
@@ -39,6 +39,10 @@ See \code{\link[grDevices]{colorRamp}} function for details.}
 \item{reverse}{'logical'.
 Whether to reverse the direction of colors in the palette.}
 
+\item{blindness}{'character'.
+Type of color blindness to simulate:
+\code{"none"} (the default), \code{"green"}, or \code{"red"}.}
+
 \item{fmt}{'character'.
 Format for returned color names.
 Specify as \code{"HEX"} (the default) to express color components in hexadecimal (00 to FF)
@@ -46,10 +50,6 @@ or \code{"RGB"} in decimal (0 to 255), see \sQuote{Value} section for details.}
 
 \item{plot}{'logical'.
 Whether to display the color palette.}
-
-\item{blindness}{'character'.
-Type of color blindness to simulate in the plot.
-Specify \code{"none"} (the default), \code{"green"}, or \code{"red"}.}
 }
 \value{
 If \code{fmt = "HEX"} returns a 'character' vector of \code{n} color names in hexadecimal format.
@@ -158,9 +158,9 @@ par(op)
 
 # Color blindness (blindness)
 op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
-GetTolColors(34, plot = TRUE, blindness = "none")
-GetTolColors(34, plot = TRUE, blindness = "green")
-GetTolColors(34, plot = TRUE, blindness = "red")
+GetTolColors(34, blindness = "none",  plot = TRUE)
+GetTolColors(34, blindness = "green", plot = TRUE)
+GetTolColors(34, blindness = "red",   plot = TRUE)
 par(op)
 
 }

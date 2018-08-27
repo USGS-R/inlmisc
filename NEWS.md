@@ -17,7 +17,7 @@
 
 - In `GetTolColors` function: add color schemes;
   change default scheme from `"bright"` to `"smooth rainbow"`;
-  add `start`, `end`, `bias`, `reverse`, and `fmt` arguments.
+  add `start`, `end`, `bias`, `reverse`, `blindness`, and `fmt` arguments.
 
 # inlmisc 0.4.2
 
