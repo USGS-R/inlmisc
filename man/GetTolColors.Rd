@@ -6,7 +6,7 @@
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
   end = 1, bias = 1, reverse = FALSE, blindness = c("none",
-  "green", "red"), fmt = c("HEX", "RGB"), plot = FALSE)
+  "deutan", "protan", "tritan"), fmt = c("HEX", "RGB"), plot = FALSE)
 }
 \arguments{
 \item{n}{'integer'.
@@ -41,7 +41,9 @@ Whether to reverse the direction of colors in the palette.}
 
 \item{blindness}{'character'.
 Type of color blindness to simulate:
-\code{"none"} (the default), \code{"green"}, or \code{"red"}.}
+\code{"none"} (the default), \code{"deutan"}, \code{"protan"}, or \code{"tritan"}.
+Requires that the \pkg{dichromat} package is available,
+see \code{\link[dichromat]{dichromat}} function for description of color-blindness types.}
 
 \item{fmt}{'character'.
 Format for returned color names.
@@ -56,12 +58,12 @@ If \code{fmt = "HEX"} returns a 'character' vector of \code{n} color names in he
   A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}.
   And if \code{fmt = "RGB"} an integer 'matrix' is returned with \code{n} rows and
   three or four (when \code{alpha} is specified) columns.
-  For some color schemes the returned object includes a \code{"bad"} attribute giving
-  the color name assigned to bad data.
+  The returned object includes a \code{"bad"} attribute giving
+  the color name assigned to bad data---equal to \code{NA} if unspecified.
 }
 \description{
 This function creates a vector of \code{n} colors from
-qualitative, diverging, and sequential color schemes by Paul Tol (2018).
+qualitative, diverging, sequential, and cover color schemes by Paul Tol (2018).
 }
 \details{
 Limits on the maximum number of discrete colors for a scheme are:
@@ -146,10 +148,11 @@ GetTolColors(10, reverse = TRUE,  plot = TRUE)
 par(op)
 
 # Color blindness (blindness)
-op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
-GetTolColors(34, blindness = "none",  plot = TRUE)
-GetTolColors(34, blindness = "green", plot = TRUE)
-GetTolColors(34, blindness = "red",   plot = TRUE)
+op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
+GetTolColors(34, blindness = "none",   plot = TRUE)
+GetTolColors(34, blindness = "deutan", plot = TRUE)
+GetTolColors(34, blindness = "protan", plot = TRUE)
+GetTolColors(34, blindness = "tritan", plot = TRUE)
 par(op)
 
 }

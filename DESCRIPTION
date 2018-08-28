@@ -32,6 +32,7 @@ Imports:
     xtable
 Suggests:
     devtools,
+    dichromat,
     doParallel,
     doRNG,
     githubinstall,

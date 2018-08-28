@@ -1,5 +1,7 @@
 # inlmisc 0.4.2.9000
 
+- Make **dichromat** a suggested package.
+
 - Remove **viridisLite** from suggested packages.
 
 - Add `GetInsetLocation` function, used to determine

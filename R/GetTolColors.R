@@ -1,7 +1,7 @@
 #' Tol Color Schemes
 #'
 #' This function creates a vector of \code{n} colors from
-#' qualitative, diverging, and sequential color schemes by Paul Tol (2018).
+#' qualitative, diverging, sequential, and cover color schemes by Paul Tol (2018).
 #'
 #' @param n 'integer'.
 #'   Number of colors to be in the palette, the maximum value is
@@ -29,7 +29,9 @@
 #'   Whether to reverse the direction of colors in the palette.
 #' @param blindness 'character'.
 #'   Type of color blindness to simulate:
-#'   \code{"none"} (the default), \code{"green"}, or \code{"red"}.
+#'   \code{"none"} (the default), \code{"deutan"}, \code{"protan"}, or \code{"tritan"}.
+#'   Requires that the \pkg{dichromat} package is available,
+#'   see \code{\link[dichromat]{dichromat}} function for description of color-blindness types.
 #' @param fmt 'character'.
 #'   Format for returned color names.
 #'   Specify as \code{"HEX"} (the default) to express color components in hexadecimal (00 to FF)
@@ -49,8 +51,8 @@
 #'   A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}.
 #'   And if \code{fmt = "RGB"} an integer 'matrix' is returned with \code{n} rows and
 #'   three or four (when \code{alpha} is specified) columns.
-#'   For some color schemes the returned object includes a \code{"bad"} attribute giving
-#'   the color name assigned to bad data.
+#'   The returned object includes a \code{"bad"} attribute giving
+#'   the color name assigned to bad data---equal to \code{NA} if unspecified.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -141,16 +143,17 @@
 #' par(op)
 #'
 #' # Color blindness (blindness)
-#' op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
-#' GetTolColors(34, blindness = "none",  plot = TRUE)
-#' GetTolColors(34, blindness = "green", plot = TRUE)
-#' GetTolColors(34, blindness = "red",   plot = TRUE)
+#' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
+#' GetTolColors(34, blindness = "none",   plot = TRUE)
+#' GetTolColors(34, blindness = "deutan", plot = TRUE)
+#' GetTolColors(34, blindness = "protan", plot = TRUE)
+#' GetTolColors(34, blindness = "tritan", plot = TRUE)
 #' par(op)
 #'
 
 GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
                          start=0, end=1, bias=1, reverse=FALSE,
-                         blindness=c("none", "green", "red"),
+                         blindness=c("none", "deutan", "protan", "tritan"),
                          fmt=c("HEX", "RGB"), plot=FALSE) {
 
   nmax <- c("bright"           = 7,    # qualitative
@@ -175,13 +178,15 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
   checkmate::qassert(bias, "N1(0,)")
   checkmate::assertFlag(reverse)
   blindness <- match.arg(blindness)
+  if (blindness != "none" && !requireNamespace("dichromat", quietly=TRUE))
+    stop("simulating color blindness requires the dichromat package")
   fmt <- match.arg(fmt)
   checkmate::assertFlag(plot)
 
   if (nmax[scheme] < Inf && (start > 0 | end < 1))
     warning("'start' and 'end' apply only to interpolated color schemes")
 
-  bad <- NULL
+  bad <- as.character(NA)
 
   if (scheme == "bright") {
     pal <- c("blue"         = "#4477AA",
@@ -400,20 +405,25 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
 
   if (reverse) col <- rev(col)
 
-  if (blindness != "none") {
-    col <- .SimulateBlindness(col, type=blindness)
-    if (!is.null(bad)) bad <- .SimulateBlindness(bad, type=blindness)
-  }
-
-  if (!is.null(alpha)) {
-    lab <- names(col)
-    col <- grDevices::adjustcolor(col, alpha.f=alpha); names(col) <- lab
-    if (!is.null(bad)) {
-      lab <- names(bad)
-      bad <- grDevices::adjustcolor(bad, alpha.f=alpha); names(bad) <- lab
+  if (blindness != "none" | !is.null(alpha)) {
+    col_names <- names(col)
+    bad_names <- names(bad)
+    if (blindness != "none") {
+      col <- dichromat::dichromat(col, type=blindness)
+      if (!is.na(bad)) bad <- dichromat::dichromat(bad, type=blindness)
     }
+    if (!is.null(alpha)) {
+      col <- grDevices::adjustcolor(col, alpha.f=alpha)
+      if (!is.na(bad)) bad <- grDevices::adjustcolor(bad, alpha.f=alpha)
+    }
+    names(col) <- col_names
+    names(bad) <- bad_names
   }
 
+  # plot colors,
+  # code adapted from example in colorspace::rainbow_hcl function documentation,
+  # authored by Achim Zeileis and accessed on Aug. 8, 2018
+  # from https://CRAN.R-project.org/package=colorspace
   if (plot) {
     txt <- c(paste0("n = ", n),
              paste0("scheme = '", scheme, "'"),
@@ -429,7 +439,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
     graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
                            xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
                            xlab="", ylab="", col.main="#333333")
-    if (n > 50) {  # criterion for showing tick labels
+    if (n > 50) {  # arbitrary cutoff criterion for drawing tick labels
       border <- NA
       labels <- FALSE
     } else {
@@ -445,39 +455,10 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
 
   if (fmt == "RGB") {
     col <- t(grDevices::col2rgb(col, alpha=!is.null(alpha)))
-    if (!is.null(bad))
-      bad <- t(grDevices::col2rgb(bad, alpha=!is.null(alpha)))
+    if (!is.na(bad)) bad <- t(grDevices::col2rgb(bad, alpha=!is.null(alpha)))
   }
 
   attr(col, "bad") <- bad
-
-  return(col)
-}
-
-##
-
-.SimulateBlindness <- function(col, type=c("green", "red")) {
-
-  checkmate::assertCharacter(col, min.chars=7, min.len=1)
-  type <- match.arg(type)
-
-  rgb <- grDevices::col2rgb(col)
-  if (type == "green") {
-    r <- apply(rgb, 2, function(x) {
-      (4211 + 0.677 * x["green"]^2.2 + 0.2802 * x["red"]^2.2)^(1 / 2.2)
-    })
-    b <- apply(rgb, 2, function(x) {
-      (4211 + 0.95724 * x["blue"]^2.2 + 0.02138 * x["green"]^2.2 - 0.02138 * x["red"]^2.2)^(1 / 2.2)
-    })
-  } else if (type == "red") {
-    r <- apply(rgb, 2, function(x) {
-      (782.7 + 0.8806 * x["green"]^2.2 + 0.1115 * x["red"]^2.2)^(1 / 2.2)
-    })
-    b <- apply(rgb, 2, function(x) {
-      (782.7 + 0.992052 * x["blue"]^2.2 - 0.003974 * x["green"]^2.2 + 0.003974 * x["red"]^2.2)^(1 / 2.2)
-    })
-  }
-  col <- grDevices::rgb(r, r, b, names=names(col), maxColorValue=255)
 
   return(col)
 }
