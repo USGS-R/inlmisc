@@ -1,7 +1,7 @@
 #' Tol Color Schemes
 #'
 #' This function creates a vector of \code{n} colors from
-#' qualitative, diverging, sequential, and cover color schemes by Paul Tol (2018).
+#' qualitative, diverging, and sequential color schemes by Paul Tol (2018).
 #'
 #' @param n 'integer'.
 #'   Number of colors to be in the palette, the maximum value is
@@ -9,11 +9,9 @@
 #' @param scheme 'character'.
 #'   Color scheme: select
 #'     \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
-#'     \code{"dark"}, or \code{"light"} for qualitative colors;
-#'     \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors;
-#'     \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors; and
-#'     \code{"ground cover"} for the \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
-#'     global land cover classification (Hansen and others, 1998).
+#'     \code{"dark"}, or \code{"light"}, or \code{"ground cover"} for qualitative colors;
+#'     \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors; and
+#'     \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors.
 #' @param alpha 'numeric'.
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 #'   Specify as \code{NULL} to exclude the alpha channel value from the color name.
@@ -46,6 +44,9 @@
 #'   Schemes \code{"pale"} (\code{n = 6}),  \code{"dark"} (\code{n = 6}),
 #'   and \code{"ground cover"} (\code{n = 14}) are intended to be
 #'   accessed in their entirety and subset using color names.
+#'   The very specific \code{"ground cover"} color scheme is a color-blind safe version of the
+#'   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
+#'   global land cover classification (Hansen and others, 1998).
 #'
 #' @return If \code{fmt = "HEX"} returns a 'character' vector of \code{n} color names in hexadecimal format.
 #'   A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}.
@@ -84,6 +85,10 @@
 #' GetTolColors(9, scheme = "light",   plot = TRUE)
 #' par(op)
 #'
+#' op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
+#' GetTolColors(14, scheme = "ground cover", plot = TRUE)
+#' par(op)
+#'
 #' # Diverging color schemes (scheme)
 #' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
 #' GetTolColors( 11, scheme = "sunset", plot = TRUE)
@@ -101,11 +106,6 @@
 #' GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
 #' GetTolColors( 34, scheme = "smooth rainbow",   plot = TRUE)
 #' GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
-#' par(op)
-#'
-#' # Cover color scheme (scheme)
-#' op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
-#' GetTolColors(14, scheme = "ground cover", plot = TRUE)
 #' par(op)
 #'
 #' # Alpha transparency (alpha)
@@ -162,13 +162,13 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
             "pale"             = 6,
             "dark"             = 6,
             "light"            = 9,
+            "ground cover"     = 14,
             "sunset"           = Inf,  # diverging
             "BuRd"             = Inf,
             "PRGn"             = Inf,
             "YlOrBr"           = Inf,  # sequential
             "discrete rainbow" = 23,
-            "smooth rainbow"   = Inf,
-            "ground cover"     = 14)   # cover
+            "smooth rainbow"   = Inf)
   schemes <- names(nmax)
   scheme <- match.arg(scheme, schemes)
   checkmate::assertInt(n, lower=1, upper=nmax[scheme])
@@ -189,169 +189,56 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
   bad <- as.character(NA)
 
   if (scheme == "bright") {
-    pal <- c("blue"         = "#4477AA",
-             "red"          = "#EE6677",
-             "green"        = "#228833",
-             "yellow"       = "#CCBB44",
-             "cyan"         = "#66CCEE",
-             "purple"       = "#AA3377",
-             "grey"         = "#BBBBBB")
+    pal <- c("blue"                        = "#4477AA",
+             "red"                         = "#EE6677",
+             "green"                       = "#228833",
+             "yellow"                      = "#CCBB44",
+             "cyan"                        = "#66CCEE",
+             "purple"                      = "#AA3377",
+             "grey"                        = "#BBBBBB")
   } else if (scheme == "vibrant") {
-    pal <- c("orange"       = "#EE7733",
-             "blue"         = "#0077BB",
-             "cyan"         = "#33BBEE",
-             "magenta"      = "#EE3377",
-             "red"          = "#CC3311",
-             "teal"         = "#009988",
-             "grey"         = "#BBBBBB")
+    pal <- c("orange"                      = "#EE7733",
+             "blue"                        = "#0077BB",
+             "cyan"                        = "#33BBEE",
+             "magenta"                     = "#EE3377",
+             "red"                         = "#CC3311",
+             "teal"                        = "#009988",
+             "grey"                        = "#BBBBBB")
   } else if (scheme == "muted") {
-    pal <- c("rose"         = "#CC6677",
-             "indigo"       = "#332288",
-             "sand"         = "#DDCC77",
-             "green"        = "#117733",
-             "cyan"         = "#88CCEE",
-             "wine"         = "#882255",
-             "teal"         = "#44AA99",
-             "olive"        = "#999933",
-             "purple"       = "#AA4499")
-    bad <- c("pale grey"    = "#DDDDDD")
+    pal <- c("rose"                        = "#CC6677",
+             "indigo"                      = "#332288",
+             "sand"                        = "#DDCC77",
+             "green"                       = "#117733",
+             "cyan"                        = "#88CCEE",
+             "wine"                        = "#882255",
+             "teal"                        = "#44AA99",
+             "olive"                       = "#999933",
+             "purple"                      = "#AA4499")
+    bad <- c("pale grey"                   = "#DDDDDD")
   } else if (scheme == "pale") {
-    pal <- c("pale blue"    = "#BBCCEE",
-             "pale cyan"    = "#CCEEFF",
-             "pale green"   = "#CCDDAA",
-             "pale yellow"  = "#EEEEBB",
-             "pale red"     = "#FFCCCC",
-             "pale grey"    = "#DDDDDD")
+    pal <- c("pale blue"                   = "#BBCCEE",
+             "pale cyan"                   = "#CCEEFF",
+             "pale green"                  = "#CCDDAA",
+             "pale yellow"                 = "#EEEEBB",
+             "pale red"                    = "#FFCCCC",
+             "pale grey"                   = "#DDDDDD")
   } else if (scheme == "dark") {
-    pal <- c("dark blue"    = "#222255",
-             "dark cyan"    = "#225555",
-             "dark green"   = "#225522",
-             "dark yellow"  = "#666633",
-             "dark red"     = "#663333",
-             "dark grey"    = "#555555")
+    pal <- c("dark blue"                   = "#222255",
+             "dark cyan"                   = "#225555",
+             "dark green"                  = "#225522",
+             "dark yellow"                 = "#666633",
+             "dark red"                    = "#663333",
+             "dark grey"                   = "#555555")
   } else if (scheme == "light") {
-    pal <- c("libht blue"   = "#77AADD",
-             "orange"       = "#EE8866",
-             "light yellow" = "#EEDD88",
-             "pink"         = "#FFAABB",
-             "light cyan"   = "#99DDFF",
-             "mint"         = "#44BB99",
-             "pear"         = "#BBCC33",
-             "olive"        = "#AAAA00",
-             "pale grey"    = "#DDDDDD")
-  } else if (scheme == "sunset") {
-    pal <- c("1"            = "#364B9A",
-             "2"            = "#4A7BB7",
-             "3"            = "#6EA6CD",
-             "4"            = "#98CAE1",
-             "5"            = "#C2E4EF",
-             "6"            = "#EAECCC",
-             "7"            = "#FEDA8B",
-             "8"            = "#FDB366",
-             "9"            = "#F67E4B",
-             "10"           = "#DD3D2D",
-             "11"           = "#A50026")
-    bad <- c("1"            = "#FFFFFF")
-  } else if (scheme == "BuRd") {
-    pal <- c("1"            = "#2166AC",
-             "2"            = "#4393C3",
-             "3"            = "#92C5DE",
-             "4"            = "#D1E5F0",
-             "5"            = "#F7F7F7",
-             "6"            = "#FDDBC7",
-             "7"            = "#F4A582",
-             "8"            = "#D6604D",
-             "9"            = "#B2182B")
-    bad <- c("1"            = "#FFEE99")
-  } else if (scheme == "PRGn") {
-    pal <- c("1"            = "#762A83",
-             "2"            = "#9970AB",
-             "3"            = "#C2A5CF",
-             "4"            = "#E7D4E8",
-             "5"            = "#F7F7F7",
-             "6"            = "#D9F0D3",
-             "7"            = "#ACD39E",
-             "8"            = "#5AAE61",
-             "9"            = "#1B7837")
-    bad <- c("1"            = "#FFEE99")
-  } else if (scheme == "YlOrBr") {
-    pal <- c("1"            = "#FFFFE5",
-             "2"            = "#FFF7BC",
-             "3"            = "#FEE391",
-             "4"            = "#FEC44F",
-             "5"            = "#FB9A29",
-             "6"            = "#EC7014",
-             "7"            = "#CC4C02",
-             "8"            = "#993404",
-             "9"            = "#662506")
-    bad <- c("1"            = "#888888")
-  } else if (scheme == "discrete rainbow") {
-    pal <- c("1"            = "#E8ECFB",
-             "2"            = "#D9CCE3",
-             "3"            = "#D1BBD7",
-             "4"            = "#CAACCB",
-             "5"            = "#BA8DB4",
-             "6"            = "#AE76A3",
-             "7"            = "#AA6F9E",
-             "8"            = "#994F88",
-             "9"            = "#882E72",
-             "10"           = "#1965B0",
-             "11"           = "#437DBF",
-             "12"           = "#5289C7",
-             "13"           = "#6195CF",
-             "14"           = "#7BAFDE",
-             "15"           = "#4EB265",
-             "16"           = "#90C987",
-             "17"           = "#CAE0AB",
-             "18"           = "#F7F056",
-             "19"           = "#F7CB45",
-             "20"           = "#F6C141",
-             "21"           = "#F4A736",
-             "22"           = "#F1932D",
-             "23"           = "#EE8026",
-             "24"           = "#E8601C",
-             "25"           = "#E65518",
-             "26"           = "#DC050C",
-             "27"           = "#A5170E",
-             "28"           = "#72190E",
-             "29"           = "#42150A")
-    bad <- c("1"            = "#777777")
-  } else if (scheme == "smooth rainbow") {
-    pal <- c("1"            = "#E8ECFB",
-             "2"            = "#DDD8EF",
-             "3"            = "#D1C1E1",
-             "4"            = "#C3A8D1",
-             "5"            = "#B58FC2",
-             "6"            = "#A778B4",
-             "7"            = "#9B62A7",
-             "8"            = "#8C4E99",
-             "9"            = "#6F4C9B",
-             "10"           = "#6059A9",
-             "11"           = "#5568B8",
-             "12"           = "#4E79C5",
-             "13"           = "#4D8AC6",
-             "14"           = "#4E96BC",
-             "15"           = "#549EB3",
-             "16"           = "#59A5A9",
-             "17"           = "#60AB9E",
-             "18"           = "#69B190",
-             "19"           = "#77B77D",
-             "20"           = "#8CBC68",
-             "21"           = "#A6BE54",
-             "22"           = "#BEBC48",
-             "23"           = "#D1B541",
-             "24"           = "#DDAA3C",
-             "25"           = "#E49C39",
-             "26"           = "#E78C35",
-             "27"           = "#E67932",
-             "28"           = "#E4632D",
-             "29"           = "#DF4828",
-             "30"           = "#DA2222",
-             "31"           = "#B8221E",
-             "32"           = "#95211B",
-             "33"           = "#721E17",
-             "34"           = "#521A13")
-    bad <- c("1"            = "#666666")
+    pal <- c("libht blue"                  = "#77AADD",
+             "orange"                      = "#EE8866",
+             "light yellow"                = "#EEDD88",
+             "pink"                        = "#FFAABB",
+             "light cyan"                  = "#99DDFF",
+             "mint"                        = "#44BB99",
+             "pear"                        = "#BBCC33",
+             "olive"                       = "#AAAA00",
+             "pale grey"                   = "#DDDDDD")
   } else if (scheme == "ground cover") {
     pal <- c("water"                       = "#5566AA",
              "evergreen needleleaf forest" = "#117733",
@@ -367,6 +254,119 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "open shrubland"              = "#FFDD44",
              "bare ground"                 = "#FFEE88",
              "urban and built"             = "#BB0011")
+  } else if (scheme == "sunset") {
+    pal <- c("1"                           = "#364B9A",
+             "2"                           = "#4A7BB7",
+             "3"                           = "#6EA6CD",
+             "4"                           = "#98CAE1",
+             "5"                           = "#C2E4EF",
+             "6"                           = "#EAECCC",
+             "7"                           = "#FEDA8B",
+             "8"                           = "#FDB366",
+             "9"                           = "#F67E4B",
+             "10"                          = "#DD3D2D",
+             "11"                          = "#A50026")
+    bad <- c("1"                           = "#FFFFFF")
+  } else if (scheme == "BuRd") {
+    pal <- c("1"                           = "#2166AC",
+             "2"                           = "#4393C3",
+             "3"                           = "#92C5DE",
+             "4"                           = "#D1E5F0",
+             "5"                           = "#F7F7F7",
+             "6"                           = "#FDDBC7",
+             "7"                           = "#F4A582",
+             "8"                           = "#D6604D",
+             "9"                           = "#B2182B")
+    bad <- c("1"                           = "#FFEE99")
+  } else if (scheme == "PRGn") {
+    pal <- c("1"                           = "#762A83",
+             "2"                           = "#9970AB",
+             "3"                           = "#C2A5CF",
+             "4"                           = "#E7D4E8",
+             "5"                           = "#F7F7F7",
+             "6"                           = "#D9F0D3",
+             "7"                           = "#ACD39E",
+             "8"                           = "#5AAE61",
+             "9"                           = "#1B7837")
+    bad <- c("1"                           = "#FFEE99")
+  } else if (scheme == "YlOrBr") {
+    pal <- c("1"                           = "#FFFFE5",
+             "2"                           = "#FFF7BC",
+             "3"                           = "#FEE391",
+             "4"                           = "#FEC44F",
+             "5"                           = "#FB9A29",
+             "6"                           = "#EC7014",
+             "7"                           = "#CC4C02",
+             "8"                           = "#993404",
+             "9"                           = "#662506")
+    bad <- c("1"                           = "#888888")
+  } else if (scheme == "discrete rainbow") {
+    pal <- c("1"                           = "#E8ECFB",
+             "2"                           = "#D9CCE3",
+             "3"                           = "#D1BBD7",
+             "4"                           = "#CAACCB",
+             "5"                           = "#BA8DB4",
+             "6"                           = "#AE76A3",
+             "7"                           = "#AA6F9E",
+             "8"                           = "#994F88",
+             "9"                           = "#882E72",
+             "10"                          = "#1965B0",
+             "11"                          = "#437DBF",
+             "12"                          = "#5289C7",
+             "13"                          = "#6195CF",
+             "14"                          = "#7BAFDE",
+             "15"                          = "#4EB265",
+             "16"                          = "#90C987",
+             "17"                          = "#CAE0AB",
+             "18"                          = "#F7F056",
+             "19"                          = "#F7CB45",
+             "20"                          = "#F6C141",
+             "21"                          = "#F4A736",
+             "22"                          = "#F1932D",
+             "23"                          = "#EE8026",
+             "24"                          = "#E8601C",
+             "25"                          = "#E65518",
+             "26"                          = "#DC050C",
+             "27"                          = "#A5170E",
+             "28"                          = "#72190E",
+             "29"                          = "#42150A")
+    bad <- c("1"                           = "#777777")
+  } else if (scheme == "smooth rainbow") {
+    pal <- c("1"                           = "#E8ECFB",
+             "2"                           = "#DDD8EF",
+             "3"                           = "#D1C1E1",
+             "4"                           = "#C3A8D1",
+             "5"                           = "#B58FC2",
+             "6"                           = "#A778B4",
+             "7"                           = "#9B62A7",
+             "8"                           = "#8C4E99",
+             "9"                           = "#6F4C9B",
+             "10"                          = "#6059A9",
+             "11"                          = "#5568B8",
+             "12"                          = "#4E79C5",
+             "13"                          = "#4D8AC6",
+             "14"                          = "#4E96BC",
+             "15"                          = "#549EB3",
+             "16"                          = "#59A5A9",
+             "17"                          = "#60AB9E",
+             "18"                          = "#69B190",
+             "19"                          = "#77B77D",
+             "20"                          = "#8CBC68",
+             "21"                          = "#A6BE54",
+             "22"                          = "#BEBC48",
+             "23"                          = "#D1B541",
+             "24"                          = "#DDAA3C",
+             "25"                          = "#E49C39",
+             "26"                          = "#E78C35",
+             "27"                          = "#E67932",
+             "28"                          = "#E4632D",
+             "29"                          = "#DF4828",
+             "30"                          = "#DA2222",
+             "31"                          = "#B8221E",
+             "32"                          = "#95211B",
+             "33"                          = "#721E17",
+             "34"                          = "#521A13")
+    bad <- c("1"                           = "#666666")
   }
   if (scheme %in% c("bright", "vibrant", "muted", "pale", "dark", "light", "ground cover")) {
     col <- pal[1:n]

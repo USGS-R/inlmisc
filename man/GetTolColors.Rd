@@ -16,11 +16,9 @@ dependent on the specified color scheme, see \sQuote{Details} section.}
 \item{scheme}{'character'.
 Color scheme: select
   \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
-  \code{"dark"}, or \code{"light"} for qualitative colors;
-  \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors;
-  \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors; and
-  \code{"ground cover"} for the \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
-  global land cover classification (Hansen and others, 1998).}
+  \code{"dark"}, or \code{"light"}, or \code{"ground cover"} for qualitative colors;
+  \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors; and
+  \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors.}
 
 \item{alpha}{'numeric'.
 Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
@@ -63,7 +61,7 @@ If \code{fmt = "HEX"} returns a 'character' vector of \code{n} color names in he
 }
 \description{
 This function creates a vector of \code{n} colors from
-qualitative, diverging, sequential, and cover color schemes by Paul Tol (2018).
+qualitative, diverging, and sequential color schemes by Paul Tol (2018).
 }
 \details{
 Limits on the maximum number of discrete colors for a scheme are:
@@ -73,6 +71,9 @@ Limits on the maximum number of discrete colors for a scheme are:
   Schemes \code{"pale"} (\code{n = 6}),  \code{"dark"} (\code{n = 6}),
   and \code{"ground cover"} (\code{n = 14}) are intended to be
   accessed in their entirety and subset using color names.
+  The very specific \code{"ground cover"} color scheme is a color-blind safe version of the
+  \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
+  global land cover classification (Hansen and others, 1998).
 }
 \examples{
 
@@ -87,6 +88,10 @@ GetTolColors(9, scheme = "muted",   plot = TRUE)
 GetTolColors(6, scheme = "pale",    plot = TRUE)
 GetTolColors(6, scheme = "dark",    plot = TRUE)
 GetTolColors(9, scheme = "light",   plot = TRUE)
+par(op)
+
+op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
+GetTolColors(14, scheme = "ground cover", plot = TRUE)
 par(op)
 
 # Diverging color schemes (scheme)
@@ -106,11 +111,6 @@ GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
 GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
 GetTolColors( 34, scheme = "smooth rainbow",   plot = TRUE)
 GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
-par(op)
-
-# Cover color scheme (scheme)
-op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
-GetTolColors(14, scheme = "ground cover", plot = TRUE)
 par(op)
 
 # Alpha transparency (alpha)
