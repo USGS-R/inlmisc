@@ -9,9 +9,9 @@
 #' @param scheme 'character'.
 #'   Color scheme: select
 #'     \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
-#'     \code{"dark"}, or \code{"light"}, or \code{"ground cover"} for qualitative colors;
-#'     \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors; and
-#'     \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors.
+#'     \code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
+#'     \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for a diverging color scheme; and
+#'     \code{"YlOrBr"}, \code{"discrete rainbow"}, or \code{"smooth rainbow"} for a sequential color scheme.
 #' @param alpha 'numeric'.
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 #'   Specify as \code{NULL} to exclude the alpha channel value from the color name.
@@ -41,7 +41,7 @@
 #'   \code{n < 8} for \code{"bright"} and \code{"vibrant"};
 #'   \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
 #'   \code{n < 24} for \code{"discrete rainbow"}.
-#'   Schemes \code{"pale"} (\code{n = 6}),  \code{"dark"} (\code{n = 6}),
+#'   Color schemes \code{"pale"} (\code{n = 6}),  \code{"dark"} (\code{n = 6}),
 #'   and \code{"ground cover"} (\code{n = 14}) are intended to be
 #'   accessed in their entirety and subset using color names.
 #'   The very specific \code{"ground cover"} color scheme is a color-blind safe version of the
@@ -398,7 +398,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
   } else {
     norm <- (seq_along(pal) - 1) / (length(pal) - 1)
     idxs <- seq.int(which.min(abs(norm - start)), which.min(abs(norm - end)), 1)
-    if (length(idxs) < 2) stop("problem with 'start' and (or) 'end' argument(s)")
+    if (length(idxs) < 2) stop("problem with 'start' and (or) 'end' argument")
     col <- grDevices::colorRampPalette(pal[idxs], bias=bias)(n)
     names(col) <- seq_along(col)
   }

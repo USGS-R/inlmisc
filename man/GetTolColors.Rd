@@ -16,9 +16,9 @@ dependent on the specified color scheme, see \sQuote{Details} section.}
 \item{scheme}{'character'.
 Color scheme: select
   \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
-  \code{"dark"}, or \code{"light"}, or \code{"ground cover"} for qualitative colors;
-  \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors; and
-  \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors.}
+  \code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
+  \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for a diverging color scheme; and
+  \code{"YlOrBr"}, \code{"discrete rainbow"}, or \code{"smooth rainbow"} for a sequential color scheme.}
 
 \item{alpha}{'numeric'.
 Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
@@ -68,7 +68,7 @@ Limits on the maximum number of discrete colors for a scheme are:
   \code{n < 8} for \code{"bright"} and \code{"vibrant"};
   \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
   \code{n < 24} for \code{"discrete rainbow"}.
-  Schemes \code{"pale"} (\code{n = 6}),  \code{"dark"} (\code{n = 6}),
+  Color schemes \code{"pale"} (\code{n = 6}),  \code{"dark"} (\code{n = 6}),
   and \code{"ground cover"} (\code{n = 14}) are intended to be
   accessed in their entirety and subset using color names.
   The very specific \code{"ground cover"} color scheme is a color-blind safe version of the
