@@ -2,7 +2,7 @@
 % Please edit documentation in R/GetTolColors.R
 \name{GetTolColors}
 \alias{GetTolColors}
-\title{Tol Color Schemes}
+\title{Paul Tol's Color Schemes}
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
   end = 1, bias = 1, reverse = FALSE, blindness = c("none",
@@ -10,15 +10,17 @@ GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
 }
 \arguments{
 \item{n}{'integer'.
-Number of colors to be in the palette, the maximum value is
-dependent on the specified color scheme, see \sQuote{Details} section.}
+Number of colors to be in the palette.
+The maximum number of colors is dependent on the specified color scheme,
+see \sQuote{Details} section for upper limits.}
 
 \item{scheme}{'character'.
-Color scheme: select
+Color scheme name: specify
   \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
   \code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
   \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for a diverging color scheme; and
-  \code{"YlOrBr"}, \code{"discrete rainbow"}, or \code{"smooth rainbow"} for a sequential color scheme.}
+  \code{"YlOrBr"}, \code{"discrete rainbow"}, or \code{"smooth rainbow"} (the default)
+  for a sequential color scheme.}
 
 \item{alpha}{'numeric'.
 Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
@@ -49,12 +51,13 @@ Specify as \code{"HEX"} (the default) to express color components in hexadecimal
 or \code{"RGB"} in decimal (0 to 255), see \sQuote{Value} section for details.}
 
 \item{plot}{'logical'.
-Whether to display the color palette.}
+Whether to display the palette colors in the active graphics window.}
 }
 \value{
-If \code{fmt = "HEX"} returns a 'character' vector of \code{n} color names in hexadecimal format.
-  A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}.
-  And if \code{fmt = "RGB"} an integer 'matrix' is returned with \code{n} rows and
+For \code{fmt = "HEX"}, returns a 'character' vector of \code{n} color names in hexadecimal format.
+  A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
+  where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the red, green, blue, and alpha values, respectively.
+  And for \code{fmt = "RGB"} an integer 'matrix' is returned with \code{n} rows and
   three or four (when \code{alpha} is specified) columns.
   The returned object includes a \code{"bad"} attribute giving
   the color name assigned to bad data---equal to \code{NA} if unspecified.
@@ -64,7 +67,7 @@ This function creates a vector of \code{n} colors from
 qualitative, diverging, and sequential color schemes by Paul Tol (2018).
 }
 \details{
-Limits on the maximum number of discrete colors for a scheme are:
+Upper limits on the number of discrete colors for a scheme are:
   \code{n < 8} for \code{"bright"} and \code{"vibrant"};
   \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
   \code{n < 24} for \code{"discrete rainbow"}.
@@ -73,7 +76,7 @@ Limits on the maximum number of discrete colors for a scheme are:
   accessed in their entirety and subset using color names.
   The very specific \code{"ground cover"} color scheme is a color-blind safe version of the
   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
-  global land cover classification (Hansen and others, 1998).
+  global land cover classification color scheme (Hansen and others, 1998).
 }
 \examples{
 
