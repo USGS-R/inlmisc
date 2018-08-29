@@ -5,8 +5,8 @@
 \title{Paul Tol's Color Schemes}
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
-  end = 1, bias = 1, reverse = FALSE, blindness = c("none",
-  "deutan", "protan", "tritan"), fmt = c("HEX", "RGB"), plot = FALSE)
+  end = 1, bias = 1, reverse = FALSE, blind = NULL, gray = FALSE,
+  fmt = c("hex", "rgb"), plot = FALSE)
 }
 \arguments{
 \item{n}{'integer'.
@@ -16,11 +16,12 @@ see \sQuote{Details} section for upper limits.}
 
 \item{scheme}{'character'.
 Color scheme name: specify
-  \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
-  \code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
-  \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for a diverging color scheme; and
-  \code{"YlOrBr"}, \code{"discrete rainbow"}, or \code{"smooth rainbow"} (the default)
-  for a sequential color scheme.}
+\code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
+\code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
+\code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for a diverging color scheme; and
+\code{"YlOrBr"}, \code{"discrete rainbow"}, or \code{"smooth rainbow"} (the default)
+for a sequential color scheme.
+Supports partial string matching so argument may be abbreviated.}
 
 \item{alpha}{'numeric'.
 Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
@@ -39,27 +40,37 @@ See \code{\link[grDevices]{colorRamp}} function for details.}
 \item{reverse}{'logical'.
 Whether to reverse the direction of colors in the palette.}
 
-\item{blindness}{'character'.
-Type of color blindness to simulate:
-\code{"none"} (the default), \code{"deutan"}, \code{"protan"}, or \code{"tritan"}.
-Requires that the \pkg{dichromat} package is available,
-see \code{\link[dichromat]{dichromat}} function for description of color-blindness types.}
+\item{blind}{'character'.
+Type of color blindness to simulate: specify as \code{"deutan"} for green-blind vision,
+\code{"protan"} for red-blind vision, \code{"tritan"} for green-blue-blind vision, or
+\code{"monochromacy"} for total color blindness.
+The partial color blindness options require that the \pkg{dichromat} package is available,
+see \code{\link[dichromat]{dichromat}} function for additional information.
+Supports partial string matching so argument may be abbreviated.}
+
+\item{gray}{'logical'.
+Whether to subset the \code{"bright"}, \code{"vibrant"}, and \code{"muted"}
+color schemes to work after conversion to gray scale.
+Note that the sequential color scheme \code{"YlOrBr"} works well without subsetting.}
 
 \item{fmt}{'character'.
 Format for returned color names.
-Specify as \code{"HEX"} (the default) to express color components in hexadecimal (00 to FF)
-or \code{"RGB"} in decimal (0 to 255), see \sQuote{Value} section for details.}
+Specify as \code{"hex"} (the default) to express color components in hexadecimal format,
+or \code{"rgb"} to express in decimal format, see \sQuote{Value} section for details.
+Supports partial string matching so argument may be abbreviated.}
 
 \item{plot}{'logical'.
 Whether to display the palette colors in the active graphics window.}
 }
 \value{
-For \code{fmt = "HEX"}, returns a 'character' vector of \code{n} color names in hexadecimal format.
+For \code{fmt = "hex"}, returns a 'character' vector of \code{n} color names in hexadecimal format.
   A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
-  where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the red, green, blue, and alpha values, respectively.
-  And for \code{fmt = "RGB"} an integer 'matrix' is returned with \code{n} rows and
-  three or four (when \code{alpha} is specified) columns.
-  The returned object includes a \code{"bad"} attribute giving
+  where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
+  red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
+  And for \code{fmt = "rgb"}, an integer 'matrix' of decimal values (0 to 255) is returned
+  with \code{n} rows and three or four (when \code{alpha} is specified) columns:
+  \code{red}, \code{green}, \code{blue}, and \code{alpha}.
+  The returned object also includes a \code{"bad"} attribute giving
   the color name assigned to bad data---equal to \code{NA} if unspecified.
 }
 \description{
@@ -68,12 +79,15 @@ qualitative, diverging, and sequential color schemes by Paul Tol (2018).
 }
 \details{
 Upper limits on the number of discrete colors for a scheme are:
-  \code{n < 8} for \code{"bright"} and \code{"vibrant"};
-  \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
-  \code{n < 24} for \code{"discrete rainbow"}.
-  Color schemes \code{"pale"} (\code{n = 6}),  \code{"dark"} (\code{n = 6}),
-  and \code{"ground cover"} (\code{n = 14}) are intended to be
-  accessed in their entirety and subset using color names.
+  \code{n = 6} for \code{"pale"} and \code{"dark"};
+  \code{n = 8} for \code{"bright"} and \code{"vibrant"};
+  \code{n = 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
+  \code{n = 14} for \code{"ground cover"}; and
+  \code{n = 24} for \code{"discrete rainbow"}.
+  The exception to these upper limits occurs when the \code{gray} argument is true: in that case
+  \code{n = 3} for \code{"bright"}, \code{n = 4} for \code{"vibrant"}, and \code{n = 5} for \code{"muted"}.
+  Color schemes \code{"pale"},  \code{"dark"}, and \code{"ground cover"} are
+  intended to be accessed in their entirety and subset using element vector names.
   The very specific \code{"ground cover"} color scheme is a color-blind safe version of the
   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
   global land cover classification color scheme (Hansen and others, 1998).
@@ -81,7 +95,7 @@ Upper limits on the number of discrete colors for a scheme are:
 \examples{
 
 col <- GetTolColors(5); print(col)
-GetTolColors(5, fmt = "RGB")
+GetTolColors(5, fmt = "rgb")
 
 # Qualitative color schemes (scheme)
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
@@ -150,12 +164,23 @@ GetTolColors(10, reverse = FALSE, plot = TRUE)
 GetTolColors(10, reverse = TRUE,  plot = TRUE)
 par(op)
 
-# Color blindness (blindness)
-op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
-GetTolColors(34, blindness = "none",   plot = TRUE)
-GetTolColors(34, blindness = "deutan", plot = TRUE)
-GetTolColors(34, blindness = "protan", plot = TRUE)
-GetTolColors(34, blindness = "tritan", plot = TRUE)
+# Color blindness (blind)
+op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
+GetTolColors(34, blind = NULL,           plot = TRUE)
+GetTolColors(34, blind = "deutan",       plot = TRUE)
+GetTolColors(34, blind = "protan",       plot = TRUE)
+GetTolColors(34, blind = "tritan",       plot = TRUE)
+GetTolColors(34, blind = "monochromacy", plot = TRUE)
+par(op)
+
+# Gray-scale preparation (gray)
+op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
+GetTolColors(3, "bright",  gray = TRUE, plot = TRUE)
+GetTolColors(3, "bright",  gray = TRUE, plot = TRUE, blind = "m")
+GetTolColors(4, "vibrant", gray = TRUE, plot = TRUE)
+GetTolColors(4, "vibrant", gray = TRUE, plot = TRUE, blind = "m")
+GetTolColors(5, "muted",   gray = TRUE, plot = TRUE)
+GetTolColors(5, "muted",   gray = TRUE, plot = TRUE, blind = "m")
 par(op)
 
 }
@@ -166,7 +191,7 @@ Hansen, M., DeFries, R., Townshend, J.R.G., and Sohlberg, R., 1998,
 
   Tol, Paul, 2018, Colour Schemes:
   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.0, 17 p.,
-  accessed July 18, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
+  accessed August 29, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

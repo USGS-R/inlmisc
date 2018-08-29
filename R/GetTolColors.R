@@ -9,11 +9,12 @@
 #'   see \sQuote{Details} section for upper limits.
 #' @param scheme 'character'.
 #'   Color scheme name: specify
-#'     \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
-#'     \code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
-#'     \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for a diverging color scheme; and
-#'     \code{"YlOrBr"}, \code{"discrete rainbow"}, or \code{"smooth rainbow"} (the default)
-#'     for a sequential color scheme.
+#'   \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
+#'   \code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
+#'   \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for a diverging color scheme; and
+#'   \code{"YlOrBr"}, \code{"discrete rainbow"}, or \code{"smooth rainbow"} (the default)
+#'   for a sequential color scheme.
+#'   Supports partial string matching so argument may be abbreviated.
 #' @param alpha 'numeric'.
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 #'   Specify as \code{NULL} to exclude the alpha channel value from the color name.
@@ -27,35 +28,47 @@
 #'   See \code{\link[grDevices]{colorRamp}} function for details.
 #' @param reverse 'logical'.
 #'   Whether to reverse the direction of colors in the palette.
-#' @param blindness 'character'.
-#'   Type of color blindness to simulate:
-#'   \code{"none"} (the default), \code{"deutan"}, \code{"protan"}, or \code{"tritan"}.
-#'   Requires that the \pkg{dichromat} package is available,
-#'   see \code{\link[dichromat]{dichromat}} function for description of color-blindness types.
+#' @param blind 'character'.
+#'   Type of color blindness to simulate: specify as \code{"deutan"} for green-blind vision,
+#'   \code{"protan"} for red-blind vision, \code{"tritan"} for green-blue-blind vision, or
+#'   \code{"monochromacy"} for total color blindness.
+#'   The partial color blindness options require that the \pkg{dichromat} package is available,
+#'   see \code{\link[dichromat]{dichromat}} function for additional information.
+#'   Supports partial string matching so argument may be abbreviated.
+#' @param gray 'logical'.
+#'   Whether to subset the \code{"bright"}, \code{"vibrant"}, and \code{"muted"}
+#'   color schemes to work after conversion to gray scale.
+#'   Note that the sequential color scheme \code{"YlOrBr"} works well without subsetting.
 #' @param fmt 'character'.
 #'   Format for returned color names.
-#'   Specify as \code{"HEX"} (the default) to express color components in hexadecimal (00 to FF)
-#'   or \code{"RGB"} in decimal (0 to 255), see \sQuote{Value} section for details.
+#'   Specify as \code{"hex"} (the default) to express color components in hexadecimal format,
+#'   or \code{"rgb"} to express in decimal format, see \sQuote{Value} section for details.
+#'   Supports partial string matching so argument may be abbreviated.
 #' @param plot 'logical'.
 #'   Whether to display the palette colors in the active graphics window.
 #'
 #' @details Upper limits on the number of discrete colors for a scheme are:
-#'   \code{n < 8} for \code{"bright"} and \code{"vibrant"};
-#'   \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
-#'   \code{n < 24} for \code{"discrete rainbow"}.
-#'   Color schemes \code{"pale"} (\code{n = 6}),  \code{"dark"} (\code{n = 6}),
-#'   and \code{"ground cover"} (\code{n = 14}) are intended to be
-#'   accessed in their entirety and subset using color names.
+#'   \code{n = 6} for \code{"pale"} and \code{"dark"};
+#'   \code{n = 8} for \code{"bright"} and \code{"vibrant"};
+#'   \code{n = 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
+#'   \code{n = 14} for \code{"ground cover"}; and
+#'   \code{n = 24} for \code{"discrete rainbow"}.
+#'   The exception to these upper limits occurs when the \code{gray} argument is true: in that case
+#'   \code{n = 3} for \code{"bright"}, \code{n = 4} for \code{"vibrant"}, and \code{n = 5} for \code{"muted"}.
+#'   Color schemes \code{"pale"},  \code{"dark"}, and \code{"ground cover"} are
+#'   intended to be accessed in their entirety and subset using element vector names.
 #'   The very specific \code{"ground cover"} color scheme is a color-blind safe version of the
 #'   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
 #'   global land cover classification color scheme (Hansen and others, 1998).
 #'
-#' @return For \code{fmt = "HEX"}, returns a 'character' vector of \code{n} color names in hexadecimal format.
+#' @return For \code{fmt = "hex"}, returns a 'character' vector of \code{n} color names in hexadecimal format.
 #'   A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
-#'   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the red, green, blue, and alpha values, respectively.
-#'   And for \code{fmt = "RGB"} an integer 'matrix' is returned with \code{n} rows and
-#'   three or four (when \code{alpha} is specified) columns.
-#'   The returned object includes a \code{"bad"} attribute giving
+#'   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
+#'   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
+#'   And for \code{fmt = "rgb"}, an integer 'matrix' of decimal values (0 to 255) is returned
+#'   with \code{n} rows and three or four (when \code{alpha} is specified) columns:
+#'   \code{red}, \code{green}, \code{blue}, and \code{alpha}.
+#'   The returned object also includes a \code{"bad"} attribute giving
 #'   the color name assigned to bad data---equal to \code{NA} if unspecified.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
@@ -67,7 +80,7 @@
 #'
 #'   Tol, Paul, 2018, Colour Schemes:
 #'   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.0, 17 p.,
-#'   accessed July 18, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
+#'   accessed August 29, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
 #'
 #' @keywords color
 #'
@@ -76,7 +89,7 @@
 #' @examples
 #'
 #' col <- GetTolColors(5); print(col)
-#' GetTolColors(5, fmt = "RGB")
+#' GetTolColors(5, fmt = "rgb")
 #'
 #' # Qualitative color schemes (scheme)
 #' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
@@ -145,31 +158,42 @@
 #' GetTolColors(10, reverse = TRUE,  plot = TRUE)
 #' par(op)
 #'
-#' # Color blindness (blindness)
-#' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
-#' GetTolColors(34, blindness = "none",   plot = TRUE)
-#' GetTolColors(34, blindness = "deutan", plot = TRUE)
-#' GetTolColors(34, blindness = "protan", plot = TRUE)
-#' GetTolColors(34, blindness = "tritan", plot = TRUE)
+#' # Color blindness (blind)
+#' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
+#' GetTolColors(34, blind = NULL,           plot = TRUE)
+#' GetTolColors(34, blind = "deutan",       plot = TRUE)
+#' GetTolColors(34, blind = "protan",       plot = TRUE)
+#' GetTolColors(34, blind = "tritan",       plot = TRUE)
+#' GetTolColors(34, blind = "monochromacy", plot = TRUE)
+#' par(op)
+#'
+#' # Gray-scale preparation (gray)
+#' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
+#' GetTolColors(3, "bright",  gray = TRUE, plot = TRUE)
+#' GetTolColors(3, "bright",  gray = TRUE, plot = TRUE, blind = "m")
+#' GetTolColors(4, "vibrant", gray = TRUE, plot = TRUE)
+#' GetTolColors(4, "vibrant", gray = TRUE, plot = TRUE, blind = "m")
+#' GetTolColors(5, "muted",   gray = TRUE, plot = TRUE)
+#' GetTolColors(5, "muted",   gray = TRUE, plot = TRUE, blind = "m")
 #' par(op)
 #'
 
-GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
-                         start=0, end=1, bias=1, reverse=FALSE,
-                         blindness=c("none", "deutan", "protan", "tritan"),
-                         fmt=c("HEX", "RGB"), plot=FALSE) {
+GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
+                         bias=1, reverse=FALSE, blind=NULL, gray=FALSE,
+                         fmt=c("hex", "rgb"), plot=FALSE) {
 
-  nmax <- c("bright"           = 7,    # qualitative
-            "vibrant"          = 7,
-            "muted"            = 9,
+  checkmate::assertFlag(gray)
+  nmax <- c("bright"           = ifelse(gray, 3, 7),  # qualitative
+            "vibrant"          = ifelse(gray, 4, 7),
+            "muted"            = ifelse(gray, 5, 9),
             "pale"             = 6,
             "dark"             = 6,
             "light"            = 9,
             "ground cover"     = 14,
-            "sunset"           = Inf,  # diverging
+            "sunset"           = Inf,                 # diverging
             "BuRd"             = Inf,
             "PRGn"             = Inf,
-            "YlOrBr"           = Inf,  # sequential
+            "YlOrBr"           = Inf,                 # sequential
             "discrete rainbow" = 23,
             "smooth rainbow"   = Inf)
   schemes <- names(nmax)
@@ -180,9 +204,11 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
   checkmate::assertNumber(end, lower=start, upper=1, finite=TRUE)
   checkmate::qassert(bias, "N1(0,)")
   checkmate::assertFlag(reverse)
-  blindness <- match.arg(blindness)
-  if (blindness != "none" && !requireNamespace("dichromat", quietly=TRUE))
-    stop("simulating color blindness requires the dichromat package")
+  if (!is.null(blind)) {
+    blind <- match.arg(blind, c("deutan", "protan", "tritan", "monochromacy"))
+    if (blind != "monochromacy" && !requireNamespace("dichromat", quietly=TRUE))
+      stop("simulating partial color blindness requires the dichromat package")
+  }
   fmt <- match.arg(fmt)
   checkmate::assertFlag(plot)
 
@@ -199,6 +225,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "cyan"                        = "#66CCEE",
              "purple"                      = "#AA3377",
              "grey"                        = "#BBBBBB")
+    if (gray) pal <- pal[c("yellow", "red", "green")]
   } else if (scheme == "vibrant") {
     pal <- c("orange"                      = "#EE7733",
              "blue"                        = "#0077BB",
@@ -207,6 +234,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "red"                         = "#CC3311",
              "teal"                        = "#009988",
              "grey"                        = "#BBBBBB")
+    if (gray) pal <- pal[c("grey", "orange", "magenta", "blue")]
   } else if (scheme == "muted") {
     pal <- c("rose"                        = "#CC6677",
              "indigo"                      = "#332288",
@@ -218,6 +246,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "olive"                       = "#999933",
              "purple"                      = "#AA4499")
     bad <- c("pale grey"                   = "#DDDDDD")
+    if (gray) pal <- pal[c("sand", "teal", "purple", "green", "indigo")]
   } else if (scheme == "pale") {
     pal <- c("pale blue"                   = "#BBCCEE",
              "pale cyan"                   = "#CCEEFF",
@@ -371,6 +400,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              "34"                          = "#521A13")
     bad <- c("1"                           = "#666666")
   }
+
   if (scheme %in% c("bright", "vibrant", "muted", "pale", "dark", "light", "ground cover")) {
     col <- pal[1:n]
   } else if (scheme == "discrete rainbow") {
@@ -408,12 +438,17 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
 
   if (reverse) col <- rev(col)
 
-  if (blindness != "none" | !is.null(alpha)) {
+  if (!is.null(blind) | !is.null(alpha)) {
     col_names <- names(col)
     bad_names <- names(bad)
-    if (blindness != "none") {
-      col <- dichromat::dichromat(col, type=blindness)
-      if (!is.na(bad)) bad <- dichromat::dichromat(bad, type=blindness)
+    if (!is.null(blind)) {
+      if (blind == "monochromacy") {
+        col <- .ColToGray(col)
+        if (!is.na(bad)) bad <- .ColToGray(bad)
+      } else {
+        col <- dichromat::dichromat(col, type=blind)
+        if (!is.na(bad)) bad <- dichromat::dichromat(bad, type=blind)
+      }
     }
     if (!is.null(alpha)) {
       col <- grDevices::adjustcolor(col, alpha.f=alpha)
@@ -425,8 +460,8 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
 
   # plot colors,
   # code adapted from example in colorspace::rainbow_hcl function documentation,
-  # authored by Achim Zeileis and accessed on Aug. 8, 2018
-  # from https://CRAN.R-project.org/package=colorspace
+  # authored by Achim Zeileis and accessed August 8, 2018
+  # at https://CRAN.R-project.org/package=colorspace
   if (plot) {
     txt <- c(paste0("n = ", n),
              paste0("scheme = '", scheme, "'"),
@@ -434,9 +469,10 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
              paste0("start = ", start, ", end = ", end),
              paste0("bias = ", bias),
              paste0("reverse = ", reverse),
-             paste0("blindness = '", blindness, "'"))
+             paste0("blind = '", blind, "'"),
+             paste0("gray = ", gray))
     is <- c(TRUE, TRUE, !is.null(alpha), start > 0 | end < 1,
-            bias != 1, reverse, blindness != "none")
+            bias != 1, reverse, !is.null(blind), gray)
     main <- paste(txt[is], collapse=", ")
     op <- graphics::par(mar = c(3, 2, 2, 2)); on.exit(graphics::par(op))
     graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
@@ -456,7 +492,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
     return(invisible(col))
   }
 
-  if (fmt == "RGB") {
+  if (fmt == "rgb") {
     col <- t(grDevices::col2rgb(col, alpha=!is.null(alpha)))
     if (!is.na(bad)) bad <- t(grDevices::col2rgb(bad, alpha=!is.null(alpha)))
   }
@@ -464,4 +500,19 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL,
   attr(col, "bad") <- bad
 
   return(col)
+}
+
+
+# Convert colors to gray/grayscale,
+# code from TeachingDemos::col2grey function,
+# authored by Greg Snow and accessed August 29, 2018
+# at https://CRAN.R-project.org/package=TeachingDemos
+# and licensed under Artistic-2.0
+# https://cran.r-project.org/web/licenses/Artistic-2.0
+# Function integrated here without logical changes.
+
+.ColToGray <- function(cols) {
+  rgb <- grDevices::col2rgb(cols)
+  gry <- rbind(c(0.3, 0.59, 0.11)) %*% rgb
+  grDevices::rgb(gry, gry, gry, maxColorValue=255)
 }
