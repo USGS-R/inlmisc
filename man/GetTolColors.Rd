@@ -11,8 +11,8 @@ GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
 \arguments{
 \item{n}{'integer'.
 Number of colors to be in the palette.
-The maximum number of colors is dependent on the specified color scheme,
-see \sQuote{Details} section for upper limits.}
+The maximum number of colors in a generated palette is dependent on the specified color scheme,
+see \sQuote{Details} section for maximum values.}
 
 \item{scheme}{'character'.
 Color scheme name: specify
@@ -78,7 +78,7 @@ This function creates a vector of \code{n} colors from
 qualitative, diverging, and sequential color schemes by Paul Tol (2018).
 }
 \details{
-Upper limits on the number of discrete colors for a scheme are:
+The maximum number of colors in a palette is:
   \code{n = 6} for \code{"pale"} and \code{"dark"};
   \code{n = 8} for \code{"bright"} and \code{"vibrant"};
   \code{n = 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
