@@ -53,10 +53,17 @@ color schemes to work after conversion to gray scale.
 Note that the sequential color scheme \code{"YlOrBr"} works well without subsetting.}
 }
 \value{
-Returns a 'character' vector of \code{n} color names in hexadecimal format.
-  A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
+Returns an object of class 'Tol' that inherits behaviour from the 'character' class.
+  The object is comprised of a 'character' vector of \code{n} color names in hexadecimal format.
+  The color name is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
+  Attributes for the returned object include:
+  \code{"bad"}, a 'character' string giving the hexadecimal color name meant for bad data,
+    where \code{NA} indicates that no color was specified; and
+  \code{"call"}, an object of class '\link{call}' giving the unevaluated function call
+    that can be used to reproduce the color palette.
+  Note that a \code{plot} method is available for the 'Tol' class.
 }
 \description{
 This function creates a vector of \code{n} colors from
@@ -69,13 +76,15 @@ The maximum number of colors in a palette is:
   \code{n = 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
   \code{n = 14} for \code{"ground cover"}; and
   \code{n = 24} for \code{"discrete rainbow"}.
-  The exception to these upper limits occurs when the \code{gray} argument is true: in that case
+  For \code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, and \code{"smooth rainbow"},
+  a continuous version of the scheme is available that has no limit placed on the number of colors in a palette.
+  The exception to these limits occurs when the \code{gray} argument is true: in that case
   \code{n = 3} for \code{"bright"}, \code{n = 4} for \code{"vibrant"}, and \code{n = 5} for \code{"muted"}.
   Color schemes \code{"pale"},  \code{"dark"}, and \code{"ground cover"} are
   intended to be accessed in their entirety and subset using element vector names.
-  The very specific \code{"ground cover"} color scheme is a color-blind safe version of the
+  The very specific \code{"ground cover"} scheme is a color-blind safe version of the
   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
-  global land cover classification color scheme (Hansen and others, 1998).
+  global land cover classification (Hansen and others, 1998).
 }
 \examples{
 
