@@ -39,13 +39,6 @@
 #'   Whether to subset the \code{"bright"}, \code{"vibrant"}, and \code{"muted"}
 #'   color schemes to work after conversion to gray scale.
 #'   Note that the sequential color scheme \code{"YlOrBr"} works well without subsetting.
-#' @param fmt 'character'.
-#'   Format for returned color names.
-#'   Specify as \code{"hex"} (the default) to express color components in hexadecimal format,
-#'   or \code{"rgb"} to express in decimal format, see \sQuote{Value} section for details.
-#'   Supports partial string matching so argument may be abbreviated.
-#' @param plot 'logical'.
-#'   Whether to display the palette colors in the active graphics window.
 #'
 #' @details The maximum number of colors in a palette is:
 #'   \code{n = 6} for \code{"pale"} and \code{"dark"};
@@ -61,15 +54,10 @@
 #'   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
 #'   global land cover classification color scheme (Hansen and others, 1998).
 #'
-#' @return For \code{fmt = "hex"}, returns a 'character' vector of \code{n} color names in hexadecimal format.
+#' @return Returns a 'character' vector of \code{n} color names in hexadecimal format.
 #'   A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
 #'   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
 #'   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
-#'   And for \code{fmt = "rgb"}, an integer 'matrix' of decimal values (0 to 255) is returned
-#'   with \code{n} rows and three or four (when \code{alpha} is specified) columns:
-#'   \code{red}, \code{green}, \code{blue}, and \code{alpha}.
-#'   The returned object also includes a \code{"bad"} attribute giving
-#'   the color name assigned to bad data---equal to \code{NA} if unspecified.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -89,98 +77,97 @@
 #' @examples
 #'
 #' col <- GetTolColors(5); print(col)
-#' GetTolColors(5, fmt = "rgb")
+#' rgb <- t(grDevices::col2rgb(col)); print(rgb)
 #'
 #' # Qualitative color schemes (scheme)
 #' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-#' GetTolColors(7, scheme = "bright",  plot = TRUE)
-#' GetTolColors(7, scheme = "vibrant", plot = TRUE)
-#' GetTolColors(9, scheme = "muted",   plot = TRUE)
-#' GetTolColors(6, scheme = "pale",    plot = TRUE)
-#' GetTolColors(6, scheme = "dark",    plot = TRUE)
-#' GetTolColors(9, scheme = "light",   plot = TRUE)
+#' plot(GetTolColors(7, scheme = "bright"))
+#' plot(GetTolColors(7, scheme = "vibrant"))
+#' plot(GetTolColors(9, scheme = "muted"))
+#' plot(GetTolColors(6, scheme = "pale"))
+#' plot(GetTolColors(6, scheme = "dark"))
+#' plot(GetTolColors(9, scheme = "light"))
 #' par(op)
 #'
 #' op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
-#' GetTolColors(14, scheme = "ground cover", plot = TRUE)
+#' plot(GetTolColors(14, scheme = "ground cover"))
 #' par(op)
 #'
 #' # Diverging color schemes (scheme)
 #' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-#' GetTolColors( 11, scheme = "sunset", plot = TRUE)
-#' GetTolColors(255, scheme = "sunset", plot = TRUE)
-#' GetTolColors(  9, scheme = "BuRd",   plot = TRUE)
-#' GetTolColors(255, scheme = "BuRd",   plot = TRUE)
-#' GetTolColors(  9, scheme = "PRGn",   plot = TRUE)
-#' GetTolColors(255, scheme = "PRGn",   plot = TRUE)
+#' plot(GetTolColors( 11, scheme = "sunset"))
+#' plot(GetTolColors(255, scheme = "sunset"))
+#' plot(GetTolColors(  9, scheme = "BuRd"))
+#' plot(GetTolColors(255, scheme = "BuRd"))
+#' plot(GetTolColors(  9, scheme = "PRGn"))
+#' plot(GetTolColors(255, scheme = "PRGn"))
 #' par(op)
 #'
 #' # Sequential color schemes (scheme)
 #' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-#' GetTolColors(  9, scheme = "YlOrBr",           plot = TRUE)
-#' GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
-#' GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
-#' GetTolColors( 34, scheme = "smooth rainbow",   plot = TRUE)
-#' GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
+#' plot(GetTolColors(  9, scheme = "YlOrBr"))
+#' plot(GetTolColors(255, scheme = "YlOrBr"))
+#' plot(GetTolColors( 23, scheme = "discrete rainbow"))
+#' plot(GetTolColors( 34, scheme = "smooth rainbow"))
+#' plot(GetTolColors(255, scheme = "smooth rainbow"))
 #' par(op)
 #'
 #' # Alpha transparency (alpha)
 #' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-#' GetTolColors(34, alpha = 1.0, plot = TRUE)
-#' GetTolColors(34, alpha = 0.8, plot = TRUE)
-#' GetTolColors(34, alpha = 0.6, plot = TRUE)
-#' GetTolColors(34, alpha = 0.4, plot = TRUE)
-#' GetTolColors(34, alpha = 0.2, plot = TRUE)
+#' plot(GetTolColors(34, alpha = 1.0))
+#' plot(GetTolColors(34, alpha = 0.8))
+#' plot(GetTolColors(34, alpha = 0.6))
+#' plot(GetTolColors(34, alpha = 0.4))
+#' plot(GetTolColors(34, alpha = 0.2))
 #' par(op)
 #'
 #' # Color levels (start, end)
 #' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
-#' GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
-#' GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
-#' GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
-#' GetTolColors(255, start = 0.3, end = 0.9, plot = TRUE)
+#' plot(GetTolColors(255, start = 0.0, end = 1.0))
+#' plot(GetTolColors(255, start = 0.0, end = 0.5))
+#' plot(GetTolColors(255, start = 0.5, end = 1.0))
+#' plot(GetTolColors(255, start = 0.3, end = 0.9))
 #' par(op)
 #'
 #' # Interpolation bias (bias)
 #' op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
-#' GetTolColors(255, bias = 0.4, plot = TRUE)
-#' GetTolColors(255, bias = 0.6, plot = TRUE)
-#' GetTolColors(255, bias = 0.8, plot = TRUE)
-#' GetTolColors(255, bias = 1.0, plot = TRUE)
-#' GetTolColors(255, bias = 1.2, plot = TRUE)
-#' GetTolColors(255, bias = 1.4, plot = TRUE)
-#' GetTolColors(255, bias = 1.6, plot = TRUE)
+#' plot(GetTolColors(255, bias = 0.4))
+#' plot(GetTolColors(255, bias = 0.6))
+#' plot(GetTolColors(255, bias = 0.8))
+#' plot(GetTolColors(255, bias = 1.0))
+#' plot(GetTolColors(255, bias = 1.2))
+#' plot(GetTolColors(255, bias = 1.4))
+#' plot(GetTolColors(255, bias = 1.6))
 #' par(op)
 #'
 #' # Reverse colors (reverse)
 #' op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
-#' GetTolColors(10, reverse = FALSE, plot = TRUE)
-#' GetTolColors(10, reverse = TRUE,  plot = TRUE)
+#' plot(GetTolColors(10, reverse = FALSE))
+#' plot(GetTolColors(10, reverse = TRUE))
 #' par(op)
 #'
 #' # Color blindness (blind)
 #' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-#' GetTolColors(34, blind = NULL,           plot = TRUE)
-#' GetTolColors(34, blind = "deutan",       plot = TRUE)
-#' GetTolColors(34, blind = "protan",       plot = TRUE)
-#' GetTolColors(34, blind = "tritan",       plot = TRUE)
-#' GetTolColors(34, blind = "monochromacy", plot = TRUE)
+#' plot(GetTolColors(34, blind = NULL))
+#' plot(GetTolColors(34, blind = "deutan"))
+#' plot(GetTolColors(34, blind = "protan"))
+#' plot(GetTolColors(34, blind = "tritan"))
+#' plot(GetTolColors(34, blind = "monochromacy"))
 #' par(op)
 #'
 #' # Gray-scale preparation (gray)
 #' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-#' GetTolColors(3, "bright",  gray = TRUE, plot = TRUE)
-#' GetTolColors(3, "bright",  gray = TRUE, plot = TRUE, blind = "m")
-#' GetTolColors(4, "vibrant", gray = TRUE, plot = TRUE)
-#' GetTolColors(4, "vibrant", gray = TRUE, plot = TRUE, blind = "m")
-#' GetTolColors(5, "muted",   gray = TRUE, plot = TRUE)
-#' GetTolColors(5, "muted",   gray = TRUE, plot = TRUE, blind = "m")
+#' plot(GetTolColors(3, "bright",  gray = TRUE))
+#' plot(GetTolColors(3, "bright",  gray = TRUE, blind = "m"))
+#' plot(GetTolColors(4, "vibrant", gray = TRUE))
+#' plot(GetTolColors(4, "vibrant", gray = TRUE, blind = "m"))
+#' plot(GetTolColors(5, "muted",   gray = TRUE))
+#' plot(GetTolColors(5, "muted",   gray = TRUE, blind = "m"))
 #' par(op)
 #'
 
 GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
-                         bias=1, reverse=FALSE, blind=NULL, gray=FALSE,
-                         fmt=c("hex", "rgb"), plot=FALSE) {
+                         bias=1, reverse=FALSE, blind=NULL, gray=FALSE) {
 
   checkmate::assertFlag(gray)
   nmax <- c("bright"           = ifelse(gray, 3, 7),  # qualitative
@@ -209,8 +196,6 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
     if (blind != "monochromacy" && !requireNamespace("dichromat", quietly=TRUE))
       stop("simulating partial color blindness requires the dichromat package")
   }
-  fmt <- match.arg(fmt)
-  checkmate::assertFlag(plot)
 
   if (nmax[scheme] < Inf && (start > 0 | end < 1))
     warning("'start' and 'end' apply only to interpolated color schemes")
@@ -443,8 +428,8 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
     bad_names <- names(bad)
     if (!is.null(blind)) {
       if (blind == "monochromacy") {
-        col <- .ColToGray(col)
-        if (!is.na(bad)) bad <- .ColToGray(bad)
+        col <- .Col2Gray(col)
+        if (!is.na(bad)) bad <- .Col2Gray(bad)
       } else {
         col <- dichromat::dichromat(col, type=blind)
         if (!is.na(bad)) bad <- dichromat::dichromat(bad, type=blind)
@@ -458,48 +443,11 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
     names(bad) <- bad_names
   }
 
-  # plot colors,
-  # code adapted from example in colorspace::rainbow_hcl function documentation,
-  # authored by Achim Zeileis and accessed August 8, 2018
-  # at https://CRAN.R-project.org/package=colorspace
-  if (plot) {
-    txt <- c(paste0("n = ", n),
-             paste0("scheme = '", scheme, "'"),
-             paste0("alpha = ", alpha),
-             paste0("start = ", start, ", end = ", end),
-             paste0("bias = ", bias),
-             paste0("reverse = ", reverse),
-             paste0("blind = '", blind, "'"),
-             paste0("gray = ", gray))
-    is <- c(TRUE, TRUE, !is.null(alpha), start > 0 | end < 1,
-            bias != 1, reverse, !is.null(blind), gray)
-    main <- paste(txt[is], collapse=", ")
-    op <- graphics::par(mar = c(3, 2, 2, 2)); on.exit(graphics::par(op))
-    graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
-                           xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
-                           xlab="", ylab="", col.main="#333333")
-    if (n > 50) {  # arbitrary cutoff criterion for drawing tick labels
-      border <- NA
-      labels <- FALSE
-    } else {
-      border <- "#D3D3D3"
-      labels <- gsub(" ", "\n", names(col))
-    }
-    graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=col, border=border, lwd=0.5)
-    graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels, tick=FALSE,
-                   line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
-    graphics::box(lwd=0.5, col="#D3D3D3")
-    return(invisible(col))
-  }
+  cl <- as.call(list(quote(GetTolColors), "n"=n, "scheme"=scheme, "alpha"=alpha,
+                     "start"=start, "end"=end, "bias"=bias, "reverse"=reverse,
+                     "blind"=blind, "gray"=gray))
 
-  if (fmt == "rgb") {
-    col <- t(grDevices::col2rgb(col, alpha=!is.null(alpha)))
-    if (!is.na(bad)) bad <- t(grDevices::col2rgb(bad, alpha=!is.null(alpha)))
-  }
-
-  attr(col, "bad") <- bad
-
-  return(col)
+  return(.MakeTolClass(col, bad, cl))
 }
 
 
@@ -511,8 +459,64 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
 # https://cran.r-project.org/web/licenses/Artistic-2.0
 # Function integrated here without logical changes.
 
-.ColToGray <- function(cols) {
+.Col2Gray <- function(cols) {
   rgb <- grDevices::col2rgb(cols)
   gry <- rbind(c(0.3, 0.59, 0.11)) %*% rgb
   grDevices::rgb(gry, gry, gry, maxColorValue=255)
+}
+
+
+.MakeTolClass <- function(x, bad, call) {
+  pattern <- "^#(\\d|[a-f]){6,8}$"
+  checkmate::assertCharacter(x, pattern=pattern, ignore.case=TRUE,
+                             any.missing=FALSE, min.len=1)
+  checkmate::assertString(bad, na.ok=TRUE, pattern=pattern, ignore.case=TRUE)
+  stopifnot(is.call(call))
+  stopifnot(all(names(formals(GetTolColors)) %in% names(as.list(call))))
+  structure(x, bad=bad, call=call, class=append("Tol", class(x)))
+}
+
+
+#' @export
+
+plot.Tol <- function(x, ...) {
+  checkmate::assertClass(x, c("Tol", "character"), ordered=TRUE)
+
+  n <- length(x)
+  arg <- as.list(attr(x, "call"))
+
+  txt <- c(paste0("n = ", arg$n),
+           paste0("scheme = '", arg$scheme, "'"),
+           paste0("alpha = ", arg$alpha),
+           paste0("start = ", arg$start, ", end = ", arg$end),
+           paste0("bias = ", arg$bias),
+           paste0("reverse = ", arg$reverse),
+           paste0("blind = '", arg$blind, "'"),
+           paste0("gray = ", arg$gray))
+  is <- c(TRUE, TRUE, !is.null(arg$alpha), arg$start > 0 | arg$end < 1,
+          arg$bias != 1, arg$reverse, !is.null(arg$blind), arg$gray)
+  main <- paste(txt[is], collapse=", ")
+
+  if (n > 50) {  # arbitrary cutoff criterion for drawing tick labels
+    border <- NA
+    labels <- FALSE
+  } else {
+    border <- "#D3D3D3"
+    labels <- gsub(" ", "\n", names(x))
+  }
+
+  # code adapted from example in
+  # colorspace::rainbow_hcl} function documentation,
+  # authored by Achim Zeileis and accessed August 8, 2018
+  # at https://CRAN.R-project.org/package=colorspace
+  op <- graphics::par(mar=c(3, 2, 2, 2)); on.exit(graphics::par(op))
+  graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
+                         xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
+                         xlab="", ylab="", col.main="#333333")
+  graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=x, border=border, lwd=0.5)
+  graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels, tick=FALSE,
+                 line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
+  graphics::box(lwd=0.5, col="#D3D3D3")
+
+  invisible()
 }

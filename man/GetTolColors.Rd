@@ -5,8 +5,7 @@
 \title{Paul Tol's Color Schemes}
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
-  end = 1, bias = 1, reverse = FALSE, blind = NULL, gray = FALSE,
-  fmt = c("hex", "rgb"), plot = FALSE)
+  end = 1, bias = 1, reverse = FALSE, blind = NULL, gray = FALSE)
 }
 \arguments{
 \item{n}{'integer'.
@@ -52,26 +51,12 @@ Supports partial string matching so argument may be abbreviated.}
 Whether to subset the \code{"bright"}, \code{"vibrant"}, and \code{"muted"}
 color schemes to work after conversion to gray scale.
 Note that the sequential color scheme \code{"YlOrBr"} works well without subsetting.}
-
-\item{fmt}{'character'.
-Format for returned color names.
-Specify as \code{"hex"} (the default) to express color components in hexadecimal format,
-or \code{"rgb"} to express in decimal format, see \sQuote{Value} section for details.
-Supports partial string matching so argument may be abbreviated.}
-
-\item{plot}{'logical'.
-Whether to display the palette colors in the active graphics window.}
 }
 \value{
-For \code{fmt = "hex"}, returns a 'character' vector of \code{n} color names in hexadecimal format.
+Returns a 'character' vector of \code{n} color names in hexadecimal format.
   A hexadecimal color is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
-  And for \code{fmt = "rgb"}, an integer 'matrix' of decimal values (0 to 255) is returned
-  with \code{n} rows and three or four (when \code{alpha} is specified) columns:
-  \code{red}, \code{green}, \code{blue}, and \code{alpha}.
-  The returned object also includes a \code{"bad"} attribute giving
-  the color name assigned to bad data---equal to \code{NA} if unspecified.
 }
 \description{
 This function creates a vector of \code{n} colors from
@@ -95,92 +80,92 @@ The maximum number of colors in a palette is:
 \examples{
 
 col <- GetTolColors(5); print(col)
-GetTolColors(5, fmt = "rgb")
+rgb <- t(grDevices::col2rgb(col)); print(rgb)
 
 # Qualitative color schemes (scheme)
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-GetTolColors(7, scheme = "bright",  plot = TRUE)
-GetTolColors(7, scheme = "vibrant", plot = TRUE)
-GetTolColors(9, scheme = "muted",   plot = TRUE)
-GetTolColors(6, scheme = "pale",    plot = TRUE)
-GetTolColors(6, scheme = "dark",    plot = TRUE)
-GetTolColors(9, scheme = "light",   plot = TRUE)
+plot(GetTolColors(7, scheme = "bright"))
+plot(GetTolColors(7, scheme = "vibrant"))
+plot(GetTolColors(9, scheme = "muted"))
+plot(GetTolColors(6, scheme = "pale"))
+plot(GetTolColors(6, scheme = "dark"))
+plot(GetTolColors(9, scheme = "light"))
 par(op)
 
 op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
-GetTolColors(14, scheme = "ground cover", plot = TRUE)
+plot(GetTolColors(14, scheme = "ground cover"))
 par(op)
 
 # Diverging color schemes (scheme)
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-GetTolColors( 11, scheme = "sunset", plot = TRUE)
-GetTolColors(255, scheme = "sunset", plot = TRUE)
-GetTolColors(  9, scheme = "BuRd",   plot = TRUE)
-GetTolColors(255, scheme = "BuRd",   plot = TRUE)
-GetTolColors(  9, scheme = "PRGn",   plot = TRUE)
-GetTolColors(255, scheme = "PRGn",   plot = TRUE)
+plot(GetTolColors( 11, scheme = "sunset"))
+plot(GetTolColors(255, scheme = "sunset"))
+plot(GetTolColors(  9, scheme = "BuRd"))
+plot(GetTolColors(255, scheme = "BuRd"))
+plot(GetTolColors(  9, scheme = "PRGn"))
+plot(GetTolColors(255, scheme = "PRGn"))
 par(op)
 
 # Sequential color schemes (scheme)
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-GetTolColors(  9, scheme = "YlOrBr",           plot = TRUE)
-GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
-GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors( 34, scheme = "smooth rainbow",   plot = TRUE)
-GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
+plot(GetTolColors(  9, scheme = "YlOrBr"))
+plot(GetTolColors(255, scheme = "YlOrBr"))
+plot(GetTolColors( 23, scheme = "discrete rainbow"))
+plot(GetTolColors( 34, scheme = "smooth rainbow"))
+plot(GetTolColors(255, scheme = "smooth rainbow"))
 par(op)
 
 # Alpha transparency (alpha)
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-GetTolColors(34, alpha = 1.0, plot = TRUE)
-GetTolColors(34, alpha = 0.8, plot = TRUE)
-GetTolColors(34, alpha = 0.6, plot = TRUE)
-GetTolColors(34, alpha = 0.4, plot = TRUE)
-GetTolColors(34, alpha = 0.2, plot = TRUE)
+plot(GetTolColors(34, alpha = 1.0))
+plot(GetTolColors(34, alpha = 0.8))
+plot(GetTolColors(34, alpha = 0.6))
+plot(GetTolColors(34, alpha = 0.4))
+plot(GetTolColors(34, alpha = 0.2))
 par(op)
 
 # Color levels (start, end)
 op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
-GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
-GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
-GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
-GetTolColors(255, start = 0.3, end = 0.9, plot = TRUE)
+plot(GetTolColors(255, start = 0.0, end = 1.0))
+plot(GetTolColors(255, start = 0.0, end = 0.5))
+plot(GetTolColors(255, start = 0.5, end = 1.0))
+plot(GetTolColors(255, start = 0.3, end = 0.9))
 par(op)
 
 # Interpolation bias (bias)
 op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
-GetTolColors(255, bias = 0.4, plot = TRUE)
-GetTolColors(255, bias = 0.6, plot = TRUE)
-GetTolColors(255, bias = 0.8, plot = TRUE)
-GetTolColors(255, bias = 1.0, plot = TRUE)
-GetTolColors(255, bias = 1.2, plot = TRUE)
-GetTolColors(255, bias = 1.4, plot = TRUE)
-GetTolColors(255, bias = 1.6, plot = TRUE)
+plot(GetTolColors(255, bias = 0.4))
+plot(GetTolColors(255, bias = 0.6))
+plot(GetTolColors(255, bias = 0.8))
+plot(GetTolColors(255, bias = 1.0))
+plot(GetTolColors(255, bias = 1.2))
+plot(GetTolColors(255, bias = 1.4))
+plot(GetTolColors(255, bias = 1.6))
 par(op)
 
 # Reverse colors (reverse)
 op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
-GetTolColors(10, reverse = FALSE, plot = TRUE)
-GetTolColors(10, reverse = TRUE,  plot = TRUE)
+plot(GetTolColors(10, reverse = FALSE))
+plot(GetTolColors(10, reverse = TRUE))
 par(op)
 
 # Color blindness (blind)
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-GetTolColors(34, blind = NULL,           plot = TRUE)
-GetTolColors(34, blind = "deutan",       plot = TRUE)
-GetTolColors(34, blind = "protan",       plot = TRUE)
-GetTolColors(34, blind = "tritan",       plot = TRUE)
-GetTolColors(34, blind = "monochromacy", plot = TRUE)
+plot(GetTolColors(34, blind = NULL))
+plot(GetTolColors(34, blind = "deutan"))
+plot(GetTolColors(34, blind = "protan"))
+plot(GetTolColors(34, blind = "tritan"))
+plot(GetTolColors(34, blind = "monochromacy"))
 par(op)
 
 # Gray-scale preparation (gray)
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-GetTolColors(3, "bright",  gray = TRUE, plot = TRUE)
-GetTolColors(3, "bright",  gray = TRUE, plot = TRUE, blind = "m")
-GetTolColors(4, "vibrant", gray = TRUE, plot = TRUE)
-GetTolColors(4, "vibrant", gray = TRUE, plot = TRUE, blind = "m")
-GetTolColors(5, "muted",   gray = TRUE, plot = TRUE)
-GetTolColors(5, "muted",   gray = TRUE, plot = TRUE, blind = "m")
+plot(GetTolColors(3, "bright",  gray = TRUE))
+plot(GetTolColors(3, "bright",  gray = TRUE, blind = "m"))
+plot(GetTolColors(4, "vibrant", gray = TRUE))
+plot(GetTolColors(4, "vibrant", gray = TRUE, blind = "m"))
+plot(GetTolColors(5, "muted",   gray = TRUE))
+plot(GetTolColors(5, "muted",   gray = TRUE, blind = "m"))
 par(op)
 
 }
