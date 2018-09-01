@@ -466,6 +466,8 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
 }
 
 
+# Constructor function for Tol class
+
 .MakeTolClass <- function(x, bad, call) {
   pattern <- "^#(\\d|[a-f]){6,8}$"
   checkmate::assertCharacter(x, pattern=pattern, ignore.case=TRUE,
@@ -478,6 +480,8 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
 
 
 #' @export
+
+# Plot function for 'Tol' color palette
 
 plot.Tol <- function(x, ...) {
   checkmate::assertClass(x, c("Tol", "character"), ordered=TRUE)
