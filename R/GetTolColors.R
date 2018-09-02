@@ -27,18 +27,17 @@
 #'   Interpolation bias where larger values result in more widely spaced colors at the high end.
 #'   See \code{\link[grDevices]{colorRamp}} function for details.
 #' @param reverse 'logical'.
-#'   Whether to reverse the direction of colors in the palette.
+#'   Whether to reverse color order in palette.
 #' @param blind 'character'.
-#'   Type of color blindness to simulate: specify as \code{"deutan"} for green-blind vision,
+#'   Type of color blindness to simulate: specify \code{"deutan"} for green-blind vision,
 #'   \code{"protan"} for red-blind vision, \code{"tritan"} for green-blue-blind vision, or
-#'   \code{"monochromacy"} for total color blindness.
-#'   The partial color blindness options require that the \pkg{dichromat} package is available,
+#'   \code{"monochromacy"} for total-color blindness.
+#'   A partial-color blindness simulation requires that the \pkg{dichromat} package is available,
 #'   see \code{\link[dichromat]{dichromat}} function for additional information.
 #'   Supports partial string matching so argument may be abbreviated.
 #' @param gray 'logical'.
 #'   Whether to subset the \code{"bright"}, \code{"vibrant"}, and \code{"muted"}
 #'   color schemes to work after conversion to gray scale.
-#'   Note that the sequential color scheme \code{"YlOrBr"} works well without subsetting.
 #'
 #' @details The maximum number of colors in a palette is:
 #'   \code{n = 6} for \code{"pale"} and \code{"dark"};
@@ -56,17 +55,20 @@
 #'   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
 #'   global land cover classification (Hansen and others, 1998).
 #'
-#' @return Returns an object of class 'Tol' that inherits behaviour from the 'character' class.
+#' @return Returns an object of class 'Tol' that inherits behavior from the 'character' class.
 #'   The object is comprised of a 'character' vector of \code{n} color names in hexadecimal format.
 #'   The color name is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
 #'   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
 #'   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
 #'   Attributes for the returned object include:
 #'   \code{"bad"}, a 'character' string giving the hexadecimal color name meant for bad data,
-#'     where \code{NA} indicates that no color was specified; and
+#'     where a value of \code{NA} indicates that no color was specified; and
 #'   \code{"call"}, an object of class '\link{call}' giving the unevaluated function call
 #'     that can be used to reproduce the color palette.
-#'   Note that a \code{plot} method is available for the 'Tol' class.
+#'   A \code{plot} method is provided for the 'Tol' class that
+#'   shows a palette of colors using a sequence of shaded rectangles.
+
+#' @note  The sequential color scheme \code{"YlOrBr"} works well for conversion to gray scale.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -85,8 +87,8 @@
 #'
 #' @examples
 #'
-#' col <- GetTolColors(5); print(col)
-#' rgb <- t(grDevices::col2rgb(col)); print(rgb)
+#' print(cols <- GetTolColors(n = 5))
+#' t(grDevices::col2rgb(cols))
 #'
 #' # Qualitative color schemes (scheme)
 #' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
@@ -516,6 +518,7 @@ plot.Tol <- function(x, ...) {
   } else {
     border <- "#D3D3D3"
     labels <- gsub(" ", "\n", names(x))
+    if (length(labels) == 0) labels <- FALSE
   }
 
   # code adapted from example in
