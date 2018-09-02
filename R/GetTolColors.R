@@ -46,7 +46,8 @@
 #'   \code{n = 14} for \code{"ground cover"}; and
 #'   \code{n = 24} for \code{"discrete rainbow"}.
 #'   For \code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, and \code{"smooth rainbow"},
-#'   a continuous version of the scheme is available that has no limit placed on the number of colors in a palette.
+#'   a continuous version of the scheme is available that
+#'   has no limit placed on the number of colors in a palette.
 #'   The exception to these limits occurs when the \code{gray} argument is true: in that case
 #'   \code{n = 3} for \code{"bright"}, \code{n = 4} for \code{"vibrant"}, and \code{n = 5} for \code{"muted"}.
 #'   Color schemes \code{"pale"},  \code{"dark"}, and \code{"ground cover"} are
@@ -57,7 +58,7 @@
 #'
 #' @return Returns an object of class 'Tol' that inherits behavior from the 'character' class.
 #'   The object is comprised of a 'character' vector of \code{n} color names in hexadecimal format.
-#'   The color name is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
+#'   Color names are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
 #'   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
 #'   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
 #'   Attributes for the returned object include:
@@ -65,8 +66,10 @@
 #'     where a value of \code{NA} indicates that no color was specified; and
 #'   \code{"call"}, an object of class '\link{call}' giving the unevaluated function call
 #'     that can be used to reproduce the color palette.
-#'   A \code{plot} method is provided for the 'Tol' class that
-#'   shows a palette of colors using a sequence of shaded rectangles.
+#'   The \code{\link{eval}} function can be used to evaluate the \code{"call"} argument.
+#'   A simple \code{plot} method is provided for the 'Tol' class that
+#'   shows a palette of colors using a sequence of shaded rectangles,
+#'   see \sQuote{Examples} section for usage.
 
 #' @note  The sequential color scheme \code{"YlOrBr"} works well for conversion to gray scale.
 #'
@@ -464,35 +467,6 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
   return(.MakeTolClass(col, bad, cl))
 }
 
-
-# Convert colors to gray/grayscale,
-# code from TeachingDemos::col2grey function,
-# authored by Greg Snow and accessed August 29, 2018
-# at https://CRAN.R-project.org/package=TeachingDemos
-# and licensed under Artistic-2.0
-# https://cran.r-project.org/web/licenses/Artistic-2.0
-# Function integrated here without logical changes.
-
-.Col2Gray <- function(cols) {
-  rgb <- grDevices::col2rgb(cols)
-  gry <- rbind(c(0.3, 0.59, 0.11)) %*% rgb
-  grDevices::rgb(gry, gry, gry, maxColorValue=255)
-}
-
-
-# Constructor function for Tol class
-
-.MakeTolClass <- function(x, bad, call) {
-  pattern <- "^#(\\d|[a-f]){6,8}$"
-  checkmate::assertCharacter(x, pattern=pattern, ignore.case=TRUE,
-                             any.missing=FALSE, min.len=1)
-  checkmate::assertString(bad, na.ok=TRUE, pattern=pattern, ignore.case=TRUE)
-  stopifnot(is.call(call))
-  stopifnot(all(names(formals(GetTolColors)) %in% names(as.list(call))))
-  structure(x, bad=bad, call=call, class=append("Tol", class(x)))
-}
-
-
 #' @export
 
 # Plot function for 'Tol' color palette
@@ -531,7 +505,7 @@ plot.Tol <- function(x, ...) {
   op <- graphics::par(mar=c(3, 2, 2, 2)); on.exit(graphics::par(op))
   graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
                          xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
-                         xlab="", ylab="", col.main="#333333")
+                         xlab="", ylab="", col.main="#333333", ...)
   graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=x, border=border, lwd=0.5)
   graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels, tick=FALSE,
                  line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
@@ -539,3 +513,33 @@ plot.Tol <- function(x, ...) {
 
   invisible()
 }
+
+
+
+# Convert colors to gray/grayscale,
+# code from TeachingDemos::col2grey function,
+# authored by Greg Snow and accessed August 29, 2018
+# at https://CRAN.R-project.org/package=TeachingDemos
+# and licensed under Artistic-2.0
+# https://cran.r-project.org/web/licenses/Artistic-2.0
+# Function integrated here without logical changes.
+
+.Col2Gray <- function(cols) {
+  rgb <- grDevices::col2rgb(cols)
+  gry <- rbind(c(0.3, 0.59, 0.11)) %*% rgb
+  grDevices::rgb(gry, gry, gry, maxColorValue=255)
+}
+
+
+# Constructor function for 'Tol' class
+
+.MakeTolClass <- function(x, bad, call) {
+  pattern <- "^#(\\d|[a-f]){6,8}$"
+  checkmate::assertCharacter(x, pattern=pattern, ignore.case=TRUE,
+                             any.missing=FALSE, min.len=1)
+  checkmate::assertString(bad, na.ok=TRUE, pattern=pattern, ignore.case=TRUE)
+  stopifnot(is.call(call))
+  stopifnot(all(names(formals(GetTolColors)) %in% names(as.list(call))))
+  structure(x, bad=bad, call=call, class=append("Tol", class(x)))
+}
+

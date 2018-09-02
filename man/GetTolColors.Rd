@@ -54,7 +54,7 @@ color schemes to work after conversion to gray scale.}
 \value{
 Returns an object of class 'Tol' that inherits behavior from the 'character' class.
   The object is comprised of a 'character' vector of \code{n} color names in hexadecimal format.
-  The color name is specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
+  Color names are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
   Attributes for the returned object include:
@@ -62,8 +62,10 @@ Returns an object of class 'Tol' that inherits behavior from the 'character' cla
     where a value of \code{NA} indicates that no color was specified; and
   \code{"call"}, an object of class '\link{call}' giving the unevaluated function call
     that can be used to reproduce the color palette.
-  A \code{plot} method is provided for the 'Tol' class that
-  shows a palette of colors using a sequence of shaded rectangles.
+  The \code{\link{eval}} function can be used to evaluate the \code{"call"} argument.
+  A simple \code{plot} method is provided for the 'Tol' class that
+  shows a palette of colors using a sequence of shaded rectangles,
+  see \sQuote{Examples} section for usage.
 }
 \description{
 This function creates a vector of \code{n} colors from
@@ -77,7 +79,8 @@ The maximum number of colors in a palette is:
   \code{n = 14} for \code{"ground cover"}; and
   \code{n = 24} for \code{"discrete rainbow"}.
   For \code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, and \code{"smooth rainbow"},
-  a continuous version of the scheme is available that has no limit placed on the number of colors in a palette.
+  a continuous version of the scheme is available that
+  has no limit placed on the number of colors in a palette.
   The exception to these limits occurs when the \code{gray} argument is true: in that case
   \code{n = 3} for \code{"bright"}, \code{n = 4} for \code{"vibrant"}, and \code{n = 5} for \code{"muted"}.
   Color schemes \code{"pale"},  \code{"dark"}, and \code{"ground cover"} are
