@@ -72,6 +72,8 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
+#' @seealso \code{\link[grDevices]{col2rgb}}
+#'
 #' @references
 #'   Hansen, M., DeFries, R., Townshend, J.R.G., and Sohlberg, R., 1998,
 #'   UMD Global Land Cover Classification, 1 Kilometer, 1.0:
@@ -87,8 +89,9 @@
 #'
 #' @examples
 #'
-#' print(cols <- GetTolColors(n = 5))
-#' t(grDevices::col2rgb(cols))
+#' cols <- GetTolColors(n = 10)
+#' print(cols)
+#' plot(cols)
 #'
 #' # Qualitative color schemes (scheme)
 #' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))

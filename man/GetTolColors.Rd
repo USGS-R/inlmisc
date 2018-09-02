@@ -91,8 +91,9 @@ The sequential color scheme \code{"YlOrBr"} works well for conversion to gray sc
 }
 \examples{
 
-print(cols <- GetTolColors(n = 5))
-t(grDevices::col2rgb(cols))
+cols <- GetTolColors(n = 10)
+print(cols)
+plot(cols)
 
 # Qualitative color schemes (scheme)
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
@@ -189,6 +190,9 @@ Hansen, M., DeFries, R., Townshend, J.R.G., and Sohlberg, R., 1998,
   Tol, Paul, 2018, Colour Schemes:
   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.0, 17 p.,
   accessed August 29, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
+}
+\seealso{
+\code{\link[grDevices]{col2rgb}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
