@@ -27,7 +27,7 @@
 #'   Interpolation bias where larger values result in more widely spaced colors at the high end.
 #'   See \code{\link[grDevices]{colorRamp}} function for details.
 #' @param reverse 'logical'.
-#'   Whether to reverse color order in palette.
+#'   Whether to reverse the color order in the palette.
 #' @param blind 'character'.
 #'   Type of color blindness to simulate: specify \code{"deutan"} for green-blind vision,
 #'   \code{"protan"} for red-blind vision, \code{"tritan"} for green-blue-blind vision, or
@@ -63,10 +63,10 @@
 #'   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
 #'   Attributes for the returned object include:
 #'   \code{"bad"}, a 'character' string giving the hexadecimal color name meant for bad data,
-#'     where a value of \code{NA} indicates that no color was specified; and
-#'   \code{"call"}, an object of class '\link{call}' giving the unevaluated function call
+#'     where a value of \code{NA} indicates that no bad color was provided by Tol (2018); and
+#'   \code{"call"}, an object of class '\link{call}' giving the unevaluated function call (expression)
 #'     that can be used to reproduce the color palette.
-#'   The \code{\link{eval}} function can be used to evaluate the \code{"call"} argument.
+#'   Use the \code{\link{eval}} function to evaluate the \code{"call"} argument.
 #'   A simple \code{plot} method is provided for the 'Tol' class that
 #'   shows a palette of colors using a sequence of shaded rectangles,
 #'   see \sQuote{Examples} section for usage.
