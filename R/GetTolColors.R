@@ -14,7 +14,7 @@
 #'   \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for a diverging color scheme; and
 #'   \code{"YlOrBr"}, \code{"discrete rainbow"}, or \code{"smooth rainbow"} (the default)
 #'   for a sequential color scheme.
-#'   Supports partial string matching so argument may be abbreviated.
+#'   Partial string matching is supported so argument may be abbreviated.
 #' @param alpha 'numeric'.
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 #'   Specify as \code{NULL} to exclude the alpha channel value from colors.
@@ -34,7 +34,7 @@
 #'   \code{"monochromacy"} for total-color blindness.
 #'   A partial-color blindness simulation requires that the \pkg{dichromat} package is available,
 #'   see \code{\link[dichromat]{dichromat}} function for additional information.
-#'   Supports partial string matching so argument may be abbreviated.
+#'   Partial string matching is supported so argument may be abbreviated.
 #' @param gray 'logical'.
 #'   Whether to subset the \code{"bright"}, \code{"vibrant"}, and \code{"muted"}
 #'   color schemes to work after conversion to gray scale.
@@ -51,21 +51,21 @@
 #'   The exception to these limits occurs when the \code{gray} argument is true: in that case
 #'   \code{n = 3} for \code{"bright"}, \code{n = 4} for \code{"vibrant"}, and \code{n = 5} for \code{"muted"}.
 #'   Color schemes \code{"pale"},  \code{"dark"}, and \code{"ground cover"} are
-#'   intended to be accessed in their entirety and subset using color names.
+#'   intended to be accessed in their entirety and subset using vector element names.
 #'   The very specific \code{"ground cover"} scheme is a color-blind safe version of the
 #'   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
 #'   global land cover classification (Hansen and others, 1998).
 #'
 #' @return Returns an object of class 'Tol' that inherits behavior from the 'character' class.
-#'   The object is comprised of a 'character' vector of \code{n} colors in hexadecimal format.
+#'   The object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
 #'   Colors are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
 #'   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
 #'   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
-#'   Attributes for the returned object include:
-#'   \code{"names"}, the names assigned to colors in the palette,
-#'   where a value of \code{NULL} indicates no names;
+#'   Attributes of the returned object include:
+#'   \code{"names"}, the informal names assigned to colors in the palette,
+#'   where \code{NULL} indicates no color names are specified;
 #'   \code{"bad"}, a 'character' string giving the color meant for bad data, in hexadecimal format,
-#'   where a value of \code{NA} indicates no bad color; and
+#'   where \code{NA} indicates no bad color is specified; and
 #'   \code{"call"}, an object of class '\link{call}' giving the unevaluated function call (expression)
 #'   that can be used to reproduce the color palette.
 #'   Use the \code{\link{eval}} function to evaluate the \code{"call"} argument.
