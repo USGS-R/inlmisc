@@ -17,7 +17,7 @@
 #'   Supports partial string matching so argument may be abbreviated.
 #' @param alpha 'numeric'.
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
-#'   Specify as \code{NULL} to exclude the alpha channel value from the color name.
+#'   Specify as \code{NULL} to exclude the alpha channel value from colors.
 #' @param start,end 'numeric'.
 #'   Starting and ending color level in the palette, respectively.
 #'   Specified as a number in the interval from 0 to 1.
@@ -51,21 +51,23 @@
 #'   The exception to these limits occurs when the \code{gray} argument is true: in that case
 #'   \code{n = 3} for \code{"bright"}, \code{n = 4} for \code{"vibrant"}, and \code{n = 5} for \code{"muted"}.
 #'   Color schemes \code{"pale"},  \code{"dark"}, and \code{"ground cover"} are
-#'   intended to be accessed in their entirety and subset using element vector names.
+#'   intended to be accessed in their entirety and subset using color names.
 #'   The very specific \code{"ground cover"} scheme is a color-blind safe version of the
 #'   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
 #'   global land cover classification (Hansen and others, 1998).
 #'
 #' @return Returns an object of class 'Tol' that inherits behavior from the 'character' class.
-#'   The object is comprised of a 'character' vector of \code{n} color names in hexadecimal format.
-#'   Color names are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
+#'   The object is comprised of a 'character' vector of \code{n} colors in hexadecimal format.
+#'   Colors are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
 #'   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
 #'   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
 #'   Attributes for the returned object include:
-#'   \code{"bad"}, a 'character' string giving the hexadecimal color name meant for bad data,
-#'     where a value of \code{NA} indicates that no bad color was provided by Tol (2018); and
+#'   \code{"names"}, the names assigned to colors in the palette,
+#'   where a value of \code{NULL} indicates no names;
+#'   \code{"bad"}, a 'character' string giving the color meant for bad data, in hexadecimal format,
+#'   where a value of \code{NA} indicates no bad color; and
 #'   \code{"call"}, an object of class '\link{call}' giving the unevaluated function call (expression)
-#'     that can be used to reproduce the color palette.
+#'   that can be used to reproduce the color palette.
 #'   Use the \code{\link{eval}} function to evaluate the \code{"call"} argument.
 #'   A simple \code{plot} method is provided for the 'Tol' class that
 #'   shows a palette of colors using a sequence of shaded rectangles,
