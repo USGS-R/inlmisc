@@ -108,7 +108,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
                              features=NULL, max.feature.dist=Inf, draw.key=TRUE,
                              draw.sep=TRUE, is.categorical=FALSE,
                              contour.lines=NULL, bg.col="#E1E1E1",
-                             wt.col="#FFFFFFD8", file=NULL) {
+                             wt.col="#FFFFFFD8", scale.loc="bottom", file=NULL) {
 
   if (!inherits(transect, "SpatialLines"))
     stop("incorrect class for 'transect' argument")
@@ -311,7 +311,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   if (!is.null(ylab)) {
     line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]
     max.sw <- max(graphics::strwidth(ylabs, units="inches", cex=cex))
-    mar.line <- max.sw / line.in.inches + sum(graphics::par("mgp")[2:3]) + graphics::par("mgp")[2]
+    mar.line <- max.sw / line.in.inches + sum(graphics::par("mgp")[2:3]) +
+                graphics::par("mgp")[2]
     graphics::title(ylab=ylab, cex.lab=cex, line=mar.line)
   }
 
@@ -354,7 +355,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   graphics::par(xpd=FALSE)
 
   vert.exag <- ifelse(asp == 1, NULL, asp)
-  AddScaleBar(unit=unit, vert.exag=vert.exag, loc="bottomright", offset=c(-0.3, 0))
+  if (!is.null(scale.loc))
+    AddScaleBar(unit=unit, vert.exag=vert.exag, loc=scale.loc, inset=0.05)
 
   invisible(list(din=graphics::par("din"), usr=usr, heights=c(h2, h1) / h))
 }

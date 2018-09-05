@@ -78,8 +78,6 @@ GetInsetLocation <- function(dx, dy, loc="bottomright", inset=0, pad=0, padin=0)
   pad <- rep(pad, length.out=2)
   padin <- rep(padin, length.out=2)
 
-  padin[1] * w / pin[1]
-
   padx <- sum(inset[1] * w, pad[1], padin[1] * w / pin[1])
   pady <- sum(inset[2] * h, pad[2], padin[2] * h / pin[2])
 

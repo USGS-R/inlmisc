@@ -1,5 +1,8 @@
 # inlmisc 0.4.2.9000
 
+- In `AddScaleBar` function: non-backward compatible argument changes.
+  Remove `offset` argument and replace with `...`, see help documentation for details.
+
 - Make **dichromat** a suggested package.
 
 - Remove **viridisLite** from suggested packages.

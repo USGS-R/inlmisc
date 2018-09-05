@@ -176,10 +176,11 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
   }
 
   # coordinates
-  xy <- grDevices::xy.coords(x, y, xlab=deparse(substitute(x)),
-                                   ylab=deparse(substitute(y)))
-  x <- xy$x
-  y <- xy$y
+  pts <- grDevices::xy.coords(x, y,
+                              xlab=deparse(substitute(x)),
+                              ylab=deparse(substitute(y)))
+  x <- pts$x
+  y <- pts$y
 
   # limits
   if (is.numeric(zlim)) {
@@ -384,20 +385,19 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       dy <- dy + subtitle.height
     }
 
-    loc <- GetInsetLocation(dx, dy, loc=legend.loc, inset=inset)
-
+    xy <- GetInsetLocation(dx, dy, loc=legend.loc, inset=inset)
     if (bty == "o")
-      graphics::rect(loc[1], loc[2], loc[1] + dx, loc[2] + dy, col="#FFFFFFE7",
+      graphics::rect(xy[1], xy[2], xy[1] + dx, xy[2] + dy, col="#FFFFFFE7",
                      border="black", lwd=0.5)
-    x <- rep(loc[1] + ipadx + max(r0), length(r0))
-    y <- loc[2] + s
+    x <- rep(xy[1] + ipadx + max(r0), length(r0))
+    y <- xy[2] + s
     graphics::symbols(x, y, circles=r0, bg=cols0, fg=fg.col0, inches=FALSE, lwd=lwd, add=TRUE)
 
-    graphics::text(loc[1] + ipadx + max(r0) * 2 + ipadx, y, break.labels, adj=c(0, 0.5), cex=cex)
+    graphics::text(xy[1] + ipadx + max(r0) * 2 + ipadx, y, break.labels, adj=c(0, 0.5), cex=cex)
     if (!is.null(title))
-      graphics::text(loc[1] + dx / 2, loc[2] + dy - ipady, title, adj=c(0.5, 0.5), cex=cex, font=2)
+      graphics::text(xy[1] + dx / 2, xy[2] + dy - ipady, title, adj=c(0.5, 0.5), cex=cex, font=2)
     if (!is.null(subtitle))
-      graphics::text(loc[1] + dx / 2, loc[2] + dy - title.height - subtitle.height, subtitle,
+      graphics::text(xy[1] + dx / 2, xy[2] + dy - title.height - subtitle.height, subtitle,
                      adj=c(0.5, 0), cex=cex)
   }
   invisible(NULL)

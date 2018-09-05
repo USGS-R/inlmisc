@@ -21,11 +21,11 @@
 #'   Note that scale distances are calculated at the maps latitude midpoint
 #'   using the Great Circle distance (WGS84 ellipsoid) method.
 #' @param loc 'character'.
-#'   Position of the scale bar in the plot region specified by keyword:
-#'   \code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"}.
-#' @param offset 'numeric'.
-#'   Vector of length 2 indicating the \emph{x} and \emph{y} adjustments
-#'   to the position of the scale bar, in inches.
+#'   Position of the scale bar in the main plot region;
+#'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
+#' @param ...
+#'   Additional arguments to be passed to the \code{\link{GetInsetLocation}} function---used
+#'   to position the scale bar in the main plot region.
 #'
 #' @return Used for the side-effect of a scale bar drawn on the current graphics device.
 #'
@@ -40,33 +40,35 @@
 #' @examples
 #' plot(-100:100, -100:100, type = "n", xlab = "x in meters", ylab = "y in meters", asp = 2)
 #' AddScaleBar()
-#' AddScaleBar(unit = "METERS", loc = "topleft")
+#' AddScaleBar(loc = "center")
+#' AddScaleBar(unit = "METERS", loc = "topleft", padin = 0.2)
 #' AddScaleBar(unit = c("METERS", "FEET"), conv.fact = c(1, 3.28084),
-#'             loc = "topright", offset = c(-0.2, 0))
-#' AddScaleBar(unit = c("METERS", "FEET"), conv.fact = c(1, 3.28084), vert.exag = TRUE,
-#'             loc = "bottomright", offset = c(-0.2, 0.2))
+#'             loc = "topright", padin = c(0.5, 0))
+#' AddScaleBar(unit = c("METERS", "FEET"), conv.fact = c(1, 3.28084),
+#'             vert.exag = TRUE, loc = "bottomright", inset = 0.1)
 #'
 #' plot(c(-38.31, -35.5), c(40.96, 37.5), type = "n", xlab = "longitude", ylab = "latitude")
 #' AddScaleBar(unit = "KILOMETERS", longlat = TRUE)
-#' AddScaleBar(unit = "MILES", conv.fact = 0.621371, longlat = TRUE, loc = "topright")
+#' AddScaleBar(unit = "MILES", conv.fact = 0.621371, longlat = TRUE,
+#'             loc = "topright", padin = c(0.4, 0))
 #' AddScaleBar(unit = c("KILOMETERS", "MILES"), conv.fact = c(1, 0.621371),
-#'             longlat = TRUE, loc = "topleft")
+#'             longlat = TRUE, loc = "topleft", inset = 0.05)
 #'
 
 AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE,
-                        loc=c("bottomleft", "topleft", "topright", "bottomright"),
-                        offset=NULL) {
+                        loc="bottomleft", ...) {
 
   checkmate::assertCharacter(unit, all.missing=FALSE, min.len=1, max.len=2, null.ok=TRUE)
   checkmate::assertNumeric(conv.fact, all.missing=FALSE, min.len=1, max.len=2, null.ok=TRUE)
   checkmate::qassert(vert.exag, c("B1", "S1", "N1", "0"))
   checkmate::assertFlag(longlat)
-  loc <- match.arg(loc)
-  checkmate::assertNumeric(offset, finite=TRUE, min.len=1, max.len=2, null.ok=TRUE)
+  checkmate::assertString(loc)
+  if (!is.null(list(...)$offset))
+    stop("offset argument has been removed, use '...' instead.")
 
-  pin  <- graphics::par("pin")   # plot dimensions in inches (width, height)
+  pin  <- graphics::par("pin")  # plot dimensions in inches (width, height)
   xaxp <- graphics::par("xaxp")  # extreme tick marks and number of intervals (x1, x2, n)
-  usr  <- graphics::par("usr")   # extremes of the plotting region (x1, x2, y1, y2)
+  usr  <- graphics::par("usr")  # extremes of the plotting region (x1, x2, y1, y2)
   pusr <- c(diff(usr[1:2]), diff(usr[3:4]))  # plot dimensions in user units (width, height)
   asp <- (pusr[1] / pin[1]) / (pusr[2] / pin[2])  # y/x aspect ratio
 
@@ -78,8 +80,6 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
     asp <- vert.exag
     vert.exag <- TRUE
   }
-  if (is.null(offset)) offset <- 0
-  offset <- rep_len(offset, 2)
 
   # calculate length of scale-bar axis in user units
   dx <- diff(xaxp[1:2]) / xaxp[3]  # x distance between plot tick marks
@@ -105,43 +105,26 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   lab <- ifelse(is.na(unit[1]), val, paste(val, unit[1]))
 
   # determine user coordinate at origin of scale
-  sw <- graphics::strwidth("M", units="user", cex=1)  # string width in user units
-  sh <- graphics::strheight("M", units="user", cex=1)  # string height in user units
-  pad <- c(sw * ifelse(grepl("left$", loc), 2, 3),
-           sh * ifelse(grepl("^top",  loc), 3, 2))
+  sh <- graphics::strheight("M") # string height in user units
+  tcl <- sh * 0.4  # y length of tick marks in user coordinates
+  pady <- sh * 0.2
+  dx <- sum(graphics::strwidth("0", cex=0.7) / 2, len,
+            graphics::strwidth(val, cex=0.7) / 2)
+  dy <- sum(tcl, pady, graphics::strheight("0", cex=0.7), pady)
 
-
-
-
-
-
-
-  if (loc == "bottomleft") {
-    xy <- c(usr[1] + pad[1], usr[3] + pad[2])
-  } else if (loc == "topleft") {
-    xy <- c(usr[1] + pad[1], usr[4] - pad[2])
-  } else if (loc == "topright") {
-    xy <- c(usr[2] - pad[1] - len, usr[4] - pad[2])
-  } else if (loc == "bottomright") {
-    xy <- c(usr[2] - pad[1] - len, usr[3] + pad[2])
-  }
-  xy <- c(xy[1] + offset[1] * pusr[1] / pin[1], xy[2] + offset[2] * pusr[2] / pin[2])
-
-
-
-
-
+  # get insert location
+  xy <- GetInsetLocation(dx, dy, loc=loc, ...)
 
   # draw axis and tick marks
   xat <- xy[1] + at  # x of tick marks in user coordinates
-  tcl <- sh * 0.4  # y length of tick marks in user coordinates
   graphics::lines(rbind(c(xy[1], xy[2]), c(xy[1] + len, xy[2])), lwd=0.5)
   for (i in xat) graphics::lines(rbind(c(i, xy[2]), c(i, xy[2] + tcl)), lwd=0.5)
 
   # draw tick-mark labels at extremes of scale bar
-  val_sw <- graphics::strwidth(val, units="user", cex=0.7)
-  graphics::text(xy[1], xy[2] + tcl, "0", adj=c(0.5, -0.6), cex=0.7)
-  graphics::text(xy[1] + len - val_sw / 2, xy[2] + tcl, lab, adj=c(0, -0.6), cex=0.7)
+  sw <- graphics::strwidth(val, units="user", cex=0.7)
+  graphics::text(xy[1], xy[2] + tcl + pady, "0", adj=c(0.5, 0), cex=0.7, xpd=TRUE)
+  graphics::text(xy[1] + len - sw / 2, xy[2] + tcl + pady,
+                 lab, adj=c(0, 0), cex=0.7, xpd=TRUE)
 
   # add scale for dual units
   if (!is.na(conv.fact[2])) {
@@ -149,18 +132,21 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
     val <- format(utils::tail(at, 1), big.mark=",")
     lab <- ifelse(is.na(unit[2]), val, paste(val, unit[2]))
     xat <- xy[1] + at / conv.fact[2]
-    val_sw <- graphics::strwidth(val, units="user", cex=0.7)
+    sw <- graphics::strwidth(val, units="user", cex=0.7)
     for (i in xat) graphics::lines(rbind(c(i, xy[2]), c(i, xy[2] - tcl)), lwd=0.5)
-    graphics::text(xy[1], xy[2] - tcl, "0", adj=c(0.5, 1.4), cex=0.7)
-    graphics::text(utils::tail(xat, 1) - val_sw / 2, xy[2] - tcl,
-                   lab, adj=c(0, 1.4), cex=0.7)
+    graphics::text(xy[1], xy[2] - tcl - pady, "0", adj=c(0.5, 1), cex=0.7, xpd=TRUE)
+    graphics::text(utils::tail(xat, 1) - sw / 2, xy[2] - tcl - pady,
+                   lab, adj=c(0, 1), cex=0.7, xpd=TRUE)
   }
 
   # draw label explaining vertical exaggeration beneath scale bar
   if (vert.exag) {
     txt <- sprintf("VERTICAL EXAGGERATION x%s", asp)
-    y <- xy[2] - if (is.na(conv.fact[2])) 0 else sh
-    graphics::text(xy[1] + len / 2, y, txt, cex=0.7, pos=1)
+    if (is.na(conv.fact[2]))
+      y <- xy[2] - pady
+    else
+      y <- xy[2] - tcl - pady - graphics::strheight("0", cex=0.7) - pady
+    graphics::text(xy[1] + len / 2, y, txt, cex=0.7, adj=c(0.5, 1), xpd=TRUE)
   }
 }
 

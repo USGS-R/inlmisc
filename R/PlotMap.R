@@ -60,12 +60,11 @@
 #'   Describes the location and values of labels in the color key.
 #'   This list may include components \code{at} and \code{labels}.
 #' @param scale.loc 'character'.
-#'   Position of the scale bar:
-#'   \code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote scale location,
-#'   see \code{\link{AddScaleBar}} function.
+#'   Position of the scale bar in the main plot region;
+#'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
 #' @param arrow.loc 'character'.
-#'   Position of the north arrow:
-#'   \code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote arrow location.
+#'   Position of the north arrow in the main plot region;
+#'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
 #' @param explanation 'character'.
 #'   Label explaining the raster cell value.
 #' @param credit 'character'.
@@ -174,7 +173,7 @@
 #'         contour.lines = list(col = "#1F1F1F"), credit = credit,
 #'         draw.key = FALSE, simplify = 0)
 #' AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371),
-#'             loc = "bottomright", offset = c(-0.4, 0.1))
+#'             loc = "bottomright", inset = c(0.1, 0.05))
 #' AddGradientLegend(breaks, Pal, at = breaks,
 #'                   title = "Topsoil zinc\nconcentration\n(ppm)", loc = "topleft",
 #'                   inset = c(0.05, 0.1), strip.dim = c(2, 20))
@@ -594,10 +593,10 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     txt <- strsplit(sp::proj4string(r), " ")[[1]]
     unit <- sub("^\\+units=", "", grep("^\\+units=", txt, value=TRUE))
     longlat <- "+proj=longlat" %in% txt
-    AddScaleBar(unit=unit, longlat=longlat, loc=scale.loc)
+    AddScaleBar(unit=unit, longlat=longlat, loc=scale.loc, inset=0.05)
   }
 
-  if (!is.null(arrow.loc)) .AddNorthArrow(arrow.loc, r@crs, cex)
+  if (!is.null(arrow.loc)) .AddNorthArrow(r@crs, loc=arrow.loc, inset=0.05, cex=cex)
 
   invisible(list(din=graphics::par("din"), usr=usr, heights=c(h2, h1) / h))
 }
@@ -614,31 +613,38 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 }
 
 
-.AddNorthArrow <- function(loc, crs, cex) {
+.AddNorthArrow <- function(crs, len=0.05, loc="topright", ..., lab="N", cex=0.7) {
+
+  checkmate::assertClass(crs, "CRS")
+  checkmate::assertNumber(len, lower=0, upper=1, finite=TRUE)
+  checkmate::assertString(loc)
+  checkmate::assertString(lab)
+  checkmate::assertNumber(cex, lower=0, finite=TRUE)
+
   crs.dd <- sp::CRS("+init=epsg:4326")
   usr <- graphics::par("usr")
   x.mid <- (usr[2] + usr[1]) / 2
   y.mid <- (usr[4] + usr[3]) / 2
-  d <- 0.05 * (usr[4] - usr[3])
-  xy <- rbind(c(x.mid, y.mid), c(x.mid, y.mid + d))
-  sp.dd <- sp::spTransform(sp::SpatialPoints(xy, proj4string=crs), crs.dd)
+  d <- len * (usr[4] - usr[3])
+  pts <- rbind(c(x.mid, y.mid), c(x.mid, y.mid + d))
+
+  sp.dd <- sp::spTransform(sp::SpatialPoints(pts, proj4string=crs), crs.dd)
   dd <- sp.dd@coords
   d.dd <- sqrt((dd[2, 1] - dd[1, 1])^2 + (dd[2, 2] - dd[1, 2])^2)
   dd <- rbind(dd[1, ], c(dd[1, 1],  dd[1, 2] + d.dd))
   sp.xy <- sp::spTransform(sp::SpatialPoints(dd, proj4string=crs.dd), crs)
-  xy <- sp.xy@coords
-  padx <- 0.1 * diff(usr[1:2])
-  pady <- 0.1 * diff(usr[3:4])
-  if (loc %in% c("bottomleft", "topleft"))
-    x0 <- usr[1] + padx
-  else
-    x0 <- usr[2] - padx
-  if (loc %in% c("bottomleft", "bottomright"))
-    y0 <- usr[3] + pady
-  else
-    y0 <- usr[4] - pady
-  x1 <- xy[2, 1] + x0 - xy[1, 1]
-  y1 <- xy[2, 2] + y0 - xy[1, 2]
+  pts <- sp.xy@coords
+
+  dx <- abs(diff(pts[, 1]))
+  dy <- abs(diff(pts[, 2]))
+  xy <- GetInsetLocation(dx, dy, loc=loc, ...)
+  x0 <- xy["x"]
+  y0 <- xy["y"]
+
+  x1 <- pts[2, 1] + x0 - pts[1, 1]
+  y1 <- pts[2, 2] + y0 - pts[1, 2]
+  graphics::arrows(x0, y0, x1, y1, length=0.1)
+
   a <- atan((y1 - y0) / (x1 - x0)) * (180 / pi)
   if (a > 45 && a <= 135) {
     pos <- 3
@@ -649,8 +655,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   } else {
     pos <- 4
   }
-  graphics::arrows(x0, y0, x1, y1, length=0.1)
-  graphics::text(x1, y1, labels="N", pos=pos, cex=cex)
+  graphics::text(x1, y1, labels=lab, pos=pos, cex=cex)
 }
 
 

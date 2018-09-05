@@ -92,13 +92,12 @@ Describes the location and values of labels in the color key.
 This list may include components \code{at} and \code{labels}.}
 
 \item{scale.loc}{'character'.
-Position of the scale bar:
-\code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote scale location,
-see \code{\link{AddScaleBar}} function.}
+Position of the scale bar in the main plot region;
+see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
 \item{arrow.loc}{'character'.
-Position of the north arrow:
-\code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote arrow location.}
+Position of the north arrow in the main plot region;
+see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
 \item{explanation}{'character'.
 Label explaining the raster cell value.}
@@ -211,7 +210,7 @@ PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
         contour.lines = list(col = "#1F1F1F"), credit = credit,
         draw.key = FALSE, simplify = 0)
 AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371),
-            loc = "bottomright", offset = c(-0.4, 0.1))
+            loc = "bottomright", inset = c(0.1, 0.05))
 AddGradientLegend(breaks, Pal, at = breaks,
                   title = "Topsoil zinc\\nconcentration\\n(ppm)", loc = "topleft",
                   inset = c(0.05, 0.1), strip.dim = c(2, 20))

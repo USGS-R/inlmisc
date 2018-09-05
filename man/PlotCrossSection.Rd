@@ -11,7 +11,7 @@ PlotCrossSection(transect, rs, geo.lays = names(rs), val.lays = NULL,
   explanation = NULL, features = NULL, max.feature.dist = Inf,
   draw.key = TRUE, draw.sep = TRUE, is.categorical = FALSE,
   contour.lines = NULL, bg.col = "#E1E1E1", wt.col = "#FFFFFFD8",
-  file = NULL)
+  scale.loc = "bottom", file = NULL)
 }
 \arguments{
 \item{transect}{'SpatialLines'.
@@ -107,6 +107,10 @@ Color used for the background of the area below the upper geometry raster layer.
 
 \item{wt.col}{'character'.
 Color used for the water-table line.}
+
+\item{scale.loc}{'character'.
+Position of the scale bar in the main plot region;
+see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
 \item{file}{'character'.
 Name of the output file.

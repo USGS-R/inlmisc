@@ -78,18 +78,7 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
     dx <- width * (diff(usr[1:2]) / graphics::par("pin")[1])
   }
   dy <- dx * (diff(ext[3:4]) / diff(ext[1:2]))
-
-
-
-
-
-
   xy <- GetInsetLocation(dx, dy, loc=loc, inset=inset)
-
-
-
-
-
   graphics::rect(xy[1], xy[2], xy[1] + dx, xy[2] + dy, col="#FFFFFFE7", border=NA)
 
   plt <- c(graphics::grconvertX(c(xy[1], xy[1] + dx), "user", "nfc"),
