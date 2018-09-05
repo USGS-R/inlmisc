@@ -1,4 +1,3 @@
-
 #' Add Scale Bar to Plot
 #'
 #' This function can be used to add a scale bar (also known as a rake scale) to a plot.
