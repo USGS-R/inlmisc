@@ -43,7 +43,7 @@
 #' @param bg.image.alpha 'numeric'.
 #'   Opacity of the background image from 0 to 1.
 #' @param pal 'function'.
-#'   Color palette to be used to assign colors in the plot, rainbow by default.
+#'   Color palette to be used to assign colors in the plot.
 #' @param col 'character'.
 #'   Vector of colors to be used in the plot.
 #'   This argument requires \code{breaks} specification for numeric values of \code{r} and

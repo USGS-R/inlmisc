@@ -41,7 +41,7 @@ r[4, 6] <- NA
 PlotMap(r)
 l <- sp::Lines(list(sp::Line(coords)), ID = "Transect")
 lines(sp::SpatialLines(list(l), proj4string = crs))
-points(transect, pch = 21, bg = "red")
+points(transect, pch = 19)
 segs <- ExtractAlongTransect(transect, r)
 for (i in seq_along(segs)) points(segs[[i]])
 
