@@ -80,18 +80,17 @@ AddNorthArrow <- function(crs=sp::CRS(), len=0.05, lab="N", rotate=0, ...) {
   x2 <- cos(rad) * (x1 - xy["x"]) - sin(rad) * (y1 - xy["y"]) + xy["x"]
   y2 <- sin(rad) * (x1 - xy["x"]) + cos(rad) * (y1 - xy["y"]) + xy["y"]
 
-  graphics::arrows(xy["x"], xy["y"], x2, y2, length=0.1)
-
-  a <- atan2(y2 - xy["y"], x2 - xy["x"]) * (180 / pi)
-  if (a > 45 && a <= 135) {
+  deg <- atan2(y2 - xy["y"], x2 - xy["x"]) * (180 / pi)
+  if (deg > 45 && deg <= 135) {
     pos <- 3
-  } else if (a > 135 && a <= 225) {
+  } else if (deg > 135 && deg <= 225) {
     pos <- 2
-  } else if (a > 225 && a <= 315) {
+  } else if (deg > 225 && deg <= 315) {
     pos <- 1
   } else {
     pos <- 4
   }
 
+  graphics::arrows(xy["x"], xy["y"], x2, y2, length=0.1)
   graphics::text(x2, y2, labels=lab, pos=pos, offset=0.2, cex=0.7)
 }
