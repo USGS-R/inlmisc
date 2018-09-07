@@ -598,8 +598,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     AddScaleBar(unit=unit, longlat=longlat, loc=scale.loc, inset=0.05)
   }
 
-  if (!is.null(arrow.loc))
-    AddNorthArrow(r@crs, cex=cex, loc=arrow.loc, inset=0.1)
+  if (!is.null(arrow.loc)) AddNorthArrow(r@crs, loc=arrow.loc, inset=0.1)
 
   invisible(list(din=graphics::par("din"), usr=usr, heights=c(h2, h1) / h))
 }

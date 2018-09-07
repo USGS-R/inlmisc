@@ -26,9 +26,9 @@ Returns a 'RasterLayer' that can be added to \code{rs[[2]]} to ensure connectivi
   Cell values in the returned raster grid represent vertical adjustments.
 }
 \description{
-Given the upper and lower surfaces (raster layers) of a three-dimensional (3D) model layer,
+Given upper and lower surfaces (raster layers) of a three-dimensional (3D) model layer,
 this function incrementally decreases lower cell values until
-a minimum vertical overlap between horizontally adjacent model cells is achieved.
+a minimum vertical overlap between adjacent model cells is achieved.
 }
 \details{
 During each iteration of the algorithm:

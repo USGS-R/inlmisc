@@ -4,20 +4,24 @@
 \alias{AddNorthArrow}
 \title{Add North Arrow to Plot}
 \usage{
-AddNorthArrow(crs, len = 0.05, lab = "N", cex = 0.7, ...)
+AddNorthArrow(crs = sp::CRS(), len = 0.05, lab = "N", rotate = 0,
+  ...)
 }
 \arguments{
 \item{crs}{'CRS', 'Raster*', or 'Spatial'.
-Coordinate reference system (CRS), or any object with a CRS attribute.}
+Coordinate reference system (CRS), or any object with a CRS attribute
+that can be extracted using the \code{\link[raster]{crs}} function.
+If missing (the default) the north arrow is point to the top of the plot
+unless the \code{rotate} argument is specified.}
 
 \item{len}{'numeric'.
-Arrow length specified as a fraction of the plot height, 5-percent by default.}
+Arrow length expressed as a fraction of the plot height, by default is 5-percent.}
 
 \item{lab}{'character'.
-North label is \dQuote{N} by default.}
+North label, by default is \dQuote{N}.}
 
-\item{cex}{'numeric'.
-Character expansion factor for the north label.}
+\item{rotate}{'numeric'.
+Arrow offset-rotation in degrees, where positive values are taken to be clockwise.}
 
 \item{...}{Additional arguments to be passed to the \code{\link{GetInsetLocation}} function---used
 to position the north arrow in the main plot region.}
@@ -26,7 +30,7 @@ to position the north arrow in the main plot region.}
 Used for the side-effect of a north arrow drawn on the current graphics device.
 }
 \description{
-This function can be used to add a north arrow to a plot.
+This function can be used to add a north arrow aligned to true north to a plot.
 }
 \examples{
 m <- datasets::volcano

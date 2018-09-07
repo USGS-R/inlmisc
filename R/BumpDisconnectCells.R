@@ -1,8 +1,8 @@
 #' Adjustment for Vertically Disconnected Cells
 #'
-#' Given the upper and lower surfaces (raster layers) of a three-dimensional (3D) model layer,
+#' Given upper and lower surfaces (raster layers) of a three-dimensional (3D) model layer,
 #' this function incrementally decreases lower cell values until
-#' a minimum vertical overlap between horizontally adjacent model cells is achieved.
+#' a minimum vertical overlap between adjacent model cells is achieved.
 #'
 #' @param rs 'Raster*'.
 #'   A collection of two raster layers, the first and second layers represent

@@ -1,15 +1,18 @@
 #' Add North Arrow to Plot
 #'
-#' This function can be used to add a north arrow to a plot.
+#' This function can be used to add a north arrow aligned to true north to a plot.
 #'
 #' @param crs 'CRS', 'Raster*', or 'Spatial'.
-#'   Coordinate reference system (CRS), or any object with a CRS attribute.
+#'   Coordinate reference system (CRS), or any object with a CRS attribute
+#'   that can be extracted using the \code{\link[raster]{crs}} function.
+#'   If missing (the default) the north arrow is point to the top of the plot
+#'   unless the \code{rotate} argument is specified.
 #' @param len 'numeric'.
-#'   Arrow length specified as a fraction of the plot height, 5-percent by default.
+#'   Arrow length expressed as a fraction of the plot height, by default is 5-percent.
 #' @param lab 'character'.
-#'   North label is \dQuote{N} by default.
-#' @param cex 'numeric'.
-#'   Character expansion factor for the north label.
+#'   North label, by default is \dQuote{N}.
+#' @param rotate 'numeric'.
+#'   Arrow offset-rotation in degrees, where positive values are taken to be clockwise.
 #' @param ...
 #'   Additional arguments to be passed to the \code{\link{GetInsetLocation}} function---used
 #'   to position the north arrow in the main plot region.
@@ -37,40 +40,49 @@
 #' AddNorthArrow(raster::crs(r), loc = "topleft", inset = 0.1)
 #'
 
-AddNorthArrow <- function(crs, len=0.05, lab="N", cex=0.7, ...) {
+AddNorthArrow <- function(crs=sp::CRS(), len=0.05, lab="N", rotate=0, ...) {
 
-  stopifnot(inherits(crs, c("CRS", "RasterLayer", "Spatial")))
+  stopifnot(inherits(crs, c("CRS", "RasterLayer", "Spatial", "NULL")))
   checkmate::assertNumber(len, lower=0, upper=1, finite=TRUE)
   checkmate::assertString(lab)
-  checkmate::assertNumber(cex, lower=0, finite=TRUE)
+  checkmate::assertNumber(rotate, lower=-360, upper=360, finite=TRUE)
 
-  crs <- raster::crs(crs)
-  crs.dd <- sp::CRS("+init=epsg:4326")
   usr <- graphics::par("usr")
-  x.mid <- (usr[2] + usr[1]) / 2
-  y.mid <- (usr[4] + usr[3]) / 2
-  d <- (usr[4] - usr[3]) * len
-  pts <- rbind(c(x.mid, y.mid), c(x.mid, y.mid + d))
+  len <- len * abs(diff(usr[3:4]))
+  crs <- raster::crs(crs)
 
-  sp.dd <- sp::spTransform(sp::SpatialPoints(pts, proj4string=crs), crs.dd)
-  dd <- sp.dd@coords
-  d.dd <- sqrt((dd[2, 1] - dd[1, 1])^2 + (dd[2, 2] - dd[1, 2])^2)
-  dd <- rbind(dd[1, ], c(dd[1, 1],  dd[1, 2] + d.dd))
-  sp.xy <- sp::spTransform(sp::SpatialPoints(dd, proj4string=crs.dd), crs)
-  pts <- sp.xy@coords
+  if (is.na(crs)) {
+    xy <- GetInsetLocation(0, len, ...)
+    x1 <- xy["x"]
+    y1 <- xy["y"] + len
 
-  dx <- abs(diff(pts[, 1]))
-  dy <- abs(diff(pts[, 2]))
-  xy <- GetInsetLocation(dx, dy, ...)
-  x0 <- xy["x"]
-  y0 <- xy["y"]
+  } else {
+    crs.dd <- sp::CRS("+init=epsg:4326")
+    x.mid <- (usr[2] + usr[1]) / 2
+    y.mid <- (usr[4] + usr[3]) / 2
+    pts <- rbind(c(x.mid, y.mid), c(x.mid, y.mid + len))
+    pts <- sp::SpatialPoints(pts, proj4string=crs)
 
-  x1 <- pts[2, 1] + x0 - pts[1, 1]
-  y1 <- pts[2, 2] + y0 - pts[1, 2]
+    sp.dd <- sp::spTransform(pts, sp::CRS("+init=epsg:4326"))
+    dd <- sp.dd@coords
+    len.dd <- sqrt((dd[2, 1] - dd[1, 1])^2 + (dd[2, 2] - dd[1, 2])^2)
+    dd <- rbind(dd[1, ], c(dd[1, 1],  dd[1, 2] + len.dd))
+    dd <- sp::SpatialPoints(dd, proj4string=sp::CRS("+init=epsg:4326"))
+    sp.xy <- sp::spTransform(dd, crs)
+    pts <- sp.xy@coords
 
-  graphics::arrows(x0, y0, x1, y1, length=0.1)
+    xy <- GetInsetLocation(abs(diff(pts[, 1])), abs(diff(pts[, 2])), ...)
+    x1 <- pts[2, 1] + xy["x"] - pts[1, 1]
+    y1 <- pts[2, 2] + xy["y"] - pts[1, 2]
+  }
 
-  a <- atan((y1 - y0) / (x1 - x0)) * (180 / pi)
+  rad <- (-1 * rotate * pi) / 180
+  x2 <- cos(rad) * (x1 - xy["x"]) - sin(rad) * (y1 - xy["y"]) + xy["x"]
+  y2 <- sin(rad) * (x1 - xy["x"]) + cos(rad) * (y1 - xy["y"]) + xy["y"]
+
+  graphics::arrows(xy["x"], xy["y"], x2, y2, length=0.1)
+
+  a <- atan2(y2 - xy["y"], x2 - xy["x"]) * (180 / pi)
   if (a > 45 && a <= 135) {
     pos <- 3
   } else if (a > 135 && a <= 225) {
@@ -81,6 +93,5 @@ AddNorthArrow <- function(crs, len=0.05, lab="N", cex=0.7, ...) {
     pos <- 4
   }
 
-
-  graphics::text(x1, y1, labels=lab, pos=pos, offset=0.2, cex=cex)
+  graphics::text(x2, y2, labels=lab, pos=pos, offset=0.2, cex=0.7)
 }
