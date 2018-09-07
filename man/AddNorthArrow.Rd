@@ -10,7 +10,7 @@ AddNorthArrow(crs = sp::CRS(), len = 0.05, lab = "N", rotate = 0,
 \arguments{
 \item{crs}{'CRS', 'Raster*', or 'Spatial'.
 Coordinate reference system (CRS), or any object with a CRS attribute
-that can be extracted using the \code{\link[raster]{crs}} function.
+that can be extracted using the \code{\link[raster:projection]{crs}} function.
 If missing (the default) the north arrow is point to the top of the plot
 unless the \code{rotate} argument is specified.}
 

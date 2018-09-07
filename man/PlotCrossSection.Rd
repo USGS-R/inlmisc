@@ -148,12 +148,13 @@ names(rs) <- c("r1", "r2", "r3")
 xy <- rbind(c(2667508, 6479501), c(2667803, 6479214), c(2667508, 6478749))
 transect <- sp::SpatialLines(list(sp::Lines(list(sp::Line(xy)), ID = "Transect")),
                              proj4string = raster::crs(rs))
-raster::plot(r1, col = terrain.colors(255))
-raster::contour(r1, add = TRUE, col = "#FFFFFF7F")
+PlotMap(r1, pal = terrain.colors, scale.loc = "top", arrow.loc = "topright",
+        shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1FA6"))
 lines(transect)
 raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
              cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
 
+dev.new()
 explanation <- "Vertical thickness between layers, in meters."
 PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
                  ylab = "Elevation", asp = 5, unit = "METERS",

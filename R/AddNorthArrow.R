@@ -4,7 +4,7 @@
 #'
 #' @param crs 'CRS', 'Raster*', or 'Spatial'.
 #'   Coordinate reference system (CRS), or any object with a CRS attribute
-#'   that can be extracted using the \code{\link[raster]{crs}} function.
+#'   that can be extracted using the \code{\link[raster:projection]{crs}} function.
 #'   If missing (the default) the north arrow is point to the top of the plot
 #'   unless the \code{rotate} argument is specified.
 #' @param len 'numeric'.
@@ -42,7 +42,7 @@
 
 AddNorthArrow <- function(crs=sp::CRS(), len=0.05, lab="N", rotate=0, ...) {
 
-  stopifnot(inherits(crs, c("CRS", "RasterLayer", "Spatial", "NULL")))
+  stopifnot(inherits(crs, c("CRS", "RasterLayer", "Spatial")))
   checkmate::assertNumber(len, lower=0, upper=1, finite=TRUE)
   checkmate::assertString(lab)
   checkmate::assertNumber(rotate, lower=-360, upper=360, finite=TRUE)
