@@ -73,7 +73,7 @@
 #'   shows a palette of colors using a sequence of shaded rectangles,
 #'   see \sQuote{Examples} section for usage.
 
-#' @note  The sequential color scheme \code{"YlOrBr"} works well for conversion to gray scale.
+#' @note The sequential color scheme \code{"YlOrBr"} works well for conversion to gray scale.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

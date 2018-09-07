@@ -8,11 +8,12 @@ BumpDisconnectCells(rs, min.overlap = 2, bump.by = 0.1,
   max.itr = 10000)
 }
 \arguments{
-\item{rs}{'RasterStack'.
-A collection of two raster layers, the first and second layers represent the top and bottom of a model layer.}
+\item{rs}{'Raster*'.
+A collection of two raster layers, the first and second layers represent
+the upper and lower surface of a 3D model layer.}
 
 \item{min.overlap}{'numeric'.
-Minimum vertical overlap between adjacent cells.}
+Minimum vertical overlap between horizontally adjacent model cells.}
 
 \item{bump.by}{'numeric'.
 Amount to decrease a cell value by during each iteration of the algorithm.}
@@ -21,31 +22,34 @@ Amount to decrease a cell value by during each iteration of the algorithm.}
 Maximum number of iterations.}
 }
 \value{
-Returns a 'RasterLayer' that can be added to \code{rs[[2]]} to ensure connectivity between cells.
+Returns a 'RasterLayer' that can be added to \code{rs[[2]]} to ensure connectivity between model layer cells.
   Cell values in the returned raster grid represent vertical adjustments.
 }
 \description{
-This function decreases model cell values (such as land-surface elevations)
-in the lower raster layer if they violate a minimum vertical overlap between adjacent cells.
+Given the upper and lower surfaces (raster layers) of a three-dimensional (3D) model layer,
+this function incrementally decreases lower cell values until
+a minimum vertical overlap between horizontally adjacent model cells is achieved.
 }
 \details{
 During each iteration of the algorithm:
   (1) Cells are identified that violate the minimum vertical overlap between adjacent cells; that is,
-      the bottom of cell i is greater than or equal to the top of an adjacent cell j minus the
+      the bottom of cell \emph{i} is greater than or equal to the top of an adjacent cell \emph{j} minus the
       minimum overlap specified by the \code{min.overlap} argument.
   (2) For cells violating the minimum vertical overlap, lower raster layer (\code{rs[[2]]}) values are
       decreased by the value specified in the \code{bump.by} argument.
 }
 \examples{
 set.seed(0)
-r.top <- raster::raster(ncols = 10, nrows = 10)
-r.bot <- raster::raster(ncols = 10, nrows = 10)
-r.top[] <- rnorm(raster::ncell(r.top), mean = 12)
-r.bot[] <- rnorm(raster::ncell(r.bot), mean = 10)
-summary(r.top - r.bot)
+r_top <- raster::raster(ncols = 10, nrows = 10)
+r_bot <- raster::raster(ncols = 10, nrows = 10)
+r_top[] <- rnorm(raster::ncell(r_top), mean = 12)
+r_bot[] <- rnorm(raster::ncell(r_bot), mean = 10)
+rs <- raster::stack(r_top, r_bot)
+r <- BumpDisconnectCells(rs, min.overlap = 0.1)
+raster::plot(r, col = GetTolColors(255, reverse = TRUE))
+summary(r[])
 
-r <- BumpDisconnectCells(raster::stack(r.top, r.bot), min.overlap = 0.1)
-raster::plot(r.bot + r)
+r_bot_new <- r_bot + r
 
 }
 \author{

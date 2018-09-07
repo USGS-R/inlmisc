@@ -1,5 +1,7 @@
 # inlmisc 0.4.2.9000
 
+- Add `AddNorthArrow` function, was previously defined as an internal function.
+
 - In `AddScaleBar` function: non-backward compatible argument changes.
   Remove `offset` argument and replace with `...`, see help documentation for details.
 

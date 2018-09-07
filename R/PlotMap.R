@@ -178,17 +178,19 @@
 #'                   title = "Topsoil zinc\nconcentration\n(ppm)", loc = "topleft",
 #'                   inset = c(0.05, 0.1), strip.dim = c(2, 20))
 #'
-#' m <- t(datasets::volcano)[61:1, ]
-#' x <- seq(from = 6478705, length.out = 87, by = 10)
-#' y <- seq(from = 2667405, length.out = 61, by = 10)
+#' m <- datasets::volcano
+#' m <- m[nrow(m):1, ncol(m):1]
+#' x <- seq(from = 2667405, length.out = ncol(m), by = 10)
+#' y <- seq(from = 6478705, length.out = nrow(m), by = 10)
 #' r <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
 #'                     crs = "+init=epsg:27200")
 #' credit <- paste("Digitized from a topographic map by Ross Ihaka",
 #'                 "on a grid with 10-meter by 10-meter spacing.")
 #' explanation <- "Elevation on Auckland's Maunga Whau volcano, in meters."
 #' PlotMap(r, extend.z = TRUE, pal = terrain.colors, scale.loc = "bottomright",
-#'         explanation = explanation, credit = credit, shade = list(alpha = 0.3),
-#'         contour.lines = list(col = "#1F1F1F"), useRaster = TRUE)
+#'         arrow.loc = "topright", explanation = explanation, credit = credit,
+#'         shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1FA6"),
+#'         useRaster = TRUE)
 #'
 #' out <- PlotMap(r, file = "Rplots1.pdf")
 #' print(out)
@@ -596,7 +598,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     AddScaleBar(unit=unit, longlat=longlat, loc=scale.loc, inset=0.05)
   }
 
-  if (!is.null(arrow.loc)) .AddNorthArrow(r@crs, loc=arrow.loc, inset=0.05, cex=cex)
+  if (!is.null(arrow.loc))
+    AddNorthArrow(r@crs, cex=cex, loc=arrow.loc, inset=0.1)
 
   invisible(list(din=graphics::par("din"), usr=usr, heights=c(h2, h1) / h))
 }
@@ -610,52 +613,6 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   at.mid <- seq(min(at) - inc, max(at) + inc, by=inc / 2)
   at.mid <- at.mid[!at.mid %in% at & at.mid > ran[1] & at.mid < ran[2]]
   return(at.mid)
-}
-
-
-.AddNorthArrow <- function(crs, len=0.05, loc="topright", ..., lab="N", cex=0.7) {
-
-  checkmate::assertClass(crs, "CRS")
-  checkmate::assertNumber(len, lower=0, upper=1, finite=TRUE)
-  checkmate::assertString(loc)
-  checkmate::assertString(lab)
-  checkmate::assertNumber(cex, lower=0, finite=TRUE)
-
-  crs.dd <- sp::CRS("+init=epsg:4326")
-  usr <- graphics::par("usr")
-  x.mid <- (usr[2] + usr[1]) / 2
-  y.mid <- (usr[4] + usr[3]) / 2
-  d <- len * (usr[4] - usr[3])
-  pts <- rbind(c(x.mid, y.mid), c(x.mid, y.mid + d))
-
-  sp.dd <- sp::spTransform(sp::SpatialPoints(pts, proj4string=crs), crs.dd)
-  dd <- sp.dd@coords
-  d.dd <- sqrt((dd[2, 1] - dd[1, 1])^2 + (dd[2, 2] - dd[1, 2])^2)
-  dd <- rbind(dd[1, ], c(dd[1, 1],  dd[1, 2] + d.dd))
-  sp.xy <- sp::spTransform(sp::SpatialPoints(dd, proj4string=crs.dd), crs)
-  pts <- sp.xy@coords
-
-  dx <- abs(diff(pts[, 1]))
-  dy <- abs(diff(pts[, 2]))
-  xy <- GetInsetLocation(dx, dy, loc=loc, ...)
-  x0 <- xy["x"]
-  y0 <- xy["y"]
-
-  x1 <- pts[2, 1] + x0 - pts[1, 1]
-  y1 <- pts[2, 2] + y0 - pts[1, 2]
-  graphics::arrows(x0, y0, x1, y1, length=0.1)
-
-  a <- atan((y1 - y0) / (x1 - x0)) * (180 / pi)
-  if (a > 45 && a <= 135) {
-    pos <- 3
-  } else if (a > 135 && a <= 225) {
-    pos <- 2
-  } else if (a > 225 && a <= 315) {
-    pos <- 1
-  } else {
-    pos <- 4
-  }
-  graphics::text(x1, y1, labels=lab, pos=pos, cex=cex)
 }
 
 

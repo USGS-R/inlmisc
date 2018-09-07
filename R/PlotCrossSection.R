@@ -69,11 +69,12 @@
 #' @export
 #'
 #' @examples
-#' data(volcano, package = "datasets")
-#' x <- seq(from = 2667405, length.out = 61, by = 10)
-#' y <- seq(from = 6478705, length.out = 87, by = 10)
-#' r1 <- raster::raster(volcano, xmn = min(x), xmx = max(x), ymn = min(y),
-#'                      ymx = max(y), crs = sp::CRS("+init=epsg:27200"))
+#' m <- datasets::volcano
+#' m <- m[nrow(m):1, ncol(m):1]
+#' x <- seq(from = 2667405, length.out = ncol(m), by = 10)
+#' y <- seq(from = 6478705, length.out = nrow(m), by = 10)
+#' r1 <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
+#'                      crs = "+init=epsg:27200")
 #' r2 <- min(r1[]) - r1 / 10
 #' r3 <- r1 - r2
 #' rs <- raster::stack(r1, r2, r3)

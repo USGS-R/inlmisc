@@ -26,11 +26,13 @@
 #' r <- raster::clump(r)
 #' raster::plot(r)
 #'
-#' r.new <- RmSmallCellChunks(r)
-#' raster::plot(r.new, zlim = range(r[], na.rm = TRUE))
+#' r_new <- RmSmallCellChunks(r)
+#' raster::plot(r_new, zlim = range(r[], na.rm = TRUE))
 #'
 
 RmSmallCellChunks <- function(r) {
+
+  stopifnot(inherits(r, "RasterLayer"))
 
   ext <- raster::extent(r)
   new.ext <- raster::extent(c(ext@xmin - raster::res(r)[1], ext@xmax + raster::res(r)[1],

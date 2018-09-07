@@ -4,7 +4,8 @@
 #' to local directories using multiple file formats.
 #'
 #' @param rs 'RasterStack'.
-#'   A collection of \code{\linkS4class{RasterLayer}} objects with the same extent and resolution.
+#'   A collection of \code{\linkS4class{RasterLayer}} objects with
+#'   the same extent and resolution.
 #' @param path 'character'.
 #'   Path name to write raster stack.
 #' @param zip 'character'.
@@ -13,7 +14,8 @@
 #' @param col 'character'.
 #'   Vector of colors
 #'
-#' @details Five local directories are created under \code{path} and named after their intended file formats:
+#' @details Five local directories are created under \code{path} and
+#'   named after their intended file formats:
 #'   Comma-Separated Values (\file{csv}),
 #'   Portable Network Graphics (\file{png}),
 #'   Georeferenced TIFF (\file{tif}),
@@ -21,13 +23,16 @@
 #'   Keyhole Markup Language (\file{kml}).
 #'   For its reference system, \file{kml} uses geographic coordinates:
 #'   longitude and latitude components as defined by the World Geodetic System of 1984.
-#'   Therefore, the conversion of gridded data between cartographic projections may introduce a new source of error.
-#'
-#'   To install \file{zip.exe} on windows, download the latest binary version from the
-#'   \href{https://www.7-zip.org/download.html}{Info-ZIP} website;
-#'   select one of the given FTP locations, enter directory \file{win32}, download \file{zip300xn.zip}, and extract.
+#'   Therefore, the conversion of gridded data between cartographic projections
+#'   may introduce a new source of error.
 #'
 #' @return Used for the side-effect files written to disk.
+#'
+#' @note If the zip program is unavailable on windows, install it
+#'   by downloading the latest binary version from the
+#'   \href{https://www.7-zip.org/download.html}{Info-ZIP} website;
+#'   select one of the given FTP locations, enter directory \file{win32},
+#'   download \file{zip300xn.zip}, and extract.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -39,17 +44,18 @@
 #'
 #' @examples
 #' \dontrun{
-#'   f <- "SIR2016-5080/ancillary/uncalibrated/data/rda/rasters.rda"
-#'   load(file = f)
+#'   f <- system.file("external/rlogo.grd", package = "raster")
+#'   rs <- raster::stack(f)
+#'   print(rs)
 #'   ExportRasterStack(rs, tempdir())
 #' }
 #'
 
-ExportRasterStack <- function(rs, path, zip="",
-                              col=GetTolColors(255, start=0.3, end=0.9)) {
+ExportRasterStack <- function(rs, path, zip="", col=NULL) {
+
+  if (is.null(col)) col <- GetTolColors(255, start=0.3, end=0.9)
 
   dir.create(path, showWarnings=FALSE, recursive=TRUE)
-
   dir.create(path.csv <- file.path(path, "csv"), showWarnings=FALSE)
   dir.create(path.png <- file.path(path, "png"), showWarnings=FALSE)
   dir.create(path.tif <- file.path(path, "tif"), showWarnings=FALSE)

@@ -25,8 +25,8 @@ r[] <- round(runif(raster::ncell(r)) * 0.7)
 r <- raster::clump(r)
 raster::plot(r)
 
-r.new <- RmSmallCellChunks(r)
-raster::plot(r.new, zlim = range(r[], na.rm = TRUE))
+r_new <- RmSmallCellChunks(r)
+raster::plot(r_new, zlim = range(r[], na.rm = TRUE))
 
 }
 \seealso{

@@ -55,7 +55,7 @@ Desired number of intervals to partition the range of raster values (optional).}
 Vector of break points used to partition the colors representing numeric raster values (optional).}
 
 \item{pal}{'function'.
-Color palette to be used to assign colors in the plot, rainbow by default.}
+Color palette to be used to assign colors in the plot.}
 
 \item{col}{'character'.
 Vector of colors to be used in the plot.
@@ -135,11 +135,12 @@ A key showing how the colors map to raster values is shown below the map.
 The width and height of the graphics region will be automagically determined in some cases.
 }
 \examples{
-data(volcano, package = "datasets")
-x <- seq(from = 2667405, length.out = 61, by = 10)
-y <- seq(from = 6478705, length.out = 87, by = 10)
-r1 <- raster::raster(volcano, xmn = min(x), xmx = max(x), ymn = min(y),
-                     ymx = max(y), crs = sp::CRS("+init=epsg:27200"))
+m <- datasets::volcano
+m <- m[nrow(m):1, ncol(m):1]
+x <- seq(from = 2667405, length.out = ncol(m), by = 10)
+y <- seq(from = 6478705, length.out = nrow(m), by = 10)
+r1 <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
+                     crs = "+init=epsg:27200")
 r2 <- min(r1[]) - r1 / 10
 r3 <- r1 - r2
 rs <- raster::stack(r1, r2, r3)
