@@ -152,11 +152,11 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   }
 
   if (inherits(x, "Date")) {
-    if (!inherits(xlim, "Date")) xlim <- grDevices::extendrange(x)
+    if (!inherits(xlim, "Date")) xlim <- range(x, na.rm=TRUE)
     if (is.null(seq.date.by))
       xat <- seq(xlim[1], xlim[2], length.out=xn)
     else
-      xat <- seq(xlim[1], xlim[2], seq.date.by)
+      xat <- seq(xlim[1], xlim[2], by=seq.date.by)
   } else if (inherits(x, c("character", "factor"))) {
     x <- seq_along(x)
     xat <- x
@@ -226,7 +226,8 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   graphics::abline(h=yat, col="lightgrey", lwd=0.5, xpd=FALSE)
 
   if (type %in% c("l", "b", "s") && fill != "none") {
-    if (is.null(fillcolor)) fillcolor <- grDevices::adjustcolor(col, alpha.f=0.5)
+    if (is.null(fillcolor))
+      fillcolor <- grDevices::adjustcolor(col, alpha.f=0.5)
     for (i in seq_len(ncol(y))) {
       xx <- as.numeric(x)
       yy <- as.numeric(y[, i])
@@ -261,12 +262,10 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
 
   if (inherits(x, "Date")) {
     if (center.date.labels) {
-
       if (utils::tail(xat, 1) < xlim[2])
         at <- xat + diff(c(xat, xlim[2])) / 2
       else
         at <- utils::head(xat, -1) + diff(xat) / 2
-
       graphics::axis.Date(1, at=xat, tcl=tcl, labels=FALSE, lwd=-1, lwd.ticks=0.5)
       graphics::axis.Date(1, at=at, tcl=0, cex.axis=cex, lwd=-1)
     } else {
