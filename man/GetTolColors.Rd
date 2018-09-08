@@ -2,27 +2,29 @@
 % Please edit documentation in R/GetTolColors.R
 \name{GetTolColors}
 \alias{GetTolColors}
-\title{Tol Color Palettes}
+\title{Paul Tol's Color Schemes}
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
-  end = 1, bias = 1, reverse = FALSE, plot = FALSE)
+  end = 1, bias = 1, reverse = FALSE, blind = NULL, gray = FALSE)
 }
 \arguments{
 \item{n}{'integer'.
-Number of colors to be in the palette, the maximum value is
-dependent on the specified color scheme, see \sQuote{Details} section.}
+Number of colors to be in the palette.
+The maximum number of colors in a generated palette is dependent on the specified color scheme,
+see \sQuote{Details} section for maximum values.}
 
 \item{scheme}{'character'.
-Color scheme: select
-  \code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
-    \code{"dark"}, or \code{"light"} for qualitative colors;
-  \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for diverging colors;
-  \code{"YlOrBr"}, \code{"discrete rainbow"} or \code{"smooth rainbow"} for sequential colors; and
-  \code{"ground cover"} for global land cover classification.}
+Color scheme name: specify
+\code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
+\code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
+\code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for a diverging color scheme; and
+\code{"YlOrBr"}, \code{"discrete rainbow"}, or \code{"smooth rainbow"} (the default)
+for a sequential color scheme.
+Partial string matching is supported so argument may be abbreviated.}
 
 \item{alpha}{'numeric'.
 Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
-Specify as \code{NULL} to exclude the alpha channel color component.}
+Specify as \code{NULL} to exclude the alpha channel value from colors.}
 
 \item{start, end}{'numeric'.
 Starting and ending color level in the palette, respectively.
@@ -35,119 +37,167 @@ Interpolation bias where larger values result in more widely spaced colors at th
 See \code{\link[grDevices]{colorRamp}} function for details.}
 
 \item{reverse}{'logical'.
-Whether to reverse colors in the palette.}
+Whether to reverse the color order in the palette.}
 
-\item{plot}{'logical'.
-Whether to display the color palette.}
+\item{blind}{'character'.
+Type of color blindness to simulate: specify \code{"deutan"} for green-blind vision,
+\code{"protan"} for red-blind vision, \code{"tritan"} for green-blue-blind vision, or
+\code{"monochromacy"} for total-color blindness.
+A partial-color blindness simulation requires that the \pkg{dichromat} package is available,
+see \code{\link[dichromat]{dichromat}} function for additional information.
+Partial string matching is supported so argument may be abbreviated.}
+
+\item{gray}{'logical'.
+Whether to subset the \code{"bright"}, \code{"vibrant"}, and \code{"muted"}
+color schemes to work after conversion to gray scale.}
 }
 \value{
-Returns a 'character' vector of length \code{n} with elements of 7 or 9 characters,
-  \code{"#"} followed by the red, blue, green, and optionally alpha values in hexadecimal.
-  For some schemes the returned object includes a \code{"bad"} attribute that
-  indicates the color assigned to bad data.
+Returns an object of class 'Tol' that inherits behavior from the 'character' class.
+  The object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
+  Colors are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
+  where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
+  red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
+  Attributes of the returned object include:
+  \code{"names"}, the informal names assigned to colors in the palette,
+  where \code{NULL} indicates no color names are specified;
+  \code{"bad"}, a 'character' string giving the color meant for bad data, in hexadecimal format,
+  where \code{NA} indicates no bad color is specified; and
+  \code{"call"}, an object of class '\link{call}' giving the unevaluated function call (expression)
+  that can be used to reproduce the color palette.
+  Use the \code{\link{eval}} function to evaluate the \code{"call"} argument.
+  A simple \code{plot} method is provided for the 'Tol' class that
+  shows a palette of colors using a sequence of shaded rectangles,
+  see \sQuote{Examples} section for usage.
 }
 \description{
 This function creates a vector of \code{n} colors from
 qualitative, diverging, and sequential color schemes by Paul Tol (2018).
 }
 \details{
-Limits on the maximum number of discrete colors for a scheme are:
-  \code{n < 8} for \code{"bright"} and \code{"vibrant"};
-  \code{n < 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
-  \code{n < 24} for \code{"discrete rainbow"}.
-  Schemes \code{"pale"} (\code{n = 6}),  \code{"dark"} (\code{n = 6}),
-  and \code{"ground cover"} (\code{n = 14}) are intended to be
-  accessed in their entirety and subset using color names.
+The maximum number of colors in a palette is:
+  \code{n = 6} for \code{"pale"} and \code{"dark"};
+  \code{n = 8} for \code{"bright"} and \code{"vibrant"};
+  \code{n = 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
+  \code{n = 14} for \code{"ground cover"}; and
+  \code{n = 24} for \code{"discrete rainbow"}.
+  For \code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, and \code{"smooth rainbow"},
+  a continuous version of the scheme is available that
+  has no limit placed on the number of colors in a palette.
+  The exception to these limits occurs when the \code{gray} argument is true: in that case
+  \code{n = 3} for \code{"bright"}, \code{n = 4} for \code{"vibrant"}, and \code{n = 5} for \code{"muted"}.
+  Color schemes \code{"pale"},  \code{"dark"}, and \code{"ground cover"} are
+  intended to be accessed in their entirety and subset using vector element names.
+  The very specific \code{"ground cover"} scheme is a color-blind safe version of the
+  \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
+  global land cover classification (Hansen and others, 1998).
+}
+\note{
+The sequential color scheme \code{"YlOrBr"} works well for conversion to gray scale.
 }
 \examples{
 
-col <- GetTolColors(3); print(col)
-attr(col, "bad")
-
-# Number of colors (n)
-op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
-GetTolColors( 2, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors( 4, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors( 6, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors( 8, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors(10, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors(15, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors(23, scheme = "discrete rainbow", plot = TRUE)
-par(op)
+cols <- GetTolColors(n = 10)
+print(cols)
+plot(cols)
 
 # Qualitative color schemes (scheme)
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-GetTolColors(7, scheme = "bright",  plot = TRUE)
-GetTolColors(7, scheme = "vibrant", plot = TRUE)
-GetTolColors(9, scheme = "muted",   plot = TRUE)
-GetTolColors(6, scheme = "pale",    plot = TRUE)
-GetTolColors(6, scheme = "dark",    plot = TRUE)
-GetTolColors(9, scheme = "light",   plot = TRUE)
+plot(GetTolColors(7, scheme = "bright"))
+plot(GetTolColors(7, scheme = "vibrant"))
+plot(GetTolColors(9, scheme = "muted"))
+plot(GetTolColors(6, scheme = "pale"))
+plot(GetTolColors(6, scheme = "dark"))
+plot(GetTolColors(9, scheme = "light"))
+par(op)
+
+op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
+plot(GetTolColors(14, scheme = "ground cover"))
 par(op)
 
 # Diverging color schemes (scheme)
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-GetTolColors( 11, scheme = "sunset", plot = TRUE)
-GetTolColors(255, scheme = "sunset", plot = TRUE)
-GetTolColors(  9, scheme = "BuRd",   plot = TRUE)
-GetTolColors(255, scheme = "BuRd",   plot = TRUE)
-GetTolColors(  9, scheme = "PRGn",   plot = TRUE)
-GetTolColors(255, scheme = "PRGn",   plot = TRUE)
+plot(GetTolColors( 11, scheme = "sunset"))
+plot(GetTolColors(255, scheme = "sunset"))
+plot(GetTolColors(  9, scheme = "BuRd"))
+plot(GetTolColors(255, scheme = "BuRd"))
+plot(GetTolColors(  9, scheme = "PRGn"))
+plot(GetTolColors(255, scheme = "PRGn"))
 par(op)
 
 # Sequential color schemes (scheme)
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-GetTolColors(  9, scheme = "YlOrBr",           plot = TRUE)
-GetTolColors(255, scheme = "YlOrBr",           plot = TRUE)
-GetTolColors( 23, scheme = "discrete rainbow", plot = TRUE)
-GetTolColors( 34, scheme = "smooth rainbow",   plot = TRUE)
-GetTolColors(255, scheme = "smooth rainbow",   plot = TRUE)
-par(op)
-
-# Cover color scheme (scheme)
-op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
-GetTolColors(14, scheme = "ground cover", plot = TRUE)
+plot(GetTolColors(  9, scheme = "YlOrBr"))
+plot(GetTolColors(255, scheme = "YlOrBr"))
+plot(GetTolColors( 23, scheme = "discrete rainbow"))
+plot(GetTolColors( 34, scheme = "smooth rainbow"))
+plot(GetTolColors(255, scheme = "smooth rainbow"))
 par(op)
 
 # Alpha transparency (alpha)
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-GetTolColors(34, alpha = 1.0, plot = TRUE)
-GetTolColors(34, alpha = 0.8, plot = TRUE)
-GetTolColors(34, alpha = 0.6, plot = TRUE)
-GetTolColors(34, alpha = 0.4, plot = TRUE)
-GetTolColors(34, alpha = 0.2, plot = TRUE)
+plot(GetTolColors(34, alpha = 1.0))
+plot(GetTolColors(34, alpha = 0.8))
+plot(GetTolColors(34, alpha = 0.6))
+plot(GetTolColors(34, alpha = 0.4))
+plot(GetTolColors(34, alpha = 0.2))
 par(op)
 
 # Color levels (start, end)
 op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
-GetTolColors(255, start = 0.0, end = 1.0, plot = TRUE)
-GetTolColors(255, start = 0.0, end = 0.5, plot = TRUE)
-GetTolColors(255, start = 0.5, end = 1.0, plot = TRUE)
-GetTolColors(255, start = 0.2, end = 0.8, plot = TRUE)
+plot(GetTolColors(255, start = 0.0, end = 1.0))
+plot(GetTolColors(255, start = 0.0, end = 0.5))
+plot(GetTolColors(255, start = 0.5, end = 1.0))
+plot(GetTolColors(255, start = 0.3, end = 0.9))
 par(op)
 
 # Interpolation bias (bias)
 op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
-GetTolColors(255, bias = 0.4, plot = TRUE)
-GetTolColors(255, bias = 0.6, plot = TRUE)
-GetTolColors(255, bias = 0.8, plot = TRUE)
-GetTolColors(255, bias = 1.0, plot = TRUE)
-GetTolColors(255, bias = 1.2, plot = TRUE)
-GetTolColors(255, bias = 1.4, plot = TRUE)
-GetTolColors(255, bias = 1.6, plot = TRUE)
+plot(GetTolColors(255, bias = 0.4))
+plot(GetTolColors(255, bias = 0.6))
+plot(GetTolColors(255, bias = 0.8))
+plot(GetTolColors(255, bias = 1.0))
+plot(GetTolColors(255, bias = 1.2))
+plot(GetTolColors(255, bias = 1.4))
+plot(GetTolColors(255, bias = 1.6))
 par(op)
 
 # Reverse colors (reverse)
 op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
-GetTolColors(10, reverse = FALSE, plot = TRUE)
-GetTolColors(10, reverse = TRUE,  plot = TRUE)
+plot(GetTolColors(10, reverse = FALSE))
+plot(GetTolColors(10, reverse = TRUE))
+par(op)
+
+# Color blindness (blind)
+op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
+plot(GetTolColors(34, blind = NULL))
+plot(GetTolColors(34, blind = "deutan"))
+plot(GetTolColors(34, blind = "protan"))
+plot(GetTolColors(34, blind = "tritan"))
+plot(GetTolColors(34, blind = "monochromacy"))
+par(op)
+
+# Gray-scale preparation (gray)
+op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
+plot(GetTolColors(3, "bright",  gray = TRUE))
+plot(GetTolColors(3, "bright",  gray = TRUE, blind = "m"))
+plot(GetTolColors(4, "vibrant", gray = TRUE))
+plot(GetTolColors(4, "vibrant", gray = TRUE, blind = "m"))
+plot(GetTolColors(5, "muted",   gray = TRUE))
+plot(GetTolColors(5, "muted",   gray = TRUE, blind = "m"))
 par(op)
 
 }
 \references{
-Tol, Paul, 2018, Colour Schemes:
+Hansen, M., DeFries, R., Townshend, J.R.G., and Sohlberg, R., 1998,
+  UMD Global Land Cover Classification, 1 Kilometer, 1.0:
+  Department of Geography, University of Maryland, College Park, Maryland, 1981-1994.
+
+  Tol, Paul, 2018, Colour Schemes:
   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.0, 17 p.,
-  accessed July 18, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
+  accessed August 29, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
+}
+\seealso{
+\code{\link[grDevices]{col2rgb}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

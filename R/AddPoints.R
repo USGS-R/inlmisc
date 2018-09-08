@@ -4,7 +4,7 @@
 #' Proportional circle symbols may be used to represent point data,
 #' where symbol area varies in proportion to an attribute variable.
 #'
-#' @param x,y numeric or 'SpatialPoints*'.
+#' @param x,y 'numeric' or 'SpatialPoints*'.
 #'   The x and y coordinates for the centers of the circle symbols.
 #'   If numeric, can be specified in any way which is accepted by \code{\link{xy.coords}}.
 #' @param z 'numeric', 'integer', or 'factor'.
@@ -23,11 +23,14 @@
 #'   Vector of length 2 giving the z limits for the plot.
 #' @param inches 'numeric'.
 #'   Vector of length 2 giving the radii limits for the drawn circle symbol.
-#'   Alternatively, a single number can be given resulting in a fixed radius being used for all circle symbols;
-#'   this overrides proportional circles and the function behaves like the \code{\link{points}} function.
+#'   Alternatively, a single number can be given resulting in
+#'   a fixed radius being used for all circle symbols;
+#'   this overrides proportional circles and the function
+#'   behaves like the \code{\link{points}} function.
 #' @param scaling 'character'.
 #'   Selects the scaling algorithm to use for symbol mapping.
-#'   Specify "perceptual" or "mathematical" for proportional scaling (Tanimura and others, 2006),
+#'   Specify \code{"perceptual"} or \code{"mathematical"} for
+#'   proportional scaling (Tanimura and others, 2006),
 #'   or "radius" for scaling symbol size to radius (usually a bad idea).
 #' @param bg 'character' or 'function'.
 #'   Fill color(s) for circle symbols.
@@ -48,11 +51,15 @@
 #' @param format 'character'.
 #'   Formatting for legend values, see \code{\link{formatC}} for options.
 #' @param legend.loc 'character'.
-#'   Position of the legend in the main plot region:
-#'   "bottomleft", "topleft", "topright", or "bottomright" to denote legend location.
+#'   Position of the legend in the main plot region;
+#'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
 #' @param inset 'numeric'.
 #'   Inset distance of the legend from the margins as a fraction of the main plot region.
 #'   Defaults to 2 percent of the axis range.
+#' @param bty 'character'.
+#'   The type of box to be drawn about the legend.
+#'   A value of \code{"o"} (the default) results in a box and
+#'   a value of \code{"n"} supresses the box.
 #' @param breaks 'numeric'.
 #'   Set of finite breakpoints for the legend circle symbols.
 #' @param break.labels 'character'.
@@ -67,6 +74,10 @@
 #'   Main title to be placed at the top of the legend.
 #' @param subtitle 'character'.
 #'   Legend subtitle to be placed below the main title.
+#' @param draw.legend 'logical'.
+#'   If true, a legend is drawn.
+#' @param draw.points 'logical'.
+#'   If true, the circle symobls are drawn.
 #' @param add 'logical'.
 #'   If true, circle symbols (and an optional legend) are added to an existing plot.
 #' @param ...
@@ -122,7 +133,7 @@
 #' bg <- GetTolColors(nlevels(z), scheme = "bright", alpha = 0.8)
 #' AddPoints(x, z = z, bg = bg, add = FALSE)
 #'
-#' AddPoints(x, legend.loc = NULL, add = FALSE)
+#' AddPoints(x, draw.legend = FALSE, add = FALSE)
 #'
 
 AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
@@ -130,12 +141,13 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
                       scaling=c("perceptual", "mathematical", "radius"),
                       bg="#1F1F1FCB", bg.neg=NULL, fg=NA, lwd=0.25,
                       cex=0.7, format=NULL, legend.loc="topright",
-                      inset=0.02, breaks=NULL, break.labels=NULL,
+                      inset=0.02, bty=c("o", "n"), breaks=NULL, break.labels=NULL,
                       quantile.breaks=FALSE, make.intervals=FALSE,
-                      title=NULL, subtitle=NULL, add=TRUE, ...) {
+                      title=NULL, subtitle=NULL, draw.legend=TRUE,
+                      draw.points=FALSE, add=TRUE, ...) {
 
-  corners <- c("bottomleft", "topleft", "topright", "bottomright")
-  is.legend <- is.character(legend.loc) && legend.loc %in% corners
+  scaling <- match.arg(scaling)
+  bty <- match.arg(bty)
 
   if (is.character(crs)) crs <- try(sp::CRS(crs), silent=TRUE)
   if (!inherits(crs, "CRS")) crs <- sp::CRS(as.character(NA))
@@ -164,10 +176,11 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
   }
 
   # coordinates
-  xy <- grDevices::xy.coords(x, y, xlab=deparse(substitute(x)),
-                                   ylab=deparse(substitute(y)))
-  x <- xy$x
-  y <- xy$y
+  pts <- grDevices::xy.coords(x, y,
+                              xlab=deparse(substitute(x)),
+                              ylab=deparse(substitute(y)))
+  x <- pts$x
+  y <- pts$y
 
   # limits
   if (is.numeric(zlim)) {
@@ -202,7 +215,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
   z <- z[is.lim]
 
   # breaks
-  if (is.null(breaks)) breaks <- pretty(z, n=6)
+  if (is.null(breaks)) breaks <- pretty(z)
   if (quantile.breaks) {
     breaks <- stats::quantile(z, probs=seq(0, 1, 0.25))
     if (is.null(break.labels)) {
@@ -266,7 +279,6 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     max.r <- diff(graphics::grconvertX(c(0, inches[2]), from="inches", to="user")) - min.r
     min.v <- min(abs(c(z, breaks)), na.rm=TRUE)
     max.v <- max(abs(c(z, breaks)), na.rm=TRUE)
-    scaling <- match.arg(scaling)
     FUN <- function(v) {
       v <- abs(v)
       if (scaling == "perceptual") {
@@ -347,12 +359,10 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
                     fg=fg.col, inches=FALSE, lwd=lwd, add=TRUE)
 
   # add legend
-  if (is.legend) {
+  if (draw.legend) {
     ipadx <- graphics::strwidth("M", cex=cex)
     ipady <- ipadx * asp
     lab.width <- max(graphics::strwidth(break.labels, cex=cex))
-    padx <- inset * diff(usr[1:2])
-    pady <- inset * diff(usr[3:4])
 
     r1 <- r0
     r1[r1 < (ipadx / 2)] <- ipadx / 2
@@ -375,28 +385,19 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       dy <- dy + subtitle.height
     }
 
-    loc <- legend.loc
-    if (loc == "bottomleft") {
-      loc <- c(usr[1] + padx, usr[3] + pady)
-    } else if (loc == "topleft") {
-      loc <- c(usr[1] + padx, usr[4] - pady - dy)
-    } else if (loc == "topright") {
-      loc <- c(usr[2] - padx - dx, usr[4] - pady - dy)
-    } else if (loc == "bottomright") {
-      loc <- c(usr[2] - padx - dx, usr[3] + pady)
-    }
-    graphics::rect(loc[1], loc[2], loc[1] + dx, loc[2] + dy, col="#FFFFFFE7",
-                   border="black", lwd=0.5)
-    x <- rep(loc[1] + ipadx + max(r0), length(r0))
-    y <- loc[2] + s
-    graphics::symbols(x, y, circles=r0, bg=cols0, fg=fg.col0, inches=FALSE,
-                      lwd=lwd, add=TRUE)
+    xy <- GetInsetLocation(dx, dy, loc=legend.loc, inset=inset)
+    if (bty == "o")
+      graphics::rect(xy[1], xy[2], xy[1] + dx, xy[2] + dy, col="#FFFFFFE7",
+                     border="black", lwd=0.5)
+    x <- rep(xy[1] + ipadx + max(r0), length(r0))
+    y <- xy[2] + s
+    graphics::symbols(x, y, circles=r0, bg=cols0, fg=fg.col0, inches=FALSE, lwd=lwd, add=TRUE)
 
-    graphics::text(loc[1] + ipadx + max(r0) * 2 + ipadx, y, break.labels, adj=c(0, 0.5), cex=cex)
+    graphics::text(xy[1] + ipadx + max(r0) * 2 + ipadx, y, break.labels, adj=c(0, 0.5), cex=cex)
     if (!is.null(title))
-      graphics::text(loc[1] + dx / 2, loc[2] + dy - ipady, title, adj=c(0.5, 0.5), cex=cex, font=2)
+      graphics::text(xy[1] + dx / 2, xy[2] + dy - ipady, title, adj=c(0.5, 0.5), cex=cex, font=2)
     if (!is.null(subtitle))
-      graphics::text(loc[1] + dx / 2, loc[2] + dy - title.height - subtitle.height, subtitle,
+      graphics::text(xy[1] + dx / 2, xy[2] + dy - title.height - subtitle.height, subtitle,
                      adj=c(0.5, 0), cex=cex)
   }
   invisible(NULL)

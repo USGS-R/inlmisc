@@ -80,7 +80,7 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
   }
 
   if (missing(col))
-    col <- GetTolColors(length(breaks) - 1L, start=0.0, end=0.8)
+    col <- GetTolColors(length(breaks) - 1L, start=0.3, end=0.9)
 
   if (is.null(at)) at <- breaks
 

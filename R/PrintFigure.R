@@ -26,6 +26,7 @@
 #' @param headings 'character'.
 #'   Vector of subfigure captions, values are recycled as necessary
 #'   to match the vector length of the \code{fig} argument.
+#'   To exclude a subfigure caption specify its vector element as \code{NA}.
 #' @param pos 'character'.
 #'   String for the placement specifiers to be used in \code{\\begin{figure}[pos]}.
 #'   The specifiers can consist of the following characters in any order:
@@ -33,7 +34,7 @@
 #'     \item \code{"h"} place the float about at the same point it occurs in the source text;
 #'     \item \code{"t"} position at the top of the page;
 #'     \item \code{"b"} position at the bottom of the page;
-#'     \item \code{"p"} put on a special page for floats only; 
+#'     \item \code{"p"} put on a special page for floats only;
 #'     \item \code{"!"} override internal parameters LaTeX uses for determining float positions; and
 #'     \item \code{"H"} places the float at precisely the location in the source text,
 #'       requires \code{\\usepackage{float}} in the LaTeX preamble.
@@ -79,7 +80,7 @@
 #' }
 #'
 
-PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title, 
+PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
                         headings="", pos="") {
 
   # check arguments
@@ -89,7 +90,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
   checkmate::assertString(label)
   checkmate::assertString(title)
   checkmate::assertString(title_lof)
-  checkmate::assertCharacter(headings, any.missing=FALSE, min.len=1, max.len=length(fig))
+  checkmate::assertCharacter(headings, min.len=1, max.len=length(fig))
   checkmate::assertString(pos)
 
   # total number of plots on all pages
@@ -128,7 +129,8 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
 
     if (np > 1) {
       cat(sprintf("  \\begin{subfigure}{%.2f\\textwidth}\n", 1 / nc))
-      cat(sprintf("    \\caption{{%s \\label{fig:%s}}}\n", headings[i], label[i]))
+      if (!is.na(headings[i]))
+        cat(sprintf("    \\caption{{%s \\label{fig:%s}}}\n", headings[i], label[i]))
     }
 
     # evaluate plotting commands
@@ -146,7 +148,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
     }
 
     if (i %% n == 0 || i == np) cat("\\end{figure}\n\n")
-    
+
     if (i > n && i == np) cat("\\captionsetup[figure]{list=yes}\n\n")
   }
 

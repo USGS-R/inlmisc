@@ -7,10 +7,11 @@
 PlotCrossSection(transect, rs, geo.lays = names(rs), val.lays = NULL,
   wt.lay = NULL, asp = 1, ylim = NULL, max.dev.dim = c(43, 56),
   n = NULL, breaks = NULL, pal = NULL, col = NULL, ylab = NULL,
-  unit = NULL, id = c("A", "A'"), labels = NULL, explanation = NULL,
-  features = NULL, max.feature.dist = Inf, draw.key = TRUE,
-  draw.sep = TRUE, is.categorical = FALSE, contour.lines = NULL,
-  bg.col = "#E1E1E1", wt.col = "#FFFFFFD8", file = NULL)
+  unit = NULL, id = c("A", "A'"), labels = NULL,
+  explanation = NULL, features = NULL, max.feature.dist = Inf,
+  draw.key = TRUE, draw.sep = TRUE, is.categorical = FALSE,
+  contour.lines = NULL, bg.col = "#E1E1E1", wt.col = "#FFFFFFD8",
+  scale.loc = "bottom", file = NULL)
 }
 \arguments{
 \item{transect}{'SpatialLines'.
@@ -54,7 +55,7 @@ Desired number of intervals to partition the range of raster values (optional).}
 Vector of break points used to partition the colors representing numeric raster values (optional).}
 
 \item{pal}{'function'.
-Color palette to be used to assign colors in the plot, rainbow by default.}
+Color palette to be used to assign colors in the plot.}
 
 \item{col}{'character'.
 Vector of colors to be used in the plot.
@@ -107,6 +108,10 @@ Color used for the background of the area below the upper geometry raster layer.
 \item{wt.col}{'character'.
 Color used for the water-table line.}
 
+\item{scale.loc}{'character'.
+Position of the scale bar in the main plot region;
+see \code{\link{GetInsetLocation}} function for keyword descriptions.}
+
 \item{file}{'character'.
 Name of the output file.
 Specifying this argument will start a graphics device driver for producing a
@@ -130,11 +135,12 @@ A key showing how the colors map to raster values is shown below the map.
 The width and height of the graphics region will be automagically determined in some cases.
 }
 \examples{
-data(volcano, package = "datasets")
-x <- seq(from = 2667405, length.out = 61, by = 10)
-y <- seq(from = 6478705, length.out = 87, by = 10)
-r1 <- raster::raster(volcano, xmn = min(x), xmx = max(x), ymn = min(y),
-                     ymx = max(y), crs = sp::CRS("+init=epsg:27200"))
+m <- datasets::volcano
+m <- m[nrow(m):1, ncol(m):1]
+x <- seq(from = 2667405, length.out = ncol(m), by = 10)
+y <- seq(from = 6478705, length.out = nrow(m), by = 10)
+r1 <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
+                     crs = "+init=epsg:27200")
 r2 <- min(r1[]) - r1 / 10
 r3 <- r1 - r2
 rs <- raster::stack(r1, r2, r3)
@@ -142,15 +148,17 @@ names(rs) <- c("r1", "r2", "r3")
 xy <- rbind(c(2667508, 6479501), c(2667803, 6479214), c(2667508, 6478749))
 transect <- sp::SpatialLines(list(sp::Lines(list(sp::Line(xy)), ID = "Transect")),
                              proj4string = raster::crs(rs))
-raster::plot(r1)
+PlotMap(r1, pal = terrain.colors, scale.loc = "top", arrow.loc = "topright",
+        shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1FA6"))
 lines(transect)
 raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
              cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
 
+dev.new()
 explanation <- "Vertical thickness between layers, in meters."
 PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
                  ylab = "Elevation", asp = 5, unit = "METERS",
-                 explanation = explanation)
+                 explanation = explanation, scale.loc = "bottomright")
 
 val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
                         ylab = "Elevation", asp = 5, unit = "METERS",

@@ -1,12 +1,34 @@
 # inlmisc 0.4.2.9000
 
+- Add `AddNorthArrow` function, was previously defined as an internal function.
+
+- In `AddScaleBar` function: non-backward compatible argument changes.
+  Remove `offset` argument and replace with `...`, see help documentation for details.
+
+- Make **dichromat** a suggested package.
+
+- Remove **viridisLite** from suggested packages.
+
+- Add `GetInsetLocation` function, used to determine
+  the location for a inset graphics in the main plot region.
+
+- In `AddPoints` function: add `bty`, `draw.legend`, and `draw.points` arguments.
+
+- In `PlotGraph` function: add `xpd` argument, determines
+  whether point and (or) line symbols are clipped to the plot region;
+  change default color scheme;
+  change contents of `fill` argument (non-backward compatible) and add a `fillcolor` argument;
+  provide `main` argument a default value of `NULL`.
+
+- In `FindOptimalSubset` function, add `monitor` argument to check on status of GA run.
+
 - In `GetTolColors` function: add color schemes;
   change default scheme from `"bright"` to `"smooth rainbow"`;
-  add `start`, `end`, `bias`, and `reverse` arguments.
+  add `start`, `end`, `bias`, `reverse`, `blind`, and `gray` arguments.
 
 # inlmisc 0.4.2
 
-- In `GetTolColors` function, revise color schemes based on issue 3.0 of technical note.
+- In `GetTolColors` function, revise color schemes based of issue 3.0 of technical note.
 
 - In `PlotGraph` function, improve placement of tick marks.
 

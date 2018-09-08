@@ -6,13 +6,14 @@
 \usage{
 PlotMap(r, layer = 1, att = NULL, n = NULL, breaks = NULL,
   xlim = NULL, ylim = NULL, zlim = NULL, asp = NULL,
-  extend.xy = FALSE, extend.z = FALSE, reg.axs = TRUE, dms.tick = FALSE,
-  bg.lines = FALSE, bg.image = NULL, bg.image.alpha = 1, pal = NULL,
-  col = NULL, max.dev.dim = c(43, 56), labels = NULL, scale.loc = NULL,
-  arrow.loc = NULL, explanation = NULL, credit = NULL, shade = NULL,
+  extend.xy = FALSE, extend.z = FALSE, reg.axs = TRUE,
+  dms.tick = FALSE, bg.lines = FALSE, bg.image = NULL,
+  bg.image.alpha = 1, pal = NULL, col = NULL, max.dev.dim = c(43,
+  56), labels = NULL, scale.loc = NULL, arrow.loc = NULL,
+  explanation = NULL, credit = NULL, shade = NULL,
   contour.lines = NULL, rivers = NULL, lakes = NULL, roads = NULL,
-  draw.key = NULL, draw.raster = TRUE, file = NULL, close.file = TRUE,
-  useRaster, simplify)
+  draw.key = NULL, draw.raster = TRUE, file = NULL,
+  close.file = TRUE, useRaster, simplify)
 }
 \arguments{
 \item{r}{'Raster*', 'Spatial*', or 'CRS'.
@@ -70,7 +71,7 @@ see \code{\link[raster]{hillShade}} function.}
 Opacity of the background image from 0 to 1.}
 
 \item{pal}{'function'.
-Color palette to be used to assign colors in the plot, rainbow by default.}
+Color palette to be used to assign colors in the plot.}
 
 \item{col}{'character'.
 Vector of colors to be used in the plot.
@@ -91,13 +92,12 @@ Describes the location and values of labels in the color key.
 This list may include components \code{at} and \code{labels}.}
 
 \item{scale.loc}{'character'.
-Position of the scale bar:
-\code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote scale location,
-see \code{\link{AddScaleBar}} function.}
+Position of the scale bar in the main plot region;
+see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
 \item{arrow.loc}{'character'.
-Position of the north arrow:
-\code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote arrow location.}
+Position of the north arrow in the main plot region;
+see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
 \item{explanation}{'character'.
 Label explaining the raster cell value.}
@@ -200,7 +200,7 @@ meuse.grid <- raster::raster(meuse.grid, layer = "soil")
 model <- gstat::gstat(id = "zinc", formula = zinc~1, locations = ~x+y, data = meuse)
 r <- raster::interpolate(meuse.grid, model)
 r <- raster::mask(r, meuse.grid)
-Pal <- function(n) viridisLite::viridis(n, begin = 0.2)
+Pal <- function(n) GetTolColors(n, start=0.3, end=0.9)
 breaks <- seq(0, 2000, by = 200)
 credit <- paste("Data collected in a flood plain of the river Meuse,",
                 "near the village of Stein (Netherlands),",
@@ -210,22 +210,24 @@ PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
         contour.lines = list(col = "#1F1F1F"), credit = credit,
         draw.key = FALSE, simplify = 0)
 AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371),
-            loc = "bottomright", offset = c(-0.4, 0.1))
+            loc = "bottomright", inset = c(0.1, 0.05))
 AddGradientLegend(breaks, Pal, at = breaks,
                   title = "Topsoil zinc\\nconcentration\\n(ppm)", loc = "topleft",
                   inset = c(0.05, 0.1), strip.dim = c(2, 20))
 
-m <- t(datasets::volcano)[61:1, ]
-x <- seq(from = 6478705, length.out = 87, by = 10)
-y <- seq(from = 2667405, length.out = 61, by = 10)
+m <- datasets::volcano
+m <- m[nrow(m):1, ncol(m):1]
+x <- seq(from = 2667405, length.out = ncol(m), by = 10)
+y <- seq(from = 6478705, length.out = nrow(m), by = 10)
 r <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
                     crs = "+init=epsg:27200")
 credit <- paste("Digitized from a topographic map by Ross Ihaka",
                 "on a grid with 10-meter by 10-meter spacing.")
 explanation <- "Elevation on Auckland's Maunga Whau volcano, in meters."
 PlotMap(r, extend.z = TRUE, pal = terrain.colors, scale.loc = "bottomright",
-        explanation = explanation, credit = credit, shade = list(alpha = 0.3),
-        contour.lines = list(col = "#1F1F1F"), useRaster = TRUE)
+        arrow.loc = "topright", explanation = explanation, credit = credit,
+        shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1FA6"),
+        useRaster = TRUE)
 
 out <- PlotMap(r, file = "Rplots1.pdf")
 print(out)

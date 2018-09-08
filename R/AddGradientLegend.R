@@ -19,13 +19,11 @@
 #'   see \code{\link{ToScientific}} for details.
 #' @param title 'character'.
 #'   Title to be placed at the top of the legend.
-#' @param loc 'character'.
-#'   Position of the legend in the main plot region:
-#'   "bottomleft", "topleft", "topright", or "bottomright" to denote legend location.
-#' @param inset 'numeric'.
-#'   Inset distance(s) from the margins as a fraction of the plot region.
 #' @param strip.dim 'numeric'.
 #'   Dimensions of the color strip, in picas.
+#' @param ...
+#'   Additional arguments to be passed to the \code{\link{GetInsetLocation}} function---used
+#'   to position the legend in the main plot region.
 #'
 #' @return Used for the side-effect of a legend drawn on the current graphics device.
 #'
@@ -38,21 +36,22 @@
 #' @export
 #'
 #' @examples
-#' plot(NA, xlim = c(0, 100), ylim = c(-10, 10), xlab = "", ylab = "")
+#' plot(NA, xlim = c(0, 100), ylim = c(-10, 10),
+#'      xlab = "x", ylab = "y", xaxs = "i", yaxs = "i")
 #' breaks <- 0:200
-#' AddGradientLegend(breaks, rainbow, title = "Title")
-#' AddGradientLegend(breaks, rainbow, title = "Title", inset = c(0.2, 0.1))
+#' AddGradientLegend(breaks, GetTolColors, title = "Title", loc = "bottomleft")
+#' AddGradientLegend(breaks, GetTolColors, title = "Title",
+#'                   loc = "bottomleft", inset = c(0.2, 0.1))
 #' breaks <- seq(0, 2e+06, length.out = 5)
-#' AddGradientLegend(breaks, GetTolColors, loc = "topright", inset = 0.1)
-#' pal <- function(...) rev(GetTolColors(...))  # reverse colors in palette
-#' AddGradientLegend(breaks, pal, loc = "bottomright", inset = c(0.2, 0.1),
-#'                   scientific = TRUE, strip.dim = c(1, 14))
+#' AddGradientLegend(breaks, rainbow, loc = "topright", inset = 0.1)
+#' pal <- function(...) rev(rainbow(...))  # reverse colors in palette
+#' AddGradientLegend(breaks, pal, scientific = TRUE, strip.dim = c(1, 14),
+#'                   inset = c(0.2, 0.1))
 #'
 
 AddGradientLegend <- function(breaks, pal, at=NULL, n=5, labels=TRUE,
                               scientific=FALSE, title=NULL,
-                              loc=c("bottomleft", "topleft", "topright", "bottomright"),
-                              inset=0, strip.dim=c(2, 8)) {
+                              strip.dim=c(2, 8), ...) {
 
   op <- graphics::par(no.readonly=TRUE)
   on.exit(graphics::par(op))
@@ -75,29 +74,15 @@ AddGradientLegend <- function(breaks, pal, at=NULL, n=5, labels=TRUE,
   if (length(strip.dim) == 1) strip.dim <- rep(strip.dim, 2)
   dx <- strip.dim[1] * inches_in_pica * (diff(usr[1:2]) / graphics::par("pin")[1])
   dy <- strip.dim[2] * inches_in_pica * (diff(usr[3:4]) / graphics::par("pin")[2])
-
-  if (length(inset) == 1) inset <- rep(inset, 2)
-  padx <- inset[1] * diff(usr[1:2])
-  pady <- inset[2] * diff(usr[3:4])
-
-  loc <- match.arg(loc)
-  if (loc == "bottomleft") {
-    loc <- c(usr[1] + padx, usr[3] + pady)
-  } else if (loc == "topleft") {
-    loc <- c(usr[1] + padx, usr[4] - pady - dy)
-  } else if (loc == "topright") {
-    loc <- c(usr[2] - padx - dx, usr[4] - pady - dy)
-  } else if (loc == "bottomright") {
-    loc <- c(usr[2] - padx - dx, usr[3] + pady)
-  }
+  xy <- GetInsetLocation(dx, dy, ...)
 
   breaks_norm <- (breaks - min(breaks)) / (max(breaks) - min(breaks))
   at_norm <- (at - min(breaks)) / (max(breaks) - min(breaks))
   col <- pal(length(breaks) - 1L)
 
-  graphics::rect(loc[1], loc[2], loc[1] + dx, loc[2] + dy, col="#FFFFFFCC", border=NA)
-  plt <- c(graphics::grconvertX(c(loc[1], loc[1] + dx), "user", "nfc"),
-           graphics::grconvertY(c(loc[2], loc[2] + dy), "user", "nfc"))
+  graphics::rect(xy[1], xy[2], xy[1] + dx, xy[2] + dy, col="#FFFFFFCC", border=NA)
+  plt <- c(graphics::grconvertX(c(xy[1], xy[1] + dx), "user", "nfc"),
+           graphics::grconvertY(c(xy[2], xy[2] + dy), "user", "nfc"))
   graphics::par(plt=plt, bg="#FFFFFFCC", new=TRUE)
   graphics::plot(NA, type="n", xlim=c(0, 1), ylim=c(0, 1),
                  xaxs="i", yaxs="i", bty="n",

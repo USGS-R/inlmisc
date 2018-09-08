@@ -4,9 +4,10 @@
 \alias{PlotGraph}
 \title{Plot Method for Graphs}
 \usage{
-PlotGraph(x, y, xlab, ylab, main, asp = NA, xlim = NULL, ylim = NULL,
-  xn = 5, yn = 5, ylog = FALSE, type = "s", lty = 1, lwd = 1,
-  pch = NULL, col = NULL, bg = NA, fill = NULL, pt.cex = 1,
+PlotGraph(x, y, xlab, ylab, main = NULL, asp = NA, xlim = NULL,
+  ylim = NULL, xn = 5, yn = 5, ylog = FALSE, type = "s",
+  lty = 1, lwd = 1, pch = NULL, col = NULL, bg = NA,
+  fill = "none", fillcolor = NULL, pt.cex = 1, xpd = FALSE,
   seq.date.by = NULL, scientific = NA, conversion.factor = NULL,
   boxwex = 0.8, center.date.labels = FALSE, bg.polygon = NULL)
 }
@@ -74,10 +75,21 @@ Colors are used cyclically.}
 Vector of background colors for the open plot symbols given by \code{pch = 21:25} as in \code{\link{points}}.}
 
 \item{fill}{'character'.
-Vector of fill colors for areas beneath (or above, direction towards 0) lines of \code{type = "l"} or \code{type = "s"}.}
+Used to create filled area plots. Specify
+\code{"tozeroy"} to fill to zero on the \emph{y}-axis;
+\code{"tominy"} to fill to the minimum \emph{y} value in the plotting region; and
+\code{"tomaxy"} to fill to the maximum.
+Requires plot \code{type = "l"}, \code{"b"}, and \code{"s"}.}
+
+\item{fillcolor}{'character'.
+Vector of colors for basic filled area plots.
+Defaults to a half-transparent variant of the line color (\code{col}).}
 
 \item{pt.cex}{'numeric'.
 Expansion factor for the points.}
+
+\item{xpd}{'logical'.
+If false, point and (or) line symbols are clipped to the plot region.}
 
 \item{seq.date.by}{'character', 'numeric', or 'difftime'.
 The increment of the date sequence, see the \code{by} argument in the \code{\link{seq.Date}} function for all possible ways this can be specified.}

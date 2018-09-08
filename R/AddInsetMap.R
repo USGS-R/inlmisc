@@ -4,7 +4,7 @@
 #'
 #' @param p 'SpatialPolygons'.
 #'   Polygon describing the large map.
-#' @param col 'list'.
+#' @param col 'character'.
 #'   Vector of length 2 giving the colors for filling the large map polygon \code{p} and the smaller plot extent rectangle.
 #' @param main.label 'list'.
 #'   List with components \code{label} and \code{adj}.
@@ -12,8 +12,8 @@
 #' @param sub.label 'list'.
 #'   Identical to the \code{main.label} argument but for the plot extent rectangle.
 #' @param loc 'character'.
-#'   Position of the inset map in the main plot region:
-#'   "bottomleft", "topleft", "topright", "bottomright", or "center" to denote scale location.
+#'   Position of the inset map in the main plot region;
+#'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
 #' @param inset 'numeric'.
 #'   Inset distance(s) from the margins as a fraction of the main plot region.
 #'   Defaults to 2 percent of the axis range.
@@ -48,15 +48,13 @@
 
 AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
                         main.label=list(label=NA, adj=NULL),
-                        sub.label=list(label=NA, adj=NULL),
-                        loc=c("bottomleft", "topleft", "topright", "bottomright", "center"),
+                        sub.label=list(label=NA, adj=NULL), loc="topright",
                         inset=0.02, width=NULL, e=NULL, bty=c("o", "n")) {
 
   checkmate::assertClass(p, "SpatialPolygons")
   checkmate::assertCharacter(col, any.missing=FALSE, len=2)
   checkmate::assertList(main.label)
   checkmate::assertList(sub.label)
-  loc <- match.arg(loc)
   checkmate::assertNumeric(inset, finite=TRUE, min.len=1, max.len=2)
   checkmate::assertNumber(width, finite=TRUE, null.ok=TRUE)
   checkmate::assertNumeric(e, finite=TRUE, len=4, null.ok=TRUE)
@@ -80,24 +78,7 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
     dx <- width * (diff(usr[1:2]) / graphics::par("pin")[1])
   }
   dy <- dx * (diff(ext[3:4]) / diff(ext[1:2]))
-
-  if (length(inset) == 1) inset <- rep(inset, 2)
-  padx <- inset[1] * diff(usr[1:2])
-  pady <- inset[2] * diff(usr[3:4])
-
-  if (loc == "bottomleft") {
-    xy <- c(usr[1] + padx, usr[3] + pady)
-  } else if (loc == "topleft") {
-    xy <- c(usr[1] + padx, usr[4] - pady - dy)
-  } else if (loc == "topright") {
-    xy <- c(usr[2] - padx - dx, usr[4] - pady - dy)
-  } else if (loc == "bottomright") {
-    xy <- c(usr[2] - padx - dx, usr[3] + pady)
-  } else if (loc == "center")  {
-    xy <- c(usr[1] + diff(usr[1:2]) / 2 - dx / 2,
-            usr[3] + diff(usr[3:4]) / 2 - dy / 2)
-  }
-
+  xy <- GetInsetLocation(dx, dy, loc=loc, inset=inset)
   graphics::rect(xy[1], xy[2], xy[1] + dx, xy[2] + dy, col="#FFFFFFE7", border=NA)
 
   plt <- c(graphics::grconvertX(c(xy[1], xy[1] + dx), "user", "nfc"),

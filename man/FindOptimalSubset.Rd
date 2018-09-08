@@ -4,10 +4,10 @@
 \alias{FindOptimalSubset}
 \title{Genetic Algorithm for Subset Selection}
 \usage{
-FindOptimalSubset(n, k, Fitness, ..., popSize = 100, migrationRate = 0.1,
-  migrationInterval = 10, pcrossover = 0.8, pmutation = 0.1,
-  elitism = 0, maxiter = 1000L, run = maxiter, suggestions = NULL,
-  parallel = TRUE, seed = NULL)
+FindOptimalSubset(n, k, Fitness, ..., popSize = 100,
+  migrationRate = 0.1, migrationInterval = 10, pcrossover = 0.8,
+  pmutation = 0.1, elitism = 0, maxiter = 1000L, run = maxiter,
+  suggestions = NULL, parallel = TRUE, monitor = NULL, seed = NULL)
 }
 \arguments{
 \item{n}{'integer'.
@@ -66,6 +66,10 @@ this is taken from \code{\link[parallel]{detectCores}}.
 The \pkg{parallel} and \pkg{doParallel} packages must be
 installed for parallel computing to work.}
 
+\item{monitor}{'Function'.
+A function that takes as input the current state of the \code{\link[=gaisl-class]{gaisl-class}} object,
+and is run at each epoch of the islands GA search.}
+
 \item{seed}{'integer'.
 Random number generator state for random number generation, used to replicate the results.
 The \pkg{doRNG} package must be installed if using parallel computing.}
@@ -94,7 +98,7 @@ subset selection based on the maximization of a user-supplied fitness function.
 The fitness function (see \code{Fitness} argument) is solved using
   the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
   The function implements an islands evolution model (first proposed by Cohoon and others, 1987).
-  That is, it maximizes a fitness function using islands genetic algorithms (ISLGAs)
+  to maximize a fitness function using islands genetic algorithms (ISLGAs)
   (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
   Independent GAs are configured to use integer chromosomes
   represented with a binary codification, linear-rank selection,
@@ -113,7 +117,8 @@ Fitness <- function(string, n, numbers) {
   return(value)
 }
 \dontrun{
-out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10, seed = seed)
+out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10,
+                         monitor = GA::gaislMonitor, seed = seed)
 plot(out[["ga_output"]])
 summary(out[["ga_output"]])
 print(out[["solution"]])

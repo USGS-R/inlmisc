@@ -85,11 +85,12 @@
 #'      labels = 1:((m + 1) * (n + 1)), cex = 0.6)
 #' at <- 1:ceiling(max(z, na.rm = TRUE))
 #' plys <- Grid2Polygons(grd, level = TRUE, at = at)
-#' cols <- GetTolColors(length(plys), alpha = 0.3)
+#' cols <- GetTolColors(length(plys), scheme = "bright", alpha = 0.3)
 #' sp::plot(plys, add = TRUE, col = cols)
 #' zz <- plys[[1]]
 #' legend("top", legend = zz, fill = cols, bty = "n", xpd = TRUE,
 #'        inset = c(0, -0.1), ncol = length(plys))
+#'
 #' v1 <- rbind(c( 1.2, 0.5), c(5.8, 1.7), c( 2.5, 5.1), c( 1.2, 0.5))
 #' v2 <- rbind(c( 2.5, 2.5), c(3.4, 1.8), c( 3.7, 3.1), c( 2.5, 2.5))
 #' v3 <- rbind(c(-0.3, 3.3), c(1.7, 5.1), c(-1.0, 7.0), c(-0.3, 3.3))
@@ -98,8 +99,10 @@
 #' p3 <- sp::Polygon(v3, hole = FALSE)
 #' p <- sp::SpatialPolygons(list(sp::Polygons(list(p1, p2, p3), 1)))
 #' plys <- Grid2Polygons(grd, level = TRUE, at = at, ply = p)
-#' cols <- GetTolColors(length(zz), alpha = 0.6)[zz %in% plys[[1]]]
+#' cols <- GetTolColors(length(zz), scheme = "bright", alpha = 0.6)
+#' cols <- cols[zz %in% plys[[1]]]
 #' sp::plot(plys, col = cols, add = TRUE)
+#' text(cbind(xc, yc), labels = z)
 #'
 #' # Example 2
 #' data(meuse.grid, package = "sp")

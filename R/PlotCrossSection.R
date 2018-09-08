@@ -69,11 +69,12 @@
 #' @export
 #'
 #' @examples
-#' data(volcano, package = "datasets")
-#' x <- seq(from = 2667405, length.out = 61, by = 10)
-#' y <- seq(from = 6478705, length.out = 87, by = 10)
-#' r1 <- raster::raster(volcano, xmn = min(x), xmx = max(x), ymn = min(y),
-#'                      ymx = max(y), crs = sp::CRS("+init=epsg:27200"))
+#' m <- datasets::volcano
+#' m <- m[nrow(m):1, ncol(m):1]
+#' x <- seq(from = 2667405, length.out = ncol(m), by = 10)
+#' y <- seq(from = 6478705, length.out = nrow(m), by = 10)
+#' r1 <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
+#'                      crs = "+init=epsg:27200")
 #' r2 <- min(r1[]) - r1 / 10
 #' r3 <- r1 - r2
 #' rs <- raster::stack(r1, r2, r3)
@@ -81,15 +82,17 @@
 #' xy <- rbind(c(2667508, 6479501), c(2667803, 6479214), c(2667508, 6478749))
 #' transect <- sp::SpatialLines(list(sp::Lines(list(sp::Line(xy)), ID = "Transect")),
 #'                              proj4string = raster::crs(rs))
-#' raster::plot(r1)
+#' PlotMap(r1, pal = terrain.colors, scale.loc = "top", arrow.loc = "topright",
+#'         shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1FA6"))
 #' lines(transect)
 #' raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
 #'              cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
 #'
+#' dev.new()
 #' explanation <- "Vertical thickness between layers, in meters."
 #' PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
 #'                  ylab = "Elevation", asp = 5, unit = "METERS",
-#'                  explanation = explanation)
+#'                  explanation = explanation, scale.loc = "bottomright")
 #'
 #' val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
 #'                         ylab = "Elevation", asp = 5, unit = "METERS",
@@ -108,7 +111,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
                              features=NULL, max.feature.dist=Inf, draw.key=TRUE,
                              draw.sep=TRUE, is.categorical=FALSE,
                              contour.lines=NULL, bg.col="#E1E1E1",
-                             wt.col="#FFFFFFD8", file=NULL) {
+                             wt.col="#FFFFFFD8", scale.loc="bottom", file=NULL) {
 
   if (!inherits(transect, "SpatialLines"))
     stop("incorrect class for 'transect' argument")
@@ -143,12 +146,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
 
   at <- NULL
   if (!is.null(cell.values)) {
-    if (!is.function(pal)) {
-      if (requireNamespace("viridisLite", quietly=TRUE))
-        pal <- viridisLite::viridis
-      else
-        pal <- function(n) GetTolColors(n, start=0.0, end=0.8)
-    }
+    if (!is.function(pal))
+      pal <- function(n) GetTolColors(n, start=0.3, end=0.9)
     if (is.categorical) {
       unique.vals <- sort(unique(cell.values))
       at <- seq_along(unique.vals)
@@ -157,7 +156,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     } else {
       if (!is.numeric(n)) n <- 200L
       if (!is.numeric(breaks)) {
-        at <- pretty(cell.values, n=8)
+        at <- pretty(cell.values)
         breaks <- seq(min(at), max(at), length.out=n)
       }
       intervals <- findInterval(cell.values, breaks, all.inside=TRUE)
@@ -315,7 +314,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   if (!is.null(ylab)) {
     line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]
     max.sw <- max(graphics::strwidth(ylabs, units="inches", cex=cex))
-    mar.line <- max.sw / line.in.inches + sum(graphics::par("mgp")[2:3]) + graphics::par("mgp")[2]
+    mar.line <- max.sw / line.in.inches + sum(graphics::par("mgp")[2:3]) +
+                graphics::par("mgp")[2]
     graphics::title(ylab=ylab, cex.lab=cex, line=mar.line)
   }
 
@@ -358,7 +358,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   graphics::par(xpd=FALSE)
 
   vert.exag <- ifelse(asp == 1, NULL, asp)
-  AddScaleBar(unit=unit, vert.exag=vert.exag, loc="bottomright", offset=c(-0.3, 0))
+  if (!is.null(scale.loc))
+    AddScaleBar(unit=unit, vert.exag=vert.exag, loc=scale.loc, inset=c(0.1, 0.05))
 
   invisible(list(din=graphics::par("din"), usr=usr, heights=c(h2, h1) / h))
 }

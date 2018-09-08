@@ -43,7 +43,7 @@
 #' @param bg.image.alpha 'numeric'.
 #'   Opacity of the background image from 0 to 1.
 #' @param pal 'function'.
-#'   Color palette to be used to assign colors in the plot, rainbow by default.
+#'   Color palette to be used to assign colors in the plot.
 #' @param col 'character'.
 #'   Vector of colors to be used in the plot.
 #'   This argument requires \code{breaks} specification for numeric values of \code{r} and
@@ -60,12 +60,11 @@
 #'   Describes the location and values of labels in the color key.
 #'   This list may include components \code{at} and \code{labels}.
 #' @param scale.loc 'character'.
-#'   Position of the scale bar:
-#'   \code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote scale location,
-#'   see \code{\link{AddScaleBar}} function.
+#'   Position of the scale bar in the main plot region;
+#'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
 #' @param arrow.loc 'character'.
-#'   Position of the north arrow:
-#'   \code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, or \code{"bottomright"} to denote arrow location.
+#'   Position of the north arrow in the main plot region;
+#'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
 #' @param explanation 'character'.
 #'   Label explaining the raster cell value.
 #' @param credit 'character'.
@@ -164,7 +163,7 @@
 #' model <- gstat::gstat(id = "zinc", formula = zinc~1, locations = ~x+y, data = meuse)
 #' r <- raster::interpolate(meuse.grid, model)
 #' r <- raster::mask(r, meuse.grid)
-#' Pal <- function(n) viridisLite::viridis(n, begin = 0.2)
+#' Pal <- function(n) GetTolColors(n, start=0.3, end=0.9)
 #' breaks <- seq(0, 2000, by = 200)
 #' credit <- paste("Data collected in a flood plain of the river Meuse,",
 #'                 "near the village of Stein (Netherlands),",
@@ -174,22 +173,24 @@
 #'         contour.lines = list(col = "#1F1F1F"), credit = credit,
 #'         draw.key = FALSE, simplify = 0)
 #' AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371),
-#'             loc = "bottomright", offset = c(-0.4, 0.1))
+#'             loc = "bottomright", inset = c(0.1, 0.05))
 #' AddGradientLegend(breaks, Pal, at = breaks,
 #'                   title = "Topsoil zinc\nconcentration\n(ppm)", loc = "topleft",
 #'                   inset = c(0.05, 0.1), strip.dim = c(2, 20))
 #'
-#' m <- t(datasets::volcano)[61:1, ]
-#' x <- seq(from = 6478705, length.out = 87, by = 10)
-#' y <- seq(from = 2667405, length.out = 61, by = 10)
+#' m <- datasets::volcano
+#' m <- m[nrow(m):1, ncol(m):1]
+#' x <- seq(from = 2667405, length.out = ncol(m), by = 10)
+#' y <- seq(from = 6478705, length.out = nrow(m), by = 10)
 #' r <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
 #'                     crs = "+init=epsg:27200")
 #' credit <- paste("Digitized from a topographic map by Ross Ihaka",
 #'                 "on a grid with 10-meter by 10-meter spacing.")
 #' explanation <- "Elevation on Auckland's Maunga Whau volcano, in meters."
 #' PlotMap(r, extend.z = TRUE, pal = terrain.colors, scale.loc = "bottomright",
-#'         explanation = explanation, credit = credit, shade = list(alpha = 0.3),
-#'         contour.lines = list(col = "#1F1F1F"), useRaster = TRUE)
+#'         arrow.loc = "topright", explanation = explanation, credit = credit,
+#'         shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1FA6"),
+#'         useRaster = TRUE)
 #'
 #' out <- PlotMap(r, file = "Rplots1.pdf")
 #' print(out)
@@ -269,7 +270,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     n <- 0
   } else {
     zran <- range(r[], na.rm=TRUE)
-    default.zl <- if (extend.z) range(pretty(zran, n=6)) else zran
+    default.zl <- if (extend.z) range(pretty(zran)) else zran
     if (raster::is.factor(r)) {
       at1 <- raster::levels(r)[[1]][, "ID"]
       breaks <- c(0.5, at1 + 0.5)
@@ -284,7 +285,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
       if (is.null(breaks)) {
         if (is.null(n) || n > 200L) {
           breaks <- seq(zl[1], zl[2], length.out=200L)
-          at1 <- pretty(if (extend.z) zran else zl, n=6)
+          at1 <- pretty(if (extend.z) zran else zl)
         } else {
           breaks <- pretty(zl, n=n)
           at1 <- breaks
@@ -391,13 +392,10 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     } else if (raster::is.factor(r)) {
       cols <- GetTolColors(n, scheme="bright")
     } else {
-      if (requireNamespace("viridisLite", quietly=TRUE))
-        cols <- viridisLite::viridis(n)
-      else
-        cols <- GetTolColors(n, start=0.0, end=0.8)
+      cols <- GetTolColors(n, start=0.3, end=0.9)
     }
   }
-  if (!all(.AreColors(cols))) stop("colors are not valid")
+  if (!all(.IsColor(cols))) stop("colors are not valid")
 
   # plot color key
   if (draw.key & n > 0) {
@@ -528,7 +526,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     if (!is.null(river)) {
       color <- as.character(rivers[["col"]])
       width <- as.numeric(rivers[["lwd"]])
-      color <- ifelse(length(color) == 1 && .AreColors(color), color, "#3399CC")
+      color <- ifelse(length(color) == 1 && .IsColor(color), color, "#3399CC")
       width <- ifelse(length(width) == 1 && !is.na(width), width, 0.5)
       sp::plot(river, col=color, lwd=width, add=TRUE)
     }
@@ -541,8 +539,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
       color <- as.character(lakes[["col"]])
       bordr <- as.character(lakes[["border"]])
       width <- as.numeric(lakes[["lwd"]])
-      color <- ifelse(length(color) == 1 && .AreColors(color), color, "#CCFFFF")
-      bordr <- ifelse(length(bordr) == 1 && .AreColors(bordr), bordr, "#3399CC")
+      color <- ifelse(length(color) == 1 && .IsColor(color), color, "#CCFFFF")
+      bordr <- ifelse(length(bordr) == 1 && .IsColor(bordr), bordr, "#3399CC")
       width <- ifelse(length(width) == 1 && !is.na(width), width, 0.5)
       sp::plot(lake, col=color, border=bordr, lwd=width, add=TRUE)
     }
@@ -554,7 +552,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     if (!is.null(roads)) {
       color <- as.character(roads[["col"]])
       width <- as.numeric(roads[["lwd"]])
-      color <- ifelse(length(color) == 1 && .AreColors(color), color, "#666666")
+      color <- ifelse(length(color) == 1 && .IsColor(color), color, "#666666")
       width <- ifelse(length(width) == 1 && !is.na(width), width, 0.25)
       sp::plot(road, col=color, lwd=width, add=TRUE)
     }
@@ -597,10 +595,10 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     txt <- strsplit(sp::proj4string(r), " ")[[1]]
     unit <- sub("^\\+units=", "", grep("^\\+units=", txt, value=TRUE))
     longlat <- "+proj=longlat" %in% txt
-    AddScaleBar(unit=unit, longlat=longlat, loc=scale.loc)
+    AddScaleBar(unit=unit, longlat=longlat, loc=scale.loc, inset=0.05)
   }
 
-  if (!is.null(arrow.loc)) .AddNorthArrow(arrow.loc, r@crs, cex)
+  if (!is.null(arrow.loc)) AddNorthArrow(r@crs, loc=arrow.loc, inset=0.1)
 
   invisible(list(din=graphics::par("din"), usr=usr, heights=c(h2, h1) / h))
 }
@@ -617,46 +615,6 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 }
 
 
-.AddNorthArrow <- function(loc, crs, cex) {
-  crs.dd <- sp::CRS("+init=epsg:4326")
-  usr <- graphics::par("usr")
-  x.mid <- (usr[2] + usr[1]) / 2
-  y.mid <- (usr[4] + usr[3]) / 2
-  d <- 0.05 * (usr[4] - usr[3])
-  xy <- rbind(c(x.mid, y.mid), c(x.mid, y.mid + d))
-  sp.dd <- sp::spTransform(sp::SpatialPoints(xy, proj4string=crs), crs.dd)
-  dd <- sp.dd@coords
-  d.dd <- sqrt((dd[2, 1] - dd[1, 1])^2 + (dd[2, 2] - dd[1, 2])^2)
-  dd <- rbind(dd[1, ], c(dd[1, 1],  dd[1, 2] + d.dd))
-  sp.xy <- sp::spTransform(sp::SpatialPoints(dd, proj4string=crs.dd), crs)
-  xy <- sp.xy@coords
-  padx <- 0.1 * (usr[2] - usr[1])
-  pady <- 0.1 * (usr[4] - usr[3])
-  if (loc %in% c("bottomleft", "topleft"))
-    x0 <- usr[1] + padx
-  else
-    x0 <- usr[2] - padx
-  if (loc %in% c("bottomleft", "bottomright"))
-    y0 <- usr[3] + pady
-  else
-    y0 <- usr[4] - pady
-  x1 <- xy[2, 1] + x0 - xy[1, 1]
-  y1 <- xy[2, 2] + y0 - xy[1, 2]
-  a <- atan((y1 - y0) / (x1 - x0)) * (180 / pi)
-  if (a > 45 && a <= 135) {
-    pos <- 3
-  } else if (a > 135 && a <= 225) {
-    pos <- 2
-  } else if (a > 225 && a <= 315) {
-    pos <- 1
-  } else {
-    pos <- 4
-  }
-  graphics::arrows(x0, y0, x1, y1, length=0.1)
-  graphics::text(x1, y1, labels="N", pos=pos, cex=cex)
-}
-
-
 .FormatDMS <- function(dms) {
   d <- dms@deg
   m <- dms@min
@@ -670,8 +628,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 }
 
 
-.AreColors <- function(x) {
-  sapply(x, function(i) tryCatch({
+.IsColor <- function(x) {
+  vapply(x, function(i) tryCatch({
     is.matrix(grDevices::col2rgb(i))
-  }, error=function(e) FALSE))
+  }, error=function(e) FALSE), TRUE)
 }

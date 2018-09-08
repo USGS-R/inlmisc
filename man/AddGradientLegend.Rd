@@ -5,8 +5,7 @@
 \title{Add Color Gradient Legend to Plot}
 \usage{
 AddGradientLegend(breaks, pal, at = NULL, n = 5, labels = TRUE,
-  scientific = FALSE, title = NULL, loc = c("bottomleft", "topleft",
-  "topright", "bottomright"), inset = 0, strip.dim = c(2, 8))
+  scientific = FALSE, title = NULL, strip.dim = c(2, 8), ...)
 }
 \arguments{
 \item{breaks}{'numeric'.
@@ -33,15 +32,11 @@ see \code{\link{ToScientific}} for details.}
 \item{title}{'character'.
 Title to be placed at the top of the legend.}
 
-\item{loc}{'character'.
-Position of the legend in the main plot region:
-"bottomleft", "topleft", "topright", or "bottomright" to denote legend location.}
-
-\item{inset}{'numeric'.
-Inset distance(s) from the margins as a fraction of the plot region.}
-
 \item{strip.dim}{'numeric'.
 Dimensions of the color strip, in picas.}
+
+\item{...}{Additional arguments to be passed to the \code{\link{GetInsetLocation}} function---used
+to position the legend in the main plot region.}
 }
 \value{
 Used for the side-effect of a legend drawn on the current graphics device.
@@ -50,15 +45,17 @@ Used for the side-effect of a legend drawn on the current graphics device.
 This function can be used to add a continuous color gradient legend strip to a plot.
 }
 \examples{
-plot(NA, xlim = c(0, 100), ylim = c(-10, 10), xlab = "", ylab = "")
+plot(NA, xlim = c(0, 100), ylim = c(-10, 10),
+     xlab = "x", ylab = "y", xaxs = "i", yaxs = "i")
 breaks <- 0:200
-AddGradientLegend(breaks, rainbow, title = "Title")
-AddGradientLegend(breaks, rainbow, title = "Title", inset = c(0.2, 0.1))
+AddGradientLegend(breaks, GetTolColors, title = "Title", loc = "bottomleft")
+AddGradientLegend(breaks, GetTolColors, title = "Title",
+                  loc = "bottomleft", inset = c(0.2, 0.1))
 breaks <- seq(0, 2e+06, length.out = 5)
-AddGradientLegend(breaks, GetTolColors, loc = "topright", inset = 0.1)
-pal <- function(...) rev(GetTolColors(...))  # reverse colors in palette
-AddGradientLegend(breaks, pal, loc = "bottomright", inset = c(0.2, 0.1),
-                  scientific = TRUE, strip.dim = c(1, 14))
+AddGradientLegend(breaks, rainbow, loc = "topright", inset = 0.1)
+pal <- function(...) rev(rainbow(...))  # reverse colors in palette
+AddGradientLegend(breaks, pal, scientific = TRUE, strip.dim = c(1, 14),
+                  inset = c(0.2, 0.1))
 
 }
 \seealso{

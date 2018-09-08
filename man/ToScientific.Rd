@@ -5,8 +5,8 @@
 \title{Format for Scientific Notation}
 \usage{
 ToScientific(x, digits = NULL, type = c("latex", "plotmath"),
-  na = as.character(NA), delimiter = "$", scipen = NULL, big.mark = ",",
-  ...)
+  na = as.character(NA), delimiter = "$", scipen = NULL,
+  big.mark = ",", ...)
 }
 \arguments{
 \item{x}{'numeric'.

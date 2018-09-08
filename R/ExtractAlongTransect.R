@@ -40,7 +40,7 @@
 #' PlotMap(r)
 #' l <- sp::Lines(list(sp::Line(coords)), ID = "Transect")
 #' lines(sp::SpatialLines(list(l), proj4string = crs))
-#' points(transect, pch = 21, bg = "red")
+#' points(transect, pch = 19)
 #' segs <- ExtractAlongTransect(transect, r)
 #' for (i in seq_along(segs)) points(segs[[i]])
 #'
@@ -50,8 +50,9 @@
 #' xlim <- range(vapply(segs, function(i) range(i@data[, "dist"]), c(0, 0)))
 #' ylim <- range(vapply(segs, function(i) range(i@data[, "value"], na.rm = TRUE), c(0, 0)))
 #' plot(NA, type = "n", xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim)
-#' for (i in seq_along(segs)) lines(segs[[i]]@data[, c("dist", "value")],
-#'                                  col = GetTolColors(length(segs))[i])
+#' cols <- GetTolColors(length(segs), scheme = "bright")
+#' for (i in seq_along(segs))
+#'   lines(segs[[i]]@data[, c("dist", "value")], col = cols[i])
 #' coords <- sp::coordinates(transect)
 #' n <- length(transect)
 #' d <- cumsum(c(0, as.matrix(dist((coords)))[cbind(1:(n - 1), 2:n)]))

@@ -48,6 +48,9 @@
 #'   this is taken from \code{\link[parallel]{detectCores}}.
 #'   The \pkg{parallel} and \pkg{doParallel} packages must be
 #'   installed for parallel computing to work.
+#' @param monitor 'Function'.
+#'   A function that takes as input the current state of the \code{\link[=gaisl-class]{gaisl-class}} object,
+#'   and is run at each epoch of the islands GA search.
 #' @param seed 'integer'.
 #'   Random number generator state for random number generation, used to replicate the results.
 #'   The \pkg{doRNG} package must be installed if using parallel computing.
@@ -55,7 +58,7 @@
 #' @details The fitness function (see \code{Fitness} argument) is solved using
 #'   the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
 #'   The function implements an islands evolution model (first proposed by Cohoon and others, 1987).
-#'   That is, it maximizes a fitness function using islands genetic algorithms (ISLGAs)
+#'   to maximize a fitness function using islands genetic algorithms (ISLGAs)
 #'   (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
 #'   Independent GAs are configured to use integer chromosomes
 #'   represented with a binary codification, linear-rank selection,
@@ -109,7 +112,8 @@
 #'   return(value)
 #' }
 #' \dontrun{
-#' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10, seed = seed)
+#' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10,
+#'                          monitor = GA::gaislMonitor, seed = seed)
 #' plot(out[["ga_output"]])
 #' summary(out[["ga_output"]])
 #' print(out[["solution"]])
@@ -121,7 +125,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
                               migrationRate=0.1, migrationInterval=10,
                               pcrossover=0.8, pmutation=0.1, elitism=0,
                               maxiter=1000L, run=maxiter, suggestions=NULL,
-                              parallel=TRUE, seed=NULL) {
+                              parallel=TRUE, monitor=NULL, seed=NULL) {
 
   # check arguments
   checkmate::assertInt(n, lower=2)
@@ -137,6 +141,8 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   checkmate::assertInt(run, lower=1, upper=maxiter)
   checkmate::assertMatrix(suggestions, null.ok=TRUE)
   checkmate::qassert(parallel, c("B1", "X1[0,)"))
+  checkmate::assertFunction(monitor, null.ok=TRUE)
+  if (is.null(monitor)) monitor <- FALSE
   checkmate::assertInt(seed, null.ok=TRUE)
 
   # set number of islands
@@ -195,6 +201,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
                            run=run,
                            suggestions=suggestions,
                            parallel=parallel,
+                           monitor=monitor,
                            seed=seed)
   })
 
