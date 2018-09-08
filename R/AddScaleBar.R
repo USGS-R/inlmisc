@@ -106,7 +106,7 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   # determine user coordinate at origin of scale
   sh <- graphics::strheight("M") # string height in user units
   tcl <- sh * 0.4  # y length of tick marks in user coordinates
-  pady <- sh * 0.2
+  pady <- sh * 0.3
   dx <- sum(graphics::strwidth("0", cex=0.7) / 2, len,
             graphics::strwidth(val, cex=0.7) / 2)
   dy <- sum(tcl, pady, graphics::strheight("0", cex=0.7), pady)

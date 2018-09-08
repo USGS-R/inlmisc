@@ -228,7 +228,6 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   if (type %in% c("l", "b", "s") && fill != "none") {
     if (is.null(fillcolor)) fillcolor <- grDevices::adjustcolor(col, alpha.f=0.5)
     for (i in seq_len(ncol(y))) {
-      if (is.na(fill[i])) next
       xx <- as.numeric(x)
       yy <- as.numeric(y[, i])
       grp <- .GetSegmentGroup(yy)
