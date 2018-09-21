@@ -166,6 +166,11 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
   checkmate::assertFlag(openPopup)
   checkmate::assertChoice(position, c("topleft", "topright", "bottomleft", "bottomright"))
 
+  dep <- htmltools::htmlDependency("leaflet-search", "2.8.0", "htmlwidgets/plugins/leaflet-search",
+                                   script=c("leaflet-search.min.js", "leaflet-search-binding.js"),
+                                   stylesheet="leaflet-search.min.css", package="inlmisc")
+  map$dependencies <- c(map$dependencies, list(dep))
+
   circle <- list("radius"               = 10,
                  "weight"               = 3,
                  "opacity"              = 0.7,
@@ -184,18 +189,8 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
                  "hideMarkerOnCollapse" = TRUE,
                  "marker"               = marker)
 
-  map$dependencies <- c(map$dependencies, .LeafletSearchDependencies())
   leaflet::invokeMethod(map, leaflet::getMapData(map), "addSearchMarker",
                         group, leaflet::filterNULL(option))
-}
-
-.LeafletSearchDependencies <- function() {
-  list(htmltools::htmlDependency(name="leaflet-search",
-                                 version="2.8.0",
-                                 src="htmlwidgets/plugins/leaflet-search",
-                                 script=c("leaflet-search.min.js", "leaflet-search-binding.js"),
-                                 stylesheet="leaflet-search.min.css",
-                                 package="inlmisc"))
 }
 
 
