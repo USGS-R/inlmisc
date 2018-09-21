@@ -12,6 +12,5 @@ LeafletWidget.methods.addSearchMarker = function(group, options) {
         e.layer.openPopup();
       }
     });
-
   }).call(this);
 };
