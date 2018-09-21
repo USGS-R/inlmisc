@@ -62,8 +62,7 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
   map <- leaflet::leaflet(...)
 
   # construct url's for base maps
-  url <- sprintf("https://basemap.nationalmap.gov/arcgis/services/%s/MapServer/WmsServer",
-                 basemap)
+  url <- sprintf("https://basemap.nationalmap.gov/arcgis/services/%s/MapServer/WmsServer", basemap)
 
   # set tile options
   opt <- leaflet::WMSTileOptions(format="image/jpeg", version="1.3.0", maxNativeZoom=15)
