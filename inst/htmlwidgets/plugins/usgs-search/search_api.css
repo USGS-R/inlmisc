@@ -1,0 +1,303 @@
+@charset "utf-8";
+/*
+====================================================
+search_api css (version 2.1)
+
+The .search-api class family is used for scoping.
+Theme colors:
+  lt.gray: #eee
+  dk.gray: #999
+    black: #333
+     blue: #1f8dd6
+  lt.blue: #e9f4fc
+  borders: #ccc
+
+====================================================
+*/
+
+/*
+----------------------------------------------------
+widget
+----------------------------------------------------
+*/
+
+/*
+..........................
+layout
+..........................
+*/
+
+/* widget container inside user-defined div */
+.search-api-container {
+    display: table;
+    width: 300px; /* varies with size class */ 
+    height: 34px; /* varies with size class */
+    border-collapse: separate;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+}
+.search-api-container, .search-api-container * {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* widget parts: search icon, textbox, spinner */
+.search-api-container span {
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
+}
+
+/* search icon */
+.search-api-icon {
+    width: 34px; /* varies with size class */
+    height: 100%;
+    border: none;
+    border-right: 1px solid #ccc;
+    border-radius: 4px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background-color: #eee;
+    text-align: center;
+}
+.search-api-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: #333;
+}
+
+/* textbox */
+.search-api-container input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px; /* varies with size class */
+    padding-left: 10px;
+}
+.search-api-container input.search-api-have-suggestions {
+    color: #1f8dd6;
+}
+.search-api-container input.search-api-no-suggestions {
+    color: #900;
+}
+.search-api-container input::-webkit-input-placeholder { color: #999; }
+.search-api-container input:-moz-placeholder { color: #999; }
+.search-api-container input::-moz-placeholder { color: #999; }
+.search-api-container input:-ms-input-placeholder { color: #999; }
+.search-api-container input::-ms-clear { display: none; }
+
+/* wait spinner */
+.search-api-spinner {
+    width: 20px;
+    height: 100%;
+    background-image: url("./spinner_16x16.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.search-api-spinner-hidden {
+    background-image: none;
+}
+
+/*
+..........................
+widget state
+..........................
+*/
+
+/* hidden */
+.search-api-container.search-api-hidden {
+    visibility: hidden;
+}
+
+/* disabled */
+.search-api-container.search-api-disabled .search-api-icon,
+.search-api-container.search-api-disabled .search-api-icon svg,
+.search-api-container.search-api-disabled input,
+.search-api-container.search-api-disabled .search-api-spinner {
+    background-color: #eee;
+    cursor: default;
+    color: #999;
+    fill: #999;
+    opacity: 1;
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+         -moz-user-select: none;
+       -khtml-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+                user-drag: none;
+        -webkit-user-drag: none;
+}
+
+/*
+..........................
+sizing (similar to bootstrap-style size classes)
+..........................
+*/
+
+/* large */
+.search-api-container.search-api-lg { width:350px; height: 46px; }
+.search-api-container.search-api-lg .search-api-icon { width: 46px; }
+.search-api-container.search-api-lg input { font-size: 18px; }
+   
+/* small */
+.search-api-container.search-api-sm { width:250px; height: 29px; }
+.search-api-container.search-api-sm .search-api-icon { width: 29px; }
+.search-api-container.search-api-sm input { font-size: 12px; }
+
+/* extra small */
+.search-api-container.search-api-xs { width:200px; height: 25px; }
+.search-api-container.search-api-xs .search-api-icon { width: 25px; }
+.search-api-container.search-api-xs input { font-size: 12px; }
+
+
+/*
+----------------------------------------------------
+menu
+----------------------------------------------------
+*/
+
+/*
+..........................
+layout
+..........................
+*/
+
+/* menu container */
+.search-api-menu {
+    display: none;
+    position: absolute;
+    border: none;
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px; /* varies with size class */
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+         -moz-user-select: none;
+       -khtml-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+                user-drag: none;
+        -webkit-user-drag: none;
+    z-index: 9999;
+}
+.search-api-menu, .search-api-menu * {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+.search-api-menu-down {
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.3);
+       -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.3);
+            box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.3);
+}
+.search-api-menu-up {
+    -webkit-box-shadow: 0px -5px 10px 0px rgba(0,0,0,0.3);
+       -moz-box-shadow: 0px -5px 10px 0px rgba(0,0,0,0.3);
+            box-shadow: 0px -5px 10px 0px rgba(0,0,0,0.3);
+}
+
+/* menu title bar and close icon */
+.search-api-menu-title {
+    position: relative;
+    height: 20px;
+    background: #999;
+    color: #fff;
+    padding: 3px 5px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: bold;
+}
+.search-api-menu-close {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* scrollable menu content */
+.search-api-menu-content {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* category separator */
+.search-api-menu-separator {
+    background: #eee;
+    color: #333;
+    padding: 3px;
+    text-align: center;
+    font-size: 90%;
+    font-weight: normal;
+    border-bottom: 1px solid #ccc;
+}
+
+/* menu item */
+.search-api-menu-item {
+    background: #fff;
+    color: #333;
+    padding: 5px 8px;
+    text-align: left;
+    font-weight: normal;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+
+/* selected menu item */
+.search-api-menu-item-selected {
+    background: #e9f4fc;
+}
+
+/* search term regex highlighting in menu item */
+.search-api-menu-item-highlight {
+    color: #1f8dd6;
+}
+
+/* item info under item name */
+.search-api-menu-item-info {
+    font-size: 85%;
+    color: #999;
+}
+
+/*
+..........................
+menu state
+..........................
+*/
+
+/* hidden */
+.search-api-menu.search-api-hidden {
+    visibility: hidden;
+}
+
+/* disabled */
+.search-api-menu.search-api-disabled {
+    visibility: hidden;
+}
+
+/*
+..........................
+sizing (similar to bootstrap-style size classes)
+..........................
+*/
+
+/* large */
+.search-api-menu.search-api-lg { font-size: 18px; }
+   
+/* small */
+.search-api-menu.search-api-sm { font-size: 12px; }
+
+/* extra small */
+.search-api-menu.search-api-xs { font-size: 12px; }
+
+/*
+====================================================
+END
+====================================================
+*/

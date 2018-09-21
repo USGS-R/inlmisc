@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+..........................................................
+USGS Search API Sample:
+Widget Methods
+..........................................................
+U.S. Geological Survey, Texas Water Science Center, Austin
+https://txpub.usgs.gov/DSS/search_api/
+..........................................................
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type"    content="text/html; charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport"              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <title>USGS Search API Sample</title>
+        
+        <!-- search_api requires jquery -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        
+        <!-- search_api -->
+        <link    rel="stylesheet"     href="../search_api.css"/>
+        <script type="text/javascript" src="../search_api.min.js"></script>
+        
+        <!-- page styling -->
+        <style>
+            html, body {
+                font-family : Arial, Helvetica, sans-serif;
+                text-align  : center;
+            }
+            #search_container {
+                display    : inline-block;
+                width      : 300px;
+                height     : 30px;
+                border     : 1px solid Khaki;
+                background : LemonChiffon;
+                padding    : 25px;
+            }
+            #search {
+                display : inline-block;
+            }
+            h2 {
+                margin     : 5px;
+                margin-top : 20px;
+            }
+            ul {
+                display       : inline-block;
+                margin        : 5px;
+                margin-bottom : 10px;
+                max-width     : 500px;
+            }
+            button {
+                width       : 150px;
+                height      : 30px;
+                font-weight : bold;
+                cursor      : pointer;
+            }
+            button:disabled {
+                cursor : not-allowed;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Demonstration of Search Widget Methods</h1>
+        
+        <!-- search_api widget -->
+        <div id="search_container">
+            <div id="search"></div>
+        </div>
+        <script>
+            // create search_api widget and assign widget object to 'searchObj'
+            // controls call the object methods
+            var searchObj = search_api.create("search");
+        </script>
+        
+        <!-- .visible(), .isVisible()  -->
+        <h2>Visibility</h2>
+        <ul>
+            <li> <b>.visible(true)</b> shows the widget           </li>
+            <li> <b>.visible(false)</b> hides the widget          </li>
+            <li> <b>.visible()</b> toggles the visibility state   </li>
+            <li> <b>.isVisible()</b> returns the visibility state </li>
+        </ul>
+        <br/>
+        <button type="button" onclick="searchObj.visible(true );"                            > .visible(true)  </button>
+        <button type="button" onclick="searchObj.visible(false);"                            > .visible(false) </button>
+        <button type="button" onclick="searchObj.visible(     );"                            > .visible()      </button>
+        <button type="button" onclick="alert('Visibility state is: '+searchObj.isVisible());"> .isVisible()    </button>
+        
+        <!-- .enable(), .isEnabled()  -->
+        <h2>Enable-Disable</h2>
+        <ul>
+            <li> <b>.enable(true)</b> enables the widget      </li>
+            <li> <b>.enable(false)</b> disables the widget    </li>
+            <li> <b>.enable()</b> toggles the enable state    </li>
+            <li> <b>.isEnabled()</b> returns the enable state </li>
+        </ul>
+        <br/>
+        <button type="button" onclick="searchObj.enable(true );"                         > .enable(true)  </button>
+        <button type="button" onclick="searchObj.enable(false);"                         > .enable(false) </button>
+        <button type="button" onclick="searchObj.enable(     );"                         > .enable()      </button>
+        <button type="button" onclick="alert('Enable state is: '+searchObj.isEnabled());"> .isEnabled()   </button>
+        
+        <!-- .val() -->
+        <h2>Text Box Value</h2>
+        <ul>
+            <li> <b>.val("text")</b> sets the text box string </li>
+            <li> <b>.val()</b> returns the text box string    </li>
+        </ul>
+        <br/>
+        <button type="button" onclick="alert('Text box value is: \''+searchObj.val()+'\'');"> .val()           </button>
+        <button type="button" onclick="searchObj.val('New Text');"                          > .val("New Text") </button>
+        
+        <!-- destroy -->
+        <h2>Clean Up</h2>
+        <ul>
+            <li> <b>.destroy</b> removes the widget from the creation element and clears all resources associated with it - the widget is no longer usable after it is destroyed </li>
+        </ul>
+        <br/>
+        <button type="button" id="btn_destroy"> .destroy() </button>
+        <script>
+            $("#btn_destroy").click( function() {
+                // confirm action
+                if ( confirm("Destroy the search widget? The widget is no longer usable after it is destroyed.") ) {
+                    searchObj.destroy();               // destroy the widget
+                    $("button").prop("disabled",true); // disable all buttons
+                    $("#search").html(                 // add new button in widget div that creates a new widget and enables the other buttons to start over
+                        '<button type="button" onclick="window.searchObj=search_api.create(\'search\'); $(\'button\').prop(\'disabled\',false);"> Create New Widget </button>'
+                    );
+                }
+            });
+        </script>
+        
+    </body>
+</html>
+<!-- end sample -->

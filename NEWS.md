@@ -1,6 +1,6 @@
 # inlmisc 0.4.3.9000
 
-- ...
+- Change R version requirement from `>= 3.2.0` to `>= 3.4.0`.
 
 # inlmisc 0.4.3
 

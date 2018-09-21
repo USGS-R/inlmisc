@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<!--
+..........................................................
+USGS Search API Sample:
+Styling the Widget
+..........................................................
+U.S. Geological Survey, Texas Water Science Center, Austin
+https://txpub.usgs.gov/DSS/search_api/
+..........................................................
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type"    content="text/html; charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport"              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <title>USGS Search API Sample</title>
+        
+        <!-- leaflet web map api -->
+        <link    rel="stylesheet"     href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.css"/>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js"></script>
+        
+        <!-- search_api requires jquery -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        
+        <!-- search_api -->
+        <link    rel="stylesheet"     href="../search_api.css"/>
+        <script type="text/javascript" src="../search_api.min.js"></script>
+        
+        <!-- page styling -->
+        <style>
+            html, body, #map {
+                height   : 100%;
+                width    : 100%;
+                margin   : 0px;
+                padding  : 0px;
+                overflow : hidden;
+                z-index  : 1;
+            }
+            #widget_container {
+                position : absolute;
+                top      : 10px;
+                left     : 60px;
+                z-index  : 2;
+            }
+            #widget_container div:first-child {
+                margin-bottom: 10px;
+            }
+            
+            /*
+            ..........................
+            custom styling: search widget
+            ..........................
+            */
+            
+            /* widget container */
+            .search-api-container {
+                border        : 2px solid DarkSeaGreen;
+                border-radius : 0px;
+            }
+            
+            /* search icon */
+            /* ...container... */
+            .search-api-icon {
+                border-right     : 2px solid DarkSeaGreen;
+                border-radius    : 0px;
+                background-color : DarkSeaGreen;
+            }
+            /* ...magnifying glass... */
+            .search-api-icon svg {
+                fill : white;
+            }
+            
+            /* text box */
+            /* ...general... */
+            .search-api-container input {
+                font-family : "Comic Sans MS", cursive, sans-serif;
+            }
+            /* ...when location suggestions found... */
+            .search-api-container input.search-api-have-suggestions {
+                color : DarkSeaGreen;
+            }
+            /* ...when no location suggestions found... */
+            .search-api-container input.search-api-no-suggestions {
+                color : Red;
+            }
+            
+            /*
+            ..........................
+            custom styling: search widget suggestion menu
+            ..........................
+            */
+            
+            /* menu container */
+            .search-api-menu {
+                font-family : "Comic Sans MS", cursive, sans-serif;
+            }
+            
+            /* menu title bar */
+            .search-api-menu-title {
+                display : none;
+            }
+            
+            /* category separator */
+            .search-api-menu-separator {
+                background : DarkSeaGreen;
+                color      : White;
+            }
+            
+            /* menu item */
+            .search-api-menu-item {
+                color : DarkSeaGreen;
+            }
+            
+            /* selected menu item */
+            .search-api-menu-item-selected {
+                background : HoneyDew;
+            }
+            
+            /* highlighting of typed search term in menu item */
+            .search-api-menu-item-highlight {
+                background-color : LemonChiffon;
+                color            : DarkSeaGreen;
+            }
+            
+            /* item info under item name */
+            .search-api-menu-item-info {
+                color : DarkGoldenRod;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- map -->
+        <div id="map"></div>
+        
+        <!-- search widgets of different sizes -->
+        <div id="widget_container">
+            <div id="search_wd"></div>
+            <div id="search_lg"></div>
+            <div id="search_md"></div>
+            <div id="search_sm"></div>
+            <div id="search_xs"></div>
+        </div>
+        
+        <!-- js -->
+        <script>
+            // create map
+            var map = new L.Map( "map", {
+                center  : new L.LatLng(38,-99),
+                minZoom : 3,
+                maxZoom : 15,
+                zoom    : 3,
+                layers  : L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+            });
+            
+            // use same event callbacks for all widgets
+            var opts = {
+                // close any previous popup when user searches for new location
+                on_search: function() {
+                    map.closePopup();
+                },
+                // zoom to location and show popup when location found
+                on_result: function(o) {
+                    map
+                        .fitBounds([[o.result.properties.LatMin, o.result.properties.LonMin],[o.result.properties.LatMax, o.result.properties.LonMax]])
+                        .openPopup( o.result.properties.Label, [ o.result.properties.Lat, o.result.properties.Lon ] );
+                }
+            };
+            
+            // create search_api widgets of different sizes using the custom CSS styling
+            search_api.create( "search_wd", opts ).setOpts({ width:500, placeholder:"Custom Width, Default Size ...type text" });
+            search_api.create( "search_lg", opts ).setOpts({ size:"lg", placeholder:                "Large Size ...type text" });
+            search_api.create( "search_md", opts ).setOpts({ size:"md", placeholder:               "Medium Size ...type text" });
+            search_api.create( "search_sm", opts ).setOpts({ size:"sm", placeholder:                "Small Size ...type text" });
+            search_api.create( "search_xs", opts ).setOpts({ size:"xs", placeholder:              "X-Small Size ...type text" });
+        </script>
+        
+    </body>
+</html>
+<!-- end sample -->

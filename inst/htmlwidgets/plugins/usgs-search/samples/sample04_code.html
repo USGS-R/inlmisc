@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--
+..........................................................
+USGS Search API Sample:
+Dynamically Specifying Options
+..........................................................
+U.S. Geological Survey, Texas Water Science Center, Austin
+https://txpub.usgs.gov/DSS/search_api/
+..........................................................
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type"    content="text/html; charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport"              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <title>USGS Search API Sample</title>
+        
+        <!-- leaflet web map api -->
+        <link    rel="stylesheet"     href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.css"/>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js"></script>
+        
+        <!-- search_api requires jquery -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        
+        <!-- search_api -->
+        <link    rel="stylesheet"     href="../search_api.css"/>
+        <script type="text/javascript" src="../search_api.min.js"></script>
+        
+        <!-- page styling -->
+        <style>
+            html, body, #map {
+                height   : 100%;
+                width    : 100%;
+                margin   : 0px;
+                padding  : 0px;
+                overflow : hidden;
+                z-index  : 1;
+            }
+            #controls {
+                position      : absolute;
+                top           : 10px;
+                right         : 10px;
+                border        : 1px solid #999;
+                border-radius : 5px;
+                background    : rgba(255,255,255,0.8);
+                padding       : 10px;
+                font-family   : Arial, Helvetica, sans-serif;
+                z-index       : 2;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- map -->
+        <div id="map"></div>
+        
+        <!-- controls -->
+        <div id="controls">
+            
+            <!-- search_api widget -->
+            <div id="search"></div>
+            
+            <!-- link to expand-collapse search options -->
+            <br/>
+            <b><a href="javascript:void(0);" onclick="$('#search_options').slideToggle(200);">Search Options</a></b>
+            
+            <!-- collapsible search options - options are checked for those that are true when the widget is created -->
+            <div id="search_options" style="display:none;">
+                <br/>
+                <b>Include places:</b><br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_gnis_major',this.checked)" checked /> Major place name categories </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_gnis_minor',this.checked)"         /> Minor place name categories </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_state',     this.checked)" checked /> U.S. States and Territories </label> <br/>
+                <br/>
+                <b>Include postal and area codes:</b><br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_zip_code',  this.checked)" checked /> 5-digit zip codes  </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_area_code', this.checked)"         /> 3-digit area codes </label> <br/>
+                <br/>
+                <b>Include USGS site numbers:</b><br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_usgs_sw',   this.checked)"         /> Surface water </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_usgs_gw',   this.checked)"         /> Ground water  </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_usgs_sp',   this.checked)"         /> Spring        </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_usgs_at',   this.checked)"         /> Atmospheric   </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_usgs_ot',   this.checked)"         /> Other         </label> <br/>
+                <br/>
+                <b>Include Hydrologic Unit Code numbers:</b><br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_huc2',      this.checked)"         />  2-digit HUCs </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_huc4',      this.checked)"         />  4-digit HUCs </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_huc6',      this.checked)"         />  6-digit HUCs </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_huc8',      this.checked)"         />  8-digit HUCs </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_huc10',     this.checked)"         /> 10-digit HUCs </label> <br/>
+                <label> <input type="checkbox" onclick="searchObj.setOpts('include_huc12',     this.checked)"         /> 12-digit HUCs </label> <br/>
+            </div>
+        </div>
+        
+        <!-- js -->
+        <script>
+            // create map
+            var map = new L.Map( "map", {
+                center  : new L.LatLng(38,-99),
+                minZoom : 3,
+                maxZoom : 15,
+                zoom    : 3,
+                layers  : L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+            });
+            
+            // create search_api widget and assign widget object to 'searchObj'
+            // the controls change options using the object
+            var searchObj = search_api.create( "search", {
+                width : 350, // set width [px] so controls container stays a constant width when options are shown
+            }).on( "search", function(o) {
+                // close any previous popup when user searches for new location
+                map.closePopup();
+            }).on( "result", function(o) {
+                // zoom to location and show popup when location found
+                map
+                    .fitBounds([[o.result.properties.LatMin, o.result.properties.LonMin],[o.result.properties.LatMax, o.result.properties.LonMax]])
+                    .openPopup( o.result.properties.Label, [ o.result.properties.Lat, o.result.properties.Lon ] );
+            });
+        </script>
+        
+    </body>
+</html>
+<!-- end sample -->

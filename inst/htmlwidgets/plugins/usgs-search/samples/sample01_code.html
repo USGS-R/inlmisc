@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!--
+..........................................................
+USGS Search API Sample:
+Basic Usage
+..........................................................
+U.S. Geological Survey, Texas Water Science Center, Austin
+https://txpub.usgs.gov/DSS/search_api/
+..........................................................
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type"    content="text/html; charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport"              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <title>USGS Search API Sample</title>
+        
+        <!-- leaflet web map api -->
+        <link    rel="stylesheet"     href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.css"/>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js"></script>
+        
+        <!-- esri web map api -->
+        <link    rel="stylesheet"     href="https://js.arcgis.com/3.19/esri/css/esri.css"/>
+        <script type="text/javascript" src="https://js.arcgis.com/3.19/"></script>
+        
+        <!-- search_api requires jquery -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        
+        <!-- search_api -->
+        <link    rel="stylesheet"     href="../search_api.css"/>
+        <script type="text/javascript" src="../search_api.min.js"></script>
+        
+        <!-- page styling -->
+        <style>
+            #map1, .container {
+                position      : relative;
+                width         : 90%;
+                max-width     : 1000px;
+                height        : 500px;
+                margin-bottom : 50px;
+            }
+            .map {
+                width   : 100%;
+                height  : 100%;
+                border  : 1px solid black;
+                z-index : 1;
+            }
+            .search {
+                position : absolute;
+                top      : 10px;
+                right    : 10px;
+                z-index  : 2;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <!--
+        .................................
+        (1) leaflet example (plugin)
+        .................................
+        -->
+        <h1>(1) Basic Usage: Leaflet Web Map (Plugin Method)</h1>
+        <div id="map1" class="map"></div>
+        <script>
+            // create map with search control
+            new L.Map( "map1", {
+                center  : new L.LatLng(38,-99),
+                minZoom : 3,
+                maxZoom : 15,
+                zoom    : 3,
+                layers  : L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
+                searchControl : {} // can specify options - those unspecified set to defaults
+            });
+        </script>
+        
+        <!--
+        .................................
+        (2) leaflet example (manual)
+        .................................
+        -->
+        <h1>(2) Basic Usage: Leaflet Web Map (Manual Creation)</h1>
+        <div class="container">
+            <div id="map2"    class="map"   ></div>
+            <div id="search2" class="search"></div>
+        </div>
+        <script>
+            // create map in element "map2"
+            var map2 = new L.Map( "map2", {
+                center  : new L.LatLng(38,-99),
+                minZoom : 3,
+                maxZoom : 15,
+                zoom    : 3,
+                layers  : L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+            });
+
+            // create search_api widget in element "search2"
+            search_api.create( "search2", {
+                on_result: function(o) {
+                    // what to do when a location is found
+                    // o.result is geojson point feature of location with properties
+                    map2
+                        .fitBounds([ // zoom to location
+                            [ o.result.properties.LatMin, o.result.properties.LonMin ],
+                            [ o.result.properties.LatMax, o.result.properties.LonMax ]
+                        ])
+                        .openPopup(  // open popup at location listing all properties
+                            $.map( Object.keys(o.result.properties), function(property) {
+                                return "<b>" + property + ": </b>" + o.result.properties[property];
+                            }).join("<br/>"),
+                            [ o.result.properties.Lat, o.result.properties.Lon ]
+                        );
+                }
+            });
+        </script>
+        
+        <!--
+        .................................
+        (3) esri example
+        .................................
+        -->
+        <h1>(3) Basic Usage: ESRI JSAPI Web Map</h1>
+        <div class="container">
+            <div id="map3"    class="map"   ></div>
+            <div id="search3" class="search"></div>
+        </div>
+        <script>
+            // create map in element "map3"
+            var map3;
+            require( ["esri/map"], function(Map) {
+                map3 = new Map("map3", {
+                    center  : [-99,38],
+                    minZoom : 3,
+                    maxZoom : 15,
+                    zoom    : 3,
+                    basemap : "osm"
+                });
+            });
+            
+            // create search_api widget in element "search3"
+            search_api.create( "search3", {
+                on_result: function(o) {
+                    // what to do when a location is found
+                    // o.result is geojson point feature of location with properties
+                    
+                    // zoom to location
+                    require(["esri/geometry/Extent"], function(Extent) {
+                        map3.setExtent(
+                            new esri.geometry.Extent({
+                                xmin: o.result.properties.LonMin,
+                                ymin: o.result.properties.LatMin,
+                                xmax: o.result.properties.LonMax,
+                                ymax: o.result.properties.LatMax,
+                                spatialReference: {"wkid":4326}
+                            }),
+                            true
+                        );
+                    });
+                    
+                    // open popup at location listing all properties
+                    map3.infoWindow.setTitle("Search Result");
+                    map3.infoWindow.setContent(
+                        $.map( Object.keys(o.result.properties), function(property) {
+                            return "<b>" + property + ": </b>" + o.result.properties[property];
+                        }).join("<br/>")
+                    );
+                    require( ["esri/geometry/Point"], function(Point) {
+                        map3.infoWindow.show(
+                            new Point( o.result.properties.Lon, o.result.properties.Lat )
+                        );
+                    });
+                }
+            });
+        </script>
+        
+    </body>
+</html>
+<!-- end sample -->

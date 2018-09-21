@@ -67,7 +67,7 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
 
   # construct url for map tiles
   GetURL <- function(service, host="basemap.nationalmap.gov") {
-    sprintf("https://%s/arcgis/services/%s/MapServer/WmsServer?", host, service)
+    sprintf("https://%s/arcgis/services/%s/MapServer/WmsServer", host, service)
   }
 
   # add tiled base maps

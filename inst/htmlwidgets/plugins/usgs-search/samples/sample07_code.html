@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<!--
+..........................................................
+USGS Search API Sample:
+Using the Leaflet Plugin
+..........................................................
+U.S. Geological Survey, Texas Water Science Center, Austin
+https://txpub.usgs.gov/DSS/search_api/
+..........................................................
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type"    content="text/html; charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport"              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <title>USGS Search API Sample</title>
+        
+        <!-- leaflet web map api -->
+        <link    rel="stylesheet"     href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.css"/>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js"></script>
+        
+        <!-- search_api requires jquery -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        
+        <!-- search_api - when using the leaflet plugin provided in the api, the api must be loaded after leaflet -->
+        <link    rel="stylesheet"     href="../search_api.css"/>
+        <script type="text/javascript" src="../search_api.min.js"></script>
+        
+        <!-- map styling -->
+        <style>
+            .map {
+                border: 1px solid black;
+                width: 800px;
+                height: 500px;
+                margin-bottom: 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Using the Leaflet Plugin</h1>
+        
+        <!-- ............................................ -->
+        <h2>1. Using the <code>searchControl</code> Map Option Extension</h2>
+        
+        <h3>1a. Minimal Usage</h3>
+        <div id="map1a" class="map"></div>
+        <script>
+            // create map with search control
+            new L.Map( "map1a", {
+                center        : new L.LatLng(38,-99),
+                zoom          : 3,
+                layers        : L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
+                searchControl : {} // all options set to defaults
+            });
+        </script>
+        
+        <h3>1b. Specifying Options</h3>
+        <div id="map1b" class="map"></div>
+        <script>
+            // create map with search control
+            new L.Map( "map1b", {
+                center        : new L.LatLng(38,-99),
+                zoom          : 3,
+                layers        : L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
+                searchControl : {
+                    // extended control options:
+                    position      : "topright", // leaflet control positioning: "topright" (default), "topleft", "bottomright", or "bottomleft"
+                    autoResult    : true,       // whether to automatically connect default on_result handler (zooms map to result and shows basic popup)
+                    // search_api widget options:
+                    size          : "lg",
+                    placeholder   : "Search for a place in Utah",
+                    search_states : "ut"
+                    // ...all search_api widget options are supported...
+                }
+            });
+        </script>
+        
+        <!-- ............................................ -->
+        <h2>2. Using the <code>L.control.search</code> Control Constructor</h2>
+        
+        <h3>2a. Minimal Usage</h3>
+        <div id="map2a" class="map"></div>
+        <script>
+            // create map
+            var map2a = new L.Map( "map2a", {
+                center : new L.LatLng(38,-99),
+                zoom   : 3,
+                layers : L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+            });
+            
+            // add 2 search controls with default options using different creation syntax
+            // leaflet automatically stacks multiple controls placed in the same location
+            map2a.addControl( L.control.search() ); // 'addControl' syntax
+            L.control.search().addTo(map2a);        // 'addTo'      syntax
+        </script>
+        
+        <h3>2b. Specifying Options</h3>
+        <div id="map2b" class="map"></div>
+        <script>
+            // create map
+            var map2b = new L.Map( "map2b", {
+                center : new L.LatLng(38,-99),
+                zoom   : 3,
+                layers : L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+            });
+            
+            // add search control with options
+            map2b.addControl(
+                L.control.search({
+                    // extended control options:
+                    position           : "bottomleft",
+                    // search_api widget options:
+                    width              : 400,
+                    placeholder        : "Search for a place in NY, PA, or NJ",
+                    search_states      : "ny,pa,nj",
+                    menu_height        : 400,
+                    include_gnis_minor : true,
+                    include_area_code  : true
+                    // ...all search_api widget options are supported...
+                })
+            );
+        </script>
+        
+        <h3>2c. Accessing the Widget Object After Creation</h3>
+        <div id="map2c" class="map"></div>
+        <script>
+            // create map
+            var map2c = new L.Map( "map2c", {
+                center : new L.LatLng(38,-99),
+                zoom   : 3,
+                layers : L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+            });
+            
+            // create control and add to map
+            var searchControl = L.control.search({position:"bottomright"}).addTo(map2c);
+            
+            // access widget object and set options and event callbacks
+            searchControl.getWidget()
+                .setOpts({
+                    // note: extended control options can only be specified in the L.control.search constructor
+                    // search_api widget options:
+                    width              : 300,
+                    placeholder        : "Search for a place in ID, MT, or WY",
+                    search_states      : "id,mt,wy",
+                    menu_height        : 400,
+                    include_gnis_minor : true,
+                    include_area_code  : true
+                }).on("update", function(o){
+                    // show suggestions in map as user types
+                    // ...add suggestion geojson layer to map if not added already...
+                    if ( !map2c.suggestions ) {
+                        map2c.suggestions = L.geoJSON().addTo(map2c);
+                    }
+                    // ...update the suggestion geojson layer with updated suggestions...
+                    map2c.suggestions
+                        .clearLayers()
+                        .addData( o.getSuggestions() );
+                    // ...see if there are suggestions...
+                    if ( map2c.suggestions.getLayers().length>0 ) {
+                        // ...zoom to suggestions...
+                        map2c.fitBounds( map2c.suggestions.getBounds().pad(0.4), {paddingTopLeft:[-350,0]} );
+                        // ...clear selected result when new suggestions found...
+                        if ( map2c.result ) {
+                            map2c.closePopup().result.clearLayers();
+                        }
+                    }
+                }).on("result", function(o){
+                    // show result as map marker with popup
+                    // ...add result geojson layer to map if not added already...
+                    if ( !map2c.result ) {
+                        map2c.result = L.geoJSON().addTo(map2c);
+                    }
+                    // ...update result geojson layer with result and open popup...
+                    map2c.result
+                        .clearLayers()
+                        .addData( o.result )
+                        .bindPopup( o.result.properties.Label )
+                        .openPopup();
+                    // ...zoom to result...
+                    map2c.fitBounds( map2c.result.getBounds() );
+                });
+        </script>
+        
+    </body>
+</html>
+<!-- end sample -->

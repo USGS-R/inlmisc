@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!--
+..........................................................
+USGS Search API Sample:
+Mapping the Menu Suggestions
+..........................................................
+U.S. Geological Survey, Texas Water Science Center, Austin
+https://txpub.usgs.gov/DSS/search_api/
+..........................................................
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type"    content="text/html; charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport"              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <title>USGS Search API Sample</title>
+        
+        <!-- leaflet web map api -->
+        <link    rel="stylesheet"     href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.css"/>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/leaflet.js"></script>
+        
+        <!-- search_api requires jquery -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        
+        <!-- search_api -->
+        <link    rel="stylesheet"     href="../search_api.css"/>
+        <script type="text/javascript" src="../search_api.min.js"></script>
+        
+        <!-- page styling -->
+        <style>
+            html, body, #map {
+                height   : 100%;
+                width    : 100%;
+                margin   : 0px;
+                padding  : 0px;
+                overflow : hidden;
+                z-index  : 1;
+            }
+            #search {
+                position : absolute;
+                top      : 10px;
+                left     : 55px;
+                z-index  : 2;
+            }
+            .selected-marker {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <!-- map -->
+        <div id="map"></div>
+        
+        <!-- search_api widget -->
+        <div id="search"></div>
+        
+        <!-- js -->
+        <script>
+            // create map
+            var map = new L.Map( "map", {
+                center  : new L.LatLng(38,-99),
+                minZoom : 3,
+                maxZoom : 15,
+                zoom    : 3,
+                layers  : L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+            });
+            
+            // add empty geojson layer that will contain suggested locations on update
+            var suggestion_layer = L.geoJson( null, {
+                pointToLayer: function(feature,latlng) {
+                    return (
+                        L.marker(latlng,{
+                            opacity: 0.4
+                        })
+                        .bindPopup(
+                            // popup content
+                            '<div style="text-align:center;">' +
+                                '<b>' + feature.properties.Label + '</b><br/>' +
+                                feature.properties.Category +
+                            '</div>',
+                            // options
+                            { autoPan:false } // do not pan map to popup when opens
+                        )
+                        .on("mouseover", function() {
+                            // make marker opaque and open popup when mouse is over marker
+                            this.setOpacity(1.0).openPopup();
+                        })
+                        .on("mouseout", function() {
+                            // make marker semi-transparent and close popup when mouse exits marker
+                            this.setOpacity(0.4).closePopup();
+                        })
+                        .on("click", function() {
+                            // set result with the marker feature and trigger result event to select the location when the marker is clicked
+                            searchObj.result = feature;
+                            searchObj.val("").trigger("result");
+                        })
+                    );
+                }
+            }).addTo(map);
+            
+            // create search_api widget
+            var searchObj = search_api.create( "search", {
+                
+                // function to execute when a search is started
+                on_search: function(o) {
+                    // close any previous popup when user searches for new location
+                    map.closePopup();
+                },
+                
+                // function to execute when the suggestion menu is updated
+                on_update: function(o) {
+                    // update geojson layer with menu suggestions
+                    suggestion_layer.clearLayers().addData( o.getSuggestions() );
+                    
+                    // zoom to layer if there are any points
+                    // pad left so open menu does not cover any points
+                    if ( suggestion_layer.getBounds().isValid() ) {
+                        map.fitBounds( suggestion_layer.getBounds().pad(0.4), {paddingTopLeft:[350,0]} );
+                    }
+                    
+                    // find corresponding map marker by lat-lon when mouse enters a menu item
+                    // open the marker popup and set opaque
+                    $(".search-api-menu-item").off( "mouseenter").on( "mouseenter", function() {
+                        var Lat = $(this).data("properties").Lat;
+                        var Lon = $(this).data("properties").Lon;
+                        suggestion_layer.eachLayer( function(lyr) {
+                            if ( Lat===lyr.feature.properties.Lat && Lon===lyr.feature.properties.Lon ) {
+                                lyr.setOpacity(1.0).openPopup();
+                            } else {
+                                lyr.setOpacity(0.4).closePopup();
+                            }
+                        });
+                    });
+                    
+                    // close popups and set markers semi-transparent when mouse leaves a menu item
+                    $(".search-api-menu-item").off( "mouseleave").on( "mouseleave", function() {
+                        map.closePopup();
+                        suggestion_layer.eachLayer( function(lyr) { lyr.setOpacity(0.4); } );
+                    });
+                },
+                
+                // function to execute when a result is found
+                on_result: function(o) {
+                    // zoom to location and show popup
+                    map
+                        .fitBounds([[o.result.properties.LatMin, o.result.properties.LonMin],[o.result.properties.LatMax, o.result.properties.LonMax]])
+                        .openPopup( o.result.properties.Label, [ o.result.properties.Lat, o.result.properties.Lon ] );
+                }
+                
+            });
+        </script>
+        
+    </body>
+</html>
+<!-- end sample -->

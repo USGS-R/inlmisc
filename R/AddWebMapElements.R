@@ -166,26 +166,36 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
   checkmate::assertFlag(openPopup)
   checkmate::assertChoice(position, c("topleft", "topright", "bottomleft", "bottomright"))
 
-  map$dependencies <- c(map$dependencies, .SearchDependencies())
-  leaflet::invokeMethod(map,
-                        data=leaflet::getMapData(map),
-                        method="addSearchMarker",
-                        group,
-                        position,
-                        propertyName,
-                        zoom,
-                        textPlaceholder,
-                        openPopup)
+  circle <- list("radius"               = 10,
+                 "weight"               = 3,
+                 "opacity"              = 0.7,
+                 "color"                = "#FF4040",
+                 "stroke"               = TRUE,
+                 "fill"                 = FALSE)
+  marker <- list("icon"                 = FALSE,
+                 "animate"              = TRUE,
+                 "circle"               = circle)
+  option <- list("propertyName"         = propertyName,
+                 "zoom"                 = zoom,
+                 "textPlaceholder"      = textPlaceholder,
+                 "openPopup"            = openPopup,
+                 "position"             = position,
+                 "initial"              = FALSE,
+                 "hideMarkerOnCollapse" = TRUE,
+                 "marker"               = marker)
+
+  map$dependencies <- c(map$dependencies, .LeafletSearchDependencies())
+  leaflet::invokeMethod(map, leaflet::getMapData(map), "addSearchMarker",
+                        group, leaflet::filterNULL(option))
 }
 
-.SearchDependencies <- function() {
+.LeafletSearchDependencies <- function() {
   list(htmltools::htmlDependency(name="leaflet-search",
                                  version="2.8.0",
-                                 src=system.file("htmlwidgets/plugins/leaflet-search", 
-                                                 package="inlmisc"),
-                                 script=c("leaflet-search.min.js", 
-                                          "leaflet-search-binding.js"),
-                                 stylesheet="leaflet-search.min.css"))
+                                 src="htmlwidgets/plugins/leaflet-search",
+                                 script=c("leaflet-search.min.js", "leaflet-search-binding.js"),
+                                 stylesheet="leaflet-search.min.css",
+                                 package="inlmisc"))
 }
 
 
