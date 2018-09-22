@@ -10,7 +10,7 @@ CreateWebMap(maps, ..., collapsed = TRUE)
 \item{maps}{'character'.
 Vector of TNM base maps to include in the web map.
 Possible maps include \code{"Topo"}, \code{"Imagery"},
-\code{"Imagery Topo"}, \code{"Hydrography"}, and \code{"Hill Shade"}.
+\code{"Imagery Topo"}, \code{"Hydrography"}, \code{"Hill Shade"}, and \code{"Blank"}.
 All base maps are included by default.}
 
 \item{...}{Arguments to be passed to the \code{\link[leaflet]{leaflet}} function.}
