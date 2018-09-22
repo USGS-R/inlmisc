@@ -63,8 +63,9 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
   url <- sprintf("https://basemap.nationalmap.gov/ArcGIS/rest/services/%s/MapServer/tile/{z}/{y}/{x}", basemap)
 
   # define attribution for base maps
-  att <- paste("<a href='https://www.usgs.gov/' title='United States Geological Survey' target='_blank'>USGS</a> |",
-               "<a href='https://www.usgs.gov/laws/policies_notices.html' title='USGS policies and notices' target='_blank'>Policies</a>")
+  att <- sprintf("<a href='%s' title='%s' target='_blank'>%s</a> | <a href='%s' title='%s' target='_blank'>%s</a>",
+                 "https://www.usgs.gov/", "United States Geological Survey", "USGS",
+                 "https://www.usgs.gov/laws/policies_notices.html", "USGS policies and notices", "Policies")
 
   # initialize map widget
   map <- leaflet::leaflet(...)
