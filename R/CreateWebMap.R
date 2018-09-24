@@ -8,7 +8,7 @@
 #' @param maps 'character'.
 #'   Vector of TNM base maps to include in the web map.
 #'   Possible maps include \code{"Topo"}, \code{"Imagery"},
-#'   \code{"Imagery Topo"}, \code{"Hydrography"}, and \code{"Hill Shade"}.
+#'   \code{"Imagery Topo"}, \code{"Hydrography"}, \code{"Hill Shade"}, and \code{"Blank"}.
 #'   All base maps are included by default.
 #' @param ...
 #'   Arguments to be passed to the \code{\link[leaflet]{leaflet}} function.
@@ -47,35 +47,34 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
 
   checkmate::assertFlag(collapsed)
 
-  # establish base map layers
-  basemap <- c("Topo"          = "USGSTopo",
-               "Imagery"       = "USGSImageryOnly",
-               "Imagery Topo"  = "USGSImageryTopo",
-               "Hydrography"   = "USGSHydroCached",
-               "Hill Shade"    = "USGSShadedReliefOnly")
+  # define base map names
+  basemap <- c("Topo"         = "USGSTopo",
+               "Imagery"      = "USGSImageryOnly",
+               "Imagery Topo" = "USGSImageryTopo",
+               "Hydrography"  = "USGSHydroCached",
+               "Hill Shade"   = "USGSShadedReliefOnly",
+               "Blank"        = "USGSTNMBlank")
   if (!missing(maps)) {
     checkmate::assertSubset(maps, names(basemap), empty.ok=FALSE)
     basemap <- basemap[maps]
   }
 
+  # construct url's for base maps
+  url <- sprintf("https://basemap.nationalmap.gov/ArcGIS/rest/services/%s/MapServer/tile/{z}/{y}/{x}", basemap)
+
+  # define attribution for base maps
+  att <- sprintf("<a href='%s' title='%s' target='_blank'>%s</a> | <a href='%s' title='%s' target='_blank'>%s</a>",
+                 "https://www.usgs.gov/", "United States Geological Survey", "USGS",
+                 "https://www.usgs.gov/laws/policies_notices.html", "USGS policies and notices", "Policies")
+
   # initialize map widget
   map <- leaflet::leaflet(...)
 
-  # specify attribution
-  att <- paste("<a href='https://www.usgs.gov/' title='United States Geological Survey' target='_blank'>USGS</a> |",
-               "<a href='https://www.usgs.gov/laws/policies_notices.html' title='USGS policies and notices' target='_blank'>Policies</a>")
-
-  # construct url for map tiles
-  GetURL <- function(service, host="basemap.nationalmap.gov") {
-    sprintf("https://%s/arcgis/services/%s/MapServer/WmsServer?", host, service)
-  }
-
-  # add tiled base maps
-  url <- GetURL(basemap)
-  opt <- leaflet::WMSTileOptions(version="1.3.0", maxNativeZoom=15)
+  # add base maps
+  opt <- leaflet::WMSTileOptions(format="image/jpeg", version="1.3.0", maxNativeZoom=15)
   for (i in seq_along(basemap)) {
-    map <- leaflet::addWMSTiles(map, url[i], group=names(basemap)[i], attribution=att,
-                                options=opt, layers="0")
+    map <- leaflet::addWMSTiles(map, url[i], group=names(basemap)[i],
+                                options=opt, attribution=att, layers="0")
   }
 
   # add basemap control feature
@@ -88,6 +87,6 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
   # add scale bar
   map <- leaflet::addScaleBar(map, position="bottomleft")
 
-  # return html widget
+  # return map widget
   return(map)
 }

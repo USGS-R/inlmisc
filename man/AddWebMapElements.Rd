@@ -78,7 +78,7 @@ Used for the side-effect of a button placed on a web map.
 These functions can be used to augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
 The \code{AddHomeButton} function adds a button that zooms to the initial map extent.
 The \code{AddClusterButton} function adds a button that toggles marker clusters on and off.
-The \code{AddSearchButton} function adds a search element that may be used to locate, and move to, a marker.
+The \code{AddSearchButton} function adds a control that may be used to search markers/features location by property.
 And the \code{AddCircleLegend} function adds a map legend.
 }
 \examples{

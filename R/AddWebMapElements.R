@@ -3,7 +3,7 @@
 #' These functions can be used to augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
 #' The \code{AddHomeButton} function adds a button that zooms to the initial map extent.
 #' The \code{AddClusterButton} function adds a button that toggles marker clusters on and off.
-#' The \code{AddSearchButton} function adds a search element that may be used to locate, and move to, a marker.
+#' The \code{AddSearchButton} function adds a control that may be used to search markers/features location by property.
 #' And the \code{AddCircleLegend} function adds a map legend.
 #'
 #' @param map '\link[leaflet]{leaflet}'.
@@ -159,33 +159,45 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
 
   # check arguments
   checkmate::assertClass(map, c("leaflet", "htmlwidget"))
-  checkmate::assertCharacter(group, min.chars=1, any.missing=FALSE, min.len=1)
+  checkmate::assertString(group, min.chars=1)
   checkmate::assertString(propertyName, min.chars=1)
   checkmate::assertInt(zoom, lower=0, null.ok=TRUE)
   checkmate::assertString(textPlaceholder, null.ok=TRUE)
   checkmate::assertFlag(openPopup)
   checkmate::assertChoice(position, c("topleft", "topright", "bottomleft", "bottomright"))
 
-  map$dependencies <- c(map$dependencies, .SearchDependencies())
-  leaflet::invokeMethod(map,
-                        data=leaflet::getMapData(map),
-                        method="addSearchMarker",
-                        group,
-                        position,
-                        propertyName,
-                        zoom,
-                        textPlaceholder,
-                        openPopup)
+  # attach html dependencies to map widget
+  map$dependencies <- c(map$dependencies, .GetLeafletSearchDependencies())
+
+  # define arguments to be passed to the javascript method
+  circle <- list("radius"               = 10,
+                 "weight"               = 3,
+                 "opacity"              = 0.7,
+                 "color"                = "#FF4040",
+                 "stroke"               = TRUE,
+                 "fill"                 = FALSE)
+  marker <- list("icon"                 = FALSE,
+                 "animate"              = TRUE,
+                 "circle"               = circle)
+  option <- list("propertyName"         = propertyName,
+                 "zoom"                 = zoom,
+                 "textPlaceholder"      = textPlaceholder,
+                 "openPopup"            = openPopup,
+                 "position"             = position,
+                 "initial"              = FALSE,
+                 "hideMarkerOnCollapse" = TRUE,
+                 "marker"               = marker)
+
+  # add leaflet-search plugin to map
+  leaflet::invokeMethod(map, leaflet::getMapData(map), "addSearchControl",
+                        group, leaflet::filterNULL(option))
 }
 
-.SearchDependencies <- function() {
-  list(htmltools::htmlDependency(name="leaflet-search",
-                                 version="2.8.0",
-                                 src=system.file("htmlwidgets/plugins/leaflet-search", 
-                                                 package="inlmisc"),
-                                 script=c("leaflet-search.min.js", 
-                                          "leaflet-search-binding.js"),
-                                 stylesheet="leaflet-search.min.css"))
+
+.GetLeafletSearchDependencies <- function() {
+  list(htmltools::htmlDependency("leaflet-search", "2.9.6", "htmlwidgets/plugins/leaflet-search",
+                                 script=c("leaflet-search.min.js", "leaflet-search-binding.js"),
+                                 stylesheet="leaflet-search.min.css", package="inlmisc"))
 }
 
 
@@ -201,10 +213,9 @@ AddLegend <- function(map, labels, colors, radius, opacity=0.5, symbol=c("square
   checkmate::assertCharacter(colors, any.missing=FALSE, len=length(labels))
   checkmate::assertNumeric(radius, lower=0, any.missing=FALSE, min.len=1)
   checkmate::assertNumber(opacity, lower=0, upper=1, finite=TRUE)
+  symbol <- match.arg(symbol)
   checkmate::assertString(title, null.ok=TRUE)
   checkmate::assertChoice(position, c("topleft", "topright", "bottomleft", "bottomright"))
-
-  symbol <- match.arg(symbol)
 
   sizes <- rep(radius, length.out=length(colors)) * 2
   if (symbol == "square")
@@ -214,7 +225,7 @@ AddLegend <- function(map, labels, colors, radius, opacity=0.5, symbol=c("square
   col <- sprintf(fmt, colors, sizes, sizes)
   fmt <- "<div style='display:inline-block; height:%fpx; line-height:%fpx; margin-top:4px;'>%s</div>"
   lab <- sprintf(fmt, sizes, sizes, labels)
-  if (!is.null(title))
+  if (is.character(title))
     title <- sprintf("<div style='text-align:center;'>%s</div>", title)
   return(leaflet::addLegend(map, position=position, colors=col, labels=lab,
                             labFormat=as.character(), opacity=opacity, title=title))
