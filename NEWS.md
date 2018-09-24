@@ -1,10 +1,10 @@
 # inlmisc 0.4.3.9000
 
-- Tidy leaflet-search plugin code.
+- For leaflet-search plugin, change version from `2.8.0` to `2.9.6` and tidy wrapper functions.
 
 - In `CreateWebMap` function, change URL for TNM basemap WMS services from
-  <https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WmsServer> to
-  <https://basemap.nationalmap.gov/ArcGIS/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}>.
+  `"https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WmsServer"` to
+  `"https://basemap.nationalmap.gov/ArcGIS/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}"`.
 
 - Change required R version from `>= 3.2.0` to `>= 3.4.0`.
 

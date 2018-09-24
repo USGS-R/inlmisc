@@ -1,4 +1,4 @@
-LeafletWidget.methods.addSearchMarker = function(group, options) {
+LeafletWidget.methods.addSearchControl = function(group, options) {
   (function() {
     if(this.search) {
       this.search.removeFrom(this);
