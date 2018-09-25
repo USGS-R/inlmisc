@@ -215,7 +215,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
             "smooth rainbow"   = Inf)
   schemes <- names(nmax)
   scheme <- match.arg(scheme, schemes)
-  checkmate::assertInt(n, lower=1, upper=nmax[scheme])
+  if (!missing(n)) checkmate::assertInt(n, lower=1, upper=nmax[scheme])
   checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
   checkmate::assertNumber(start, lower=0, upper=1, finite=TRUE)
   checkmate::assertNumber(end, lower=start, upper=1, finite=TRUE)
@@ -233,6 +233,17 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
   if (nmax[scheme] < Inf && (start > 0 | end < 1))
     warning("'start' and 'end' apply only to interpolated color schemes")
 
+  if (missing(n)) {
+    Pal <- GetTolColors
+    formals(Pal) <- eval(substitute(
+      alist("n"=, "scheme"=a1, "alpha"=a2, "start"=a3, "end"=a4,
+            "bias"=a5, "reverse"=a6, "blind"=a7, "gray"=a8),
+      list(a1=scheme, a2=alpha, a3=start, a4=end,
+           a5=bias, a6=reverse, a7=blind, a8=gray)
+    ))
+    return(Pal)
+  }
+
   bad <- as.character(NA)
 
   if (scheme == "bright") {
@@ -248,8 +259,8 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
     pal <- c("blue"   = "#004488",
              "yellow" = "#DDAA33",
              "red"    = "#BB5566",
-             "white"  = "#FFFFFF",
-             "black"  = "#000000")
+             "black"  = "#000000",
+             "white"  = "#FFFFFF")
     if (gray) pal <- pal[c("white", "yellow", "red", "blue", "black")]
   } else if (scheme == "vibrant") {
     pal <- c("orange"  = "#EE7733",
