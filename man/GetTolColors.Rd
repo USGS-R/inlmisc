@@ -15,11 +15,11 @@ see \sQuote{Details} section for maximum values.}
 
 \item{scheme}{'character'.
 Color scheme name: specify
-\code{"bright"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
+\code{"bright"}, \code{"high-contrast"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
 \code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
 \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"} for a diverging color scheme; and
-\code{"YlOrBr"}, \code{"discrete rainbow"}, or \code{"smooth rainbow"} (the default)
-for a sequential color scheme.
+\code{"YlOrBr"}, \code{"iridescent"}, \code{"discrete rainbow"},
+or \code{"smooth rainbow"} (the default) for a sequential color scheme.
 Partial string matching is supported so argument may be abbreviated.}
 
 \item{alpha}{'numeric'.
@@ -29,8 +29,8 @@ Specify as \code{NULL} to exclude the alpha channel value from colors.}
 \item{start, end}{'numeric'.
 Starting and ending color level in the palette, respectively.
 Specified as a number in the interval from 0 to 1.
-Applies only to interpolated color schemes:
-\code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, and \code{"smooth rainbow"}.}
+Applies only to interpolated color schemes: \code{"sunset"}, \code{"BuRd"},
+\code{"PRGn"}, \code{"YlOrBr"}, \code{"iridescent"}, and \code{"smooth rainbow"}.}
 
 \item{bias}{'numeric'.
 Interpolation bias where larger values result in more widely spaced colors at the high end.
@@ -42,18 +42,22 @@ Whether to reverse the color order in the palette.}
 \item{blind}{'character'.
 Type of color blindness to simulate: specify \code{"deutan"} for green-blind vision,
 \code{"protan"} for red-blind vision, \code{"tritan"} for green-blue-blind vision, or
-\code{"monochromacy"} for total-color blindness.
+\code{"monochrome"} for total-color blindness.
 A partial-color blindness simulation requires that the \pkg{dichromat} package is available,
 see \code{\link[dichromat]{dichromat}} function for additional information.
 Partial string matching is supported so argument may be abbreviated.}
 
 \item{gray}{'logical'.
-Whether to subset the \code{"bright"}, \code{"vibrant"}, and \code{"muted"}
-color schemes to work after conversion to gray scale.}
+Whether to subset/reorder the \code{"bright"}, \code{"high-contrast"}, \code{"vibrant"},
+and \code{"muted"} schemes to work well after conversion to gray scale.}
 }
 \value{
-Returns an object of class 'Tol' that inherits behavior from the 'character' class.
-  The object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
+If argument \code{n} is specified,
+  returns an object of class 'Tol' that inherits behavior from the 'character' class;
+  and if \code{n} is unspecified, a variant of the \code{GetTolColors} function is
+  returned that has default (formal) argument values set equal to the values specified by the user.
+
+  The Tol-class object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
   Colors are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
@@ -72,19 +76,22 @@ Returns an object of class 'Tol' that inherits behavior from the 'character' cla
 \description{
 This function creates a vector of \code{n} colors from
 qualitative, diverging, and sequential color schemes by Paul Tol (2018).
+All colors are defined in sRGB color space.
 }
 \details{
 The maximum number of colors in a palette is:
+  \code{n = 5} for \code{"high-contrast"};
   \code{n = 6} for \code{"pale"} and \code{"dark"};
   \code{n = 8} for \code{"bright"} and \code{"vibrant"};
   \code{n = 10} for \code{"muted"}, \code{"light"}, \code{"YlOrBr"}, \code{"BuRd"}, and \code{"PRGn"};
   \code{n = 14} for \code{"ground cover"}; and
   \code{n = 24} for \code{"discrete rainbow"}.
-  For \code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, and \code{"smooth rainbow"},
-  a continuous version of the scheme is available that
+  For \code{"sunset"}, \code{"BuRd"}, \code{"PRGn"}, \code{"YlOrBr"}, \code{"iridescent"},
+  and \code{"smooth rainbow"}, a continuous version of the scheme is available that
   has no limit placed on the number of colors in a palette.
   The exception to these limits occurs when the \code{gray} argument is true: in that case
-  \code{n = 3} for \code{"bright"}, \code{n = 4} for \code{"vibrant"}, and \code{n = 5} for \code{"muted"}.
+  \code{n = 3} for \code{"bright"}, \code{n = 4} for \code{"vibrant"},
+  and \code{n = 5} for \code{"muted"}.
   Color schemes \code{"pale"},  \code{"dark"}, and \code{"ground cover"} are
   intended to be accessed in their entirety and subset using vector element names.
   The very specific \code{"ground cover"} scheme is a color-blind safe version of the
@@ -92,7 +99,8 @@ The maximum number of colors in a palette is:
   global land cover classification (Hansen and others, 1998).
 }
 \note{
-The sequential color scheme \code{"YlOrBr"} works well for conversion to gray scale.
+The sequential color schemes \code{"YlOrBr"} and \code{"iridescent"}
+  work well for conversion to gray scale.
 }
 \examples{
 
@@ -100,9 +108,13 @@ cols <- GetTolColors(n = 10)
 print(cols)
 plot(cols)
 
+Pal <- GetTolColors(scheme = "YlOrBr", alpha = 0.9)
+graphics::filled.contour(datasets::volcano, color.palette = Pal, asp = 1)
+
 # Qualitative color schemes (scheme)
-op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
+op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
 plot(GetTolColors(7, scheme = "bright"))
+plot(GetTolColors(5, scheme = "high-contrast"))
 plot(GetTolColors(7, scheme = "vibrant"))
 plot(GetTolColors(9, scheme = "muted"))
 plot(GetTolColors(6, scheme = "pale"))
@@ -125,9 +137,11 @@ plot(GetTolColors(255, scheme = "PRGn"))
 par(op)
 
 # Sequential color schemes (scheme)
-op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
+op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
 plot(GetTolColors(  9, scheme = "YlOrBr"))
 plot(GetTolColors(255, scheme = "YlOrBr"))
+plot(GetTolColors( 23, scheme = "iridescent"))
+plot(GetTolColors(255, scheme = "iridescent"))
 plot(GetTolColors( 23, scheme = "discrete rainbow"))
 plot(GetTolColors( 34, scheme = "smooth rainbow"))
 plot(GetTolColors(255, scheme = "smooth rainbow"))
@@ -173,17 +187,19 @@ plot(GetTolColors(34, blind = NULL))
 plot(GetTolColors(34, blind = "deutan"))
 plot(GetTolColors(34, blind = "protan"))
 plot(GetTolColors(34, blind = "tritan"))
-plot(GetTolColors(34, blind = "monochromacy"))
+plot(GetTolColors(34, blind = "monochrome"))
 par(op)
 
 # Gray-scale preparation (gray)
-op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-plot(GetTolColors(3, "bright",  gray = TRUE))
-plot(GetTolColors(3, "bright",  gray = TRUE, blind = "m"))
-plot(GetTolColors(4, "vibrant", gray = TRUE))
-plot(GetTolColors(4, "vibrant", gray = TRUE, blind = "m"))
-plot(GetTolColors(5, "muted",   gray = TRUE))
-plot(GetTolColors(5, "muted",   gray = TRUE, blind = "m"))
+op <- par(mfrow = c(8, 1), oma = c(0, 0, 0, 0))
+plot(GetTolColors(3, "bright",        gray = TRUE))
+plot(GetTolColors(3, "bright",        gray = TRUE, blind = "monochrome"))
+plot(GetTolColors(5, "high-contrast", gray = TRUE))
+plot(GetTolColors(5, "high-contrast", gray = TRUE, blind = "monochrome"))
+plot(GetTolColors(4, "vibrant",       gray = TRUE))
+plot(GetTolColors(4, "vibrant",       gray = TRUE, blind = "monochrome"))
+plot(GetTolColors(5, "muted",         gray = TRUE))
+plot(GetTolColors(5, "muted",         gray = TRUE, blind = "monochrome"))
 par(op)
 
 }
@@ -193,8 +209,8 @@ Hansen, M., DeFries, R., Townshend, J.R.G., and Sohlberg, R., 1998,
   Department of Geography, University of Maryland, College Park, Maryland, 1981-1994.
 
   Tol, Paul, 2018, Colour Schemes:
-  SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.0, 17 p.,
-  accessed August 29, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
+  SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.1, 20 p.,
+  accessed September 24, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
 }
 \seealso{
 \code{\link[grDevices]{col2rgb}}
