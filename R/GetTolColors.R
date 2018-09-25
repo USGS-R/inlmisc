@@ -525,7 +525,7 @@ plot.Tol <- function(x, ...) {
   n <- length(x)
   arg <- as.list(attr(x, "call"))
 
-  txt <- c(paste0("n = ", arg$n),
+  txt <- c(paste0("n = ", n),
            paste0("scheme = '", arg$scheme, "'"),
            paste0("alpha = ", arg$alpha),
            paste0("start = ", arg$start, ", end = ", arg$end),
