@@ -52,8 +52,12 @@ Whether to subset/reorder the \code{"bright"}, \code{"high-contrast"}, \code{"vi
 and \code{"muted"} schemes to work well after conversion to gray scale.}
 }
 \value{
-Returns an object of class 'Tol' that inherits behavior from the 'character' class.
-  The object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
+If argument \code{n} is specified,
+  returns an object of class 'Tol' that inherits behavior from the 'character' class;
+  and if \code{n} is unspecified, a variant of the \code{GetTolColors} function is
+  returned that has default (formal) argument values set equal to the values specified by the user.
+
+  The Tol-class object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
   Colors are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
@@ -103,6 +107,9 @@ The sequential color schemes \code{"YlOrBr"} and \code{"iridescent"}
 cols <- GetTolColors(n = 10)
 print(cols)
 plot(cols)
+
+Pal <- GetTolColors(scheme = "YlOrBr", alpha = 0.9)
+graphics::filled.contour(datasets::volcano, color.palette = Pal, asp = 1)
 
 # Qualitative color schemes (scheme)
 op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))

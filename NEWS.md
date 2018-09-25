@@ -1,7 +1,8 @@
 # inlmisc 0.4.3.9000
 
-- In `GetTolColors` function: add `"high-contrast"` and `"iridescent"` schemes,
-  and change `blind` argument option from `"monochromacy"` to `"monochrome"`.
+- In `GetTolColors` function: add `"high-contrast"` and `"iridescent"` schemes;
+  change `blind` argument option from `"monochromacy"` to `"monochrome"`; and
+  when argument `n` is unspecified, return a variant of the `GetTolColors` function.
 
 - For leaflet-search plugin, change version from `2.8.0` to `2.9.6` and tidy wrapper functions.
 
