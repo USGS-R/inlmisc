@@ -557,11 +557,11 @@ plot.Tol <- function(x, ...) {
           arg$bias != 1, arg$reverse, !is.null(arg$blind), arg$gray)
   main <- paste(txt[is], collapse=", ")
 
+  border <- "#D3D3D3"
   if (n > 34) {  # cutoff criterion for drawing tick labels
     border <- NA
     labels <- FALSE
   } else {
-    border <- "#D3D3D3"
     labels <- gsub(" ", "\n", names(x))
     if (length(labels) == 0) {
       labels <- seq_along(x)
@@ -580,7 +580,7 @@ plot.Tol <- function(x, ...) {
   graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=x, border=border, lwd=0.5)
   graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels, tick=FALSE,
                  line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
-  graphics::box(lwd=0.5, col="#D3D3D3")
+  graphics::box(lwd=0.5, col=border)
 
   invisible()
 }
