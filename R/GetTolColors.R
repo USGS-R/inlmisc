@@ -204,6 +204,7 @@
 GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
                          bias=1, reverse=FALSE, blind=NULL, gray=FALSE) {
 
+  if (!missing(n)) checkmate::assertCount(n, positive=TRUE)
   checkmate::assertFlag(gray)
   nmax <- c("bright"           = ifelse(gray, 3, 7),  # qualitative
             "vibrant"          = ifelse(gray, 4, 7),
@@ -220,9 +221,10 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
             "iridescent"       = Inf,
             "discrete rainbow" = 23,
             "smooth rainbow"   = Inf)
-  schemes <- names(nmax)
-  scheme <- match.arg(scheme, schemes)
-  if (!missing(n)) checkmate::assertInt(n, lower=1, upper=nmax[scheme])
+  scheme <- match.arg(scheme, names(nmax))
+  if (!missing(n) && n > nmax[scheme])
+    stop("n = ", n, " exceeds the maximum number of colors in palette: ",
+         nmax[scheme], " for '", scheme, "' scheme.")
   checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
   checkmate::assertNumber(start, lower=0, upper=1, finite=TRUE)
   checkmate::assertNumber(end, lower=start, upper=1, finite=TRUE)
