@@ -82,8 +82,8 @@ Factors require a color for each level.}
 
 \item{max.dev.dim}{'numeric'.
 Vector of length 2 giving the maximum width and height for the graphics device in picas, respectively.
-Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimetre, or 12 points.
-Suggested dimensions for single-column, double-column, and sidetitle figures are
+Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimeter, or 12 points.
+Suggested dimensions for single-column, double-column, and side title figures are
 \code{c(21, 56)}, \code{c(43, 56)}, and \code{c(56, 43)}, respectively.
 This argument is only applicable when the \code{file} argument is specified.}
 

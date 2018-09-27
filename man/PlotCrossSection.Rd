@@ -11,23 +11,24 @@ PlotCrossSection(transect, rs, geo.lays = names(rs), val.lays = NULL,
   explanation = NULL, features = NULL, max.feature.dist = Inf,
   draw.key = TRUE, draw.sep = TRUE, is.categorical = FALSE,
   contour.lines = NULL, bg.col = "#E1E1E1", wt.col = "#FFFFFFD8",
-  scale.loc = "bottom", file = NULL)
+  bend.label = "BEND", scale.loc = "bottom", file = NULL)
 }
 \arguments{
 \item{transect}{'SpatialLines'.
 Piecewise linear transect line.}
 
-\item{rs}{'RasterStack'.
-Collection of \code{RasterLayer} objects with the same extent and resolution.}
+\item{rs}{'RasterStack' or 'RasterBrick'.
+Collection of raster layers with the same extent and resolution.}
 
 \item{geo.lays}{'character'.
-Vector of names in \code{rs} that specify the geometry raster layers;
+Vector of names in \code{rs} that specify the geometry-raster layers;
 these must be given in decreasing order, that is,
 from the upper most (such as land surface) to the lowest (such as a bedrock surface).}
 
 \item{val.lays}{'character'.
-Vector of names in \code{rs} that specify the value raster layers (optional).
-Values from the first layer are mapped as colors to the area between the first and second geometry layers;
+Vector of names in \code{rs} that specify the value-raster layers (optional).
+Values from the first layer are mapped as colors to
+the area between the first and second geometry layers;
 the second layer mapped between the second and third geometry layers, and so on.}
 
 \item{wt.lay}{'character'.
@@ -43,8 +44,8 @@ Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.}
 
 \item{max.dev.dim}{'numeric'.
 Vector of length 2 giving the maximum width and height for the graphics device in picas, respectively.
-Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimetre, or 12 points.
-Suggested dimensions for single-column, double-column, and sidetitle figures are
+Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimeter, or 12 points.
+Suggested dimensions for single-column, double-column, and side title figures are
 \code{c(21, 56)}, \code{c(43, 56)}, and \code{c(56, 43)}, respectively.
 This argument is only applicable when the \code{file} argument is specified.}
 
@@ -59,7 +60,8 @@ Color palette to be used to assign colors in the plot.}
 
 \item{col}{'character'.
 Vector of colors to be used in the plot.
-This argument requires \code{breaks} specification for numeric raster values and overrides any palette function specification.
+This argument requires \code{breaks} specification for numeric raster values
+and overrides any palette function specification.
 For numeric values there should be one less color than breaks.
 Categorical data require a color for each category.}
 
@@ -80,8 +82,10 @@ This list may include components \code{at} and \code{labels}.}
 \item{explanation}{'character'.
 Label explaining the raster cell value.}
 
-\item{features}{'SpatialGridDataFrame'.
-Point features adjacent to the transect line that are used as reference labels for the upper geometry layer.}
+\item{features}{'SpatialPointsDataFrame'.
+Point features adjacent to the transect line that are used
+as reference labels for the upper geometry layer.
+Labels taken from first column of embedded data table.}
 
 \item{max.feature.dist}{'numeric'.
 Maximum distance from a point feature to the transect line,
@@ -103,10 +107,14 @@ The contours are described using a list of arguments supplied to the \code{\link
 Passed arguments include \code{drawlables}, \code{method}, and \code{col}.}
 
 \item{bg.col}{'character'.
-Color used for the background of the area below the upper geometry raster layer.}
+Color used for the background of the area below the bottom geometry-raster layer.}
 
 \item{wt.col}{'character'.
 Color used for the water-table line.}
+
+\item{bend.label}{'character'.
+Vector of labels to place at top of the bend-in-section lines,
+values are recycled as necessary to the number of bends.}
 
 \item{scale.loc}{'character'.
 Position of the scale bar in the main plot region;
@@ -148,17 +156,26 @@ names(rs) <- c("r1", "r2", "r3")
 xy <- rbind(c(2667508, 6479501), c(2667803, 6479214), c(2667508, 6478749))
 transect <- sp::SpatialLines(list(sp::Lines(list(sp::Line(xy)), ID = "Transect")),
                              proj4string = raster::crs(rs))
+xy <- rbind(c(2667705, 6478897), c(2667430, 6479178))
+p <- sp::SpatialPoints(xy, proj4string = raster::crs(rs))
+d <-  data.frame("label" = c("Peak", "Random"))
+features <- sp::SpatialPointsDataFrame(p, d, match.ID = TRUE)
 PlotMap(r1, pal = terrain.colors, scale.loc = "top", arrow.loc = "topright",
         shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1FA6"))
-lines(transect)
+graphics::lines(transect)
 raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
-             cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
+             halo = TRUE, cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
+graphics::points(features, pch = 19)
+raster::text(features, labels = features@data$label, halo = TRUE,
+             cex = 0.7, pos = 4, offset = 0.5, font = 4)
 
 dev.new()
 explanation <- "Vertical thickness between layers, in meters."
 PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
                  ylab = "Elevation", asp = 5, unit = "METERS",
-                 explanation = explanation, scale.loc = "bottomright")
+                 explanation = explanation, features = features,
+                 max.feature.dist = 100, bend.label = "BEND IN\\nSECTION",
+                 scale.loc = "bottomright")
 
 val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
                         ylab = "Elevation", asp = 5, unit = "METERS",
