@@ -53,7 +53,8 @@ This argument is only applicable when the \code{file} argument is specified.}
 Desired number of intervals to partition the range of raster values (optional).}
 
 \item{breaks}{'numeric'.
-Vector of break points used to partition the colors representing numeric raster values (optional).}
+Vector of break points used to partition the colors representing
+numeric raster values (optional).}
 
 \item{pal}{'function'.
 Color palette to be used to assign colors in the plot.}
@@ -134,7 +135,8 @@ Used for the side-effect of a new plot generated.
   \describe{
     \item{din}{device dimensions \code{(width, height)}, in inches.}
     \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}
-    \item{heights}{relative heights on the device \code{(upper, lower)} for the map and color-key plots.}
+    \item{heights}{relative heights on the device \code{(upper, lower)}
+      for the map and color-key plots.}
   }
 }
 \description{
@@ -170,12 +172,15 @@ raster::text(features, labels = features@data$label, halo = TRUE,
              cex = 0.7, pos = 4, offset = 0.5, font = 4)
 
 dev.new()
+asp <- 5
+unit <- "METERS"
 explanation <- "Vertical thickness between layers, in meters."
 PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
-                 ylab = "Elevation", asp = 5, unit = "METERS",
+                 ylab = "Elevation", asp = asp, unit = unit,
                  explanation = explanation, features = features,
                  max.feature.dist = 100, bend.label = "BEND IN\\nSECTION",
-                 scale.loc = "bottomright")
+                 scale.loc = NULL)
+AddScaleBar(unit = unit, vert.exag =  asp, inset = 0.05)
 
 val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
                         ylab = "Elevation", asp = 5, unit = "METERS",
@@ -187,7 +192,8 @@ graphics.off()
 
 }
 \seealso{
-\code{\link{AddScaleBar}}, \code{\link{AddColorKey}}, \code{\link{ExtractAlongTransect}}
+\code{\link{AddScaleBar}}, \code{\link{AddColorKey}},
+  \code{\link{ExtractAlongTransect}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

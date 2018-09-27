@@ -22,7 +22,8 @@
 #' @param n 'integer'.
 #'   Desired number of intervals to partition the range of raster values (optional).
 #' @param breaks 'numeric'.
-#'   Vector of break points used to partition the colors representing numeric raster values (optional).
+#'   Vector of break points used to partition the colors representing
+#'   numeric raster values (optional).
 #' @param col 'character'.
 #'   Vector of colors to be used in the plot.
 #'   This argument requires \code{breaks} specification for numeric raster values
@@ -62,12 +63,14 @@
 #'   \describe{
 #'     \item{din}{device dimensions \code{(width, height)}, in inches.}
 #'     \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}
-#'     \item{heights}{relative heights on the device \code{(upper, lower)} for the map and color-key plots.}
+#'     \item{heights}{relative heights on the device \code{(upper, lower)}
+#'       for the map and color-key plots.}
 #'   }
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link{AddScaleBar}}, \code{\link{AddColorKey}}, \code{\link{ExtractAlongTransect}}
+#' @seealso \code{\link{AddScaleBar}}, \code{\link{AddColorKey}},
+#'   \code{\link{ExtractAlongTransect}}
 #'
 #' @keywords hplot
 #'
@@ -103,12 +106,15 @@
 #'              cex = 0.7, pos = 4, offset = 0.5, font = 4)
 #'
 #' dev.new()
+#' asp <- 5
+#' unit <- "METERS"
 #' explanation <- "Vertical thickness between layers, in meters."
 #' PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
-#'                  ylab = "Elevation", asp = 5, unit = "METERS",
+#'                  ylab = "Elevation", asp = asp, unit = unit,
 #'                  explanation = explanation, features = features,
 #'                  max.feature.dist = 100, bend.label = "BEND IN\nSECTION",
-#'                  scale.loc = "bottomright")
+#'                  scale.loc = NULL)
+#' AddScaleBar(unit = unit, vert.exag =  asp, inset = 0.05)
 #'
 #' val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
 #'                         ylab = "Elevation", asp = 5, unit = "METERS",
@@ -141,12 +147,14 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   checkmate::assertNumeric(ylim, len=2, unique=TRUE, sorted=TRUE, null.ok=TRUE)
   checkmate::assertNumeric(max.dev.dim, len=2)
   checkmate::assertCount(n, positive=TRUE, null.ok=TRUE)
-  checkmate::assertNumeric(breaks, any.missing=FALSE, min.len=2, unique=TRUE, sorted=TRUE, null.ok=TRUE)
+  checkmate::assertNumeric(breaks, any.missing=FALSE, min.len=2, unique=TRUE,
+                           sorted=TRUE, null.ok=TRUE)
   checkmate::assertFunction(pal, null.ok=TRUE)
   checkmate::assertCharacter(col, null.ok=TRUE)
   checkmate::assertString(ylab, null.ok=TRUE)
   checkmate::assertString(unit, null.ok=TRUE)
-  checkmate::assertCharacter(id, min.chars=1, any.missing=FALSE, min.len=1, max.len=2, null.ok=TRUE)
+  checkmate::assertCharacter(id, min.chars=1, any.missing=FALSE,
+                             min.len=1, max.len=2, null.ok=TRUE)
   checkmate::assertList(labels, null.ok=TRUE)
   checkmate::assertString(explanation, null.ok=TRUE)
   checkmate::assertClass(features, "SpatialPointsDataFrame", null.ok=TRUE)
@@ -347,7 +355,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   scipen <- getOption("scipen", default=0)
   ylabs <- ToScientific(yat, scipen=scipen, type="plotmath")
   graphics::axis(4, at=yat, labels=FALSE, lwd=0, lwd.ticks=lwd, tcl=tcl)
-  graphics::axis(2, at=yat, labels=ylabs, lwd=0, lwd.ticks=lwd, tcl=tcl, cex.axis=cex, las=1)
+  graphics::axis(2, at=yat, labels=ylabs, lwd=0, lwd.ticks=lwd, tcl=tcl,
+                 cex.axis=cex, las=1)
 
   if (!is.null(ylab)) {
     line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]
@@ -368,7 +377,6 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     graphics::mtext(id[2], at=usr[2], cex=cex, line=1, adj=0.5, font=4)
   }
 
-  graphics::par(xpd=TRUE)
   y <- unlist(lapply(eat, function(i) i@data[[geo.lays[1]]]))
   GetGeoTop <- stats::approxfun(x, y)
   pady <- graphics::strheight("M", cex=1) * 1.5
@@ -379,10 +387,10 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   for (i in seq_along(dist.to.bend)) {
     d <- dist.to.bend[i]
     y <- GetGeoTop(d)
-    graphics::lines(c(d, d), c(usr[3], y + pady), lwd=0.3, col="#999999")
+    graphics::lines(c(d, d), c(usr[3], y + pady), lwd=0.3, col="#999999", xpd=TRUE)
     if (is.character(bend.label[i]))
       graphics::text(d, y + pady * 1.5, bend.label[i], adj=c(0, 0.5),
-                     col="#999999", cex=0.6, srt=90)
+                     col="#999999", cex=0.6, srt=90, xpd=TRUE)
   }
   if (!is.null(features)) {
     tran.pts <- do.call("rbind", eat)
@@ -393,16 +401,15 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
       if (dist.to.transect[idx] > max.feature.dist) next
       d <- x[idx]
       y <- GetGeoTop(d)
-      graphics::lines(c(d, d), c(y, y + pady), lwd=0.3)
+      graphics::lines(c(d, d), c(y, y + pady), lwd=0.3, xpd=TRUE)
       label <- format(pnt@data[1, 1])
-      graphics::text(d, y + pady * 1.5, label, adj=c(0, 0.5), cex=cex, srt=90)
+      graphics::text(d, y + pady * 1.5, label, adj=c(0, 0.5), cex=cex, srt=90, xpd=TRUE)
     }
   }
-  graphics::par(xpd=FALSE)
 
-  vert.exag <- ifelse(asp == 1, NULL, asp)
   if (!is.null(scale.loc))
-    AddScaleBar(unit=unit, vert.exag=vert.exag, loc=scale.loc, inset=c(0.1, 0.05))
+    AddScaleBar(unit=unit, vert.exag=ifelse(asp == 1, NULL, asp),
+                loc=scale.loc, inset=c(0.1, 0.05))
 
   invisible(list(din=graphics::par("din"), usr=usr, heights=c(h2, h1) / h))
 }
