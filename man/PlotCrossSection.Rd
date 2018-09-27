@@ -180,7 +180,7 @@ PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
                  explanation = explanation, features = features,
                  max.feature.dist = 100, bend.label = "BEND IN\\nSECTION",
                  scale.loc = NULL)
-AddScaleBar(unit = unit, vert.exag =  asp, inset = 0.05)
+AddScaleBar(unit = unit, vert.exag = asp, inset = 0.05)
 
 val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
                         ylab = "Elevation", asp = 5, unit = "METERS",
