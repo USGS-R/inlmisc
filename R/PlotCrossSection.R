@@ -6,15 +6,16 @@
 #'
 #' @param transect 'SpatialLines'.
 #'   Piecewise linear transect line.
-#' @param rs 'RasterStack'.
-#'   Collection of \code{RasterLayer} objects with the same extent and resolution.
+#' @param rs 'RasterStack' or 'RasterBrick'.
+#'   Collection of raster layers with the same extent and resolution.
 #' @param geo.lays 'character'.
-#'   Vector of names in \code{rs} that specify the geometry raster layers;
+#'   Vector of names in \code{rs} that specify the geometry-raster layers;
 #'   these must be given in decreasing order, that is,
 #'   from the upper most (such as land surface) to the lowest (such as a bedrock surface).
 #' @param val.lays 'character'.
-#'   Vector of names in \code{rs} that specify the value raster layers (optional).
-#'   Values from the first layer are mapped as colors to the area between the first and second geometry layers;
+#'   Vector of names in \code{rs} that specify the value-raster layers (optional).
+#'   Values from the first layer are mapped as colors to
+#'   the area between the first and second geometry layers;
 #'   the second layer mapped between the second and third geometry layers, and so on.
 #' @param wt.lay 'character'.
 #'   The name in \code{rs} that specifies the water-table raster layer (optional).
@@ -24,7 +25,8 @@
 #'   Vector of break points used to partition the colors representing numeric raster values (optional).
 #' @param col 'character'.
 #'   Vector of colors to be used in the plot.
-#'   This argument requires \code{breaks} specification for numeric raster values and overrides any palette function specification.
+#'   This argument requires \code{breaks} specification for numeric raster values
+#'   and overrides any palette function specification.
 #'   For numeric values there should be one less color than breaks.
 #'   Categorical data require a color for each category.
 #' @param ylab 'character'.
@@ -34,8 +36,10 @@
 #' @param id 'character'.
 #'   Vector of length 2 giving the labels for the end points of the transect line,
 #'   defaults to \emph{A--A'}.
-#' @param features 'SpatialGridDataFrame'.
-#'   Point features adjacent to the transect line that are used as reference labels for the upper geometry layer.
+#' @param features 'SpatialPointsDataFrame'.
+#'   Point features adjacent to the transect line that are used
+#'   as reference labels for the upper geometry layer.
+#'   Labels taken from first column of embedded data table.
 #' @param max.feature.dist 'numeric'.
 #'   Maximum distance from a point feature to the transect line,
 #'   specified in the units of the \code{rs} projection.
@@ -45,9 +49,12 @@
 #'   If true, cell values in \code{val.lays} represent categorical data;
 #'   otherwise, these data values are assumed continuous.
 #' @param bg.col 'character'.
-#'   Color used for the background of the area below the upper geometry raster layer.
+#'   Color used for the background of the area below the bottom geometry-raster layer.
 #' @param wt.col 'character'.
 #'   Color used for the water-table line.
+#' @param bend.label 'character'.
+#'   Vector of labels to place at top of the bend-in-section lines,
+#'   values are recycled as necessary to the number of bends.
 #' @inheritParams PlotMap
 #'
 #' @return Used for the side-effect of a new plot generated.
@@ -82,17 +89,26 @@
 #' xy <- rbind(c(2667508, 6479501), c(2667803, 6479214), c(2667508, 6478749))
 #' transect <- sp::SpatialLines(list(sp::Lines(list(sp::Line(xy)), ID = "Transect")),
 #'                              proj4string = raster::crs(rs))
+#' xy <- rbind(c(2667705, 6478897), c(2667430, 6479178))
+#' p <- sp::SpatialPoints(xy, proj4string = raster::crs(rs))
+#' d <-  data.frame("label" = c("Peak", "Random"))
+#' features <- sp::SpatialPointsDataFrame(p, d, match.ID = TRUE)
 #' PlotMap(r1, pal = terrain.colors, scale.loc = "top", arrow.loc = "topright",
 #'         shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1FA6"))
-#' lines(transect)
+#' graphics::lines(transect)
 #' raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
-#'              cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
+#'              halo = TRUE, cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
+#' graphics::points(features, pch = 19)
+#' raster::text(features, labels = features@data$label, halo = TRUE,
+#'              cex = 0.7, pos = 4, offset = 0.5, font = 4)
 #'
 #' dev.new()
 #' explanation <- "Vertical thickness between layers, in meters."
 #' PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
 #'                  ylab = "Elevation", asp = 5, unit = "METERS",
-#'                  explanation = explanation, scale.loc = "bottomright")
+#'                  explanation = explanation, features = features,
+#'                  max.feature.dist = 100, bend.label = "BEND IN\nSECTION",
+#'                  scale.loc = "bottomright")
 #'
 #' val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
 #'                         ylab = "Elevation", asp = 5, unit = "METERS",
@@ -110,17 +126,40 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
                              id=c("A", "A'"), labels=NULL, explanation=NULL,
                              features=NULL, max.feature.dist=Inf, draw.key=TRUE,
                              draw.sep=TRUE, is.categorical=FALSE,
-                             contour.lines=NULL, bg.col="#E1E1E1",
-                             wt.col="#FFFFFFD8", scale.loc="bottom", file=NULL) {
+                             contour.lines=NULL, bg.col="#E1E1E1", wt.col="#FFFFFFD8",
+                             bend.label="BEND", scale.loc="bottom", file=NULL) {
 
-  if (!inherits(transect, "SpatialLines"))
-    stop("incorrect class for 'transect' argument")
-  if (!inherits(rs, c("RasterStack", "RasterBrick")))
-    stop("incorrect class for 'rs' argument")
-  if (!all(c(geo.lays, val.lays) %in% names(rs)))
-    stop("layer names not found in raster stack")
-  if (length(val.lays) >= length(geo.lays))
-    stop("number of value layers is greater than the number of geometry layers")
+  # check arguments
+  checkmate::assertClass(transect, "SpatialLines")
+  stopifnot(inherits(rs, c("RasterStack", "RasterBrick")))
+  checkmate::assertCharacter(geo.lays, any.missing=FALSE, min.len=2)
+  checkmate::assertCharacter(val.lays, any.missing=FALSE, min.len=1, null.ok=TRUE)
+  checkmate::assertSubset(c(geo.lays, val.lays), names(rs))
+  stopifnot(length(geo.lays) > length(val.lays))
+  checkmate::assertString(wt.lay, null.ok=TRUE)
+  checkmate::assertNumber(asp, lower=0)
+  checkmate::assertNumeric(ylim, len=2, unique=TRUE, sorted=TRUE, null.ok=TRUE)
+  checkmate::assertNumeric(max.dev.dim, len=2)
+  checkmate::assertCount(n, positive=TRUE, null.ok=TRUE)
+  checkmate::assertNumeric(breaks, any.missing=FALSE, min.len=2, unique=TRUE, sorted=TRUE, null.ok=TRUE)
+  checkmate::assertFunction(pal, null.ok=TRUE)
+  checkmate::assertCharacter(col, null.ok=TRUE)
+  checkmate::assertString(ylab, null.ok=TRUE)
+  checkmate::assertString(unit, null.ok=TRUE)
+  checkmate::assertCharacter(id, min.chars=1, any.missing=FALSE, min.len=1, max.len=2, null.ok=TRUE)
+  checkmate::assertList(labels, null.ok=TRUE)
+  checkmate::assertString(explanation, null.ok=TRUE)
+  checkmate::assertClass(features, "SpatialPointsDataFrame", null.ok=TRUE)
+  checkmate::assertNumber(max.feature.dist, lower=0)
+  checkmate::assertFlag(draw.key)
+  checkmate::assertFlag(draw.sep)
+  checkmate::assertFlag(is.categorical)
+  checkmate::assertList(contour.lines, null.ok=TRUE)
+  checkmate::assertString(bg.col, null.ok=TRUE)
+  checkmate::assertString(wt.col)
+  checkmate::assertCharacter(bend.label , min.len=1, null.ok=TRUE)
+  checkmate::assertString(scale.loc, null.ok=TRUE)
+  if (!is.null(file)) checkmate::assertPathForOutput(file, overwrite=TRUE)
 
   transect <- sp::spTransform(transect, raster::crs(rs))
   rs <- raster::crop(rs, raster::extent(as.vector(t(sp::bbox(transect)))), snap="out")
@@ -146,21 +185,21 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
 
   at <- NULL
   if (!is.null(cell.values)) {
-    if (!is.function(pal))
+    if (is.null(pal))
       pal <- function(n) GetTolColors(n, start=0.3, end=0.9)
     if (is.categorical) {
       unique.vals <- sort(unique(cell.values))
       at <- seq_along(unique.vals)
-      if (!is.character(col)) col <- pal(length(at))
+      if (is.null(col)) col <- pal(length(at))
       cell.cols <- col[match(cell.values, unique.vals)]
     } else {
-      if (!is.numeric(n)) n <- 200L
-      if (!is.numeric(breaks)) {
+      if (is.null(n)) n <- 200L
+      if (is.null(breaks)) {
         at <- pretty(cell.values)
         breaks <- seq(min(at), max(at), length.out=n)
       }
       intervals <- findInterval(cell.values, breaks, all.inside=TRUE)
-      if (!is.character(col)) col <- pal(length(breaks) - 1L)
+      if (is.null(col)) col <- pal(length(breaks) - 1L)
       cell.cols <- col[intervals]
     }
     cols <- unique(cell.cols)
@@ -185,7 +224,6 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   default.ylim <- range(pretty(range(y, na.rm=TRUE)))
   if (is.na(ylim[1])) ylim[1] <- default.ylim[1]
   if (is.na(ylim[2])) ylim[2] <- default.ylim[2]
-
 
   csi <- 0.2  # assumed line height in inches
   mai2 <- c(0.6, 4.6, 4, 2) * csi
@@ -257,7 +295,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     ylim <- usr[3:4]
   }
 
-  if (is.character(bg.col)) {
+  if (!is.null(bg.col)) {
     bg.poly <- sp::SpatialPolygons(list(sp::Polygons(lapply(eat, function(i) {
       m <- cbind(x=i@data[[1]], y=i@data[[2]])
       m <- rbind(m, cbind(rev(range(m[, "x"], na.rm=TRUE)), usr[3]), m[1, , drop=FALSE])
@@ -278,7 +316,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     graphics::matplot(s@data[["dist"]], s@data[, lays], xaxt="n", yaxt="n",
                       type="l", lty=1, lwd=lwd, col="#1F1F1F", add=TRUE)
 
-  if (is.list(contour.lines)) {
+  if (!is.null(contour.lines)) {
     e <- raster::extent(cell.polys.merged)
     nc <- 200
     dx <- diff(e[1:2]) / nc
@@ -324,7 +362,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
 
   if (!is.null(unit)) graphics::mtext(unit, at=usr[1], cex=cex, line=0.2, adj=1)
 
-  if (is.character(id)) {
+  if (!is.null(id)) {
     if (length(id) == 1) id <- c(id, paste0(id, "'"))
     graphics::mtext(id[1], at=usr[1], cex=cex, line=1, adj=0.5, font=4)
     graphics::mtext(id[2], at=usr[2], cex=cex, line=1, adj=0.5, font=4)
@@ -333,13 +371,18 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   graphics::par(xpd=TRUE)
   y <- unlist(lapply(eat, function(i) i@data[[geo.lays[1]]]))
   GetGeoTop <- stats::approxfun(x, y)
-  pady <- diff(usr[3:4]) * 0.02
+  pady <- graphics::strheight("M", cex=1) * 1.5
   d <- as.matrix(stats::dist(sp::coordinates(methods::as(transect, "SpatialPoints"))))[, 1]
-  dist.to.bend <- utils::head(d[-1], -1)
-  for (d in dist.to.bend) {
+  dist.to.bend <- d[-c(1, length(d))]
+  if (!is.null(bend.label))
+    bend.label <- rep(bend.label, length.out=length(dist.to.bend))
+  for (i in seq_along(dist.to.bend)) {
+    d <- dist.to.bend[i]
     y <- GetGeoTop(d)
     graphics::lines(c(d, d), c(usr[3], y + pady), lwd=0.3, col="#999999")
-    graphics::text(d, y + pady, "BEND", adj=c(-0.1, 0.5), col="#999999", cex=0.6, srt=90)
+    if (is.character(bend.label[i]))
+      graphics::text(d, y + pady * 1.5, bend.label[i], adj=c(0, 0.5),
+                     col="#999999", cex=0.6, srt=90)
   }
   if (!is.null(features)) {
     tran.pts <- do.call("rbind", eat)
@@ -352,7 +395,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
       y <- GetGeoTop(d)
       graphics::lines(c(d, d), c(y, y + pady), lwd=0.3)
       label <- format(pnt@data[1, 1])
-      graphics::text(d, y + pady, label, adj=c(-0.1, 0.5), cex=cex, srt=90)
+      graphics::text(d, y + pady * 1.5, label, adj=c(0, 0.5), cex=cex, srt=90)
     }
   }
   graphics::par(xpd=FALSE)

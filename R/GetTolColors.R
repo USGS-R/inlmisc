@@ -204,6 +204,7 @@
 GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
                          bias=1, reverse=FALSE, blind=NULL, gray=FALSE) {
 
+  if (!missing(n)) checkmate::assertCount(n, positive=TRUE)
   checkmate::assertFlag(gray)
   nmax <- c("bright"           = ifelse(gray, 3, 7),  # qualitative
             "vibrant"          = ifelse(gray, 4, 7),
@@ -220,12 +221,14 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
             "iridescent"       = Inf,
             "discrete rainbow" = 23,
             "smooth rainbow"   = Inf)
-  schemes <- names(nmax)
-  scheme <- match.arg(scheme, schemes)
-  if (!missing(n)) checkmate::assertInt(n, lower=1, upper=nmax[scheme])
+  scheme <- match.arg(scheme, names(nmax))
+  if (!missing(n) && n > nmax[scheme])
+    stop("n = ", n, " exceeds the maximum number of colors in palette: ",
+         nmax[scheme], " for '", scheme, "' scheme.")
   checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
   checkmate::assertNumber(start, lower=0, upper=1, finite=TRUE)
-  checkmate::assertNumber(end, lower=start, upper=1, finite=TRUE)
+  checkmate::assertNumber(end,   lower=0, upper=1, finite=TRUE)
+  if (start >= end) stop("'start' greater than or equal to 'end'")
   checkmate::qassert(bias, "N1(0,)")
   checkmate::assertString(blind, min.chars=1, null.ok=TRUE)
   checkmate::assertFlag(reverse)
@@ -555,11 +558,11 @@ plot.Tol <- function(x, ...) {
           arg$bias != 1, arg$reverse, !is.null(arg$blind), arg$gray)
   main <- paste(txt[is], collapse=", ")
 
+  border <- "#D3D3D3"
   if (n > 34) {  # cutoff criterion for drawing tick labels
     border <- NA
     labels <- FALSE
   } else {
-    border <- "#D3D3D3"
     labels <- gsub(" ", "\n", names(x))
     if (length(labels) == 0) {
       labels <- seq_along(x)
@@ -578,7 +581,7 @@ plot.Tol <- function(x, ...) {
   graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=x, border=border, lwd=0.5)
   graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels, tick=FALSE,
                  line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
-  graphics::box(lwd=0.5, col="#D3D3D3")
+  graphics::box(lwd=0.5, col=border)
 
   invisible()
 }
