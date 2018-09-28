@@ -107,7 +107,7 @@
 #' plot(cols)
 #'
 #' Pal <- GetTolColors(scheme = "YlOrBr", alpha = 0.9)
-#' graphics::filled.contour(datasets::volcano, color.palette = Pal, asp = 1)
+#' filled.contour(datasets::volcano, color.palette = Pal)
 #'
 #' # Qualitative color schemes (scheme)
 #' op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))

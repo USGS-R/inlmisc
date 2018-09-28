@@ -18,7 +18,7 @@
 #'   the area between the first and second geometry layers;
 #'   the second layer mapped between the second and third geometry layers, and so on.
 #' @param wt.lay 'character'.
-#'   The name in \code{rs} that specifies the water-table raster layer (optional).
+#'   Name in \code{rs} that specifies the water-table-raster layer (optional).
 #' @param n 'integer'.
 #'   Desired number of intervals to partition the range of raster values (optional).
 #' @param breaks 'numeric'.
@@ -50,7 +50,7 @@
 #'   If true, cell values in \code{val.lays} represent categorical data;
 #'   otherwise, these data values are assumed continuous.
 #' @param bg.col 'character'.
-#'   Color used for the background of the area below the bottom geometry-raster layer.
+#'   Color used for the background of the area below the top geometry-raster layer.
 #' @param wt.col 'character'.
 #'   Color used for the water-table line.
 #' @param bend.label 'character'.
@@ -98,10 +98,10 @@
 #' features <- sp::SpatialPointsDataFrame(p, d, match.ID = TRUE)
 #' PlotMap(r1, pal = terrain.colors, scale.loc = "top", arrow.loc = "topright",
 #'         shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1FA6"))
-#' graphics::lines(transect)
+#' lines(transect)
 #' raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
 #'              halo = TRUE, cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
-#' graphics::points(features, pch = 19)
+#' points(features, pch = 19)
 #' raster::text(features, labels = features@data$label, halo = TRUE,
 #'              cex = 0.7, pos = 4, offset = 0.5, font = 4)
 #'
@@ -112,8 +112,8 @@
 #' PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
 #'                  ylab = "Elevation", asp = asp, unit = unit,
 #'                  explanation = explanation, features = features,
-#'                  max.feature.dist = 100, bend.label = "BEND IN\nSECTION",
-#'                  scale.loc = NULL)
+#'                  max.feature.dist = 100, bg.col = "#E1E1E1",
+#'                  bend.label = "BEND IN\nSECTION", scale.loc = NULL)
 #' AddScaleBar(unit = unit, vert.exag = asp, inset = 0.05)
 #'
 #' val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
@@ -121,8 +121,8 @@
 #'                         explanation = explanation, file = "Rplots.png")
 #' print(val)
 #'
-#' file.remove("Rplots.png")
 #' graphics.off()
+#' file.remove("Rplots.png")
 #'
 
 PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
@@ -132,8 +132,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
                              id=c("A", "A'"), labels=NULL, explanation=NULL,
                              features=NULL, max.feature.dist=Inf, draw.key=TRUE,
                              draw.sep=TRUE, is.categorical=FALSE,
-                             contour.lines=NULL, bg.col="#E1E1E1", wt.col="#FFFFFFD8",
-                             bend.label="BEND", scale.loc="bottom", file=NULL) {
+                             contour.lines=NULL, bg.col=NULL, wt.col="#FFFFFFD8",
+                             bend.label="BEND", scale.loc=NULL, file=NULL) {
 
   # check arguments
   checkmate::assertClass(transect, "SpatialLines")
@@ -354,9 +354,6 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   yat <- pretty(ylim)
   scipen <- getOption("scipen", default=0)
   ylabs <- ToScientific(yat, scipen=scipen, type="plotmath")
-  graphics::axis(4, at=yat, labels=FALSE, lwd=0, lwd.ticks=lwd, tcl=tcl)
-  graphics::axis(2, at=yat, labels=ylabs, lwd=0, lwd.ticks=lwd, tcl=tcl,
-                 cex.axis=cex, las=1)
 
   if (!is.null(ylab)) {
     line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]
@@ -365,9 +362,6 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
                 graphics::par("mgp")[2]
     graphics::title(ylab=ylab, cex.lab=cex, line=mar.line)
   }
-
-  graphics::abline(v=xlim, col="black", lwd=lwd)
-  graphics::abline(h=usr[3], col="black", lwd=lwd)
 
   if (!is.null(unit)) graphics::mtext(unit, at=usr[1], cex=cex, line=0.2, adj=1)
 
@@ -379,7 +373,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
 
   y <- unlist(lapply(eat, function(i) i@data[[geo.lays[1]]]))
   GetGeoTop <- stats::approxfun(x, y)
-  pady <- graphics::strheight("M", cex=1) * 1.5
+  pady <- graphics::strheight("M", cex=1) * 2
   d <- as.matrix(stats::dist(sp::coordinates(methods::as(transect, "SpatialPoints"))))[, 1]
   dist.to.bend <- d[-c(1, length(d))]
   if (!is.null(bend.label))
@@ -387,9 +381,9 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   for (i in seq_along(dist.to.bend)) {
     d <- dist.to.bend[i]
     y <- GetGeoTop(d)
-    graphics::lines(c(d, d), c(usr[3], y + pady), lwd=0.3, col="#999999", xpd=TRUE)
+    graphics::lines(c(d, d), c(usr[3], y + pady), lwd=0.3, col="#999999")
     if (is.character(bend.label[i]))
-      graphics::text(d, y + pady * 1.5, bend.label[i], adj=c(0, 0.5),
+      graphics::text(d, y + pady * 1.2, bend.label[i], adj=c(0, 0.5),
                      col="#999999", cex=0.6, srt=90, xpd=TRUE)
   }
   if (!is.null(features)) {
@@ -401,11 +395,16 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
       if (dist.to.transect[idx] > max.feature.dist) next
       d <- x[idx]
       y <- GetGeoTop(d)
-      graphics::lines(c(d, d), c(y, y + pady), lwd=0.3, xpd=TRUE)
+      graphics::lines(c(d, d), c(y, y + pady), lwd=0.3)
       label <- format(pnt@data[1, 1])
-      graphics::text(d, y + pady * 1.5, label, adj=c(0, 0.5), cex=cex, srt=90, xpd=TRUE)
+      graphics::text(d, y + pady * 1.2, label, adj=c(0, 0.5), cex=cex, srt=90, xpd=TRUE)
     }
   }
+
+  graphics::axis(1, at=c(usr[1], usr[2]), labels=FALSE, lwd=lwd, lwd.ticks=0)
+  graphics::axis(2, at=yat, labels=ylabs, lwd=lwd, lwd.ticks=lwd, tcl=tcl,
+                 cex.axis=cex, las=1)
+  graphics::axis(4, at=yat, labels=FALSE, lwd=lwd, lwd.ticks=lwd, tcl=tcl)
 
   if (!is.null(scale.loc))
     AddScaleBar(unit=unit, vert.exag=ifelse(asp == 1, NULL, asp),

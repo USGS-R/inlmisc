@@ -1,8 +1,9 @@
 # inlmisc 0.4.3.9000
 
-- In `PlotCrossSection` function: add `bend.label` argument for
-  placing labels at top of the bend-in-section lines;
-  and add point features to example in help documentation.
+- In `PlotCrossSection` function: add `bend.label` argument, used to
+  place labels at top of the bend-in-section lines; and
+  change default value of `bg.col` argument from `"#FFFFFFD8"` to `NULL`,
+  and for `scale.loc` argument from `"bottom"` to `NULL`.
 
 - In `GetTolColors` function: add `"high-contrast"` and `"iridescent"` schemes;
   change `blind` argument option from `"monochromacy"` to `"monochrome"`; and
