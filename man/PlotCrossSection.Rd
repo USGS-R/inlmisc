@@ -10,8 +10,8 @@ PlotCrossSection(transect, rs, geo.lays = names(rs), val.lays = NULL,
   unit = NULL, id = c("A", "A'"), labels = NULL,
   explanation = NULL, features = NULL, max.feature.dist = Inf,
   draw.key = TRUE, draw.sep = TRUE, is.categorical = FALSE,
-  contour.lines = NULL, bg.col = "#E1E1E1", wt.col = "#FFFFFFD8",
-  bend.label = "BEND", scale.loc = "bottom", file = NULL)
+  contour.lines = NULL, bg.col = NULL, wt.col = "#FFFFFFD8",
+  bend.label = "BEND", scale.loc = NULL, file = NULL)
 }
 \arguments{
 \item{transect}{'SpatialLines'.
@@ -32,7 +32,7 @@ the area between the first and second geometry layers;
 the second layer mapped between the second and third geometry layers, and so on.}
 
 \item{wt.lay}{'character'.
-The name in \code{rs} that specifies the water-table raster layer (optional).}
+Name in \code{rs} that specifies the water-table-raster layer (optional).}
 
 \item{asp}{'numeric'.
 \emph{y/x} aspect ratio for spatial axes.
@@ -53,7 +53,8 @@ This argument is only applicable when the \code{file} argument is specified.}
 Desired number of intervals to partition the range of raster values (optional).}
 
 \item{breaks}{'numeric'.
-Vector of break points used to partition the colors representing numeric raster values (optional).}
+Vector of break points used to partition the colors representing
+numeric raster values (optional).}
 
 \item{pal}{'function'.
 Color palette to be used to assign colors in the plot.}
@@ -107,7 +108,7 @@ The contours are described using a list of arguments supplied to the \code{\link
 Passed arguments include \code{drawlables}, \code{method}, and \code{col}.}
 
 \item{bg.col}{'character'.
-Color used for the background of the area below the bottom geometry-raster layer.}
+Color used for the background of the area below the top geometry-raster layer.}
 
 \item{wt.col}{'character'.
 Color used for the water-table line.}
@@ -134,7 +135,8 @@ Used for the side-effect of a new plot generated.
   \describe{
     \item{din}{device dimensions \code{(width, height)}, in inches.}
     \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}
-    \item{heights}{relative heights on the device \code{(upper, lower)} for the map and color-key plots.}
+    \item{heights}{relative heights on the device \code{(upper, lower)}
+      for the map and color-key plots.}
   }
 }
 \description{
@@ -162,32 +164,36 @@ d <-  data.frame("label" = c("Peak", "Random"))
 features <- sp::SpatialPointsDataFrame(p, d, match.ID = TRUE)
 PlotMap(r1, pal = terrain.colors, scale.loc = "top", arrow.loc = "topright",
         shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1FA6"))
-graphics::lines(transect)
+lines(transect)
 raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
              halo = TRUE, cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
-graphics::points(features, pch = 19)
+points(features, pch = 19)
 raster::text(features, labels = features@data$label, halo = TRUE,
              cex = 0.7, pos = 4, offset = 0.5, font = 4)
 
 dev.new()
+asp <- 5
+unit <- "METERS"
 explanation <- "Vertical thickness between layers, in meters."
 PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
-                 ylab = "Elevation", asp = 5, unit = "METERS",
+                 ylab = "Elevation", asp = asp, unit = unit,
                  explanation = explanation, features = features,
-                 max.feature.dist = 100, bend.label = "BEND IN\\nSECTION",
-                 scale.loc = "bottomright")
+                 max.feature.dist = 100, bg.col = "#E1E1E1",
+                 bend.label = "BEND IN\\nSECTION", scale.loc = NULL)
+AddScaleBar(unit = unit, vert.exag = asp, inset = 0.05)
 
 val <- PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"), val.lays = "r3",
                         ylab = "Elevation", asp = 5, unit = "METERS",
                         explanation = explanation, file = "Rplots.png")
 print(val)
 
-file.remove("Rplots.png")
 graphics.off()
+file.remove("Rplots.png")
 
 }
 \seealso{
-\code{\link{AddScaleBar}}, \code{\link{AddColorKey}}, \code{\link{ExtractAlongTransect}}
+\code{\link{AddScaleBar}}, \code{\link{AddColorKey}},
+  \code{\link{ExtractAlongTransect}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
