@@ -51,7 +51,8 @@ Inner padding for the left and right margins specified in inches.}
 Whether the axis is to be logarithmic.}
 
 \item{mai}{'numeric'.
-Vector of the form \code{c(bottom, left, top, right)} which gives the margin size specified in inches (optional).}
+Vector of the form \code{c(bottom, left, top, right)} which gives the margin size
+specified in inches (optional).}
 }
 \value{
 Used for the side-effect of a color key drawn on the current graphics device.

@@ -2,14 +2,12 @@
 #'
 #' This function can be used to add a color key to a plot.
 #'
-#' @param mai 'numeric'.
-#'   Vector of the form \code{c(bottom, left, top, right)} which gives the margin size specified in inches (optional).
-#' @param is.categorical 'logical'.
-#'   If true, color-key values represent categorical data;
-#'   otherwise, these data values are assumed continuous.
 #' @param breaks 'numeric'.
 #'   Set of finite numeric breakpoints for the colors:
 #'   must have one more breakpoint than color and be in increasing order.
+#' @param is.categorical 'logical'.
+#'   If true, color-key values represent categorical data;
+#'   otherwise, these data values are assumed continuous.
 #' @param col 'character'.
 #'   Vector of colors to be used in the plot.
 #'   This argument requires \code{breaks} specification for continuous data.
@@ -31,6 +29,9 @@
 #'   Inner padding for the left and right margins specified in inches.
 #' @param log 'logical'.
 #'   Whether the axis is to be logarithmic.
+#' @param mai 'numeric'.
+#'   Vector of the form \code{c(bottom, left, top, right)} which gives the margin size
+#'   specified in inches (optional).
 #' @inheritParams ToScientific
 #'
 #' @return Used for the side-effect of a color key drawn on the current graphics device.

@@ -3,16 +3,16 @@
 #' This function can be used to add a continuous color gradient legend strip to a plot.
 #'
 #' @param breaks 'numeric'.
-#'   Set of finite numeric breakpoints for the colors.
+#'   Set of finite numeric breakpoints for the colors, must be in increasing order.
 #' @param pal 'function'.
-#'   Color palette
+#'   Color palette function to be used to assign colors in the legend.
 #' @param at 'numeric'.
 #'   Vector of points at which tick-marks and labels are to be drawn.
 #' @param n 'integer'.
 #'   Desired number of tick-marks to be drawn.
 #'   Unused if \code{at} argument is specified.
 #' @param labels 'logical' or 'character'.
-#'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
+#'   Can either be a logical value specifying whether annotations are to be made at the tickmarks,
 #'   or a character or expression vector of labels to be placed at the tickpoints.
 #' @param scientific 'logical'.
 #'   Indicates if labels should be formatted for scientific notation,
@@ -39,19 +39,29 @@
 #' plot(NA, xlim = c(0, 100), ylim = c(-10, 10),
 #'      xlab = "x", ylab = "y", xaxs = "i", yaxs = "i")
 #' breaks <- 0:200
-#' AddGradientLegend(breaks, GetTolColors, title = "Title", loc = "bottomleft")
-#' AddGradientLegend(breaks, GetTolColors, title = "Title",
-#'                   loc = "bottomleft", inset = c(0.2, 0.1))
+#' AddGradientLegend(breaks, title = "Title", loc = "bottomleft")
+#' AddGradientLegend(breaks, pal = GetTolColors(scheme = "iridescent"),
+#'                   title = "Title", loc = "bottomleft", inset = c(0.2, 0.1))
 #' breaks <- seq(0, 2e+06, length.out = 5)
-#' AddGradientLegend(breaks, rainbow, loc = "topright", inset = 0.1)
-#' pal <- function(...) rev(rainbow(...))  # reverse colors in palette
-#' AddGradientLegend(breaks, pal, scientific = TRUE, strip.dim = c(1, 14),
-#'                   inset = c(0.2, 0.1))
+#' AddGradientLegend(breaks, pal = GetTolColors(scheme = "discrete rainbow"),
+#'                   scientific = TRUE, strip.dim = c(1, 14), inset = c(0.2, 0.1))
+#' AddGradientLegend(breaks, pal = GetTolColors(scheme = "YlOrBr"),
+#'                   loc = "topright", inset = 0.1)
 #'
 
-AddGradientLegend <- function(breaks, pal, at=NULL, n=5, labels=TRUE,
-                              scientific=FALSE, title=NULL,
-                              strip.dim=c(2, 8), ...) {
+AddGradientLegend <- function(breaks, pal=GetTolColors, at=NULL, n=5, labels=TRUE,
+                              scientific=FALSE, title=NULL, strip.dim=c(2, 8), ...) {
+
+  # check arguments
+  checkmate::assertNumeric(breaks, finite=TRUE, any.missing=FALSE, unique=TRUE, sorted=TRUE)
+  checkmate::assertFunction(pal)
+  checkmate::assertNumeric(at, null.ok=TRUE)
+  checkmate::assertCount(n)
+  checkmate::assertFlag(labels)
+  checkmate::assertFlag(scientific)
+  checkmate::assertString(title, null.ok=TRUE)
+  checkmate::assertNumeric(strip.dim, lower=0, finite=TRUE, any.missing=FALSE,
+                           min.len=1, max.len=2)
 
   op <- graphics::par(no.readonly=TRUE)
   on.exit(graphics::par(op))
@@ -71,7 +81,7 @@ AddGradientLegend <- function(breaks, pal, at=NULL, n=5, labels=TRUE,
       labels <- formatC(at, big.mark=",")
   }
 
-  if (length(strip.dim) == 1) strip.dim <- rep(strip.dim, 2)
+  strip.dim <- rep(strip.dim, length.out=2)
   dx <- strip.dim[1] * inches_in_pica * (diff(usr[1:2]) / graphics::par("pin")[1])
   dy <- strip.dim[2] * inches_in_pica * (diff(usr[3:4]) / graphics::par("pin")[2])
   xy <- GetInsetLocation(dx, dy, ...)

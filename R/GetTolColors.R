@@ -571,7 +571,7 @@ plot.Tol <- function(x, ...) {
   }
 
   # code adapted from example in
-  # colorspace::rainbow_hcl} function documentation,
+  # colorspace::rainbow_hcl function documentation,
   # authored by Achim Zeileis and accessed August 8, 2018
   # at https://CRAN.R-project.org/package=colorspace
   op <- graphics::par(mar=c(3, 2, 2, 2)); on.exit(graphics::par(op))
