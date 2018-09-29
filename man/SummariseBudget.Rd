@@ -4,7 +4,7 @@
 \alias{SummariseBudget}
 \title{Summarize MODFLOW Water Budget}
 \usage{
-SummariseBudget(budget, desc, id = NULL)
+SummariseBudget(budget, desc = NULL, id = NULL)
 }
 \arguments{
 \item{budget}{'character' or 'list'.
@@ -53,8 +53,8 @@ Subsets are grouped by data type (desc), stress period
 }
 \examples{
 path <- system.file("extdata", "ex.bud", package = "inlmisc")
-budget.summary <- SummariseBudget(path, "river leakage", "iface")
-print(budget.summary)
+out <- SummariseBudget(path, desc = "river leakage", id = "iface")
+print(out)
 
 }
 \seealso{

@@ -49,32 +49,41 @@
 #'
 #' @examples
 #' path <- system.file("extdata", "ex.bud", package = "inlmisc")
-#' budget.summary <- SummariseBudget(path, "river leakage", "iface")
-#' print(budget.summary)
+#' out <- SummariseBudget(path, desc = "river leakage", id = "iface")
+#' print(out)
 #'
 
-SummariseBudget <- function(budget, desc, id=NULL) {
-  if (!inherits(budget, "list")) {
-    budget <- budget[1]
-    if (is.character(budget) & file.access(budget) == 0)
-      budget <- ReadModflowBinary(budget, "flow")
-    else
-      stop("problem with 'budget' argument")
-  }
+SummariseBudget <- function(budget, desc=NULL, id=NULL) {
 
-  if (!missing(desc)) {
-    budget.desc <- as.factor(vapply(budget, function(i) i$desc, ""))
-    is.desc.not.included <- !desc %in% levels(budget.desc)
-    if (any(is.desc.not.included))
-      warning(paste("missing flow variable(s) in budget file:",
-                    paste(desc[is.desc.not.included], collapse=", ")))
+  stopifnot(inherits(budget, c("character", "list")))
+  if (is.character(budget)) {
+    checkmate::assertPathForOutput(budget, overwrite=TRUE)
+    budget <- ReadModflowBinary(budget, "flow")
+  }
+  checkmate::assertCharacter(desc, any.missing=FALSE, min.len=1, unique=TRUE, null.ok=TRUE)
+  checkmate::assertString(id, null.ok=TRUE)
+
+  budget.desc <- vapply(budget, function(i) i$desc, "")
+  if (is.null(desc)) {
+    desc <- unique(budget.desc)
+  } else {
+    is <- desc %in% budget.desc
+    if (all(!is)) stop("data type(s) not found in budget")
+    if (any(!is))
+      warning(sprintf("data type(s) not found in budget: %s",
+                      paste(paste0("\"", desc[!is], "\""), collapse=", ")))
     budget <- budget[budget.desc %in% desc]
-    if (length(budget) == 0) stop("flow variable(s) can not be found in the budget file")
   }
 
-  is.compact <- vapply(budget, function(i) !is.null(colnames(i$d)), FALSE)
-  budget <- budget[is.compact]
-  if (length(budget) == 0) stop("none of the selected data was saved using the compact form")
+  is <- vapply(budget, function(x) !is.null(colnames(x$d)), FALSE)
+  if (all(!is)) stop("data type(s) not saved using correct form")
+  if (any(!is)) {
+    x <- unique(vapply(budget[!is], function(i) i$desc, ""))
+    warning(sprintf("removed data type(s): %s not saved using correct form",
+            paste(paste0("\"", x, "\""), collapse=", ")))
+  }
+  budget <- budget[is]
+  desc <- vapply(budget, function(i) i$desc, "")
 
   b <- budget
   for (i in seq_along(b)) b[[i]]$d[b[[i]]$d[, "flow"] < 0, "flow"] <- 0
@@ -91,6 +100,11 @@ SummariseBudget <- function(budget, desc, id=NULL) {
 
 
 .Summarise <- function(b, desc, id) {
+
+  checkmate::assertList(b)
+  checkmate::assertCharacter(desc)
+  checkmate::assertString(id, null.ok=TRUE)
+
   d <- dplyr::bind_rows(lapply(desc, function(i) {
     dplyr::bind_rows(lapply(b[desc == i], function(j) {
       d <- data.frame(desc=j$desc, kper=j$kper, kstp=j$kstp, id=NA,
@@ -106,13 +120,13 @@ SummariseBudget <- function(budget, desc, id=NULL) {
   else
     grps <- dplyr::group_by_(d, "desc", "kper", "kstp")
   d <- dplyr::summarise_(grps,
-                         delt="delt[1]",
-                         pertim="pertim[1]",
-                         totim="totim[1]",
-                         count="length(flow)",
-                         flow.sum="sum(flow)",
-                         flow.mean="mean(flow)",
-                         flow.median="stats::median(flow)",
-                         flow.sd="sd(flow)")
+                         delt        = "delt[1]",
+                         pertim      = "pertim[1]",
+                         totim       = "totim[1]",
+                         count       = "length(flow)",
+                         flow.sum    = "sum(flow)",
+                         flow.mean   = "mean(flow)",
+                         flow.median = "stats::median(flow)",
+                         flow.sd     = "sd(flow)")
   return(d)
 }
