@@ -4,21 +4,18 @@
 \alias{AddColorKey}
 \title{Add Color Key to Plot}
 \usage{
-AddColorKey(mai, is.categorical, breaks, col, at = NULL, labels = TRUE,
-  scipen = getOption("scipen", 0L), explanation = NULL, padx = 0.2,
-  log = FALSE)
+AddColorKey(breaks, is.categorical = FALSE, col = NULL, at = NULL,
+  labels = TRUE, scipen = getOption("scipen", 0L),
+  explanation = NULL, padx = 0.2, log = FALSE, mai = NULL)
 }
 \arguments{
-\item{mai}{'numeric'.
-Vector of the form \code{c(bottom, left, top, right)} which gives the margin size specified in inches (optional).}
+\item{breaks}{'numeric'.
+Set of finite numeric breakpoints for the colors:
+must have one more breakpoint than color and be in increasing order.}
 
 \item{is.categorical}{'logical'.
 If true, color-key values represent categorical data;
 otherwise, these data values are assumed continuous.}
-
-\item{breaks}{'numeric'.
-Set of finite numeric breakpoints for the colors:
-must have one more breakpoint than color and be in increasing order.}
 
 \item{col}{'character'.
 Vector of colors to be used in the plot.
@@ -34,7 +31,7 @@ greater than or equal to one minus the length of \code{breaks}.
 Note that tick-mark labels are omitted where they would abut or overlap previously drawn labels
 (labels are drawn left to right).}
 
-\item{labels}{'logical', 'character', 'expression', or 'numeric'.
+\item{labels}{'logical', 'character', 'expression', 'numeric', or 'factor'.
 Can either be a logical value specifying whether (numerical) annotations are to be made at the tick marks,
 or a character or expression vector of labels to be placed at the tick points.}
 
@@ -52,6 +49,9 @@ Inner padding for the left and right margins specified in inches.}
 
 \item{log}{'logical'.
 Whether the axis is to be logarithmic.}
+
+\item{mai}{'numeric'.
+Vector of the form \code{c(bottom, left, top, right)} which gives the margin size specified in inches (optional).}
 }
 \value{
 Used for the side-effect of a color key drawn on the current graphics device.
@@ -61,14 +61,12 @@ This function can be used to add a color key to a plot.
 }
 \examples{
 op <- par(mfrow = c(7, 1), omi = c(1, 1, 1, 1), mar = c(2, 3, 2, 3))
-AddColorKey(is.categorical = FALSE, breaks = 0:10,
-            explanation = "Example description of data variable.")
-AddColorKey(is.categorical = FALSE, breaks = 0:1000, at = pretty(0:1000))
-AddColorKey(is.categorical = FALSE, breaks = c(0, 1, 2, 4, 8, 16))
+AddColorKey(breaks = 0:10, explanation = "Example description of data variable.")
+AddColorKey(breaks = 0:1000, at = pretty(0:1000))
+AddColorKey(breaks = c(0, 1, 2, 4, 8, 16))
 breaks <- c(pi * 10^(-5:5))
-AddColorKey(is.categorical = FALSE, breaks = breaks, log = TRUE)
-is <- as.logical(seq_along(breaks) \%\% 2)
-AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
+AddColorKey(breaks = breaks, log = TRUE)
+AddColorKey(breaks = breaks, at = breaks[as.logical(seq_along(breaks) \%\% 2)],
             scipen = NULL, log = TRUE)
 AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
 AddColorKey(is.categorical = TRUE, col = GetTolColors(5, scheme = "bright"))

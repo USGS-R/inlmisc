@@ -281,9 +281,8 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     graphics::layout(matrix(c(2, 1), nrow=2, ncol=1), heights=heights)
     if (!is.null(labels$at)) at <- labels$at
     labs <- if (is.null(labels$labels)) TRUE else labels$labels
-    AddColorKey(mai=mai1, is.categorical=is.categorical,
-                breaks=breaks, col=col, at=at, labels=labs,
-                explanation=explanation)
+    AddColorKey(breaks, is.categorical=is.categorical, col=col, at=at,
+                labels=labs, explanation=explanation, mai=mai1)
   } else {
     graphics::layout(matrix(1, nrow=1, ncol=1))
   }
@@ -402,8 +401,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   }
 
   graphics::axis(1, at=c(usr[1], usr[2]), labels=FALSE, lwd=lwd, lwd.ticks=0)
-  graphics::axis(2, at=yat, labels=ylabs, lwd=lwd, lwd.ticks=lwd, tcl=tcl,
-                 cex.axis=cex, las=1)
+  graphics::axis(2, at=yat, labels=ylabs, lwd=lwd, lwd.ticks=lwd, tcl=tcl, cex.axis=cex, las=1)
   graphics::axis(4, at=yat, labels=FALSE, lwd=lwd, lwd.ticks=lwd, tcl=tcl)
 
   if (!is.null(scale.loc))

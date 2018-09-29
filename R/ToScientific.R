@@ -64,8 +64,8 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   checkmate::assertInt(scipen, na.ok=TRUE, null.ok=TRUE)
   checkmate::assertString(big.mark)
 
-  if (missing(type) && methods::hasArg("lab.type"))
-    type <- list(...)$lab.type  # include for backward compatibility
+  if (missing(type) && methods::hasArg("lab.type"))  # backward compatibility
+    type <- list(...)$lab.type
   else
     type <- match.arg(type)
 

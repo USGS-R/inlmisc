@@ -22,7 +22,7 @@
 #'   greater than or equal to one minus the length of \code{breaks}.
 #'   Note that tick-mark labels are omitted where they would abut or overlap previously drawn labels
 #'   (labels are drawn left to right).
-#' @param labels 'logical', 'character', 'expression', or 'numeric'.
+#' @param labels 'logical', 'character', 'expression', 'numeric', or 'factor'.
 #'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tick marks,
 #'   or a character or expression vector of labels to be placed at the tick points.
 #' @param explanation 'character'.
@@ -45,33 +45,37 @@
 #'
 #' @examples
 #' op <- par(mfrow = c(7, 1), omi = c(1, 1, 1, 1), mar = c(2, 3, 2, 3))
-#' AddColorKey(is.categorical = FALSE, breaks = 0:10,
-#'             explanation = "Example description of data variable.")
-#' AddColorKey(is.categorical = FALSE, breaks = 0:1000, at = pretty(0:1000))
-#' AddColorKey(is.categorical = FALSE, breaks = c(0, 1, 2, 4, 8, 16))
+#' AddColorKey(breaks = 0:10, explanation = "Example description of data variable.")
+#' AddColorKey(breaks = 0:1000, at = pretty(0:1000))
+#' AddColorKey(breaks = c(0, 1, 2, 4, 8, 16))
 #' breaks <- c(pi * 10^(-5:5))
-#' AddColorKey(is.categorical = FALSE, breaks = breaks, log = TRUE)
-#' is <- as.logical(seq_along(breaks) %% 2)
-#' AddColorKey(is.categorical = FALSE, breaks = breaks, at = breaks[is],
+#' AddColorKey(breaks = breaks, log = TRUE)
+#' AddColorKey(breaks = breaks, at = breaks[as.logical(seq_along(breaks) %% 2)],
 #'             scipen = NULL, log = TRUE)
 #' AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
 #' AddColorKey(is.categorical = TRUE, col = GetTolColors(5, scheme = "bright"))
 #' par(op)
 #'
 
-AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
-                        scipen=getOption("scipen", 0L), explanation=NULL,
-                        padx=0.2, log=FALSE) {
+AddColorKey <- function(breaks, is.categorical=FALSE, col=NULL, at=NULL,
+                        labels=TRUE, scipen=getOption("scipen", 0L),
+                        explanation=NULL, padx=0.2, log=FALSE, mai=NULL) {
 
-  if (!missing(mai)) {
-    mai[2] <- mai[2] + padx
-    mai[4] <- mai[4] + padx
-    op <- graphics::par(mai=mai)
-    on.exit(graphics::par(op))
-  }
+  # check arguments
+  if (!missing(breaks))
+    checkmate::assertNumeric(breaks, finite=TRUE, any.missing=FALSE, unique=TRUE, sorted=TRUE)
+  checkmate::assertFlag(is.categorical)
+  checkmate::assertCharacter(col, null.ok=TRUE)
+  checkmate::assertNumeric(at, null.ok=TRUE)
+  stopifnot(inherits(labels, c("logical", "character", "expression", "numeric", "factor")))
+  checkmate::assertInt(scipen, na.ok=TRUE, null.ok=TRUE)
+  checkmate::assertString(explanation, null.ok=TRUE)
+  checkmate::assertNumber(padx, finite=TRUE)
+  checkmate::assertFlag(log)
+  checkmate::assertNumeric(mai, lower=0, finite=TRUE, any.missing=FALSE, len=4, null.ok=TRUE)
 
   if (is.categorical) {
-    n <- max(c(if (missing(col)) 0 else length(col), length(labels)))
+    n <- max(c(if (is.null(col)) 0 else length(col), length(labels)))
     at <- seq_len(n)
     if (length(n) == 0) stop("categorical data requires colors and (or) labels")
     breaks <- c(0.5, seq_len(n) + 0.5)
@@ -79,10 +83,17 @@ AddColorKey <- function(mai, is.categorical, breaks, col, at=NULL, labels=TRUE,
     stop("missing breaks argument for continous data")
   }
 
-  if (missing(col))
+  if (is.null(col))
     col <- GetTolColors(length(breaks) - 1L, start=0.3, end=0.9)
 
   if (is.null(at)) at <- breaks
+
+  if (!is.null(mai)) {
+    mai[2] <- mai[2] + padx
+    mai[4] <- mai[4] + padx
+    op <- graphics::par(mai=mai)
+    on.exit(graphics::par(op))
+  }
 
   cex <- 0.7
   lwd <- 0.5
