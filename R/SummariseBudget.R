@@ -57,7 +57,7 @@ SummariseBudget <- function(budget, desc=NULL, id=NULL) {
 
   stopifnot(inherits(budget, c("character", "list")))
   if (is.character(budget)) {
-    checkmate::assertPathForOutput(budget, overwrite=TRUE)
+    checkmate::assertFileExists(budget)
     budget <- ReadModflowBinary(budget, "flow")
   }
   checkmate::assertCharacter(desc, any.missing=FALSE, min.len=1, unique=TRUE, null.ok=TRUE)
