@@ -142,7 +142,16 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
                             local=NULL, versions=FALSE, github=FALSE,
                             parallel=TRUE, quiet=FALSE) {
 
+  # check arguments
+  checkmate::assertFileExists(file)
+  checkmate::assertDirectoryExists(lib)
+  checkmate::assertCharacter(repos, any.missing=FALSE, min.len=1, unique=TRUE)
+  checkmate::assertFlag(snapshot)
+  if (!is.null(local)) checkmate::assertDirectoryExists(local)
+  checkmate::assertFlag(versions)
+  checkmate::assertFlag(github)
   checkmate::qassert(parallel, c("B1", "X1[0,)"))
+  checkmate::assertFlag(quiet)
 
   # set number of parallel process
   if (is.logical(parallel))
@@ -152,13 +161,6 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
   if (.Platform$OS.type == "windows" && Sys.getenv("CURL_CA_BUNDLE") == "") {
     bundle <- system.file("cacert.pem", package="openssl")
     if (file.exists(bundle)) Sys.setenv(CURL_CA_BUNDLE=bundle)
-  }
-
-  # confirm file exists
-  if (!file.exists(file)) {
-    msg <- sprintf("Can't find package-list file:\n %s",
-                   normalizePath(path.expand(file)))
-    stop(msg, call.=FALSE)
   }
 
   # read meta data
@@ -315,6 +317,11 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
 
 SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL) {
 
+  # check arguments
+  checkmate::assertPathForOutput(file)
+  checkmate::assertDirectoryExists(lib)
+  checkmate::assertCharacter(pkg, any.missing=FALSE, min.len=1, unique=TRUE, null.ok=TRUE)
+
   # get names of all packages under library tree(s)
   pkgs <- utils::installed.packages(lib, noCache=TRUE)
 
@@ -327,8 +334,7 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
   # subset packages based on specified package(s)
   if (!is.null(pkg)) {
     if(any(is <- !pkg %in% pkgs[, "Package"])) {
-      msg <- sprintf("Missing 'pkg' values in library: %s",
-                     paste(pkg[is], collapse=", "))
+      msg <- sprintf("Missing 'pkg' values in library: %s", paste(pkg[is], collapse=", "))
       stop(msg, call.=FALSE)
     }
     p <- c(unlist(lapply(pkg, function(i) {
@@ -370,11 +376,9 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
                                       sep="\t", row.names=FALSE))
 
   # write file path and md5 hash to console
-  msg <- sprintf("File path:\n %s", normalizePath(path.expand(file)))
-  message(msg)
+  message(sprintf("File path:\n %s", normalizePath(path.expand(file))))
   md5 <- tools::md5sum(file)
-  msg <- sprintf("MD5 hash:\n %s", md5)
-  message(msg)
+  message(sprintf("MD5 hash:\n %s", md5))
 
   # return md5 hash
   invisible(md5)
@@ -404,7 +408,8 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
 
 IsPackageInstalled <- function(x, lib=.libPaths()) {
   checkmate::assertCharacter(x, any.missing=FALSE, min.len=1)
-  return(vapply(unique(x), function(i) {
+  checkmate::assertDirectoryExists(lib)
+  vapply(unique(x), function(i) {
     system.file(package=i, lib.loc=lib) != ""
-  }, TRUE))
+  }, TRUE)
 }
