@@ -318,7 +318,7 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
 SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL) {
 
   # check arguments
-  checkmate::assertPathForOutput(file)
+  checkmate::assertPathForOutput(file, overwrite=TRUE)
   checkmate::assertDirectoryExists(lib)
   checkmate::assertCharacter(pkg, any.missing=FALSE, min.len=1, unique=TRUE, null.ok=TRUE)
 
