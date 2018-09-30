@@ -21,7 +21,8 @@ If "gDifference" is specified, only those portions of the \code{x} polygons
 falling outside the \code{y} polygons are copied to the output polygons.}
 
 \item{buffer.width}{'numeric'.
-Expands or contracts the geometry of \code{y} to include the area within the specified width, see \code{gBuffer}.
+Expands or contracts the geometry of \code{y} to include the area within
+the specified width, see \code{gBuffer}.
 Specifying \code{NA}, the default, indicates no buffer.}
 }
 \value{
