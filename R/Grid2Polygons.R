@@ -134,8 +134,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
                           ply=NULL) {
 
   # check arguments
-  if (!inherits(grd, c("BasicRaster", "SpatialPixelsDataFrame", "SpatialGridDataFrame")))
-    stop("Assertion on 'grd' failed: Wrong class.")
+  stopifnot(inherits(grd, c("BasicRaster", "SpatialPixelsDataFrame", "SpatialGridDataFrame")))
   checkmate::qassert(zcol, c("S1[0,)", "X1[0,)"))
   checkmate::assertFlag(level)
   checkmate::assertNumeric(at, any.missing=FALSE, min.len=2, null.ok=TRUE)
