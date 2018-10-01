@@ -47,6 +47,7 @@
 
 POSIXct2Character <- function(x, fmt="%Y-%m-%d %H:%M:%OS3") {
 
+  checkmate::assertClass(x, "POSIXt")
   checkmate::assertString(fmt)
 
   pos <- gregexpr("%OS[[:digit:]]+", fmt)[[1]]

@@ -45,9 +45,7 @@
 
 CreateWebMap <- function(maps, ..., collapsed=TRUE) {
 
-  checkmate::assertFlag(collapsed)
-
-  # define base map names
+  # initialize base maps
   basemap <- c("Topo"         = "USGSTopo",
                "Imagery"      = "USGSImageryOnly",
                "Imagery Topo" = "USGSImageryTopo",
@@ -58,6 +56,8 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
     checkmate::assertSubset(maps, names(basemap), empty.ok=FALSE)
     basemap <- basemap[maps]
   }
+
+  checkmate::assertFlag(collapsed)
 
   # construct url's for base maps
   url <- sprintf("https://basemap.nationalmap.gov/ArcGIS/rest/services/%s/MapServer/tile/{z}/{y}/{x}", basemap)

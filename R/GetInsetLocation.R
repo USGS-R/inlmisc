@@ -56,9 +56,8 @@
 GetInsetLocation <- function(dx, dy, loc="bottomright", inset=0, pad=0, padin=0) {
 
   if (grDevices::dev.cur() == 1) stop("no active device")
-  usr <- graphics::par("usr")  # extremes of the plotting region (x1, x2, y1, y2)
   pin <- graphics::par("pin")  # plot dimensions in inches (width, height)
-
+  usr <- graphics::par("usr")  # extremes of the plotting region (x1, x2, y1, y2)
   w <- diff(usr[1:2])
   h <- diff(usr[3:4])
 

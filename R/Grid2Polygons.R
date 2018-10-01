@@ -267,6 +267,8 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
 
 .FindPolyNodes <- function(s) {
 
+  checkmate::assertMatrix(s, mode="integerish", any.missing=FALSE, ncols=2)
+
   # remove duplicate segments
   id <- paste(apply(s, 1, min), apply(s, 1, max))
   s <- s[!id %in% unique(id[duplicated(id)]), ]

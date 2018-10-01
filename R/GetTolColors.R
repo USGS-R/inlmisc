@@ -230,8 +230,8 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
   checkmate::assertNumber(end,   lower=0, upper=1, finite=TRUE)
   stopifnot(start < end)
   checkmate::qassert(bias, "N1(0,)")
-  checkmate::assertString(blind, min.chars=1, null.ok=TRUE)
   checkmate::assertFlag(reverse)
+  checkmate::assertString(blind, min.chars=1, null.ok=TRUE)
 
   if (is.character(blind)) {
     if (blind == "monochromacy") blind <- "monochrome"  # backward compatibility
