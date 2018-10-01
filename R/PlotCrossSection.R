@@ -380,10 +380,10 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   for (i in seq_along(dist.to.bend)) {
     d <- dist.to.bend[i]
     y <- GetGeoTop(d)
-    graphics::lines(c(d, d), c(usr[3], y + pady), lwd=0.3, col="#999999")
+    graphics::lines(c(d, d), c(usr[3], y + pady), lwd=0.3, col="#1F1F1F")
     if (is.character(bend.label[i]))
       graphics::text(d, y + pady * 1.2, bend.label[i], adj=c(0, 0.5),
-                     col="#999999", cex=0.6, srt=90, xpd=TRUE)
+                     col="#1F1F1F", cex=0.6, srt=90, xpd=TRUE)
   }
   if (!is.null(features)) {
     tran.pts <- do.call("rbind", eat)
@@ -394,9 +394,10 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
       if (dist.to.transect[idx] > max.feature.dist) next
       d <- x[idx]
       y <- GetGeoTop(d)
-      graphics::lines(c(d, d), c(y, y + pady), lwd=0.3)
+      graphics::lines(c(d, d), c(y, y + pady), lwd=0.3, col="#1F1F1F")
       label <- format(pnt@data[1, 1])
-      graphics::text(d, y + pady * 1.2, label, adj=c(0, 0.5), cex=cex, srt=90, xpd=TRUE)
+      graphics::text(d, y + pady * 1.2, label, adj=c(0, 0.5), col="#1F1F1F",
+                     cex=cex, srt=90, xpd=TRUE)
     }
   }
 
