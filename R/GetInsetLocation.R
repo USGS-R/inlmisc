@@ -56,23 +56,20 @@
 GetInsetLocation <- function(dx, dy, loc="bottomright", inset=0, pad=0, padin=0) {
 
   if (grDevices::dev.cur() == 1) stop("no active device")
-  usr <- graphics::par("usr")  # extremes of the plotting region (x1, x2, y1, y2)
   pin <- graphics::par("pin")  # plot dimensions in inches (width, height)
-
+  usr <- graphics::par("usr")  # extremes of the plotting region (x1, x2, y1, y2)
   w <- diff(usr[1:2])
   h <- diff(usr[3:4])
 
   choices <- c("bottomright", "bottom", "bottomleft", "left",
                "topleft", "top", "topright", "right", "center")
   loc <- match.arg(loc, choices)
-  dx <- checkmate::assertNumber(dx, lower=0, upper=w, finite=TRUE)
-  dy <- checkmate::assertNumber(dy, lower=0, upper=h, finite=TRUE)
-  inset <- checkmate::assertNumeric(inset, lower=0, upper=1, finite=TRUE,
-                                    any.missing=FALSE, min.len=1, max.len=2)
-  pad <- checkmate::assertNumeric(pad, finite=TRUE, any.missing=FALSE,
-                                  min.len=1, max.len=2)
-  padin <- checkmate::assertNumeric(padin, finite=TRUE, any.missing=FALSE,
-                                    min.len=1, max.len=2)
+  checkmate::assertNumber(dx, lower=0, upper=w, finite=TRUE)
+  checkmate::assertNumber(dy, lower=0, upper=h, finite=TRUE)
+  checkmate::assertNumeric(inset, lower=0, upper=1, finite=TRUE,
+                           any.missing=FALSE, min.len=1, max.len=2)
+  checkmate::assertNumeric(pad, finite=TRUE, any.missing=FALSE, min.len=1, max.len=2)
+  checkmate::assertNumeric(padin, finite=TRUE, any.missing=FALSE, min.len=1, max.len=2)
 
   inset <- rep(inset, length.out=2)
   pad <- rep(pad, length.out=2)

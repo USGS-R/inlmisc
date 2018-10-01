@@ -65,10 +65,8 @@
 
 ExtractAlongTransect <- function(transect, r) {
 
-  if (!inherits(transect, c("SpatialPoints", "SpatialLines")))
-    stop("incorrect class for 'transect' argument")
-  if (!inherits(r, c("RasterLayer", "RasterStack", "RasterBrick")))
-    stop("incorrect class for 'r' argument")
+  stopifnot(inherits(transect, c("SpatialPoints", "SpatialLines")))
+  stopifnot(inherits(r, c("RasterLayer", "RasterStack", "RasterBrick")))
 
   if (inherits(transect, "SpatialLines"))
     transect <- methods::as(transect, "SpatialPoints")

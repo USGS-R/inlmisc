@@ -59,15 +59,14 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   # check arguments
   checkmate::assertNumeric(x)
   checkmate::assertCount(digits, null.ok=TRUE)
+  if (missing(type) && methods::hasArg("lab.type"))  # backward compatibility
+    type <- list(...)$lab.type
+  else
+    type <- match.arg(type)
   checkmate::assertString(na, na.ok=TRUE)
   checkmate::assertString(delimiter)
   checkmate::assertInt(scipen, na.ok=TRUE, null.ok=TRUE)
   checkmate::assertString(big.mark)
-
-  if (missing(type) && methods::hasArg("lab.type"))
-    type <- list(...)$lab.type  # include for backward compatibility
-  else
-    type <- match.arg(type)
 
   x <- as.numeric(x)
 

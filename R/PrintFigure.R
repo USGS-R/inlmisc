@@ -85,8 +85,8 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
 
   # check arguments
   checkmate::assertCharacter(fig, any.missing=FALSE, min.len=1)
-  checkmate::assertInt(nr, lower=1)
-  checkmate::assertInt(nc, lower=1)
+  checkmate::assertCount(nr, positive=TRUE)
+  checkmate::assertCount(nc, positive=TRUE)
   checkmate::assertString(label)
   checkmate::assertString(title)
   checkmate::assertString(title_lof)

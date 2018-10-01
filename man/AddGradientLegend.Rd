@@ -4,15 +4,16 @@
 \alias{AddGradientLegend}
 \title{Add Color Gradient Legend to Plot}
 \usage{
-AddGradientLegend(breaks, pal, at = NULL, n = 5, labels = TRUE,
-  scientific = FALSE, title = NULL, strip.dim = c(2, 8), ...)
+AddGradientLegend(breaks, pal = GetTolColors, at = NULL, n = 5,
+  labels = TRUE, scientific = FALSE, title = NULL, strip.dim = c(2,
+  8), ...)
 }
 \arguments{
 \item{breaks}{'numeric'.
-Set of finite numeric breakpoints for the colors.}
+Set of finite numeric breakpoints for the colors, must be in increasing order.}
 
 \item{pal}{'function'.
-Color palette}
+Color palette function to be used to assign colors in the legend.}
 
 \item{at}{'numeric'.
 Vector of points at which tick-marks and labels are to be drawn.}
@@ -22,7 +23,7 @@ Desired number of tick-marks to be drawn.
 Unused if \code{at} argument is specified.}
 
 \item{labels}{'logical' or 'character'.
-Can either be a logical value specifying whether (numerical) annotations are to be made at the tickmarks,
+Can either be a logical value specifying whether annotations are to be made at the tickmarks,
 or a character or expression vector of labels to be placed at the tickpoints.}
 
 \item{scientific}{'logical'.
@@ -48,14 +49,14 @@ This function can be used to add a continuous color gradient legend strip to a p
 plot(NA, xlim = c(0, 100), ylim = c(-10, 10),
      xlab = "x", ylab = "y", xaxs = "i", yaxs = "i")
 breaks <- 0:200
-AddGradientLegend(breaks, GetTolColors, title = "Title", loc = "bottomleft")
-AddGradientLegend(breaks, GetTolColors, title = "Title",
-                  loc = "bottomleft", inset = c(0.2, 0.1))
+AddGradientLegend(breaks, title = "Title", loc = "bottomleft")
+AddGradientLegend(breaks, pal = GetTolColors(scheme = "iridescent"),
+                  title = "Title", loc = "bottomleft", inset = c(0.2, 0.1))
 breaks <- seq(0, 2e+06, length.out = 5)
-AddGradientLegend(breaks, rainbow, loc = "topright", inset = 0.1)
-pal <- function(...) rev(rainbow(...))  # reverse colors in palette
-AddGradientLegend(breaks, pal, scientific = TRUE, strip.dim = c(1, 14),
-                  inset = c(0.2, 0.1))
+AddGradientLegend(breaks, pal = GetTolColors(scheme = "discrete rainbow"),
+                  scientific = TRUE, strip.dim = c(1, 14), inset = c(0.2, 0.1))
+AddGradientLegend(breaks, pal = GetTolColors(scheme = "YlOrBr"),
+                  loc = "topright", inset = 0.1)
 
 }
 \seealso{

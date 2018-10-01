@@ -7,7 +7,7 @@
 ExportRasterStack(rs, path, zip = "", col = NULL)
 }
 \arguments{
-\item{rs}{'RasterStack'.
+\item{rs}{'RasterStack' or 'RasterBrick'.
 A collection of \code{\linkS4class{RasterLayer}} objects with
 the same extent and resolution.}
 
@@ -50,10 +50,15 @@ If the zip program is unavailable on windows, install it
 }
 \examples{
 \dontrun{
-  f <- system.file("external/rlogo.grd", package = "raster")
-  rs <- raster::stack(f)
-  print(rs)
-  ExportRasterStack(rs, tempdir())
+rs <- raster::stack(system.file("external/rlogo.grd", package = "raster"))
+print(rs)
+path <- file.path(tempdir(), "rlogo")
+dir.create(path)
+ExportRasterStack(rs, path)
+list.files(normalizePath(path, winslash = "/"), full.name = TRUE,
+           recursive = TRUE, include.dirs = TRUE)
+
+unlink(path, recursive = TRUE)
 }
 
 }

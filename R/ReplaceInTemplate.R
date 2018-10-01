@@ -28,16 +28,17 @@
 #' @examples
 #' text <- c("Hello $(name)!", "$(a) + $(b) = @{$(a) + $(b)}",
 #'           "pi = @{format(pi, digits = 5)}")
+#' cat(text, sep = "\n")
 #' replacement <- list(name = "world", a = 1, b = 2)
 #' cat(ReplaceInTemplate(text, replacement), sep = "\n")
 #'
 
-ReplaceInTemplate <- function(text, replacement) {
+ReplaceInTemplate <- function(text, replacement=list()) {
 
-  if (missing(replacement)) replacement <- list()
+  checkmate::assertCharacter(text, any.missing=FALSE, min.len=1)
+  checkmate::assertList(replacement)
 
   for (i in seq_along(text)) {
-
     for (j in names(replacement)) {
       pattern <- sub("KEY", j, "\\$\\(KEY\\)", perl=TRUE)
       text[i] <- gsub(pattern, paste(replacement[[j]]), text[i], perl=TRUE)
@@ -58,7 +59,6 @@ ReplaceInTemplate <- function(text, replacement) {
       line.end <- substr(text[i], match.last + 1L, nchar(text[i]))
       text[i] <- paste0(line.begin, line.middle, line.end)
     }
-
   }
 
   return(text)

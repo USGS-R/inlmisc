@@ -404,9 +404,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
       labels <- if (raster::is.factor(r)) raster::levels(r)[[1]][, "att"] else TRUE
     else
       labels <- labels$labels
-    AddColorKey(mai=mai1, is.categorical=raster::is.factor(r),
-                breaks=breaks, col=cols, at=at, labels=labels,
-                explanation=explanation)
+    AddColorKey(breaks, is.categorical=raster::is.factor(r), col=cols,
+                at=at, labels=labels, explanation=explanation, mai=mai1)
   } else if (draw.key) {
     op <- graphics::par(mai=c(0, 0, 0, 0))
     graphics::plot.new()

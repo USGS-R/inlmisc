@@ -1,5 +1,7 @@
 # inlmisc 0.4.3.9000
 
+- In `AddColorKey` function, rearrange order of arguments.
+
 - In `PlotCrossSection` function: add `bend.label` argument, used to
   place labels at top of the bend-in-section lines; and
   change default value of `bg.col` argument from `"#FFFFFFD8"` to `NULL`,

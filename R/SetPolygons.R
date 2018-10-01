@@ -12,7 +12,8 @@
 #'    If "gDifference" is specified, only those portions of the \code{x} polygons
 #'    falling outside the \code{y} polygons are copied to the output polygons.
 #' @param buffer.width 'numeric'.
-#'    Expands or contracts the geometry of \code{y} to include the area within the specified width, see \code{gBuffer}.
+#'    Expands or contracts the geometry of \code{y} to include the area within
+#'    the specified width, see \code{gBuffer}.
 #'    Specifying \code{NA}, the default, indicates no buffer.
 #'
 #' @details This function tests if the resulting geometry is valid, see \code{\link{gIsValid}}.
@@ -51,13 +52,10 @@
 
 SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.width=NA) {
 
+  stopifnot(inherits(x, c("SpatialPolygons", "SpatialPolygonsDataFrame")))
+  stopifnot(inherits(y, c("SpatialPolygons", "SpatialPolygonsDataFrame", "Extent")))
   cmd <- match.arg(cmd)
   checkmate::assertNumber(buffer.width, na.ok=TRUE, finite=TRUE)
-
-  if (!inherits(x, c("SpatialPolygons", "SpatialPolygonsDataFrame")))
-    stop("argument 'x' is the wrong class")
-  if (!inherits(y, c("SpatialPolygons", "SpatialPolygonsDataFrame", "Extent")))
-    stop("argument 'y' is the wrong class")
 
   if (inherits(y, "Extent")) {
     crds <- cbind(c(y[1:2], y[2:1], y[1]), c(rep(y[3], 2), rep(y[4], 2), y[3]))

@@ -32,7 +32,7 @@
 
 RmSmallCellChunks <- function(r) {
 
-  stopifnot(inherits(r, "RasterLayer"))
+  checkmate::assertClass(r, "RasterLayer")
 
   ext <- raster::extent(r)
   new.ext <- raster::extent(c(ext@xmin - raster::res(r)[1], ext@xmax + raster::res(r)[1],

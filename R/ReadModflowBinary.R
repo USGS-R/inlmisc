@@ -62,18 +62,28 @@
 
 ReadModflowBinary <- function(path, data.type=c("array", "flow"),
                               endian=c("little", "big"), rm.totim.0=FALSE) {
-  if (!file.exists(path)) stop("binary file can not be found")
+
+  checkmate::assertFileExists(path)
   data.type <- match.arg(data.type)
   endian <- match.arg(endian)
-  ans <- try(.ReadBinary(path, data.type, nbytes=4L, endian), silent=TRUE)
+  checkmate::assertFlag(rm.totim.0)
+
+  ans <- try(.ReadBinary(path, data.type, endian, nbytes=4L), silent=TRUE)
   if (inherits(ans, "try-error"))
-    ans <- .ReadBinary(path, data.type, nbytes=8L, endian)
-  if (rm.totim.0) ans <- ans[vapply(ans, function(i) i$totim, 0) != 0]
+    ans <- .ReadBinary(path, data.type, endian, nbytes=8L)
+  if (rm.totim.0)
+    ans <- ans[vapply(ans, function(i) i$totim, 0) != 0]
   return(ans)
 }
 
 
-.ReadBinary <- function(path, data.type, nbytes, endian) {
+.ReadBinary <- function(path, data.type, endian, nbytes) {
+
+  checkmate::assertFileExists(path)
+  checkmate::assertString(data.type)
+  checkmate::assertString(endian)
+  stopifnot(nbytes %in% c(4L, 8L))
+
   con <- file(path, open="rb", encoding="bytes")
   on.exit(close(con, type="rb"))
 
@@ -93,17 +103,38 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
   # nlist:  number of cells for which values will be stored
 
   if (data.type == "array")
-    valid.desc <- c("head", "drawdown", "subsidence", "compaction",
-                    "critical head", "head in hgu", "ndsys compaction",
-                    "z displacement", "d critical head", "layer compaction",
-                    "dsys compaction", "nd critical head", "system compaction",
-                    "preconsol stress", "change in pcstrs", "effective stress",
-                    "change in eff-st", "void ratio", "thickness",
-                    "center elevation", "geostatic stress", "change in g-strs")
+    valid.desc <- c("center elevation",
+                    "change in eff-st",
+                    "change in g-strs",
+                    "change in pcstrs",
+                    "compaction",
+                    "critical head",
+                    "d critical head",
+                    "drawdown",
+                    "dsys compaction",
+                    "effective stress",
+                    "geostatic stress",
+                    "head",
+                    "head in hgu",
+                    "layer compaction",
+                    "nd critical head",
+                    "ndsys compaction",
+                    "preconsol stress",
+                    "subsidence",
+                    "system compaction",
+                    "thickness",
+                    "void ratio",
+                    "z displacement")
   else
-    valid.desc <- c("storage", "constant head", "flow right face",
-                    "flow front face", "flow lower face", "wells", "drains",
-                    "river leakage", "lake seepage")
+    valid.desc <- c("constant head",
+                    "drains",
+                    "flow front face",
+                    "flow lower face",
+                    "flow right face",
+                    "lake seepage",
+                    "river leakage",
+                    "storage",
+                    "wells")
   lst <- list()
   repeat {
     kstp <- readBin(con, "integer", n=1L, size=4L, endian=endian)
@@ -137,7 +168,8 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
       if (nlay > 0) {
         x <- .Read3dArray(con, nrow, ncol, nlay, nbytes, endian)
         for (i in seq_len(nlay)) {
-          lst[[length(lst) + 1]] <- list(d=x[[i]], kstp=kstp, kper=kper, desc=desc, layer=i)
+          lst[[length(lst) + 1]] <- list(d=x[[i]], kstp=kstp, kper=kper,
+                                         desc=desc, layer=i)
         }
 
       } else {  # compact form is used
@@ -164,8 +196,9 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
           nvalues <- ncol * nrow * nlay
           d <- .Read3dArray(con, nrow, ncol, nlay, nbytes, endian)
           for (i in seq_along(d)) {
-            lst[[length(lst) + 1]] <- list(d=d[[i]], kstp=kstp, kper=kper, desc=desc,
-                                           layer=i, delt=delt, pertim=pertim, totim=totim)
+            lst[[length(lst) + 1]] <- list(d=d[[i]], kstp=kstp, kper=kper,
+                                           desc=desc, layer=i, delt=delt,
+                                           pertim=pertim, totim=totim)
           }
 
         } else if (itype %in% c(2L, 5L)) {
@@ -174,15 +207,17 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
               stop("large number of cells for which values will be stored")
             if (nlist > 0) {
               d <- matrix(0, nrow=nlist, ncol=nval + 4)
-              colnames(d) <- make.names(c("icell", "layer", "row", "column", "flow", ctmp), unique=TRUE)
+              colnames(d) <- make.names(c("icell", "layer", "row", "column", "flow", ctmp),
+                                        unique=TRUE)
               for (i in seq_len(nlist)) {
                 d[i, 1] <- readBin(con, "integer", n=1L, size=4L, endian=endian)
-                d[i, seq_len(nval) + 4] <- readBin(con, "numeric", n=nval, size=nbytes, endian=endian)
+                d[i, seq_len(nval) + 4] <- readBin(con, "numeric", n=nval,
+                                                   size=nbytes, endian=endian)
               }
               nrc <- nrow * ncol
-              d[, "layer"] <- as.integer((d[, "icell"] - 1L) / nrc + 1L)
-              d[, "row"]  <- as.integer(((d[, "icell"] - (d[, "layer"] - 1L) * nrc) - 1L) / ncol + 1L)
-              d[, "column"] <- as.integer(d[, "icell"] - (d[, "layer"] - 1L) * nrc - (d[, "row"] - 1L) * ncol)
+              d[, "layer"] <- as.integer((d[, "icell"] - 1) / nrc + 1)
+              d[, "row"]  <- as.integer(((d[, "icell"] - (d[, "layer"] - 1) * nrc) - 1) / ncol + 1)
+              d[, "column"] <- as.integer(d[, "icell"] - (d[, "layer"] - 1) * nrc - (d[, "row"] - 1) * ncol)
               lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
                                              delt=delt, pertim=pertim, totim=totim)
             }
@@ -219,13 +254,22 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
 
 
 .Read3dArray <- function(con, nrow, ncol, nlay, nbytes, endian) {
-  return(lapply(seq_len(nlay), function(i) {
+
+  checkmate::assertClass(con, c("file", "connection"))
+  checkmate::assertCount(nrow, positive=TRUE)
+  checkmate::assertCount(ncol, positive=TRUE)
+  checkmate::assertCount(nlay, positive=TRUE)
+  checkmate::assertInt(nbytes)
+  checkmate::assertString(endian)
+
+  lapply(seq_len(nlay), function(i) {
     v <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
-    return(matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE))
-  }))
+    matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
+  })
 }
 
 
 .TidyDescription <- function(desc) {
-  return(tolower(gsub("(^ +)|( +$)", "", desc)))
+  checkmate::assertCharacter(desc)
+  tolower(gsub("(^ +)|( +$)", "", desc))
 }

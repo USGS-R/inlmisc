@@ -228,10 +228,10 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
   checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
   checkmate::assertNumber(start, lower=0, upper=1, finite=TRUE)
   checkmate::assertNumber(end,   lower=0, upper=1, finite=TRUE)
-  if (start >= end) stop("'start' greater than or equal to 'end'")
+  stopifnot(start < end)
   checkmate::qassert(bias, "N1(0,)")
-  checkmate::assertString(blind, min.chars=1, null.ok=TRUE)
   checkmate::assertFlag(reverse)
+  checkmate::assertString(blind, min.chars=1, null.ok=TRUE)
 
   if (is.character(blind)) {
     if (blind == "monochromacy") blind <- "monochrome"  # backward compatibility
@@ -571,7 +571,7 @@ plot.Tol <- function(x, ...) {
   }
 
   # code adapted from example in
-  # colorspace::rainbow_hcl} function documentation,
+  # colorspace::rainbow_hcl function documentation,
   # authored by Achim Zeileis and accessed August 8, 2018
   # at https://CRAN.R-project.org/package=colorspace
   op <- graphics::par(mar=c(3, 2, 2, 2)); on.exit(graphics::par(op))
