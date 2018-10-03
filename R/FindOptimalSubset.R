@@ -157,6 +157,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   # format suggested chromosomes
   if (!is.null(suggestions)) {
     m <- suggestions
+    if (any(m > n)) stop("'suggestions' element(s) greater than 'k'")
     if (k < ncol(m)) {
       m <- m[, seq_len(k), drop=FALSE]
     } else if (k > ncol(m)) {
