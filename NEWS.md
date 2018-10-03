@@ -1,6 +1,7 @@
 # inlmisc 0.4.3.9000
 
-- In `FindOptimalSubset` function, fix matrix construction of `suggestions`.
+- In `FindOptimalSubset` function: improve matrix construction of `suggestions`;
+  change calculation of number of bits in a number.
 
 - In `AddColorKey` function, rearrange order of arguments.
 

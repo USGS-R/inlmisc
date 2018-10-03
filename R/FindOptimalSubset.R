@@ -104,7 +104,7 @@
 #' # genearated from a standard uniform distribution.
 #' k <- 4
 #' n <- 100
-#' seed <- 321
+#' seed <- 123
 #' set.seed(seed); numbers <- sort(runif(n))
 #' Fitness <- function(string, n, numbers) {
 #'   idxs <- DecodeChromosome(string, n)
@@ -139,7 +139,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   checkmate::assertInt(elitism, lower=0, upper=popSize)
   checkmate::assertInt(maxiter, lower=1)
   checkmate::assertInt(run, lower=1, upper=maxiter)
-  checkmate::assertMatrix(suggestions, null.ok=TRUE)
+  checkmate::assertMatrix(suggestions, min.rows=1, min.cols=1, null.ok=TRUE)
   checkmate::qassert(parallel, c("B1", "X1[0,)"))
   checkmate::assertFunction(monitor, null.ok=TRUE)
   if (is.null(monitor)) monitor <- FALSE
@@ -152,19 +152,20 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
     numIslands <- parallel
 
   # calculate number of bits in the binary string representing the chromosome
-  nBits <- ceiling(log2(n + 1)) * k
+  nBits <- .CountBits(n) * k
 
   # format suggested chromosomes
   if (!is.null(suggestions)) {
     m <- suggestions
-    if (any(m > n)) stop("'suggestions' element(s) greater than 'k'")
+    if (any(m > n)) stop("'suggestions' element value(s) greater than 'k'")
     if (k < ncol(m)) {
       m <- m[, seq_len(k), drop=FALSE]
     } else if (k > ncol(m)) {
       set.seed(seed)
       m <- cbind(m, t(apply(m, 1, function(x) sample(seq_len(n)[-x], k - ncol(m)))))
     }
-    suggestions <- t(apply(m, 1, function(i) EncodeChromosome(i, n)))
+    suggestions <- t(apply(m, 1, function(x) EncodeChromosome(x, n)))
+    stopifnot(nBits == ncol(suggestions))
   }
 
   # solve genetic algorithm
@@ -212,7 +213,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
 }
 
 .Population <- function(object, n) {
-  k <- object@nBits / ceiling(log2(n + 1))
+  k <- object@nBits / .CountBits(n)
   BuildChromosomes <- function(x) sample.int(n, k)
   m <- do.call("rbind", lapply(seq_len(object@popSize), BuildChromosomes))
   pop <- t(apply(m, 1, function(i) EncodeChromosome(i, n)))
@@ -301,7 +302,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
 #'
 
 EncodeChromosome <- function(x, n) {
-  width <- ceiling(log2(n + 1))
+  width <- .CountBits(n)
   return(unlist(lapply(x, function(i) {
     GA::decimal2binary(i, width)
   })))
@@ -311,8 +312,15 @@ EncodeChromosome <- function(x, n) {
 #' @export
 
 DecodeChromosome <- function(y, n) {
-  width <- ceiling(log2(n + 1))
+  width <- .CountBits(n)
   return(vapply(seq(1, length(y), by=width), function(i) {
     GA::binary2decimal(y[i:(i + width - 1L)])
   }, 0))
+}
+
+
+# Count total number of bits in a number
+
+.CountBits <- function(n) {
+  as.integer((log(n) / log(2)) + 1)
 }

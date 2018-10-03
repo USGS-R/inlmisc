@@ -109,7 +109,7 @@ The fitness function (see \code{Fitness} argument) is solved using
 # genearated from a standard uniform distribution.
 k <- 4
 n <- 100
-seed <- 321
+seed <- 123
 set.seed(seed); numbers <- sort(runif(n))
 Fitness <- function(string, n, numbers) {
   idxs <- DecodeChromosome(string, n)
