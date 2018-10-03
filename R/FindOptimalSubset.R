@@ -108,8 +108,7 @@
 #' set.seed(seed); numbers <- sort(runif(n))
 #' Fitness <- function(string, n, numbers) {
 #'   idxs <- DecodeChromosome(string, n)
-#'   value <- -sum(numbers[idxs])
-#'   return(value)
+#'   -sum(numbers[idxs])
 #' }
 #' \dontrun{
 #' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10,
@@ -206,18 +205,14 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   solution <- m[!duplicated(m), , drop=FALSE]
 
   # bundle output
-  return(list(call=match.call(),
-              solution=solution,
-              ga_output=ga_output,
-              ga_time=ga_time))
+  list(call=match.call(), solution=solution, ga_output=ga_output, ga_time=ga_time)
 }
 
 .Population <- function(object, n) {
   k <- object@nBits / .CountBits(n)
   BuildChromosomes <- function(x) sample.int(n, k)
   m <- do.call("rbind", lapply(seq_len(object@popSize), BuildChromosomes))
-  pop <- t(apply(m, 1, function(i) EncodeChromosome(i, n)))
-  return(pop)
+  t(apply(m, 1, function(i) EncodeChromosome(i, n)))
 }
 
 .Mutate <- function(object, parent, n) {
@@ -234,8 +229,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
     x_sorted <- sort(x)
     if (!any(apply(m, 1, function(y) identical(y, x_sorted)))) break
   }
-  mut <- EncodeChromosome(x, n)
-  return(mut)
+  EncodeChromosome(x, n)
 }
 
 .Crossover <- function(object, parents, n) {
@@ -259,10 +253,10 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   }))
   m <- t(apply(object@population, 1, function(i) sort(DecodeChromosome(i, n))))
   FindFitness <- function(child) {
-    return(object@fitness[which(apply(m, 1, function(i) identical(i, child)))[1]])
+    object@fitness[which(apply(m, 1, function(i) identical(i, child)))[1]]
   }
   fitness_children <- c(FindFitness(sort(c1)), FindFitness(sort(c2)))
-  return(list(children=encoded_children, fitness=fitness_children))
+  list(children=encoded_children, fitness=fitness_children)
 }
 
 

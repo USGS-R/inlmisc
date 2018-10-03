@@ -113,8 +113,7 @@ seed <- 123
 set.seed(seed); numbers <- sort(runif(n))
 Fitness <- function(string, n, numbers) {
   idxs <- DecodeChromosome(string, n)
-  value <- -sum(numbers[idxs])
-  return(value)
+  -sum(numbers[idxs])
 }
 \dontrun{
 out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10,
