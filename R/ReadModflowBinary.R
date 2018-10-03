@@ -73,7 +73,7 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
     ans <- .ReadBinary(path, data.type, endian, nbytes=8L)
   if (rm.totim.0)
     ans <- ans[vapply(ans, function(i) i$totim, 0) != 0]
-  return(ans)
+  ans
 }
 
 
@@ -249,7 +249,7 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
       }
     }
   }
-  return(lst)
+  lst
 }
 
 

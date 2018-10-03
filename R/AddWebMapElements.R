@@ -231,6 +231,6 @@ AddLegend <- function(map, labels, colors, radius, opacity=0.5, symbol=c("square
   lab <- sprintf(fmt, sizes, sizes, labels)
   if (is.character(title))
     title <- sprintf("<div style='text-align:center;'>%s</div>", title)
-  return(leaflet::addLegend(map, position=position, colors=col, labels=lab,
-                            labFormat=as.character(), opacity=opacity, title=title))
+  leaflet::addLegend(map, position=position, colors=col, labels=lab,
+                     labFormat=as.character(), opacity=opacity, title=title)
 }

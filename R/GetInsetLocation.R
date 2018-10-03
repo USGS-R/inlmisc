@@ -100,6 +100,5 @@ GetInsetLocation <- function(dx, dy, loc="bottomright", inset=0, pad=0, padin=0)
     xy <- center
   }
   names(xy) <- c("x", "y")
-
-  return(xy)
+  xy
 }

@@ -417,7 +417,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
                       pch=pch, col=col, bg=bg, cex=pt.cex, add=TRUE, verbose=FALSE)
   }
 
-  invisible(NULL)
+  invisible()
 }
 
 
@@ -429,5 +429,5 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
     grp[i] <- grp[i] * mult
   }
   grp[grp == 0L] <- NA
-  return(grp)
+  grp
 }

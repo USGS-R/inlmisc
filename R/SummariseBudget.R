@@ -94,8 +94,7 @@ SummariseBudget <- function(budget, desc=NULL, id=NULL) {
   d <- dplyr::bind_rows(d, dplyr::mutate(.Summarise(b, desc, id), flow.dir="out"))
 
   d$flow.dir <- as.factor(d$flow.dir)
-
-  return(d)
+  d
 }
 
 
@@ -111,7 +110,7 @@ SummariseBudget <- function(budget, desc=NULL, id=NULL) {
                       flow=j$d[, "flow"], delt=j$delt,
                       pertim=j$pertim, totim=j$totim, stringsAsFactors=FALSE)
       if (!is.null(id) && id %in% colnames(j$d)) d$id <- j$d[, id]
-      return(d)
+      d
     }))
   }))
   d$desc <- as.factor(d$desc)
@@ -128,5 +127,5 @@ SummariseBudget <- function(budget, desc=NULL, id=NULL) {
                          flow.mean   = "mean(flow)",
                          flow.median = "stats::median(flow)",
                          flow.sd     = "sd(flow)")
-  return(d)
+  d
 }

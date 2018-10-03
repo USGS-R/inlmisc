@@ -108,7 +108,7 @@ BumpRiverStage <- function(r, outlets, min.drop=1e-06) {
         break
       }
     }
-    return(dist)
+    dist
   }
   dists <- CalcWaveExpansion(sink.cells)
 
@@ -122,7 +122,7 @@ BumpRiverStage <- function(r, outlets, min.drop=1e-06) {
       cell <- adj.cells[.WhichMin(dists[riv.cells %in% adj.cells])]
       if (cell %in% sink.cells) break
     }
-    return(path)
+    path
   }
   paths <- lapply(source.cells, BacktracePath)
 
@@ -153,7 +153,7 @@ BumpRiverStage <- function(r, outlets, min.drop=1e-06) {
   }
   lapply(source.cells, SetNonPathCells)
 
-  return(r - r.save)
+  r - r.save
 }
 
 
@@ -163,5 +163,5 @@ BumpRiverStage <- function(r, outlets, min.drop=1e-06) {
     set.seed(42)
     y <- sample(y, 1L)
   }
-  return(y)
+  y
 }

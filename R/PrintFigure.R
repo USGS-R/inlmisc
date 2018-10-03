@@ -152,5 +152,5 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
     if (i > n && i == np) cat("\\captionsetup[figure]{list=yes}\n\n")
   }
 
-  invisible(NULL)
+  invisible()
 }

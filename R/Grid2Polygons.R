@@ -249,7 +249,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   # crop 'SpatialPolygonsDataFrame' object using polygon argument
   if (!is.null(ply)) sp.polys.df <- raster::crop(sp.polys.df, ply)
 
-  return(sp.polys.df)
+  sp.polys.df
 }
 
 
@@ -283,5 +283,5 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   # close polygon by joining the first point to the last point
   poly.nodes <- lapply(poly.nodes, function(i) c(i, i[1]))
 
-  return(poly.nodes)
+  poly.nodes
 }

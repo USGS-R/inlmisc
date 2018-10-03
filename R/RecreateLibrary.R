@@ -345,7 +345,7 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
       x <- gsub("\\n", " ", x)
       x <- gsub("\\s*\\([^\\)]+\\)", "", x)
       x <- strsplit(x, ", ")[[1]]
-      return(x)
+      x
     })), pkg)
     pkgs <- pkgs[pkgs[, "Package"] %in% p, , drop=FALSE]
   }

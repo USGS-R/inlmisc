@@ -61,5 +61,5 @@ ReplaceInTemplate <- function(text, replacement=list()) {
     }
   }
 
-  return(text)
+  text
 }

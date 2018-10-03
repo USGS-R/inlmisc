@@ -125,5 +125,5 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
     }))
   }
 
-  return(s)
+  s
 }

@@ -400,7 +400,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       graphics::text(xy[1] + dx / 2, xy[2] + dy - title.height - subtitle.height, subtitle,
                      adj=c(0.5, 0), cex=cex)
   }
-  invisible(NULL)
+  invisible()
 }
 
 ##

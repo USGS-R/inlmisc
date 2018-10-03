@@ -217,7 +217,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
       p <- rgeos::gUnaryUnion(sp::SpatialPolygons(list(p), i))
       p <- methods::slot(p, "polygons")[[1]]
       p@ID <- cols[i]
-      return(p)
+      p
     })
     cell.polys.merged <- sp::SpatialPolygons(p, seq_along(cols))
   }
@@ -306,7 +306,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     bg.poly <- sp::SpatialPolygons(list(sp::Polygons(lapply(eat, function(i) {
       m <- cbind(x=i@data[[1]], y=i@data[[2]])
       m <- rbind(m, cbind(rev(range(m[, "x"], na.rm=TRUE)), usr[3]), m[1, , drop=FALSE])
-      return(sp::Polygon(m))
+      sp::Polygon(m)
     }), "bg")), 1L)
     sp::plot(bg.poly, col=bg.col, border=NA, lwd=0.1, add=TRUE)
   }

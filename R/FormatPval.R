@@ -55,5 +55,5 @@ FormatPval <- function(x, digits=max(1, getOption("digits") - 2),
 
   p[is.na(x)] <- as.character(na.form)
 
-  return(p)
+  p
 }

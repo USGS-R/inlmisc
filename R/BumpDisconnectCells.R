@@ -66,12 +66,11 @@ BumpDisconnectCells <- function(rs, min.overlap=2, bump.by=0.1, max.itr=1e+04) {
 
   itr <- 0L
   while(TRUE) {
-
     FUN <- function(i) {
       x <- rep(NA, nrow(d))
       is <- !is.na(d[, i])
       x[is] <- r[d[is, "cell"]] >= rs[[1]][d[is, i]] - min.overlap
-      return(x)
+      x
     }
     m <- cbind(FUN("c1"), FUN("c2"), FUN("c3"), FUN("c4"))
     is.disconnected <- apply(m, 1, any, na.rm=TRUE)
@@ -88,5 +87,5 @@ BumpDisconnectCells <- function(rs, min.overlap=2, bump.by=0.1, max.itr=1e+04) {
 
     d <- d[is.disconnected, , drop=FALSE]
   }
-  return(r - rs[[2]])
+  r - rs[[2]]
 }
