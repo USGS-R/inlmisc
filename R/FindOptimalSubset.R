@@ -156,22 +156,14 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
 
   # format suggested chromosomes
   if (!is.null(suggestions)) {
-    if (identical(as.vector(suggestions), as.numeric(as.logical(suggestions)))) {
-      if (ncol(suggestions) != nBits)
-        stop("Problem with number of columns in binary 'suggestions' argument")
-    } else {
-      m <- suggestions
-      if (k < ncol(m)) {
-        set.seed(seed); m <- t(apply(m, 1, sample, size=k))
-      } else if (k > ncol(m)) {
-        idxs <- seq_len(n)
-        set.seed(seed)
-        m <- t(apply(m, 1, function(i) {
-          c(i, sample(idxs[-i], k - ncol(m)))
-        }))
-      }
-      suggestions <- t(apply(m, 1, function(i) EncodeChromosome(i, n)))
+    m <- suggestions
+    if (k < ncol(m)) {
+      m <- m[, seq_len(k), drop=FALSE]
+    } else if (k > ncol(m)) {
+      set.seed(seed)
+      m <- cbind(m, t(apply(m, 1, function(x) sample(seq_len(n)[-x], k - ncol(m)))))
     }
+    suggestions <- t(apply(m, 1, function(i) EncodeChromosome(i, n)))
   }
 
   # solve genetic algorithm

@@ -1,5 +1,7 @@
 # inlmisc 0.4.3.9000
 
+- In `FindOptimalSubset` function, fix matrix construction of `suggestions`.
+
 - In `AddColorKey` function, rearrange order of arguments.
 
 - In `PlotCrossSection` function: add `bend.label` argument, used to
