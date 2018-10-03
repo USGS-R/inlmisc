@@ -303,9 +303,9 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
 
 EncodeChromosome <- function(x, n) {
   width <- .CountBits(n)
-  return(unlist(lapply(x, function(i) {
+  unlist(lapply(x, function(i) {
     GA::decimal2binary(i, width)
-  })))
+  }))
 }
 
 #' @rdname EncodeChromosome
@@ -313,14 +313,14 @@ EncodeChromosome <- function(x, n) {
 
 DecodeChromosome <- function(y, n) {
   width <- .CountBits(n)
-  return(vapply(seq(1, length(y), by=width), function(i) {
+  vapply(seq(1, length(y), by=width), function(i) {
     GA::binary2decimal(y[i:(i + width - 1L)])
-  }, 0))
+  }, 0)
 }
 
 
-# Count total number of bits in a number
+# Count number of bits in a number
 
 .CountBits <- function(n) {
-  as.integer((log(n) / log(2)) + 1)
+  as.integer(floor(log2(n)) + 1)
 }
