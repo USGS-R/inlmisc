@@ -166,7 +166,7 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
   checkmate::assertFlag(openPopup)
   checkmate::assertChoice(position, c("topleft", "topright", "bottomleft", "bottomright"))
 
-  # ensure group is in map widget
+  # check group is in map widget
   grp <- unlist(lapply(lapply(map$x$calls, function(x) x[[2]]), function(x) x[5][[1]]))
   if (!(group %in% grp)) stop("Group with name '", group, "' missing from map widget.")
 

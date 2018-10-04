@@ -61,6 +61,7 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
 
   # construct url's for base maps
   url <- sprintf("https://basemap.nationalmap.gov/ArcGIS/rest/services/%s/MapServer/tile/{z}/{y}/{x}", basemap)
+# url <- sprintf("https://basemap.nationalmap.gov/arcgis/services/%s/MapServer/WmsServer?", basemap)
 
   # define attribution for base maps
   att <- sprintf("<a href='%s' title='%s' target='_blank'>%s</a> | <a href='%s' title='%s' target='_blank'>%s</a>",
