@@ -89,5 +89,5 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
   map <- leaflet::addScaleBar(map, position="bottomleft")
 
   # return map widget
-  return(map)
+  map
 }
