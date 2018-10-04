@@ -38,9 +38,8 @@
 #'   Number of consecutive generations without any improvement in the
 #'   \dQuote{best} fitness value before the GA is stopped.
 #' @param suggestions 'matrix'.
-#'   Integer (or binary) representation of chromosomes to be included in the initial population (optional).
-#'   For binary representation of chromosomes, the number of columns must match the number of decision variables.
-#'   See returned list components \code{solution} and \code{ga_output@solution} for suggested values for this arugment.
+#'   Integer chromosomes to be included in the initial population.
+#'   See returned \code{solution} component for a suggested value for this arugment.
 #' @param parallel 'logical' or 'integer'.
 #'   Whether to use parallel computing.
 #'   This argument can also be used to specify the number of cores
