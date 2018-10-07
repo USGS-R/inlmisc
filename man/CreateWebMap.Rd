@@ -4,7 +4,7 @@
 \alias{CreateWebMap}
 \title{Create a Web Map Using The National Map Services}
 \usage{
-CreateWebMap(maps, ..., collapsed = TRUE)
+CreateWebMap(maps, ..., collapsed = TRUE, service = c("rest", "wms"))
 }
 \arguments{
 \item{maps}{'character'.
@@ -17,6 +17,11 @@ All base maps are included by default.}
 
 \item{collapsed}{'logical'.
 If true, the layers control will be rendered as an icon that expands when hovered over.}
+
+\item{service}{'logical'.
+Mapping service to use for accessing TNM base-map tiles.
+Select \code{"rest"} for representational state transfer services (the default) and
+\code{"wms"} for web map services.}
 }
 \value{
 Returns a 'leaflet' Hypertext Markup Language (HTML) widget object with TNM base maps.
@@ -32,10 +37,10 @@ Information about the content of these base maps can be found within the
 \href{https://viewer.nationalmap.gov/help/3.0\%20TNM\%20Base\%20Maps.htm}{TNM Base Maps} document.
 }
 \details{
-A number of \href{https://viewer.nationalmap.gov/services/}{map services} are offered through TNM.
-  There are no use restrictions on these services.
+A number of map \href{https://viewer.nationalmap.gov/services/}{service endpoints}
+  are offered through TNM with no use restrictions.
   However, map content is limited to the United States and Territories.
-  This function integrates TNM services within an interactive web map using
+  This function integrates TNM endpoint services within an interactive web map using
   \href{https://rstudio.github.io/leaflet/}{Leaflet for R}.
 }
 \examples{
