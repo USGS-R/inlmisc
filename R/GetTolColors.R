@@ -308,7 +308,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
              "dark red"    = "#663333",
              "dark grey"   = "#555555")
   } else if (scheme == "light") {
-    pal <- c("libht blue"   = "#77AADD",
+    pal <- c("light blue"   = "#77AADD",
              "orange"       = "#EE8866",
              "light yellow" = "#EEDD88",
              "pink"         = "#FFAABB",
