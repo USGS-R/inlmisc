@@ -57,5 +57,5 @@ POSIXct2Character <- function(x, fmt="%Y-%m-%d %H:%M:%OS3") {
     x <- as.POSIXlt(x, tz=attr(x, "tzone"))
     x$sec <- round(x$sec, dec.digits) + 10^(-dec.digits - 1L)
   }
-  return(format(x, format=fmt))
+  format(x, format=fmt)
 }

@@ -108,5 +108,5 @@ AddGradientLegend <- function(breaks, pal=GetTolColors, at=NULL, n=5, labels=TRU
   if (!is.null(title))
     graphics::title(main=title, line=0.5, cex.main=cex)
 
-  invisible(NULL)
+  invisible()
 }

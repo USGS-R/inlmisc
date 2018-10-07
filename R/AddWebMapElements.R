@@ -166,7 +166,7 @@ AddSearchButton <- function(map, group, propertyName="label", zoom=NULL,
   checkmate::assertFlag(openPopup)
   checkmate::assertChoice(position, c("topleft", "topright", "bottomleft", "bottomright"))
 
-  # ensure group is in map widget
+  # check group is in map widget
   grp <- unlist(lapply(lapply(map$x$calls, function(x) x[[2]]), function(x) x[5][[1]]))
   if (!(group %in% grp)) stop("Group with name '", group, "' missing from map widget.")
 
@@ -231,6 +231,6 @@ AddLegend <- function(map, labels, colors, radius, opacity=0.5, symbol=c("square
   lab <- sprintf(fmt, sizes, sizes, labels)
   if (is.character(title))
     title <- sprintf("<div style='text-align:center;'>%s</div>", title)
-  return(leaflet::addLegend(map, position=position, colors=col, labels=lab,
-                            labFormat=as.character(), opacity=opacity, title=title))
+  leaflet::addLegend(map, position=position, colors=col, labels=lab,
+                     labFormat=as.character(), opacity=opacity, title=title)
 }

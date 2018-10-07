@@ -201,5 +201,5 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     if (i > 1 && i == length(n)) cat("\\captionsetup[table]{list=yes}\n")
   }
 
-  invisible(NULL)
+  invisible()
 }

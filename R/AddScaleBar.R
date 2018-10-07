@@ -147,6 +147,8 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
       y <- xy[2] - tcl - pady - graphics::strheight("0", cex=0.7) - pady
     graphics::text(xy[1] + len / 2, y, txt, cex=0.7, adj=c(0.5, 1), xpd=TRUE)
   }
+
+  invisible()
 }
 
 
@@ -158,5 +160,5 @@ AddScaleBar <- function(unit=NULL, conv.fact=NULL, vert.exag=NULL, longlat=FALSE
   m1 <- x / 10^n
   vec <- c(0, utils::head(base, -1) + diff(base) / 2)
   m2 <- base[findInterval(m1, vec)]
-  return(m2 * 10^n)
+  m2 * 10^n
 }

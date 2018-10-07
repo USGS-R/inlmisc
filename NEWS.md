@@ -1,5 +1,8 @@
 # inlmisc 0.4.3.9000
 
+- In `FindOptimalSubset` function: improve matrix construction of `suggestions`;
+  change calculation of number of bits in a number.
+
 - In `AddColorKey` function, rearrange order of arguments.
 
 - In `PlotCrossSection` function: add `bend.label` argument, used to
@@ -14,7 +17,8 @@
 
 - For leaflet-search plugin, change version from `2.8.0` to `2.9.6` and tidy wrapper functions.
 
-- In `CreateWebMap` function, change URL for TNM basemap WMS services.
+- In `CreateWebMap` function, add `service` argument for specifying
+  the mapping service to use for accessing base-map tiles.
 
 - Change required R version from `>= 3.2.0` to `>= 3.4.0`.
 

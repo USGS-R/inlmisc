@@ -104,5 +104,5 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
 
   if (bty != "n") graphics::box(lwd=0.5)
 
-  invisible(NULL)
+  invisible()
 }

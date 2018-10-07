@@ -53,7 +53,5 @@ RmSmallCellChunks <- function(r) {
   r.values[is.na(chunk.numbers)] <- NA
   new.r[] <- r.values
 
-  r <- raster::crop(new.r, ext)
-
-  return(r)
+  raster::crop(new.r, ext)
 }

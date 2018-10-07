@@ -54,9 +54,8 @@ Number of consecutive generations without any improvement in the
 \dQuote{best} fitness value before the GA is stopped.}
 
 \item{suggestions}{'matrix'.
-Integer (or binary) representation of chromosomes to be included in the initial population (optional).
-For binary representation of chromosomes, the number of columns must match the number of decision variables.
-See returned list components \code{solution} and \code{ga_output@solution} for suggested values for this arugment.}
+Integer chromosomes to be included in the initial population.
+See returned \code{solution} component for a suggested value for this arugment.}
 
 \item{parallel}{'logical' or 'integer'.
 Whether to use parallel computing.
@@ -109,12 +108,11 @@ The fitness function (see \code{Fitness} argument) is solved using
 # genearated from a standard uniform distribution.
 k <- 4
 n <- 100
-seed <- 321
+seed <- 123
 set.seed(seed); numbers <- sort(runif(n))
 Fitness <- function(string, n, numbers) {
   idxs <- DecodeChromosome(string, n)
-  value <- -sum(numbers[idxs])
-  return(value)
+  -sum(numbers[idxs])
 }
 \dontrun{
 out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10,

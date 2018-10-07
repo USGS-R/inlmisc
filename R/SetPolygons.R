@@ -104,7 +104,7 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
     } else {
       p <- if (cmd == "gIntersection") NULL else x[i]@polygons[[1]]
     }
-    return(p)
+    p
   })
 
   is.retained <- !vapply(z, is.null, TRUE)
@@ -113,5 +113,5 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
     d <- d[is.retained, , drop=FALSE]
     z <- sp::SpatialPolygonsDataFrame(z, d, match.ID=TRUE)
   }
-  return(z)
+  z
 }

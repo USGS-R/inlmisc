@@ -93,4 +93,6 @@ AddNorthArrow <- function(crs=sp::CRS(), len=0.05, lab="N", rotate=0, ...) {
 
   graphics::arrows(xy["x"], xy["y"], x2, y2, length=0.1)
   graphics::text(x2, y2, labels=lab, pos=pos, offset=0.2, cex=0.7)
+
+  invisible()
 }

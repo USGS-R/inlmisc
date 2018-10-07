@@ -610,7 +610,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   inc <- diff(range(at)) / (length(at) - 1)
   at.mid <- seq(min(at) - inc, max(at) + inc, by=inc / 2)
   at.mid <- at.mid[!at.mid %in% at & at.mid > ran[1] & at.mid < ran[2]]
-  return(at.mid)
+  at.mid
 }
 
 
@@ -623,7 +623,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   txt <- paste0(d, "\u00B0")
   txt <- paste0(txt, ifelse(m != 0 | s.round != 0, paste0(sep, m, "'"), ""))
   txt <- paste0(txt, ifelse(s.round != 0, paste0(sep, s.round, "\""), ""))
-  return(txt)
+  txt
 }
 
 

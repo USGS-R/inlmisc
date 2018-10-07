@@ -14,11 +14,15 @@
 #'   Arguments to be passed to the \code{\link[leaflet]{leaflet}} function.
 #' @param collapsed 'logical'.
 #'   If true, the layers control will be rendered as an icon that expands when hovered over.
+#' @param service 'logical'.
+#'   Mapping service to use for accessing TNM base-map tiles.
+#'   Select \code{"rest"} for representational state transfer services (the default) and
+#'   \code{"wms"} for web map services.
 #'
-#' @details A number of \href{https://viewer.nationalmap.gov/services/}{map services} are offered through TNM.
-#'   There are no use restrictions on these services.
+#' @details A number of map \href{https://viewer.nationalmap.gov/services/}{service endpoints}
+#'   are offered through TNM with no use restrictions.
 #'   However, map content is limited to the United States and Territories.
-#'   This function integrates TNM services within an interactive web map using
+#'   This function integrates TNM endpoint services within an interactive web map using
 #'   \href{https://rstudio.github.io/leaflet/}{Leaflet for R}.
 #'
 #' @return Returns a 'leaflet' Hypertext Markup Language (HTML) widget object with TNM base maps.
@@ -43,7 +47,7 @@
 #' map
 #'
 
-CreateWebMap <- function(maps, ..., collapsed=TRUE) {
+CreateWebMap <- function(maps, ..., collapsed=TRUE, service=c("rest", "wms")) {
 
   # initialize base maps
   basemap <- c("Topo"         = "USGSTopo",
@@ -58,9 +62,7 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
   }
 
   checkmate::assertFlag(collapsed)
-
-  # construct url's for base maps
-  url <- sprintf("https://basemap.nationalmap.gov/ArcGIS/rest/services/%s/MapServer/tile/{z}/{y}/{x}", basemap)
+  service <- match.arg(service)
 
   # define attribution for base maps
   att <- sprintf("<a href='%s' title='%s' target='_blank'>%s</a> | <a href='%s' title='%s' target='_blank'>%s</a>",
@@ -71,10 +73,21 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
   map <- leaflet::leaflet(...)
 
   # add base maps
-  opt <- leaflet::WMSTileOptions(format="image/jpeg", version="1.3.0", maxNativeZoom=15)
-  for (i in seq_along(basemap)) {
-    map <- leaflet::addWMSTiles(map, url[i], group=names(basemap)[i],
-                                options=opt, attribution=att, layers="0")
+  domain <- "https://basemap.nationalmap.gov"
+  if (service == "rest") {
+    url <- sprintf("%s/ArcGIS/rest/services/%s/MapServer/tile/{z}/{y}/{x}", domain, basemap)
+    opt <- leaflet::tileOptions(maxNativeZoom=15)
+    for (i in seq_along(basemap)) {
+      map <- leaflet::addTiles(map, urlTemplate=url[i], attribution=att,
+                               group=names(basemap)[i], options=opt)
+    }
+  } else {
+    url <- sprintf("%s/arcgis/services/%s/MapServer/WmsServer?", domain, basemap)
+    opt <- leaflet::WMSTileOptions(format="image/jpeg", version="1.3.0", maxNativeZoom=15)
+    for (i in seq_along(basemap)) {
+      map <- leaflet::addWMSTiles(map, url[i], group=names(basemap)[i],
+                                  options=opt, attribution=att, layers="0")
+    }
   }
 
   # add basemap control feature
@@ -88,5 +101,5 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE) {
   map <- leaflet::addScaleBar(map, position="bottomleft")
 
   # return map widget
-  return(map)
+  map
 }

@@ -62,6 +62,5 @@ ReadCodeChunks <- function(path) {
 
   names(chunks) <- nam  # chunk names
   attr(chunks, "path") <- path  # file path attribute
-
-  return(chunks)
+  chunks
 }

@@ -533,7 +533,7 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
                      "start"=start, "end"=end, "bias"=bias, "reverse"=reverse,
                      "blind"=blind, "gray"=gray))
 
-  return(.MakeTolClass(col, bad, cl))
+  .MakeTolClass(col, bad, cl)
 }
 
 #' @export
