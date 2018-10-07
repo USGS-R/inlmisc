@@ -49,22 +49,19 @@
 
 CreateWebMap <- function(maps, ..., collapsed=TRUE, service=c("rest", "wms")) {
 
-  # initialize base maps
+  # check arguments
   basemap <- c("Topo"         = "USGSTopo",
                "Imagery"      = "USGSImageryOnly",
                "Imagery Topo" = "USGSImageryTopo",
                "Hydrography"  = "USGSHydroCached",
                "Hill Shade"   = "USGSShadedReliefOnly",
                "Blank"        = "USGSTNMBlank")
-  if (!missing(maps)) {
-    checkmate::assertSubset(maps, names(basemap), empty.ok=FALSE)
-    basemap <- basemap[maps]
-  }
-
+  if (!missing(maps))
+    basemap <- basemap[match.arg(maps, names(basemap), several.ok=TRUE)]
   checkmate::assertFlag(collapsed)
   service <- match.arg(service)
 
-  # define attribution for base maps
+  # define attribution
   att <- sprintf("<a href='%s' title='%s' target='_blank'>%s</a> | <a href='%s' title='%s' target='_blank'>%s</a>",
                  "https://www.usgs.gov/", "United States Geological Survey", "USGS",
                  "https://www.usgs.gov/laws/policies_notices.html", "USGS policies and notices", "Policies")
@@ -76,14 +73,14 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE, service=c("rest", "wms")) {
   domain <- "https://basemap.nationalmap.gov"
   if (service == "rest") {
     url <- sprintf("%s/ArcGIS/rest/services/%s/MapServer/tile/{z}/{y}/{x}", domain, basemap)
-    opt <- leaflet::tileOptions(maxNativeZoom=15)
+    opt <- leaflet::tileOptions(minZoom=3, maxZoom=16)
     for (i in seq_along(basemap)) {
       map <- leaflet::addTiles(map, urlTemplate=url[i], attribution=att,
                                group=names(basemap)[i], options=opt)
     }
   } else {
     url <- sprintf("%s/arcgis/services/%s/MapServer/WmsServer?", domain, basemap)
-    opt <- leaflet::WMSTileOptions(format="image/jpeg", version="1.3.0", maxNativeZoom=15)
+    opt <- leaflet::WMSTileOptions(format="image/jpeg", version="1.3.0", minZoom=3, maxZoom=16)
     for (i in seq_along(basemap)) {
       map <- leaflet::addWMSTiles(map, url[i], group=names(basemap)[i],
                                   options=opt, attribution=att, layers="0")
