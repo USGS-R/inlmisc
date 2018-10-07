@@ -19,7 +19,7 @@ All base maps are included by default.}
 If true, the layers control will be rendered as an icon that expands when hovered over.}
 
 \item{service}{'logical'.
-Mapping service to use for accessing TNM base-map tiles.
+Mapping services for accessing TNM base-map tiles.
 Select \code{"rest"} for representational state transfer services (the default) and
 \code{"wms"} for web map services.}
 }
@@ -37,7 +37,7 @@ Information about the content of these base maps can be found within the
 \href{https://viewer.nationalmap.gov/help/3.0\%20TNM\%20Base\%20Maps.htm}{TNM Base Maps} document.
 }
 \details{
-A number of map \href{https://viewer.nationalmap.gov/services/}{service endpoints}
+Map \href{https://viewer.nationalmap.gov/services/}{service endpoints}
   are offered through TNM with no use restrictions.
   However, map content is limited to the United States and Territories.
   This function integrates TNM endpoint services within an interactive web map using
