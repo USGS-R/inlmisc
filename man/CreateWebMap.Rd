@@ -24,7 +24,7 @@ Select \code{"rest"} for representational state transfer services (the default) 
 \code{"wms"} for web map services.}
 }
 \value{
-Returns a 'leaflet' Hypertext Markup Language (HTML) widget object with TNM base maps.
+Returns a 'leaflet' hypertext markup language (HTML) widget object with TNM base maps.
   See example for instructions on how to add additional graphic layers
   (such as points, lines, and polygons) to the map widget.
   Graphic layers added to the web map must be in latitude and longitude using WGS 84
@@ -39,7 +39,7 @@ Information about the content of these base maps can be found within the
 \details{
 Map \href{https://viewer.nationalmap.gov/services/}{service endpoints}
   are offered through TNM with no use restrictions.
-  However, map content is limited to the United States and Territories.
+  However, map content is limited to the United States and territories.
   This function integrates TNM endpoint services within an interactive web map using
   \href{https://rstudio.github.io/leaflet/}{Leaflet for R}.
 }
