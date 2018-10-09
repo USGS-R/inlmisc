@@ -2,7 +2,7 @@
 % Please edit documentation in R/BumpRiverStage.R
 \name{BumpRiverStage}
 \alias{BumpRiverStage}
-\title{Adjustment for Implausible River Stage}
+\title{Adjust Implausible River Stage}
 \usage{
 BumpRiverStage(r, outlets, min.drop = 1e-06)
 }
