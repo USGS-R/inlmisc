@@ -2,7 +2,7 @@
 % Please edit documentation in R/BumpDisconnectCells.R
 \name{BumpDisconnectCells}
 \alias{BumpDisconnectCells}
-\title{Adjustment for Vertically Disconnected Cells}
+\title{Adjust Vertically Disconnected Cells}
 \usage{
 BumpDisconnectCells(rs, min.overlap = 2, bump.by = 0.1,
   max.itr = 10000)

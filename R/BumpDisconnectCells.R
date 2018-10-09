@@ -1,4 +1,4 @@
-#' Adjustment for Vertically Disconnected Cells
+#' Adjust Vertically Disconnected Cells
 #'
 #' Given upper and lower surfaces (raster layers) of a three-dimensional (3D) model layer,
 #' this function incrementally decreases lower cell values until

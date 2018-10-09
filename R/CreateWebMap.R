@@ -15,17 +15,17 @@
 #' @param collapsed 'logical'.
 #'   If true, the layers control will be rendered as an icon that expands when hovered over.
 #' @param service 'logical'.
-#'   Mapping service to use for accessing TNM base-map tiles.
+#'   Mapping services for accessing TNM base-map tiles.
 #'   Select \code{"rest"} for representational state transfer services (the default) and
 #'   \code{"wms"} for web map services.
 #'
-#' @details A number of map \href{https://viewer.nationalmap.gov/services/}{service endpoints}
+#' @details Map \href{https://viewer.nationalmap.gov/services/}{service endpoints}
 #'   are offered through TNM with no use restrictions.
-#'   However, map content is limited to the United States and Territories.
+#'   However, map content is limited to the United States and territories.
 #'   This function integrates TNM endpoint services within an interactive web map using
 #'   \href{https://rstudio.github.io/leaflet/}{Leaflet for R}.
 #'
-#' @return Returns a 'leaflet' Hypertext Markup Language (HTML) widget object with TNM base maps.
+#' @return Returns a 'leaflet' hypertext markup language (HTML) widget object with TNM base maps.
 #'   See example for instructions on how to add additional graphic layers
 #'   (such as points, lines, and polygons) to the map widget.
 #'   Graphic layers added to the web map must be in latitude and longitude using WGS 84
@@ -49,22 +49,19 @@
 
 CreateWebMap <- function(maps, ..., collapsed=TRUE, service=c("rest", "wms")) {
 
-  # initialize base maps
+  # check arguments
   basemap <- c("Topo"         = "USGSTopo",
                "Imagery"      = "USGSImageryOnly",
                "Imagery Topo" = "USGSImageryTopo",
                "Hydrography"  = "USGSHydroCached",
                "Hill Shade"   = "USGSShadedReliefOnly",
                "Blank"        = "USGSTNMBlank")
-  if (!missing(maps)) {
-    checkmate::assertSubset(maps, names(basemap), empty.ok=FALSE)
-    basemap <- basemap[maps]
-  }
-
+  if (!missing(maps))
+    basemap <- basemap[match.arg(maps, names(basemap), several.ok=TRUE)]
   checkmate::assertFlag(collapsed)
   service <- match.arg(service)
 
-  # define attribution for base maps
+  # define attribution
   att <- sprintf("<a href='%s' title='%s' target='_blank'>%s</a> | <a href='%s' title='%s' target='_blank'>%s</a>",
                  "https://www.usgs.gov/", "United States Geological Survey", "USGS",
                  "https://www.usgs.gov/laws/policies_notices.html", "USGS policies and notices", "Policies")
@@ -76,14 +73,14 @@ CreateWebMap <- function(maps, ..., collapsed=TRUE, service=c("rest", "wms")) {
   domain <- "https://basemap.nationalmap.gov"
   if (service == "rest") {
     url <- sprintf("%s/ArcGIS/rest/services/%s/MapServer/tile/{z}/{y}/{x}", domain, basemap)
-    opt <- leaflet::tileOptions(maxNativeZoom=15)
+    opt <- leaflet::tileOptions(minZoom=3, maxZoom=16)
     for (i in seq_along(basemap)) {
       map <- leaflet::addTiles(map, urlTemplate=url[i], attribution=att,
                                group=names(basemap)[i], options=opt)
     }
   } else {
     url <- sprintf("%s/arcgis/services/%s/MapServer/WmsServer?", domain, basemap)
-    opt <- leaflet::WMSTileOptions(format="image/jpeg", version="1.3.0", maxNativeZoom=15)
+    opt <- leaflet::WMSTileOptions(format="image/jpeg", version="1.3.0", minZoom=3, maxZoom=16)
     for (i in seq_along(basemap)) {
       map <- leaflet::addWMSTiles(map, url[i], group=names(basemap)[i],
                                   options=opt, attribution=att, layers="0")

@@ -1,4 +1,4 @@
-#' Adjustment for Implausible River Stage
+#' Adjust Implausible River Stage
 #'
 #' This function decreases stage values in river cells if they are implausible
 #' with respect to water always flowing downhill.

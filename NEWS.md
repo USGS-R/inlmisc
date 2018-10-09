@@ -1,5 +1,7 @@
 # inlmisc 0.4.3.9000
 
+- Add `GetRegionOfInterest` function, used to calculate the region of interest from spatial points.
+
 - In `FindOptimalSubset` function: improve matrix construction of `suggestions`;
   change calculation of number of bits in a number.
 
