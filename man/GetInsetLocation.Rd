@@ -2,14 +2,14 @@
 % Please edit documentation in R/GetInsetLocation.R
 \name{GetInsetLocation}
 \alias{GetInsetLocation}
-\title{Get Location for Inset Graphics}
+\title{Get Location for Inset}
 \usage{
 GetInsetLocation(dx, dy, loc = "bottomright", inset = 0, pad = 0,
   padin = 0)
 }
 \arguments{
 \item{dx, dy}{'numeric' number.
-Width and height of the inset graphics, respectively.}
+Width and height of the inset, respectively.}
 
 \item{loc}{'character' string.
 Single keyword used to specify the position of the inset in the main plot region:
@@ -35,7 +35,7 @@ Returns a 'numeric' vector of length 2 giving the user coordinates
 }
 \description{
 This function determines the location that may be used to
-position an inset graphics in the main plot region.
+position an inset in the main plot region.
 }
 \examples{
 plot(NA, NA, xlim = c(0, 100), ylim = c(0, 1),

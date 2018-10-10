@@ -2,7 +2,7 @@
 % Please edit documentation in R/SetPolygons.R
 \name{SetPolygons}
 \alias{SetPolygons}
-\title{Overlaying Multi-Polygon Objects}
+\title{Overlay Multi-Polygon Objects}
 \usage{
 SetPolygons(x, y, cmd = c("gIntersection", "gDifference"),
   buffer.width = NA)

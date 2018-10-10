@@ -2,7 +2,7 @@
 % Please edit documentation in R/PlotMap.R
 \name{PlotMap}
 \alias{PlotMap}
-\title{Plot Method for Maps}
+\title{Plot Map}
 \usage{
 PlotMap(r, layer = 1, att = NULL, n = NULL, breaks = NULL,
   xlim = NULL, ylim = NULL, zlim = NULL, asp = NULL,

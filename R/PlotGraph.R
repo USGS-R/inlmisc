@@ -1,4 +1,4 @@
-#' Plot Method for Graphs
+#' Plot Graph
 #'
 #' This function draws a sequence of points, lines, or
 #' box-and-whiskers using specified coordinates.

@@ -1,4 +1,4 @@
-#' Plot Method for Maps
+#' Plot Map
 #'
 #' This function maps raster data and geographical features.
 #' A key showing how the colors map to raster values is shown below the map.

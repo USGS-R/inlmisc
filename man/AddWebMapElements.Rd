@@ -6,7 +6,7 @@
 \alias{AddClusterButton}
 \alias{AddSearchButton}
 \alias{AddLegend}
-\title{Add Miscellaneous Web Map Elements}
+\title{Add Miscellaneous Elements to Web Map}
 \usage{
 AddHomeButton(map, extent = NULL, position = "topleft")
 

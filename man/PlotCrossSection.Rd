@@ -2,7 +2,7 @@
 % Please edit documentation in R/PlotCrossSection.R
 \name{PlotCrossSection}
 \alias{PlotCrossSection}
-\title{Plot Method for Cross Sections}
+\title{Plot Cross Section}
 \usage{
 PlotCrossSection(transect, rs, geo.lays = names(rs), val.lays = NULL,
   wt.lay = NULL, asp = 1, ylim = NULL, max.dev.dim = c(43, 56),

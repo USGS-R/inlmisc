@@ -2,7 +2,7 @@
 % Please edit documentation in R/PlotGraph.R
 \name{PlotGraph}
 \alias{PlotGraph}
-\title{Plot Method for Graphs}
+\title{Plot Graph}
 \usage{
 PlotGraph(x, y, xlab, ylab, main = NULL, asp = NA, xlim = NULL,
   ylim = NULL, xn = 5, yn = 5, ylog = FALSE, type = "s",

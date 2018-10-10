@@ -1,10 +1,10 @@
-#' Get Location for Inset Graphics
+#' Get Location for Inset
 #'
 #' This function determines the location that may be used to
-#' position an inset graphics in the main plot region.
+#' position an inset in the main plot region.
 #'
 #' @param dx,dy 'numeric' number.
-#'   Width and height of the inset graphics, respectively.
+#'   Width and height of the inset, respectively.
 #' @param loc 'character' string.
 #'   Single keyword used to specify the position of the inset in the main plot region:
 #'   \code{"bottomright"}, \code{"bottom"}, \code{"bottomleft"}, \code{"left"},

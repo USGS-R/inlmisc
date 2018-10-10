@@ -2,7 +2,7 @@
 % Please edit documentation in R/ReadCodeChunks.R
 \name{ReadCodeChunks}
 \alias{ReadCodeChunks}
-\title{Read Code Chunks}
+\title{Read Knitr Code Chunks}
 \usage{
 ReadCodeChunks(path)
 }

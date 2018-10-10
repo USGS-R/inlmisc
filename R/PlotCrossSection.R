@@ -1,4 +1,4 @@
-#' Plot Method for Cross Sections
+#' Plot Cross Section
 #'
 #' This function creates a cross-section view of raster data.
 #' A key showing how the colors map to raster values is shown below the map.

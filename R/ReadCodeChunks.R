@@ -1,4 +1,4 @@
-#' Read Code Chunks
+#' Read Knitr Code Chunks
 #'
 #' This function reads \bold{knitr} code chunks into the current session.
 #'
