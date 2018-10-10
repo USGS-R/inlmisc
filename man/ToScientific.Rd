@@ -48,14 +48,14 @@ This function formats numbers in scientific notation \eqn{m \times 10^{n}}{m x 1
 }
 \examples{
 x <- c(-1e+09, 0, NA, pi * 10^(-5:5))
-ToScientific(x, digits = 2L, na = "---")
+ToScientific(x, digits = 2, na = "---")
 
-ToScientific(x, digits = 2L, scipen = 0L)
+ToScientific(x, digits = 2, scipen = 0)
 
 x <- seq(0, 20000, by = 4000)
 ToScientific(x, scipen = 0)
 
-lab <- ToScientific(x, type = "plotmath", scipen = 0L)
+lab <- ToScientific(x, type = "plotmath", scipen = 0)
 i <- seq_along(x)
 plot(i, type = "n", xaxt = "n", yaxt = "n", ann = FALSE)
 axis(1, i, labels = lab)

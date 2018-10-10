@@ -47,7 +47,7 @@ RmSmallCellChunks <- function(r) {
 
   biggest.chunk <- chunks[which(chunk.sizes == max(chunk.sizes))]
   n <- length(biggest.chunk)
-  if (n > 1L) warning(sprintf("There are %d raster chunks with largest area.", n))
+  if (n > 1) warning(sprintf("There are %d raster chunks with largest area.", n))
 
   chunk.numbers[!is.na(chunk.numbers) & !chunk.numbers %in% biggest.chunk] <- NA
   r.values[is.na(chunk.numbers)] <- NA

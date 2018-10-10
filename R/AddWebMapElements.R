@@ -66,7 +66,7 @@
 #'
 #' labels <- c("Non-capital", "Capital")
 #' colors <- c("green", "red")
-#' fillColor <- colors[(city@data$capital > 0) + 1L]
+#' fillColor <- colors[(city@data$capital > 0) + 1]
 #' map <- CreateWebMap("Topo")
 #' map <- leaflet::addCircleMarkers(map, radius = 6, color = "white", weight = 1,
 #'                                  opacity = 1, fillColor = fillColor, fillOpacity = 1,

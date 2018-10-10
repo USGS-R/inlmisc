@@ -222,7 +222,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   j <- sample(seq_along(decoded_parent), size=1)
   i <- 0L
   repeat {
-    if ((i <- i + 1L) > 100) stop("Runnaway loop during mutation")
+    if ((i <- i + 1) > 100) stop("Runnaway loop during mutation")
     x <- decoded_parent
     x[j] <- sample(idxs, size=1)
     x_sorted <- sort(x)
@@ -307,7 +307,7 @@ EncodeChromosome <- function(x, n) {
 DecodeChromosome <- function(y, n) {
   width <- .CountBits(n)
   vapply(seq(1, length(y), by=width), function(i) {
-    GA::binary2decimal(y[i:(i + width - 1L)])
+    GA::binary2decimal(y[i:(i + width - 1)])
   }, 0)
 }
 

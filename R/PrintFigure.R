@@ -115,12 +115,12 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
       caption <- NA
     }
 
-    if (i == n + 1L) cat("\\captionsetup[figure]{list=no}\n\n")
+    if (i == n + 1) cat("\\captionsetup[figure]{list=no}\n\n")
 
-    if ((i - 1L) %% n == 0) {
+    if ((i - 1) %% n == 0) {
       cat(sprintf("\\begin{figure}[%s]\n", pos))
       if (i > 1) cat("  \\ContinuedFloat\n")
-    } else if ((i - 1L) %% nc == 0) {
+    } else if ((i - 1) %% nc == 0) {
       cat("  \\par\\bigskip\n")
     } else {
       cat("  \\qquad\n")

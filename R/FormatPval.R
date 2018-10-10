@@ -33,7 +33,7 @@
 #'
 #' x <- c(0.1, 0.0001, 1e-27)
 #' FormatPval(x, scientific = TRUE)
-#' FormatPval(x, digits = 3L, eps = 0.001)
+#' FormatPval(x, digits = 3, eps = 0.001)
 #'
 
 FormatPval <- function(x, digits=max(1, getOption("digits") - 2),
@@ -48,9 +48,9 @@ FormatPval <- function(x, digits=max(1, getOption("digits") - 2),
   p <- format(round(x, digits), nsmall=digits, scientific=FALSE)
 
   is <- if (is.na(scientific)) grepl("e", formatC(x)) else rep(scientific, length(x))
-  p[is] <- ToScientific(x[is], digits=0L)
+  p[is] <- ToScientific(x[is], digits=0)
 
-  lim <- ifelse(grepl("e", formatC(eps)), ToScientific(eps, digits=0L), format(eps))
+  lim <- ifelse(grepl("e", formatC(eps)), ToScientific(eps, digits=0), format(eps))
   p[x < eps] <- sprintf("< %s", lim)
 
   p[is.na(x)] <- as.character(na.form)

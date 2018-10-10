@@ -177,10 +177,10 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   for (i in seq_along(val.lays)) {
     for (j in seq_along(eat)) {
       seg <- as.matrix(eat[[j]]@data)
-      for (k in seq(1, nrow(seg) - 1L, by=2)) {
+      for (k in seq(1, nrow(seg) - 1, by=2)) {
         v <- as.numeric(seg[k, val.lays[i]])
-        p <- rbind(seg[c(k, k + 1L), c("dist", geo.lays[i])],
-                   seg[c(k + 1L, k), c("dist", geo.lays[i + 1L])],
+        p <- rbind(seg[c(k, k + 1), c("dist", geo.lays[i])],
+                   seg[c(k + 1, k), c("dist", geo.lays[i + 1])],
                    seg[k, c("dist", geo.lays[i]), drop=FALSE])
         if (anyNA(p)) next
         cell.values <- c(cell.values, v)
@@ -205,7 +205,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
         breaks <- seq(min(at), max(at), length.out=n)
       }
       intervals <- findInterval(cell.values, breaks, all.inside=TRUE)
-      if (is.null(col)) col <- pal(length(breaks) - 1L)
+      if (is.null(col)) col <- pal(length(breaks) - 1)
       cell.cols <- col[intervals]
     }
     cols <- unique(cell.cols)
@@ -340,7 +340,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     color <- ifelse(length(color) == 1 && !is.na(color), color, "#1F1F1F")
     drawl <- ifelse(length(drawl) == 1 && !is.na(drawl), drawl, TRUE)
     metho <- ifelse(length(metho) == 1 && !is.na(metho), metho, "flattest")
-    contour.breaks <- if (length(breaks) > 20) pretty(breaks, 20L) else breaks
+    contour.breaks <- if (length(breaks) > 20) pretty(breaks, 20) else breaks
     ncontours <- length(contour.breaks)
     raster::contour(r, maxpixels=length(r), levels=contour.breaks,
                     labels=formatC(contour.breaks, big.mark=","), xlim=xlim,

@@ -240,7 +240,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     if (is.null(break.labels)) break.labels <- ss
 
     # https://stackoverflow.com/questions/33930689/how-to-get-next-number-in-sequence-in-r
-    SeqNext <- function(x, npred=1L) {
+    SeqNext <- function(x, npred=1) {
       n <- length(x)
       d <- data.frame(x=seq_along(x), y=x)
       unname(stats::predict(stats::lm(y ~ poly(x, 2), data=d),
@@ -304,7 +304,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
   if (is.null(bg.neg)) {
     if (is.function(bg)) {
       if (make.intervals) {
-        n <- length(breaks) + 1L
+        n <- length(breaks) + 1
         cols  <- .Map2Color(breaks, bg, n=n)[interval]
         cols0 <- .Map2Color(breaks, bg, n=n)
       } else {
@@ -320,8 +320,8 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       if (make.intervals) {
         idxs <- interval
         idxs[z < 0] <- NA
-        idxs <- stats::na.omit(idxs - min(idxs, na.rm=TRUE) + 1L)
-        n <- length(breaks[breaks > 0]) + 1L
+        idxs <- stats::na.omit(idxs - min(idxs, na.rm=TRUE) + 1)
+        n <- length(breaks[breaks > 0]) + 1
         cols[z > 0] <- .Map2Color(breaks[breaks > 0], bg, n=n)[idxs]
         cols0[breaks > 0] <- .Map2Color(breaks[breaks > 0], bg, n=n)
       } else {
@@ -336,8 +336,8 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       if (make.intervals) {
         idxs <- interval
         idxs[z > 0] <- NA
-        idxs <- stats::na.omit(idxs - min(idxs, na.rm=TRUE) + 1L)
-        n <- length(breaks[breaks < 0]) + 1L
+        idxs <- stats::na.omit(idxs - min(idxs, na.rm=TRUE) + 1)
+        n <- length(breaks[breaks < 0]) + 1
         cols[z < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg, n=n)[idxs]
         cols0[breaks < 0] <- .Map2Color(abs(breaks[breaks < 0]), bg.neg, n=n)
       } else {
@@ -405,7 +405,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
 
 ##
 
-.Map2Color <- function(x, Pal, xlim=NULL, n=100L) {
+.Map2Color <- function(x, Pal, xlim=NULL, n=100) {
   if (length(x) == 0) return(NULL)
   if (is.null(xlim)) xlim <- range(x)
   Pal(n)[findInterval(x, seq(xlim[1], xlim[2], length.out=n), all.inside=TRUE)]

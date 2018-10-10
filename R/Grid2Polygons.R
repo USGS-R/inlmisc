@@ -180,7 +180,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
       else
         at <- seq(zlim[1], zlim[2], length.out=cuts)
     }
-    zc <- at[1:(length(at) - 1L)] + diff(at) / 2
+    zc <- at[1:(length(at) - 1)] + diff(at) / 2
     z <- zc[findInterval(grd[], at, rightmost.closed=TRUE)]
   } else {
     z <- as.numeric(grd[])
@@ -197,15 +197,15 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   ymax <- raster::ymax(grd)
   x <- seq(xmin, xmax, by=dx)
   y <- seq(ymin, ymax, by=dy)
-  nnodes <- (m + 1L) * (n + 1L)
+  nnodes <- (m + 1) * (n + 1)
   nelems <- m * n
   nodes <- 1:nnodes
   elems <- 1:nelems
-  coords <- cbind(x=rep(x, m + 1L), y=rep(rev(y), each=n + 1L))
-  n1 <- unlist(lapply(1:m, function(i) seq(1L, n) + (i - 1L) * (n + 1L)))
-  n2 <- n1 + 1L
-  n4 <- unlist(lapply(1:m, function(i) seq(1L, n) + i * (n + 1L)))
-  n3 <- n4 + 1L
+  coords <- cbind(x=rep(x, m + 1), y=rep(rev(y), each=n + 1))
+  n1 <- unlist(lapply(1:m, function(i) seq(1, n) + (i - 1) * (n + 1)))
+  n2 <- n1 + 1
+  n4 <- unlist(lapply(1:m, function(i) seq(1, n) + i * (n + 1)))
+  n3 <- n4 + 1
   elem.nodes <- cbind(n1, n2, n3, n4)
 
   # define segments in each element

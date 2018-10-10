@@ -5,8 +5,8 @@
 \title{Add Color Key to Plot}
 \usage{
 AddColorKey(breaks, is.categorical = FALSE, col = NULL, at = NULL,
-  labels = TRUE, scipen = getOption("scipen", 0L),
-  explanation = NULL, padx = 0.2, log = FALSE, mai = NULL)
+  labels = TRUE, scipen = getOption("scipen", 0), explanation = NULL,
+  padx = 0.2, log = FALSE, mai = NULL)
 }
 \arguments{
 \item{breaks}{'numeric' vector.

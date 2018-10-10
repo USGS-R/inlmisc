@@ -44,7 +44,7 @@
 #' r_bot_new <- r_bot + r
 #'
 
-BumpDisconnectCells <- function(rs, min.overlap=2, bump.by=0.1, max.itr=10000L) {
+BumpDisconnectCells <- function(rs, min.overlap=2, bump.by=0.1, max.itr=10000) {
 
   stopifnot(inherits(rs, c("RasterStack", "RasterBrick")))
   stopifnot(raster::nlayers(rs) >= 2)
@@ -59,10 +59,10 @@ BumpDisconnectCells <- function(rs, min.overlap=2, bump.by=0.1, max.itr=10000L) 
   cols <- raster::colFromCell(r, cell)
 
   d <- cbind(cell, c1=NA, c2=NA, c3=NA, c4=NA)
-  d[, "c1"] <- raster::cellFromRowCol(r, rows + 1L, cols)
-  d[, "c2"] <- raster::cellFromRowCol(r, rows, cols - 1L)
-  d[, "c3"] <- raster::cellFromRowCol(r, rows - 1L, cols)
-  d[, "c4"] <- raster::cellFromRowCol(r, rows, cols + 1L)
+  d[, "c1"] <- raster::cellFromRowCol(r, rows + 1, cols)
+  d[, "c2"] <- raster::cellFromRowCol(r, rows, cols - 1)
+  d[, "c3"] <- raster::cellFromRowCol(r, rows - 1, cols)
+  d[, "c4"] <- raster::cellFromRowCol(r, rows, cols + 1)
 
   itr <- 0L
   while(TRUE) {

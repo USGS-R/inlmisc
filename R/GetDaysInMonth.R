@@ -24,8 +24,8 @@ GetDaysInMonth <- function(x) {
   m <- format(d, format="%m")
   for (i in seq_along(d)) {
     while (format(d[i], format="%m") == m[i]) {
-      d[i] <- d[i] + 1L
+      d[i] <- d[i] + 1
     }
   }
-  as.integer(format(d - 1L, format="%d"))
+  as.integer(format(d - 1, format="%d"))
 }

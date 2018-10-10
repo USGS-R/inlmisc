@@ -283,8 +283,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
         if (is.na(zl[2])) zl[2] <- default.zl[2]
       }
       if (is.null(breaks)) {
-        if (is.null(n) || n > 200L) {
-          breaks <- seq(zl[1], zl[2], length.out=200L)
+        if (is.null(n) || n > 200) {
+          breaks <- seq(zl[1], zl[2], length.out=200)
           at1 <- pretty(if (extend.z) zran else zl)
         } else {
           breaks <- pretty(zl, n=n)
@@ -564,7 +564,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     color <- ifelse(length(color) == 1 && !is.na(color), color, "#1F1F1F")
     drawl <- ifelse(length(drawl) == 1 && !is.na(drawl), drawl, TRUE)
     metho <- ifelse(length(metho) == 1 && !is.na(metho), metho, "flattest")
-    contour.breaks <- if (n + 1L > 20L) pretty(zl, 20L) else breaks
+    contour.breaks <- if (n + 1 > 20) pretty(zl, 20) else breaks
     raster::contour(r, maxpixels=length(r), levels=contour.breaks,
                     labels=formatC(contour.breaks, big.mark=","),
                     xlim=xl, ylim=yl, zlim=zl, labcex=0.5, drawlabels=drawl,

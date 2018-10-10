@@ -88,7 +88,7 @@ AddGradientLegend <- function(breaks, pal=GetTolColors, at=NULL, n=5, labels=TRU
 
   breaks_norm <- (breaks - min(breaks)) / (max(breaks) - min(breaks))
   at_norm <- (at - min(breaks)) / (max(breaks) - min(breaks))
-  col <- pal(length(breaks) - 1L)
+  col <- pal(length(breaks) - 1)
 
   graphics::rect(xy[1], xy[2], xy[1] + dx, xy[2] + dy, col="#FFFFFFCC", border=NA)
   plt <- c(graphics::grconvertX(c(xy[1], xy[1] + dx), "user", "nfc"),

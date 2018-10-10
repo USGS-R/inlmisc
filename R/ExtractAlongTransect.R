@@ -88,10 +88,10 @@ ExtractAlongTransect <- function(transect, r) {
   segs <- list()
   v.d <- 0
 
-  for (i in seq_len(nrow(v) - 1L)) {
+  for (i in seq_len(nrow(v) - 1)) {
 
-    v.x <- v[i:(i + 1L), 1]
-    v.y <- v[i:(i + 1L), 2]
+    v.x <- v[i:(i + 1), 1]
+    v.y <- v[i:(i + 1), 2]
 
     m <- (v.y[2] - v.y[1]) / (v.x[2] - v.x[1])
     rx.x <- rx[rx > min(v.x) & rx < max(v.x)]
@@ -112,12 +112,12 @@ ExtractAlongTransect <- function(transect, r) {
     y <- y[idxs]
     d <- d[idxs] + sum(v.d)
     n <- length(d)
-    mid.x <- vapply(seq_len(n - 1L), function(j) mean(c(x[j], x[j + 1L])), 0)
-    mid.y <- vapply(seq_len(n - 1L), function(j) mean(c(y[j], y[j + 1L])), 0)
+    mid.x <- vapply(seq_len(n - 1), function(j) mean(c(x[j], x[j + 1])), 0)
+    mid.y <- vapply(seq_len(n - 1), function(j) mean(c(y[j], y[j + 1])), 0)
 
-    x <- c(x[1], rep(x[2:(n - 1L)], each=2), x[n])
-    y <- c(y[1], rep(y[2:(n - 1L)], each=2), y[n])
-    d <- c(d[1], rep(d[2:(n - 1L)], each=2), d[n])
+    x <- c(x[1], rep(x[2:(n - 1)], each=2), x[n])
+    y <- c(y[1], rep(y[2:(n - 1)], each=2), y[n])
+    d <- c(d[1], rep(d[2:(n - 1)], each=2), d[n])
 
     n <- length(x)
     seg <- cbind(x, y, dist=d, matrix(NA, nrow=n, ncol=raster::nlayers(r),
@@ -126,7 +126,7 @@ ExtractAlongTransect <- function(transect, r) {
 
     for (j in seq_len(raster::nlayers(r))) {
       z <- raster::extract(r[[j]], sp::SpatialPoints(cbind(mid.x, mid.y)))
-      seg[, j + 3L] <- rep(z, each=2)
+      seg[, j + 3] <- rep(z, each=2)
     }
     rownames(seg) <- NULL
 
@@ -138,7 +138,7 @@ ExtractAlongTransect <- function(transect, r) {
         if (is.last) idxs <- c(idxs, j)
         nsegs <- length(segs)
         if (nsegs == 0 || max(segs[[nsegs]][, "dist"]) != min(d[idxs]))
-          segs[[nsegs + 1L]] <- seg[idxs, ]
+          segs[[nsegs + 1]] <- seg[idxs, ]
         else
           segs[[nsegs]] <- rbind(segs[[nsegs]], seg[idxs, ])
         idxs <- NULL
@@ -146,7 +146,7 @@ ExtractAlongTransect <- function(transect, r) {
         idxs <- c(idxs, j)
       }
     }
-    v.d <- c(v.d, dist.along.transect[i, i + 1L])
+    v.d <- c(v.d, dist.along.transect[i, i + 1])
   }
 
   lapply(segs, function(s) {

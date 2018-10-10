@@ -58,7 +58,7 @@
 #'
 
 AddColorKey <- function(breaks, is.categorical=FALSE, col=NULL, at=NULL,
-                        labels=TRUE, scipen=getOption("scipen", 0L),
+                        labels=TRUE, scipen=getOption("scipen", 0),
                         explanation=NULL, padx=0.2, log=FALSE, mai=NULL) {
 
   # check arguments
@@ -84,7 +84,7 @@ AddColorKey <- function(breaks, is.categorical=FALSE, col=NULL, at=NULL,
   }
 
   if (is.null(col))
-    col <- GetTolColors(length(breaks) - 1L, start=0.3, end=0.9)
+    col <- GetTolColors(length(breaks) - 1, start=0.3, end=0.9)
 
   if (is.null(at)) at <- breaks
 
@@ -117,7 +117,7 @@ AddColorKey <- function(breaks, is.categorical=FALSE, col=NULL, at=NULL,
   } else {
     graphics::rect(xleft=utils::head(breaks, -1), ybottom=0, xright=utils::tail(breaks, -1),
                    ytop=1, col=col, border=col, lwd=lwd)
-    if (length(at) >= length(breaks) - 1L) {
+    if (length(at) >= length(breaks) - 1) {
       graphics::abline(v=breaks, lwd=lwd)
     } else {
       graphics::axis(1, at=at, labels=FALSE, lwd=-1, lwd.ticks=lwd, tck=0.25)

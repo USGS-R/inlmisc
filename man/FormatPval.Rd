@@ -39,7 +39,7 @@ format.pval(x)
 
 x <- c(0.1, 0.0001, 1e-27)
 FormatPval(x, scientific = TRUE)
-FormatPval(x, digits = 3L, eps = 0.001)
+FormatPval(x, digits = 3, eps = 0.001)
 
 }
 \seealso{

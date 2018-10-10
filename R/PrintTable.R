@@ -162,7 +162,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
       idxs <- 1:n[i]
       caption <- c(sprintf("%s\\par \\medskip [\\footnotesize{%s}]", cap1, cap2), cap1)
     } else {
-      idxs <- (n[i - 1L] + 1L):n[i]
+      idxs <- (n[i - 1] + 1):n[i]
       caption <- sprintf("%s---Continued", cap1)
       label <- NULL
       cat("\\addtocounter{table}{-1}\n")
@@ -179,12 +179,12 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
 
     row_names <- utils::type.convert(rownames(d))
     row_align <- ifelse(is.numeric(row_names), "r", "l")
-    row_digits <- ifelse(is.double(row_names), format.info(row_names)[2], 0L)
+    row_digits <- ifelse(is.double(row_names), format.info(row_names)[2], 0)
     if (!is.null(align)) xtable::align(tbl) <- c(row_align, align)
     if (!is.null(digits)) xtable::digits(tbl) <- c(row_digits, digits)
 
     add.to.row <- NULL
-    hline.after <- sort(unique(stats::na.omit(c(-1L, 0L, match(c(hline, nrow(d)), idxs)))))
+    hline.after <- sort(unique(stats::na.omit(c(-1, 0, match(c(hline, nrow(d)), idxs)))))
     if (!is.null(footnotes) && i == length(n)) {
       fmt <- "\\midrule\n\\multicolumn{%s}{l}{\\makecell[l]{%s}}\\\\"
       cmd <- sprintf(fmt, ncol(tbl), footnotes)

@@ -49,14 +49,14 @@ ReplaceInTemplate <- function(text, replacement=list()) {
       if (reg == -1) break
 
       match.first <- as.integer(reg)
-      match.last <- match.first + attr(reg, "match.length") - 1L
-      match.text <- substr(text[i], match.first + 2L, match.last - 1L)
+      match.last <- match.first + attr(reg, "match.length") - 1
+      match.text <- substr(text[i], match.first + 2, match.last - 1)
 
       val.match.text <- eval(parse(text=match.text))
 
-      line.begin <- substr(text[i], 1, match.first - 1L)
+      line.begin <- substr(text[i], 1, match.first - 1)
       line.middle <- paste(val.match.text)
-      line.end <- substr(text[i], match.last + 1L, nchar(text[i]))
+      line.end <- substr(text[i], match.last + 1, nchar(text[i]))
       text[i] <- paste0(line.begin, line.middle, line.end)
     }
   }

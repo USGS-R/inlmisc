@@ -241,7 +241,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
           yyy <- utils::head(rep(yyy, each=2), -1)
           max.idx <- max(idxs)
           if (max.idx < length(xx)) {
-            xxx <- c(xxx, xx[max.idx + 1L])
+            xxx <- c(xxx, xx[max.idx + 1])
             yyy <- c(yyy, utils::tail(yyy, 1))
           }
         }
@@ -405,7 +405,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
         yyy <- utils::head(rep(yy[idxs], each=2), -1)
         max.idx <- max(idxs)
         if (max.idx < length(xx)) {
-          xxx <- c(xxx, xx[max.idx + 1L])
+          xxx <- c(xxx, xx[max.idx + 1])
           yyy <- c(yyy, utils::tail(yyy, 1))
         }
         graphics::lines(xxx, yyy, lty=lty[i], lwd=lwd[i], col=col[i])
@@ -425,9 +425,9 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   grp <- as.integer(!is.na(y))
   mult <- 1L
   for (i in seq_along(grp)[-1]) {
-    if (grp[i - 1L] > 0L & grp[i] == 0L) mult <- mult + 1L
+    if (grp[i - 1] > 0 & grp[i] == 0) mult <- mult + 1L
     grp[i] <- grp[i] * mult
   }
-  grp[grp == 0L] <- NA
+  grp[grp == 0] <- NA
   grp
 }

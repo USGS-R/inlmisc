@@ -47,7 +47,7 @@ BumpRiverStage <- function(r, outlets, min.drop=1e-06) {
 
   adj <- unique(raster::adjacent(r, riv.cells, sorted=TRUE))
   adj <- cbind(adj, is=as.integer(adj[, "to"] %in% riv.cells))
-  adj <- adj[adj[, "is"] == 1L, c("from", "to")]
+  adj <- adj[adj[, "is"] == 1, c("from", "to")]
 
   # Move up the river system finding all possible source (stuck) cells off the main paths.
 
@@ -134,7 +134,7 @@ BumpRiverStage <- function(r, outlets, min.drop=1e-06) {
       i <- match(TRUE, difs > 0)
       if (is.na(i))
         break
-      cell <- path[i + 1L]
+      cell <- path[i + 1]
       r[cell] <<- r[cell] - difs[i] - min.drop
     }
     invisible(difs)
@@ -159,9 +159,9 @@ BumpRiverStage <- function(r, outlets, min.drop=1e-06) {
 
 .WhichMin <- function(x) {
   y <- seq_along(x)[x == min(x)]
-  if (length(y) > 1L) {
+  if (length(y) > 1) {
     set.seed(42)
-    y <- sample(y, 1L)
+    y <- sample(y, 1)
   }
   y
 }

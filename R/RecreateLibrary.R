@@ -155,7 +155,7 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
 
   # set number of parallel process
   if (is.logical(parallel))
-    parallel <- if (parallel) max(1L, parallel::detectCores() - 1L) else 1L
+    parallel <- if (parallel) max(1, parallel::detectCores() - 1) else 1
 
   # set environment variable for certificates path
   if (.Platform$OS.type == "windows" && Sys.getenv("CURL_CA_BUNDLE") == "") {
