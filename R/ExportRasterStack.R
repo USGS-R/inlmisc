@@ -1,4 +1,4 @@
-#' Export Raster Stack
+#' Export a Raster Stack
 #'
 #' This function writes a raster-stack, a collection of raster layers,
 #' to local directories using multiple file formats.

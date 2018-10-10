@@ -2,7 +2,7 @@
 % Please edit documentation in R/GetDaysInMonth.R
 \name{GetDaysInMonth}
 \alias{GetDaysInMonth}
-\title{Number of Days in a Year and Month}
+\title{Get Number of Days in a Year and Month}
 \usage{
 GetDaysInMonth(x)
 }

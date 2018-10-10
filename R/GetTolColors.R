@@ -1,4 +1,4 @@
-#' Paul Tol's Color Schemes
+#' Get Paul Tol's Color Schemes
 #'
 #' This function creates a vector of \code{n} colors from
 #' qualitative, diverging, and sequential color schemes by Paul Tol (2018).

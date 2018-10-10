@@ -1,4 +1,4 @@
-#' Create a Web Map Using The National Map Services
+#' Create a Web Map Using TNM Services
 #'
 #' This function creates a \href{http://leafletjs.com/}{Leaflet} map widget with base maps offered through
 #' The National Map (\href{https://nationalmap.gov/}{TNM}).

@@ -2,7 +2,7 @@
 % Please edit documentation in R/FindOptimalSubset.R
 \name{FindOptimalSubset}
 \alias{FindOptimalSubset}
-\title{Genetic Algorithm for Subset Selection}
+\title{Find Optimal Subset Using a GA}
 \usage{
 FindOptimalSubset(n, k, Fitness, ..., popSize = 100,
   migrationRate = 0.1, migrationInterval = 10, pcrossover = 0.8,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/GetInsetLocation.R
 \name{GetInsetLocation}
 \alias{GetInsetLocation}
-\title{Determine Location for Inset Graphics}
+\title{Get Location for Inset Graphics}
 \usage{
 GetInsetLocation(dx, dy, loc = "bottomright", inset = 0, pad = 0,
   padin = 0)

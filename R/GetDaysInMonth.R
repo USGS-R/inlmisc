@@ -1,4 +1,4 @@
-#' Number of Days in a Year and Month
+#' Get Number of Days in a Year and Month
 #'
 #' This function determines the number of days in a year and month.
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/CreateWebMap.R
 \name{CreateWebMap}
 \alias{CreateWebMap}
-\title{Create a Web Map Using The National Map Services}
+\title{Create a Web Map Using TNM Services}
 \usage{
 CreateWebMap(maps, ..., collapsed = TRUE, service = c("rest", "wms"))
 }

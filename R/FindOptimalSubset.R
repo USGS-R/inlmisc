@@ -1,4 +1,4 @@
-#' Genetic Algorithm for Subset Selection
+#' Find Optimal Subset Using a GA
 #'
 #' This function identifies an optimal subset of a fixed size \code{k}
 #' from a finite sequence of length \code{n}.

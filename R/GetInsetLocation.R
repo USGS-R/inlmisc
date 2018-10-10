@@ -1,4 +1,4 @@
-#' Determine Location for Inset Graphics
+#' Get Location for Inset Graphics
 #'
 #' This function determines the location that may be used to
 #' position an inset graphics in the main plot region.

@@ -1,4 +1,4 @@
-#' Extract Raster Values Along Transect Line
+#' Extract Raster Values Along a Transect Line
 #'
 #' This function extracts values from raster layer(s) along a user defined transect line.
 #'

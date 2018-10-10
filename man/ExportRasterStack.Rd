@@ -2,7 +2,7 @@
 % Please edit documentation in R/ExportRasterStack.R
 \name{ExportRasterStack}
 \alias{ExportRasterStack}
-\title{Export Raster Stack}
+\title{Export a Raster Stack}
 \usage{
 ExportRasterStack(rs, path, zip = "", col = NULL)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/POSIXct2Character.R
 \name{POSIXct2Character}
 \alias{POSIXct2Character}
-\title{Convert class from POSIXct to Character}
+\title{Convert Class from POSIXct to Character}
 \usage{
 POSIXct2Character(x, fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3")
 }
