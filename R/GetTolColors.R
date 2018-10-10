@@ -4,11 +4,11 @@
 #' qualitative, diverging, and sequential color schemes by Paul Tol (2018).
 #' All colors are defined in sRGB color space.
 #'
-#' @param n 'integer'.
+#' @param n 'integer' count.
 #'   Number of colors to be in the palette.
 #'   The maximum number of colors in a generated palette is dependent on the specified color scheme,
 #'   see \sQuote{Details} section for maximum values.
-#' @param scheme 'character'.
+#' @param scheme 'character' vector.
 #'   Color scheme name: specify
 #'   \code{"bright"}, \code{"high-contrast"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
 #'   \code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
@@ -16,27 +16,27 @@
 #'   \code{"YlOrBr"}, \code{"iridescent"}, \code{"discrete rainbow"},
 #'   or \code{"smooth rainbow"} (the default) for a sequential color scheme.
 #'   Partial string matching is supported so argument may be abbreviated.
-#' @param alpha 'numeric'.
+#' @param alpha 'numeric' number.
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 #'   Specify as \code{NULL} to exclude the alpha channel value from colors.
-#' @param start,end 'numeric'.
+#' @param start,end 'numeric' number.
 #'   Starting and ending color level in the palette, respectively.
 #'   Specified as a number in the interval from 0 to 1.
 #'   Applies only to interpolated color schemes: \code{"sunset"}, \code{"BuRd"},
 #'   \code{"PRGn"}, \code{"YlOrBr"}, \code{"iridescent"}, and \code{"smooth rainbow"}.
-#' @param bias 'numeric'.
+#' @param bias 'numeric' number.
 #'   Interpolation bias where larger values result in more widely spaced colors at the high end.
 #'   See \code{\link[grDevices]{colorRamp}} function for details.
-#' @param reverse 'logical'.
+#' @param reverse 'logical' flag.
 #'   Whether to reverse the color order in the palette.
-#' @param blind 'character'.
+#' @param blind 'character' string.
 #'   Type of color blindness to simulate: specify \code{"deutan"} for green-blind vision,
 #'   \code{"protan"} for red-blind vision, \code{"tritan"} for green-blue-blind vision, or
 #'   \code{"monochrome"} for total-color blindness.
 #'   A partial-color blindness simulation requires that the \pkg{dichromat} package is available,
 #'   see \code{\link[dichromat]{dichromat}} function for additional information.
 #'   Partial string matching is supported so argument may be abbreviated.
-#' @param gray 'logical'.
+#' @param gray 'logical' flag.
 #'   Whether to subset/reorder the \code{"bright"}, \code{"high-contrast"}, \code{"vibrant"},
 #'   and \code{"muted"} schemes to work well after conversion to gray scale.
 #'

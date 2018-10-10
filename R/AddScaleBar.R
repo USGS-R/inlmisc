@@ -2,24 +2,22 @@
 #'
 #' This function can be used to add a scale bar (also known as a rake scale) to a plot.
 #'
-#' @param unit 'character'.
-#'   Vector of length 1 or 2 giving the
-#'   label(s) describing the unit of measurement of scale distances, such as "METERS".
-#' @param conv.fact 'numeric'.
-#'   Vector of length 1 or 2 giving the
-#'   conversion factor(s) for changing the unit of measurement for scale distances.
+#' @param unit 'character' vector of length 1 or 2.
+#'   Label(s) describing the unit of measurement of scale distances, such as "METERS".
+#' @param conv.fact 'numeric' vector of length 1 or 2.
+#'   Conversion factor(s) for changing the unit of measurement for scale distances.
 #'   For example, if user coordinates of the plotting region are in meters,
 #'   specify \code{3.28084} to display scale distances in feet.
 #'   A dual-unit scale bar is created by specifying a second conversion factor.
-#' @param vert.exag 'logical', 'numeric', or 'character'.
+#' @param vert.exag 'logical' flag, 'numeric' vector, or 'character' vector.
 #'   Either a logical value indicating whether to include a vertical exaggeration label;
 #'   or a custom \emph{y/x} aspect ratio to include in this label.
-#' @param longlat 'logical'.
+#' @param longlat 'logical' flag.
 #'   Whether user coordinates of the plotting region are in longitude and latitude;
 #'   if true, scale distances are in kilometers.
 #'   Note that scale distances are calculated at the maps latitude midpoint
 #'   using the Great Circle distance (WGS84 ellipsoid) method.
-#' @param loc 'character'.
+#' @param loc 'character' string.
 #'   Position of the scale bar in the main plot region;
 #'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
 #' @param ...

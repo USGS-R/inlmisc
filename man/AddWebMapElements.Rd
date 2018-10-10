@@ -24,51 +24,51 @@ AddLegend(map, labels, colors, radius, opacity = 0.5,
 \item{map}{'\link[leaflet]{leaflet}'.
 Map widget object}
 
-\item{extent}{'Spatial*', 'Raster*', 'Extent', 'matrix', or 'numeric'.
+\item{extent}{'Spatial*', 'Raster*', 'Extent', 'matrix', or 'numeric' vector.
 Extent object (or object from which an \code{\link[raster]{extent}} object can be extracted/created)
 representing a rectangular geographical area on the map.
 The extent must be specified in the coordinate reference system (CRS) of the web map,
 usually in latitude and longitude using WGS 84 (also known as \href{https://epsg.io/4326}{EPSG:4326}).
 By default, the extent object is read from the map widget.}
 
-\item{position}{'character'.
+\item{position}{'character' string.
 Position of the button on the web map.
 Possible values are \code{"topleft"}, \code{"topright"}, \code{"bottomleft"}, and \code{"bottomright"}.}
 
-\item{clusterId}{'character'.
+\item{clusterId}{'character' string.
 Identification for the marker cluster layer.}
 
-\item{group}{'character'.
+\item{group}{'character' string.
 Name of the group whose features will be searched.}
 
-\item{propertyName}{'character'.
+\item{propertyName}{'character' string.
 Property name used to describe markers, such as, \code{"label"} and \code{"popup"}.}
 
-\item{zoom}{'integer'.
+\item{zoom}{'integer' count.
 Zoom level for move to location after marker found in search.}
 
-\item{textPlaceholder}{'character'.
-Text message to show in search element.}
+\item{textPlaceholder}{'character' string.
+Message to show in search element.}
 
-\item{openPopup}{'logical'.
+\item{openPopup}{'logical' flag.
 Whether to open the marker popup associated with the searched for marker.}
 
-\item{labels}{'character'.
-Vector of text labels in the legend.}
+\item{labels}{'character' vector.
+Labels in the legend.}
 
-\item{colors}{'character'.
-Vector of (HTML) colors corresponding to \code{labels}.}
+\item{colors}{'character' vector.
+HTML colors corresponding to \code{labels}.}
 
-\item{radius}{'numeric'.
+\item{radius}{'numeric' number.
 Border radius of symbols in the legend, in pixels.}
 
-\item{opacity}{'numeric'.
+\item{opacity}{'numeric' number.
 Opacity of symbols in the legend, from 0 to 1.}
 
-\item{symbol}{'character'.
+\item{symbol}{'character' string.
 Symbol type in the legend, either \code{"square"} or \code{"circle"}.}
 
-\item{title}{'character'.
+\item{title}{'character' string.
 Legend title}
 }
 \value{

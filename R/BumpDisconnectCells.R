@@ -7,11 +7,11 @@
 #' @param rs 'Raster*'.
 #'   A collection of two raster layers, the first and second layers represent
 #'   the upper and lower surface of a 3D model layer.
-#' @param min.overlap 'numeric'.
+#' @param min.overlap 'numeric' number.
 #'   Minimum vertical overlap between horizontally adjacent model cells.
-#' @param bump.by 'numeric'.
+#' @param bump.by 'numeric' number.
 #'   Amount to decrease a cell value by during each iteration of the algorithm.
-#' @param max.itr 'numeric'.
+#' @param max.itr 'integer' count.
 #'   Maximum number of iterations.
 #'
 #' @details During each iteration of the algorithm:
@@ -44,13 +44,13 @@
 #' r_bot_new <- r_bot + r
 #'
 
-BumpDisconnectCells <- function(rs, min.overlap=2, bump.by=0.1, max.itr=1e+04) {
+BumpDisconnectCells <- function(rs, min.overlap=2, bump.by=0.1, max.itr=10000L) {
 
   stopifnot(inherits(rs, c("RasterStack", "RasterBrick")))
   stopifnot(raster::nlayers(rs) >= 2)
   checkmate::assertNumber(min.overlap, lower=0, finite=TRUE)
   checkmate::assertNumber(bump.by, lower=0, finite=TRUE)
-  checkmate::assertNumber(max.itr, lower=1, finite=TRUE)
+  checkmate::assertCount(max.itr)
 
   r <- rs[[2]]
 

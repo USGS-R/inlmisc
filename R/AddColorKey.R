@@ -2,34 +2,34 @@
 #'
 #' This function can be used to add a color key to a plot.
 #'
-#' @param breaks 'numeric'.
-#'   Set of finite numeric breakpoints for the colors:
+#' @param breaks 'numeric' vector.
+#'   Finite breakpoints for the colors:
 #'   must have one more breakpoint than color and be in increasing order.
-#' @param is.categorical 'logical'.
+#' @param is.categorical 'logical' flag.
 #'   If true, color-key values represent categorical data;
 #'   otherwise, these data values are assumed continuous.
-#' @param col 'character'.
-#'   Vector of colors to be used in the plot.
+#' @param col 'character' vector.
+#'   Colors to be used in the plot.
 #'   This argument requires \code{breaks} specification for continuous data.
 #'   For continuous data there should be one less color than breaks; whereas,
 #'   categorical data require a color for each category.
-#' @param at 'numeric'.
-#'   The points at which tick-marks and labels are to be drawn,
+#' @param at 'numeric' vector.
+#'   Points at which tick-marks and labels are to be drawn,
 #'   only applicable for continuous data.
 #'   The tick marks will be located at the color breaks if the length of \code{at} is
 #'   greater than or equal to one minus the length of \code{breaks}.
 #'   Note that tick-mark labels are omitted where they would abut or overlap previously drawn labels
 #'   (labels are drawn left to right).
-#' @param labels 'logical', 'character', 'expression', 'numeric', or 'factor'.
-#'   Can either be a logical value specifying whether (numerical) annotations are to be made at the tick marks,
-#'   or a character or expression vector of labels to be placed at the tick points.
-#' @param explanation 'character'.
+#' @param labels 'logical' flag, 'character' vector, 'expression' vector, 'numeric' vector, or 'factor' vector.
+#'   Can either be a flag specifying whether (numerical) annotations are to be made at the tick marks,
+#'   or a vector of labels to be placed at the tick points.
+#' @param explanation 'character' string.
 #'   Label that describes the data values.
-#' @param padx 'numeric'.
+#' @param padx 'numeric' number.
 #'   Inner padding for the left and right margins specified in inches.
-#' @param log 'logical'.
+#' @param log 'logical' flag.
 #'   Whether the axis is to be logarithmic.
-#' @param mai 'numeric'.
+#' @param mai 'numeric' vector of length 4.
 #'   Vector of the form \code{c(bottom, left, top, right)} which gives the margin size
 #'   specified in inches (optional).
 #' @inheritParams ToScientific

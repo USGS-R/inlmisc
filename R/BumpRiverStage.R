@@ -8,7 +8,7 @@
 #' @param outlets 'SpatialPoints*', 'SpatialLines*', 'SpatialPolygons*' or 'Extent'.
 #'   Designates the location of discharge outlets.
 #'   The \code{\link{rasterize}} function is used to locate outlet cells in the raster grid \code{r}.
-#' @param min.drop 'numeric'.
+#' @param min.drop 'numeric' number.
 #'   Minimum drop in stage between adjacent river cells.
 #'
 #' @details The \href{https://en.wikipedia.org/wiki/Lee_algorithm}{Lee algorithm} (Lee, 1961)

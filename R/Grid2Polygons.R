@@ -7,25 +7,23 @@
 #'
 #' @param grd 'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.
 #'    Spatial grid
-#' @param zcol 'character' or 'integer'.
+#' @param zcol 'character' string or 'integer' count.
 #'    Layer to extract from a multi-layer spatial grid.
-#' @param level 'logical'.
+#' @param level 'logical' flag.
 #'    If true, a set of levels is used to partition the range of attribute values, its default is false.
-#' @param at 'numeric'.
-#'    Vector giving breakpoints along the range of attribute values.
-#' @param cuts 'integer'.
+#' @param at 'numeric' vector.
+#'    Breakpoints along the range of attribute values.
+#' @param cuts 'integer' count.
 #'    Number of levels the range of attribute values would be divided into.
-#' @param pretty 'logical'.
+#' @param pretty 'logical' flag.
 #'    Whether to use pretty cut locations.
-#' @param xlim 'numeric'.
-#'    Vector of length 2 giving left and right limits of the spatial grid,
+#' @param xlim 'numeric' vector of length 2.
+#'    Left and right limits of the spatial grid, data outside these limits is excluded.
+#' @param ylim 'numeric' vector of length 2.
+#'    Lower and upper limits of the spatial grid,
 #'    data outside these limits is excluded.
-#' @param ylim 'numeric'.
-#'    Vector of length 2 giving lower and upper limits of the spatial grid,
-#'    data outside these limits is excluded.
-#' @param zlim 'numeric'.
-#'    Vector of length 2 giving minimum and maximum limits of the attribute variable,
-#'    data outside these limits is excluded.
+#' @param zlim 'numeric' vector of length 2.
+#'    Minimum and maximum limits of the attribute variable, data outside these limits is excluded.
 #' @param ply 'SpatialPolygons', or 'SpatialGridDataFrame'.
 #'    Cropping polygon
 #'

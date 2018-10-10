@@ -7,18 +7,18 @@
 CreateWebMap(maps, ..., collapsed = TRUE, service = c("rest", "wms"))
 }
 \arguments{
-\item{maps}{'character'.
-Vector of TNM base maps to include in the web map.
+\item{maps}{'character' vector.
+TNM base maps to include in the web map.
 Possible maps include \code{"Topo"}, \code{"Imagery"},
 \code{"Imagery Topo"}, \code{"Hydrography"}, \code{"Hill Shade"}, and \code{"Blank"}.
 All base maps are included by default.}
 
 \item{...}{Arguments to be passed to the \code{\link[leaflet]{leaflet}} function.}
 
-\item{collapsed}{'logical'.
+\item{collapsed}{'logical' flag.
 If true, the layers control will be rendered as an icon that expands when hovered over.}
 
-\item{service}{'logical'.
+\item{service}{'character' string.
 Mapping services for accessing TNM base-map tiles.
 Select \code{"rest"} for representational state transfer services (the default) and
 \code{"wms"} for web map services.}

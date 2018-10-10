@@ -4,81 +4,81 @@
 #' Proportional circle symbols may be used to represent point data,
 #' where symbol area varies in proportion to an attribute variable.
 #'
-#' @param x,y 'numeric' or 'SpatialPoints*'.
-#'   The x and y coordinates for the centers of the circle symbols.
+#' @param x,y 'numeric' vector or 'SpatialPoints*'.
+#'   x and y coordinates for the centers of the circle symbols.
 #'   If numeric, can be specified in any way which is accepted by \code{\link{xy.coords}}.
-#' @param z 'numeric', 'integer', or 'factor'.
+#' @param z 'numeric' vector, 'integer' vector, or 'factor'.
 #'   Attribute variable.
 #'   For objects of class factor, a fixed radius is used for circle symbols,
 #'   see \code{inches} argument description.
-#' @param zcol 'integer' or 'character'.
-#'   Attribute name or column number to extract from if \code{x} is of class SpatialGridDataFrame.
-#' @param crs 'character' or 'CRS'.
+#' @param zcol 'integer' count or 'character' string.
+#'   Attribute name or column number to extract from if \code{x} is of class 'SpatialGridDataFrame'.
+#' @param crs 'character' string or 'CRS'.
 #'   Coordinate reference system arguments
-#' @param xlim 'numeric'.
-#'   Vector of length 2 giving the x limits for the plot.
-#' @param ylim 'numeric'.
-#'   Vector of length 2 giving the y limits for the plot.
-#' @param zlim 'numeric'.
-#'   Vector of length 2 giving the z limits for the plot.
-#' @param inches 'numeric'.
-#'   Vector of length 2 giving the radii limits for the drawn circle symbol.
+#' @param xlim 'numeric' vector of length 2.
+#'   x limits for the plot.
+#' @param ylim 'numeric' vector of length 2.
+#'   y limits for the plot.
+#' @param zlim 'numeric' vector of length 2.
+#'   z limits for the plot.
+#' @param inches 'numeric' vector of length 2.
+#'   Radii limits for the drawn circle symbol.
 #'   Alternatively, a single number can be given resulting in
 #'   a fixed radius being used for all circle symbols;
 #'   this overrides proportional circles and the function
 #'   behaves like the \code{\link{points}} function.
-#' @param scaling 'character'.
+#' @param scaling 'character' string.
 #'   Selects the scaling algorithm to use for symbol mapping.
 #'   Specify \code{"perceptual"} or \code{"mathematical"} for
 #'   proportional scaling (Tanimura and others, 2006),
 #'   or "radius" for scaling symbol size to radius (usually a bad idea).
-#' @param bg 'character' or 'function'.
+#' @param bg 'character' vector or 'function'.
 #'   Fill color(s) for circle symbols.
 #'   A color palette also may be specified.
-#' @param bg.neg 'character' or 'function'.
+#' @param bg.neg 'character' vector or 'function'.
 #'   Fill color(s) for circle symbols corresponding to negative \code{z} values.
 #'   A color palette also may be specified.
 #'   For circle symbols corresponding to positive \code{z} values,
 #'   the \code{bg} argument is used for color(s).
-#' @param fg 'character'.
+#' @param fg 'character' string.
 #'   Outer-line color for circle symbols.
 #'   Specify a value of \code{NA} to remove the symbols outer line, and
 #'   \code{NULL} to match the outer-line color with the symbols fill color.
-#' @param lwd 'numeric'.
+#' @param lwd 'numeric' number.
 #'   Line width for drawing circle symbols.
-#' @param cex 'character'.
+#' @param cex 'numeric' number.
 #'   Character expansion factor for legend labels.
-#' @param format 'character'.
+#' @param format 'character' string.
 #'   Formatting for legend values, see \code{\link{formatC}} for options.
-#' @param legend.loc 'character'.
+#' @param legend.loc 'character' string.
 #'   Position of the legend in the main plot region;
 #'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
-#' @param inset 'numeric'.
+#' @param inset 'numeric' number.
 #'   Inset distance of the legend from the margins as a fraction of the main plot region.
 #'   Defaults to 2 percent of the axis range.
-#' @param bty 'character'.
+#' @param bty 'character' string.
 #'   The type of box to be drawn about the legend.
 #'   A value of \code{"o"} (the default) results in a box and
 #'   a value of \code{"n"} supresses the box.
-#' @param breaks 'numeric'.
-#'   Set of finite breakpoints for the legend circle symbols.
-#' @param break.labels 'character'.
-#'   Vector of break labels with length equal to \code{breaks}.
-#' @param quantile.breaks 'logical'.
+#' @param breaks 'numeric' vector.
+#'   Finite breakpoints for the legend circle symbols.
+#' @param break.labels 'character' vector.
+#'   Break labels with length equal to \code{breaks}.
+#' @param quantile.breaks 'logical' flag.
 #'   If true, \code{breaks} are set to the sample quantiles of \code{z}.
-#' @param make.intervals 'logical'.
+#' @param make.intervals 'logical' flag.
 #'   If true, represent \code{z} within intervals.
 #'   See \code{\link{findInterval}} function for details.
 #'   Unused if \code{quantile.breaks} is true.
-#' @param title 'character'.
+#' @param title 'character' string.
 #'   Main title to be placed at the top of the legend.
-#' @param subtitle 'character'.
+#' @param subtitle 'character' string.
 #'   Legend subtitle to be placed below the main title.
-#' @param draw.legend 'logical'.
+#' @param draw.legend 'logical' flag.
 #'   If true, a legend is drawn.
-#' @param draw.points 'logical'.
+#' @param draw.points 'logical' flag.
 #'   If true, the circle symobls are drawn.
-#' @param add 'logical'.
+#' @param add 'logical' flag.
 #'   If true, circle symbols (and an optional legend) are added to an existing plot.
 #' @param ...
 #'   Graphics parameters to be passed to \code{\link{PlotMap}}.

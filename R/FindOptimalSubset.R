@@ -5,10 +5,10 @@
 #' A distributed multiple-population genetic algorithm (GA) is used to do
 #' subset selection based on the maximization of a user-supplied fitness function.
 #'
-#' @param n 'integer'.
+#' @param n 'integer' count.
 #'   Maximum permissible index, that is, the length of the finite sequence (\code{1:n}).
 #'   The GA chooses a subset from this sequence.
-#' @param k 'integer'.
+#' @param k 'integer' count.
 #'   Number of indices to choose, that is, the fixed size of the subset.
 #' @param Fitness 'function'.
 #'   Fitness function, also known as the objective function, is any allowable \R function which
@@ -19,38 +19,38 @@
 #'   Recall that the GA searches for a maximum fitness value.
 #' @param ...
 #'   Additional arguments to be passed to the fitness function.
-#' @param popSize 'integer'.
+#' @param popSize 'integer' count.
 #'   Population size
-#' @param migrationRate 'numeric'.
+#' @param migrationRate 'numeric' number.
 #'   Proportion of individuals that should migrate between islands.
-#' @param migrationInterval 'integer'.
+#' @param migrationInterval 'integer' count.
 #'   Number of iterations at which exchange of individuals takes place.
 #'   This interval between migrations is called an \emph{epoch}.
-#' @param pcrossover 'numeric'.
+#' @param pcrossover 'numeric' number.
 #'   Probability of crossover between pairs of chromosomes.
-#' @param pmutation 'numeric'.
+#' @param pmutation 'numeric' number.
 #'   Probability of mutation in a parent chromosome.
-#' @param elitism 'integer'.
+#' @param elitism 'integer' count.
 #'   Number of chromosomes to survive into the next generation.
-#' @param maxiter 'integer'.
+#' @param maxiter 'integer' count.
 #'   Maximum number of iterations to run before the GA search is halted.
-#' @param run 'integer'.
+#' @param run 'integer' count.
 #'   Number of consecutive generations without any improvement in the
 #'   \dQuote{best} fitness value before the GA is stopped.
-#' @param suggestions 'matrix'.
+#' @param suggestions integer 'matrix'.
 #'   Integer chromosomes to be included in the initial population.
 #'   See returned \code{solution} component for a suggested value for this arugment.
-#' @param parallel 'logical' or 'integer'.
+#' @param parallel 'logical' flag or 'integer' count.
 #'   Whether to use parallel computing.
 #'   This argument can also be used to specify the number of cores
 #'   (and number of islands) to employ; by default,
 #'   this is taken from \code{\link[parallel]{detectCores}}.
 #'   The \pkg{parallel} and \pkg{doParallel} packages must be
 #'   installed for parallel computing to work.
-#' @param monitor 'Function'.
+#' @param monitor 'function'.
 #'   A function that takes as input the current state of the \code{\link[=gaisl-class]{gaisl-class}} object,
 #'   and is run at each epoch of the islands GA search.
-#' @param seed 'integer'.
+#' @param seed 'integer' count.
 #'   Random number generator state for random number generation, used to replicate the results.
 #'   The \pkg{doRNG} package must be installed if using parallel computing.
 #'

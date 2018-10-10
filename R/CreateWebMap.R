@@ -5,16 +5,16 @@
 #' Information about the content of these base maps can be found within the
 #' \href{https://viewer.nationalmap.gov/help/3.0\%20TNM\%20Base\%20Maps.htm}{TNM Base Maps} document.
 #'
-#' @param maps 'character'.
-#'   Vector of TNM base maps to include in the web map.
+#' @param maps 'character' vector.
+#'   TNM base maps to include in the web map.
 #'   Possible maps include \code{"Topo"}, \code{"Imagery"},
 #'   \code{"Imagery Topo"}, \code{"Hydrography"}, \code{"Hill Shade"}, and \code{"Blank"}.
 #'   All base maps are included by default.
 #' @param ...
 #'   Arguments to be passed to the \code{\link[leaflet]{leaflet}} function.
-#' @param collapsed 'logical'.
+#' @param collapsed 'logical' flag.
 #'   If true, the layers control will be rendered as an icon that expands when hovered over.
-#' @param service 'logical'.
+#' @param service 'character' string.
 #'   Mapping services for accessing TNM base-map tiles.
 #'   Select \code{"rest"} for representational state transfer services (the default) and
 #'   \code{"wms"} for web map services.

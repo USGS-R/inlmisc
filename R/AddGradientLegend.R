@@ -2,25 +2,25 @@
 #'
 #' This function can be used to add a continuous color gradient legend strip to a plot.
 #'
-#' @param breaks 'numeric'.
-#'   Set of finite numeric breakpoints for the colors, must be in increasing order.
+#' @param breaks 'numeric' vector.
+#'   Finite numeric breakpoints for the colors, must be in increasing order.
 #' @param pal 'function'.
 #'   Color palette function to be used to assign colors in the legend.
-#' @param at 'numeric'.
-#'   Vector of points at which tick-marks and labels are to be drawn.
-#' @param n 'integer'.
+#' @param at 'numeric' vector.
+#'   Points at which tick-marks and labels are to be drawn.
+#' @param n 'integer' count.
 #'   Desired number of tick-marks to be drawn.
 #'   Unused if \code{at} argument is specified.
-#' @param labels 'logical' or 'character'.
+#' @param labels 'logical' flag or 'character' vector.
 #'   Can either be a logical value specifying whether annotations are to be made at the tickmarks,
-#'   or a character or expression vector of labels to be placed at the tickpoints.
-#' @param scientific 'logical'.
+#'   or a vector of labels to be placed at the tickpoints.
+#' @param scientific 'logical' flag.
 #'   Indicates if labels should be formatted for scientific notation,
 #'   see \code{\link{ToScientific}} for details.
-#' @param title 'character'.
+#' @param title 'character' string.
 #'   Title to be placed at the top of the legend.
-#' @param strip.dim 'numeric'.
-#'   Dimensions of the color strip, in picas.
+#' @param strip.dim 'numeric' vector of length 1 or 2.
+#'   Dimensions (width and height) of the color strip, in picas.
 #' @param ...
 #'   Additional arguments to be passed to the \code{\link{GetInsetLocation}} function---used
 #'   to position the legend in the main plot region.

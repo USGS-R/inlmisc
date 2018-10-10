@@ -12,32 +12,30 @@ Grid2Polygons(grd, zcol = 1, level = FALSE, at = NULL, cuts = 20,
 \item{grd}{'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.
 Spatial grid}
 
-\item{zcol}{'character' or 'integer'.
+\item{zcol}{'character' string or 'integer' count.
 Layer to extract from a multi-layer spatial grid.}
 
-\item{level}{'logical'.
+\item{level}{'logical' flag.
 If true, a set of levels is used to partition the range of attribute values, its default is false.}
 
-\item{at}{'numeric'.
-Vector giving breakpoints along the range of attribute values.}
+\item{at}{'numeric' vector.
+Breakpoints along the range of attribute values.}
 
-\item{cuts}{'integer'.
+\item{cuts}{'integer' count.
 Number of levels the range of attribute values would be divided into.}
 
-\item{pretty}{'logical'.
+\item{pretty}{'logical' flag.
 Whether to use pretty cut locations.}
 
-\item{xlim}{'numeric'.
-Vector of length 2 giving left and right limits of the spatial grid,
+\item{xlim}{'numeric' vector of length 2.
+Left and right limits of the spatial grid, data outside these limits is excluded.}
+
+\item{ylim}{'numeric' vector of length 2.
+Lower and upper limits of the spatial grid,
 data outside these limits is excluded.}
 
-\item{ylim}{'numeric'.
-Vector of length 2 giving lower and upper limits of the spatial grid,
-data outside these limits is excluded.}
-
-\item{zlim}{'numeric'.
-Vector of length 2 giving minimum and maximum limits of the attribute variable,
-data outside these limits is excluded.}
+\item{zlim}{'numeric' vector of length 2.
+Minimum and maximum limits of the attribute variable, data outside these limits is excluded.}
 
 \item{ply}{'SpatialPolygons', or 'SpatialGridDataFrame'.
 Cropping polygon}

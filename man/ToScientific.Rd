@@ -27,7 +27,7 @@ By default, no string substitution is made for missing values.}
 Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.
 Does not apply to missing value strings.}
 
-\item{scipen}{'integer'.
+\item{scipen}{'integer' count.
 A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 Positive values bias towards fixed and negative towards scientific notation:
 fixed notation will be preferred unless it is more than \code{scipen} digits wider.

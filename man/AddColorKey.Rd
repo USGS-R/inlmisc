@@ -9,48 +9,48 @@ AddColorKey(breaks, is.categorical = FALSE, col = NULL, at = NULL,
   explanation = NULL, padx = 0.2, log = FALSE, mai = NULL)
 }
 \arguments{
-\item{breaks}{'numeric'.
-Set of finite numeric breakpoints for the colors:
+\item{breaks}{'numeric' vector.
+Finite breakpoints for the colors:
 must have one more breakpoint than color and be in increasing order.}
 
-\item{is.categorical}{'logical'.
+\item{is.categorical}{'logical' flag.
 If true, color-key values represent categorical data;
 otherwise, these data values are assumed continuous.}
 
-\item{col}{'character'.
-Vector of colors to be used in the plot.
+\item{col}{'character' vector.
+Colors to be used in the plot.
 This argument requires \code{breaks} specification for continuous data.
 For continuous data there should be one less color than breaks; whereas,
 categorical data require a color for each category.}
 
-\item{at}{'numeric'.
-The points at which tick-marks and labels are to be drawn,
+\item{at}{'numeric' vector.
+Points at which tick-marks and labels are to be drawn,
 only applicable for continuous data.
 The tick marks will be located at the color breaks if the length of \code{at} is
 greater than or equal to one minus the length of \code{breaks}.
 Note that tick-mark labels are omitted where they would abut or overlap previously drawn labels
 (labels are drawn left to right).}
 
-\item{labels}{'logical', 'character', 'expression', 'numeric', or 'factor'.
-Can either be a logical value specifying whether (numerical) annotations are to be made at the tick marks,
-or a character or expression vector of labels to be placed at the tick points.}
+\item{labels}{'logical' flag, 'character' vector, 'expression' vector, 'numeric' vector, or 'factor' vector.
+Can either be a flag specifying whether (numerical) annotations are to be made at the tick marks,
+or a vector of labels to be placed at the tick points.}
 
-\item{scipen}{'integer'.
+\item{scipen}{'integer' count.
 A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 Positive values bias towards fixed and negative towards scientific notation:
 fixed notation will be preferred unless it is more than \code{scipen} digits wider.
 Specify \code{NULL} to format all numbers, with the exception of zero, in scientific notation.}
 
-\item{explanation}{'character'.
+\item{explanation}{'character' string.
 Label that describes the data values.}
 
-\item{padx}{'numeric'.
+\item{padx}{'numeric' number.
 Inner padding for the left and right margins specified in inches.}
 
-\item{log}{'logical'.
+\item{log}{'logical' flag.
 Whether the axis is to be logarithmic.}
 
-\item{mai}{'numeric'.
+\item{mai}{'numeric' vector of length 4.
 Vector of the form \code{c(bottom, left, top, right)} which gives the margin size
 specified in inches (optional).}
 }
