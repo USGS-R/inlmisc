@@ -2,25 +2,25 @@
 #'
 #' This function formats numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.
 #'
-#' @param x 'numeric'.
-#'   Vector of numbers
-#' @param digits 'integer'.
+#' @param x 'numeric' vector.
+#'   Numbers
+#' @param digits 'integer' count.
 #'   Desired number of digits after the decimal point.
-#' @param type 'character'.
+#' @param type 'character' string.
 #'   Specify \code{"latex"} to return numbers in the LaTeX markup language (default),
 #'   or \code{"plotmath"} to return as \code{\link[grDevices]{plotmath}} expressions.
-#' @param na 'character'.
-#'   String to be used for missing values (\code{NA}).
+#' @param na 'character' string.
+#'   Value to use for missing values (\code{NA}).
 #'   By default, no string substitution is made for missing values.
-#' @param delimiter 'character'.
+#' @param delimiter 'character' string.
 #'   Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.
 #'   Does not apply to missing value strings.
 #' @param scipen 'integer' count.
-#'   A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
+#'   Penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 #'   Positive values bias towards fixed and negative towards scientific notation:
 #'   fixed notation will be preferred unless it is more than \code{scipen} digits wider.
 #'   Specify \code{NULL} to format all numbers, with the exception of zero, in scientific notation.
-#' @param big.mark 'character'.
+#' @param big.mark 'character' string.
 #'   Mark inserted between every big interval before the decimal point.
 #'   By default, commas are placed every 3 decimal places for numbers larger than 999.
 #' @param ...

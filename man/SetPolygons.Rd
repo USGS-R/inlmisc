@@ -14,13 +14,13 @@ Multi-polygon object}
 \item{y}{'SpatialPolygons*' or 'Extent'.
 Multi-polygon object}
 
-\item{cmd}{'character'.
+\item{cmd}{'character' string.
 Specifying "gIntersection", the default, cuts out portions of the \code{x} polygons
 that overlay the \code{y} polygons.
 If "gDifference" is specified, only those portions of the \code{x} polygons
 falling outside the \code{y} polygons are copied to the output polygons.}
 
-\item{buffer.width}{'numeric'.
+\item{buffer.width}{'numeric' number.
 Expands or contracts the geometry of \code{y} to include the area within
 the specified width, see \code{gBuffer}.
 Specifying \code{NA}, the default, indicates no buffer.}

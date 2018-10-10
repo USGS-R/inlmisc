@@ -5,7 +5,7 @@
 #' where symbol area varies in proportion to an attribute variable.
 #'
 #' @param x,y 'numeric' vector or 'SpatialPoints*'.
-#'   x and y coordinates for the centers of the circle symbols.
+#'   \emph{x} and \emph{y} coordinates for the centers of the circle symbols.
 #'   If numeric, can be specified in any way which is accepted by \code{\link{xy.coords}}.
 #' @param z 'numeric' vector, 'integer' vector, or 'factor'.
 #'   Attribute variable.
@@ -16,11 +16,11 @@
 #' @param crs 'character' string or 'CRS'.
 #'   Coordinate reference system arguments
 #' @param xlim 'numeric' vector of length 2.
-#'   x limits for the plot.
+#'   \emph{x} limits for the plot.
 #' @param ylim 'numeric' vector of length 2.
-#'   y limits for the plot.
+#'   \emph{y} limits for the plot.
 #' @param zlim 'numeric' vector of length 2.
-#'   z limits for the plot.
+#'   \emph{z} limits for the plot.
 #' @param inches 'numeric' vector of length 2.
 #'   Radii limits for the drawn circle symbol.
 #'   Alternatively, a single number can be given resulting in
@@ -57,7 +57,7 @@
 #'   Inset distance of the legend from the margins as a fraction of the main plot region.
 #'   Defaults to 2 percent of the axis range.
 #' @param bty 'character' string.
-#'   The type of box to be drawn about the legend.
+#'   Type of box to be drawn about the legend.
 #'   A value of \code{"o"} (the default) results in a box and
 #'   a value of \code{"n"} supresses the box.
 #' @param breaks 'numeric' vector.

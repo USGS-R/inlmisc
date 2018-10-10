@@ -7,10 +7,10 @@
 POSIXct2Character(x, fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3")
 }
 \arguments{
-\item{x}{'POSIXct'.
-Vector of calendar dates and times.}
+\item{x}{'POSIXct' vector.
+Calendar date and time}
 
-\item{fmt}{'character'.
+\item{fmt}{'character' string.
 Conversion specification format}
 }
 \value{

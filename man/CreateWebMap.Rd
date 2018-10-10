@@ -16,7 +16,7 @@ All base maps are included by default.}
 \item{...}{Arguments to be passed to the \code{\link[leaflet]{leaflet}} function.}
 
 \item{collapsed}{'logical' flag.
-If true, the layers control will be rendered as an icon that expands when hovered over.}
+Whether the layers control should be rendered as an icon that expands when hovered over.}
 
 \item{service}{'character' string.
 Mapping services for accessing TNM base-map tiles.

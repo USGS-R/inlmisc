@@ -20,67 +20,65 @@ Piecewise linear transect line.}
 \item{rs}{'RasterStack' or 'RasterBrick'.
 Collection of raster layers with the same extent and resolution.}
 
-\item{geo.lays}{'character'.
-Vector of names in \code{rs} that specify the geometry-raster layers;
+\item{geo.lays}{'character' vector.
+Names in \code{rs} that specify the geometry-raster layers;
 these must be given in decreasing order, that is,
 from the upper most (such as land surface) to the lowest (such as a bedrock surface).}
 
-\item{val.lays}{'character'.
-Vector of names in \code{rs} that specify the value-raster layers (optional).
+\item{val.lays}{'character' vector.
+Names in \code{rs} that specify the value-raster layers (optional).
 Values from the first layer are mapped as colors to
 the area between the first and second geometry layers;
 the second layer mapped between the second and third geometry layers, and so on.}
 
-\item{wt.lay}{'character'.
+\item{wt.lay}{'character' string.
 Name in \code{rs} that specifies the water-table-raster layer (optional).}
 
-\item{asp}{'numeric'.
+\item{asp}{'numeric' number.
 \emph{y/x} aspect ratio for spatial axes.
 Defaults to 1 (one unit on the \emph{x}-axis equals one unit on the \emph{y}-axis) when \code{r} is projected,
 otherwise, a calculated value based on axes limits is used.}
 
-\item{ylim}{'numeric'.
-Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.}
+\item{ylim}{'numeric' vector of length 2.
+Minimum and maximum values for the \emph{y}-axis.}
 
-\item{max.dev.dim}{'numeric'.
-Vector of length 2 giving the maximum width and height for the graphics device in picas, respectively.
+\item{max.dev.dim}{'numeric' vector of length 2.
+Maximum width and height for the graphics device in picas, respectively.
 Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimeter, or 12 points.
 Suggested dimensions for single-column, double-column, and side title figures are
 \code{c(21, 56)}, \code{c(43, 56)}, and \code{c(56, 43)}, respectively.
 This argument is only applicable when the \code{file} argument is specified.}
 
-\item{n}{'integer'.
+\item{n}{'integer' count.
 Desired number of intervals to partition the range of raster values (optional).}
 
-\item{breaks}{'numeric'.
-Vector of break points used to partition the colors representing
-numeric raster values (optional).}
+\item{breaks}{'numeric' vector.
+Break points used to partition the colors representing numeric raster values (optional).}
 
 \item{pal}{'function'.
 Color palette to be used to assign colors in the plot.}
 
-\item{col}{'character'.
-Vector of colors to be used in the plot.
+\item{col}{'character' vector.
+Colors to be used in the plot.
 This argument requires \code{breaks} specification for numeric raster values
 and overrides any palette function specification.
 For numeric values there should be one less color than breaks.
 Categorical data require a color for each category.}
 
-\item{ylab}{'character'.
+\item{ylab}{'character' string.
 Label for the \emph{y} axis.}
 
-\item{unit}{'character'.
+\item{unit}{'character' string.
 Label for the measurement unit of the \emph{x}- and \emph{y}-axes.}
 
-\item{id}{'character'.
-Vector of length 2 giving the labels for the end points of the transect line,
-defaults to \emph{A--A'}.}
+\item{id}{'character' vector of length 2.
+Labels for the end points of the transect line, defaults to \emph{A--A'}.}
 
 \item{labels}{'list'.
-Describes the location and values of labels in the color key.
+Location and values of labels in the color key.
 This list may include components \code{at} and \code{labels}.}
 
-\item{explanation}{'character'.
+\item{explanation}{'character' string.
 Label explaining the raster cell value.}
 
 \item{features}{'SpatialPointsDataFrame'.
@@ -88,17 +86,17 @@ Point features adjacent to the transect line that are used
 as reference labels for the upper geometry layer.
 Labels taken from first column of embedded data table.}
 
-\item{max.feature.dist}{'numeric'.
+\item{max.feature.dist}{'numeric' number.
 Maximum distance from a point feature to the transect line,
 specified in the units of the \code{rs} projection.}
 
-\item{draw.key}{'logical'.
-If true, a color key should be drawn.}
+\item{draw.key}{'logical' flag.
+Whether a color key should be drawn.}
 
-\item{draw.sep}{'logical'.
-If true, lines separating geometry layers are drawn.}
+\item{draw.sep}{'logical' flag.
+Whether lines separating geometry layers are drawn.}
 
-\item{is.categorical}{'logical'.
+\item{is.categorical}{'logical' flag.
 If true, cell values in \code{val.lays} represent categorical data;
 otherwise, these data values are assumed continuous.}
 
@@ -107,21 +105,21 @@ If specified, contour lines are drawn.
 The contours are described using a list of arguments supplied to the \code{\link[raster]{contour}} function.
 Passed arguments include \code{drawlables}, \code{method}, and \code{col}.}
 
-\item{bg.col}{'character'.
+\item{bg.col}{'character' string.
 Color used for the background of the area below the top geometry-raster layer.}
 
-\item{wt.col}{'character'.
+\item{wt.col}{'character' string.
 Color used for the water-table line.}
 
-\item{bend.label}{'character'.
-Vector of labels to place at top of the bend-in-section lines,
+\item{bend.label}{'character' vector.
+Labels to place at top of the bend-in-section lines,
 values are recycled as necessary to the number of bends.}
 
-\item{scale.loc}{'character'.
+\item{scale.loc}{'character' string.
 Position of the scale bar in the main plot region;
 see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
-\item{file}{'character'.
+\item{file}{'character' string.
 Name of the output file.
 Specifying this argument will start a graphics device driver for producing a
 PDF or PNG file format---the file extension determines the format type.
@@ -131,7 +129,7 @@ these device dimensions can be useful when creating similar map layouts in dynam
 }
 \value{
 Used for the side-effect of a new plot generated.
-  Returns a 'list' object with the following graphical parameters:
+  Returns a 'list' with the following graphical parameters:
   \describe{
     \item{din}{device dimensions \code{(width, height)}, in inches.}
     \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}

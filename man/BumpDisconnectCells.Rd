@@ -9,7 +9,7 @@ BumpDisconnectCells(rs, min.overlap = 2, bump.by = 0.1,
 }
 \arguments{
 \item{rs}{'Raster*'.
-A collection of two raster layers, the first and second layers represent
+Collection of two raster layers, the first and second layers represent
 the upper and lower surface of a 3D model layer.}
 
 \item{min.overlap}{'numeric' number.

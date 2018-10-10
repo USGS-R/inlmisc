@@ -48,7 +48,7 @@
 #'   The \pkg{parallel} and \pkg{doParallel} packages must be
 #'   installed for parallel computing to work.
 #' @param monitor 'function'.
-#'   A function that takes as input the current state of the \code{\link[=gaisl-class]{gaisl-class}} object,
+#'   Function that takes as input the current state of the \code{\link[=gaisl-class]{gaisl-class}} object,
 #'   and is run at each epoch of the islands GA search.
 #' @param seed 'integer' count.
 #'   Random number generator state for random number generation, used to replicate the results.
@@ -122,7 +122,7 @@
 FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
                               migrationRate=0.1, migrationInterval=10,
                               pcrossover=0.8, pmutation=0.1, elitism=0,
-                              maxiter=1000L, run=maxiter, suggestions=NULL,
+                              maxiter=1000, run=maxiter, suggestions=NULL,
                               parallel=TRUE, monitor=NULL, seed=NULL) {
 
   # check arguments
@@ -265,12 +265,12 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
 #' Where a chromosome is a set of numbers that defines a proposed solution to the
 #' problem that a genetic algorithm is trying to solve.
 #'
-#' @param x 'numeric'.
-#'   Integer representation of chromosome, a vector of integer values.
-#' @param n 'integer'.
+#' @param x 'integer' vector.
+#'   Integer representation of chromosome.
+#' @param n 'integer' count.
 #'   Maximum permissible number in the integer chromosome,
 #'   used to calculate the bit width of a binary string.
-#' @param y 'numeric'.
+#' @param y 'integer' vector.
 #'   Binary representation of chromosome, a vector of \code{0}s and \code{1}s.
 #'
 #' @return

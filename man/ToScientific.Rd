@@ -9,31 +9,31 @@ ToScientific(x, digits = NULL, type = c("latex", "plotmath"),
   big.mark = ",", ...)
 }
 \arguments{
-\item{x}{'numeric'.
-Vector of numbers}
+\item{x}{'numeric' vector.
+Numbers}
 
-\item{digits}{'integer'.
+\item{digits}{'integer' count.
 Desired number of digits after the decimal point.}
 
-\item{type}{'character'.
+\item{type}{'character' string.
 Specify \code{"latex"} to return numbers in the LaTeX markup language (default),
 or \code{"plotmath"} to return as \code{\link[grDevices]{plotmath}} expressions.}
 
-\item{na}{'character'.
-String to be used for missing values (\code{NA}).
+\item{na}{'character' string.
+Value to use for missing values (\code{NA}).
 By default, no string substitution is made for missing values.}
 
-\item{delimiter}{'character'.
+\item{delimiter}{'character' string.
 Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.
 Does not apply to missing value strings.}
 
 \item{scipen}{'integer' count.
-A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
+Penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 Positive values bias towards fixed and negative towards scientific notation:
 fixed notation will be preferred unless it is more than \code{scipen} digits wider.
 Specify \code{NULL} to format all numbers, with the exception of zero, in scientific notation.}
 
-\item{big.mark}{'character'.
+\item{big.mark}{'character' string.
 Mark inserted between every big interval before the decimal point.
 By default, commas are placed every 3 decimal places for numbers larger than 999.}
 

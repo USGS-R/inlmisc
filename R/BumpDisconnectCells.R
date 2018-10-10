@@ -5,7 +5,7 @@
 #' a minimum vertical overlap between adjacent model cells is achieved.
 #'
 #' @param rs 'Raster*'.
-#'   A collection of two raster layers, the first and second layers represent
+#'   Collection of two raster layers, the first and second layers represent
 #'   the upper and lower surface of a 3D model layer.
 #' @param min.overlap 'numeric' number.
 #'   Minimum vertical overlap between horizontally adjacent model cells.

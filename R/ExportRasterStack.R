@@ -4,7 +4,7 @@
 #' to local directories using multiple file formats.
 #'
 #' @param rs 'RasterStack' or 'RasterBrick'.
-#'   A collection of \code{\linkS4class{RasterLayer}} objects with
+#'   Collection of \code{\linkS4class{RasterLayer}} objects with
 #'   the same extent and resolution.
 #' @param path 'character' string.
 #'   Path name to write raster stack.

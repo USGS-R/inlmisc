@@ -6,7 +6,7 @@
 \usage{
 FindOptimalSubset(n, k, Fitness, ..., popSize = 100,
   migrationRate = 0.1, migrationInterval = 10, pcrossover = 0.8,
-  pmutation = 0.1, elitism = 0, maxiter = 1000L, run = maxiter,
+  pmutation = 0.1, elitism = 0, maxiter = 1000, run = maxiter,
   suggestions = NULL, parallel = TRUE, monitor = NULL, seed = NULL)
 }
 \arguments{
@@ -66,7 +66,7 @@ The \pkg{parallel} and \pkg{doParallel} packages must be
 installed for parallel computing to work.}
 
 \item{monitor}{'function'.
-A function that takes as input the current state of the \code{\link[=gaisl-class]{gaisl-class}} object,
+Function that takes as input the current state of the \code{\link[=gaisl-class]{gaisl-class}} object,
 and is run at each epoch of the islands GA search.}
 
 \item{seed}{'integer' count.

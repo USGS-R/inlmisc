@@ -3,17 +3,17 @@
 #' This function is intended for formatting \emph{p}-values.
 #' Scientific notation is written with LaTeX commands.
 #'
-#' @param x 'numeric'.
-#'   Vector of p-values.
-#' @param digits 'integer'.
+#' @param x 'numeric' vector.
+#'   \emph{p}-values
+#' @param digits 'integer' count.
 #'   Number of significant digits to be used.
-#' @param eps 'numeric'.
-#'   Numerical tolerance;
+#' @param eps 'numeric' number.
+#'   Numerical tolerance,
 #'   values less than \code{eps} are formatted as \code{"< [eps]"}.
-#' @param na.form 'character'.
+#' @param na.form 'character' string.
 #'   Value used for missing values.
-#' @param scientific 'logical'.
-#'   Indicates whether values should be encoded in scientific format.
+#' @param scientific 'logical' flag.
+#'   Whether values should be encoded in scientific format.
 #'   A missing value lets \R decide whether fixed or scientific notation is used.
 #'
 #' @return A 'character' vector of formatted \emph{p}-values.

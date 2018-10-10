@@ -5,7 +5,7 @@
 #' The cell chunk with the largest surface area is preserved and all others removed.
 #'
 #' @param r 'RasterLayer'.
-#'   A raster grid layer with cell values.
+#'   Raster grid layer with cell values.
 #'
 #' @return Returns a 'RasterLayer' object, \code{r} with cell values in the smaller cell chunks set to \code{NA}.
 #'

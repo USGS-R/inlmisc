@@ -30,8 +30,7 @@
 #' @param log 'logical' flag.
 #'   Whether the axis is to be logarithmic.
 #' @param mai 'numeric' vector of length 4.
-#'   Vector of the form \code{c(bottom, left, top, right)} which gives the margin size
-#'   specified in inches (optional).
+#'   Margin size in inches and of the form \code{c(bottom, left, top, right)}.
 #' @inheritParams ToScientific
 #'
 #' @return Used for the side-effect of a color key drawn on the current graphics device.

@@ -4,8 +4,8 @@
 #' Pieces of \R code can be put into the markups of the template text,
 #' and are evaluated during the replacement.
 #'
-#' @param text 'character'.
-#'   Vector of character strings, that is the template text.
+#' @param text 'character' vector.
+#'   Template text
 #' @param replacement 'list'.
 #'   Values to replace in \code{text}.
 #'

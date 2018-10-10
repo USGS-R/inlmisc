@@ -7,8 +7,8 @@
 ReplaceInTemplate(text, replacement = list())
 }
 \arguments{
-\item{text}{'character'.
-Vector of character strings, that is the template text.}
+\item{text}{'character' vector.
+Template text}
 
 \item{replacement}{'list'.
 Values to replace in \code{text}.}

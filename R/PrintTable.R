@@ -6,44 +6,40 @@
 #'
 #' @param d 'data.frame'.
 #'   Data table to print.
-#' @param colheadings 'character'.
-#'   Vector of length equal to the number of columns in the table, containing the column headings.
+#' @param colheadings 'character' vector.
+#'   Column headings.
 #'   Use \code{\\\\\\\\} to code a line break.
-#' @param align 'character'.
-#'   Vector of length equal to the number of columns in the table,
-#'   indicating the alignment of the corresponding columns.
-#'   Use \code{"l"}, \code{"r"}, and \code{"c"} to denote left, right,
-#'   and center alignment, respectively.
-#' @param digits 'integer'.
-#'   Vector of length equal to the number of columns in the table,
-#'   indicating the number of digits to display in the corresponding columns.
-#' @param label 'character'.
-#'   String containing the LaTeX label anchor.
+#' @param align 'character' vector.
+#'   Column alignment.
+#'   Specify \code{"l"} to left align, \code{"r"} to right align, and \code{"c"} to center align.
+#' @param digits 'integer' vector.
+#'   Number of digits to display in the corresponding columns.
+#' @param label 'character' string.
+#'   LaTeX label anchor.
 #'   Specifying this argument allows you to easily reference the table within the LaTeX document.
 #'   For example, when \code{label = "id"}, use \code{\\ref\{id\}}
 #'   to reference the table within a sentence.
-#' @param title 'character'.
-#'   String containing the table caption.
-#' @param headnotes 'character'.
-#'   String placed below the table caption to provide information pertaining to the caption,
+#' @param title 'character' string.
+#'   Table caption
+#' @param headnotes 'character' string.
+#'   Label placed below the table caption to provide information pertaining to the caption,
 #'   to the table as a whole, or to the column headings.
-#' @param footnotes 'character'.
-#'   String placed at the end of the table to provide explanations of individual entries in the table.
-#' @param nrec 'integer'.
-#'   Vector of length equal to 2, indicating the maximum number of records to show on the first page,
-#'   and every subsequent page, respectively.
+#' @param footnotes 'character' string.
+#'   Label placed at the end of the table to provide explanations of individual entries in the table.
+#' @param nrec 'integer' vector of length 1 or 2.
+#'   Maximum number of records to show on the first page, and every subsequent page, respectively.
 #'   Value is recycled as necessary.
-#' @param hline 'integer'.
-#'   Vector of numbers between 1 and \code{nrow(d) - 1}, indicating the table rows after which
+#' @param hline 'integer' vector.
+#'   Numbers between 1 and \code{nrow(d) - 1} indicating the table rows after which
 #'   a horizontal line should appear.
-#' @param na 'character'.
-#'   String to be used for missing values in table entries.
-#' @param rm_dup 'integer'.
+#' @param na 'character' string.
+#'   Value to be used for missing values in table entries.
+#' @param rm_dup 'integer' count.
 #'   End value of a sequence of column indexes \code{(1:rm_dup)}.
 #'   Duplicate values contained in these columns will be set equal to an empty string.
 #'   Where duplicates in a column are determined from the 'character' vector formed by
 #'   combining its content with the content from all previous columns in the table.
-#' @param landscape 'logical'.
+#' @param landscape 'logical' flag.
 #'   If true, conforming PDF viewers will display the table in landscape orientation.
 #'   This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.
 #' @param ...

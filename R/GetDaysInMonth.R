@@ -2,8 +2,8 @@
 #'
 #' This function determines the number of days in a year and month.
 #'
-#' @param x 'integer'.
-#'   Vector of year and month values, with a required date format of \code{YYYYMM}.
+#' @param x 'integer' vector.
+#'   Year and month, with a required date format of \code{YYYYMM}.
 #'
 #' @return Returns an 'integer' vector indicating the number of days
 #'   in each year and month value specified in \code{x}.

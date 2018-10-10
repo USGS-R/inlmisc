@@ -13,7 +13,7 @@
 #' @param ...
 #'   Arguments to be passed to the \code{\link[leaflet]{leaflet}} function.
 #' @param collapsed 'logical' flag.
-#'   If true, the layers control will be rendered as an icon that expands when hovered over.
+#'   Whether the layers control should be rendered as an icon that expands when hovered over.
 #' @param service 'character' string.
 #'   Mapping services for accessing TNM base-map tiles.
 #'   Select \code{"rest"} for representational state transfer services (the default) and

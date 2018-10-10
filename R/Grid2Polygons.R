@@ -27,7 +27,7 @@
 #' @param ply 'SpatialPolygons', or 'SpatialGridDataFrame'.
 #'    Cropping polygon
 #'
-#' @return Returns an object of 'SpatialPolygonsDataFrame'.
+#' @return Returns an object of 'SpatialPolygonsDataFrame' class.
 #'   The objects \code{data} slot is a data frame, number of rows equal to
 #'   the number of \code{Polygons} objects and a single column containing attribute values.
 #'   If \code{level} is true, attribute values are set equal to the midpoint between breakpoints.

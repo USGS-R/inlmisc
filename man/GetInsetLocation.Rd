@@ -8,25 +8,25 @@ GetInsetLocation(dx, dy, loc = "bottomright", inset = 0, pad = 0,
   padin = 0)
 }
 \arguments{
-\item{dx, dy}{'numeric'.
+\item{dx, dy}{'numeric' number.
 Width and height of the inset graphics, respectively.}
 
-\item{loc}{'character'.
+\item{loc}{'character' string.
 Single keyword used to specify the position of the inset in the main plot region:
 \code{"bottomright"}, \code{"bottom"}, \code{"bottomleft"}, \code{"left"},
 \code{"topleft"}, \code{"top"}, \code{"topright"}, \code{"right"},
 or \code{"center"} to denote inset location.}
 
-\item{inset}{'numeric'.
-Vector of length 2 giving the inset distance from the margins as a fraction of the main plot region.
+\item{inset}{'numeric' vector of length 1 or 2.
+Inset distance from the margins as a fraction of the main plot region.
 Value is recycled as necessary.}
 
-\item{pad}{'numeric'.
-Vector of length 2 giving the padding distance from the margins in user coordinate units.
+\item{pad}{'numeric' vector of length 1 or 2.
+Padding distance from the margins in user coordinate units.
 Value is recycled as necessary.}
 
-\item{padin}{'numeric'.
-Vector of length 2 giving the padding distance from the margins in inches.
+\item{padin}{'numeric' vector of length 1 or 2.
+Padding distance from the margins in inches.
 Value is recycled as necessary.}
 }
 \value{

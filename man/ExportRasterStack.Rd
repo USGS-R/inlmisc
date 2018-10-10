@@ -8,7 +8,7 @@ ExportRasterStack(rs, path, zip = "", col = NULL)
 }
 \arguments{
 \item{rs}{'RasterStack' or 'RasterBrick'.
-A collection of \code{\linkS4class{RasterLayer}} objects with
+Collection of \code{\linkS4class{RasterLayer}} objects with
 the same extent and resolution.}
 
 \item{path}{'character' string.

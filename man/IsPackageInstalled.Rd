@@ -7,11 +7,11 @@
 IsPackageInstalled(x, lib = .libPaths())
 }
 \arguments{
-\item{x}{'character'.
-Vector of package names}
+\item{x}{'character' vector.
+Package names}
 
-\item{lib}{'character'.
-Vector of library trees}
+\item{lib}{'character' vector.
+Library trees}
 }
 \value{
 A 'logical' vector the length of argument \code{x}.

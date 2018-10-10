@@ -5,16 +5,16 @@
 #' @param x 'SpatialPolygons*'.
 #'   Multi-polygon object
 #' @param y 'SpatialPolygons*' or 'Extent'.
-#'    Multi-polygon object
-#' @param cmd 'character'.
-#'    Specifying "gIntersection", the default, cuts out portions of the \code{x} polygons
-#'    that overlay the \code{y} polygons.
-#'    If "gDifference" is specified, only those portions of the \code{x} polygons
-#'    falling outside the \code{y} polygons are copied to the output polygons.
-#' @param buffer.width 'numeric'.
-#'    Expands or contracts the geometry of \code{y} to include the area within
-#'    the specified width, see \code{gBuffer}.
-#'    Specifying \code{NA}, the default, indicates no buffer.
+#'   Multi-polygon object
+#' @param cmd 'character' string.
+#'   Specifying "gIntersection", the default, cuts out portions of the \code{x} polygons
+#'   that overlay the \code{y} polygons.
+#'   If "gDifference" is specified, only those portions of the \code{x} polygons
+#'   falling outside the \code{y} polygons are copied to the output polygons.
+#' @param buffer.width 'numeric' number.
+#'   Expands or contracts the geometry of \code{y} to include the area within
+#'   the specified width, see \code{gBuffer}.
+#'   Specifying \code{NA}, the default, indicates no buffer.
 #'
 #' @details This function tests if the resulting geometry is valid, see \code{\link{gIsValid}}.
 #'

@@ -36,7 +36,7 @@ Can either be a flag specifying whether (numerical) annotations are to be made a
 or a vector of labels to be placed at the tick points.}
 
 \item{scipen}{'integer' count.
-A penalty to be applied when deciding to format numeric values in scientific or fixed notation.
+Penalty to be applied when deciding to format numeric values in scientific or fixed notation.
 Positive values bias towards fixed and negative towards scientific notation:
 fixed notation will be preferred unless it is more than \code{scipen} digits wider.
 Specify \code{NULL} to format all numbers, with the exception of zero, in scientific notation.}
@@ -51,8 +51,7 @@ Inner padding for the left and right margins specified in inches.}
 Whether the axis is to be logarithmic.}
 
 \item{mai}{'numeric' vector of length 4.
-Vector of the form \code{c(bottom, left, top, right)} which gives the margin size
-specified in inches (optional).}
+Margin size in inches and of the form \code{c(bottom, left, top, right)}.}
 }
 \value{
 Used for the side-effect of a color key drawn on the current graphics device.

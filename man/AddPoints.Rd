@@ -16,7 +16,7 @@ AddPoints(x, y = NULL, z = NULL, zcol = 1, crs = NULL,
 }
 \arguments{
 \item{x, y}{'numeric' vector or 'SpatialPoints*'.
-x and y coordinates for the centers of the circle symbols.
+\emph{x} and \emph{y} coordinates for the centers of the circle symbols.
 If numeric, can be specified in any way which is accepted by \code{\link{xy.coords}}.}
 
 \item{z}{'numeric' vector, 'integer' vector, or 'factor'.
@@ -31,13 +31,13 @@ Attribute name or column number to extract from if \code{x} is of class 'Spatial
 Coordinate reference system arguments}
 
 \item{xlim}{'numeric' vector of length 2.
-x limits for the plot.}
+\emph{x} limits for the plot.}
 
 \item{ylim}{'numeric' vector of length 2.
-y limits for the plot.}
+\emph{y} limits for the plot.}
 
 \item{zlim}{'numeric' vector of length 2.
-z limits for the plot.}
+\emph{z} limits for the plot.}
 
 \item{inches}{'numeric' vector of length 2.
 Radii limits for the drawn circle symbol.
@@ -85,7 +85,7 @@ Inset distance of the legend from the margins as a fraction of the main plot reg
 Defaults to 2 percent of the axis range.}
 
 \item{bty}{'character' string.
-The type of box to be drawn about the legend.
+Type of box to be drawn about the legend.
 A value of \code{"o"} (the default) results in a box and
 a value of \code{"n"} supresses the box.}
 

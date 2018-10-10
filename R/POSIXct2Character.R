@@ -2,9 +2,9 @@
 #'
 #' This function converts objects from '\link{POSIXct}' to '\link{character}' class.
 #'
-#' @param x 'POSIXct'.
-#'   Vector of calendar dates and times.
-#' @param fmt 'character'.
+#' @param x 'POSIXct' vector.
+#'   Calendar date and time
+#' @param fmt 'character' string.
 #'   Conversion specification format
 #'
 #' @return Returns a 'character' vector representing time.
