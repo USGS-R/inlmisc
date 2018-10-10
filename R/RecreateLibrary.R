@@ -6,37 +6,37 @@
 #' \sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),
 #' CRAN-like repositories, local package-installation files, and GitHub.
 #'
-#' @param file 'character'.
+#' @param file 'character' string.
 #'   Name of the file for reading (or writing) the list of package details.
 #'   For a file name that does not contain an absolute path,
 #'   the name is assumed relative to the current working directory (see \code{\link{getwd}} function).
 #'   A \file{.gz} file extension indicates the file is compressed by \emph{gzip}.
-#' @param lib 'character'.
-#'   The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}} function),
+#' @param lib 'character' vector.
+#'   Library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}} function),
 #'   or the library directory where to install packages.
-#' @param repos 'character'.
-#'   Vector of base URL(s) of the CRAN-like repositories (includes CRAN) to use when installing packages.
+#' @param repos 'character' vector.
+#'   Base URL(s) of the CRAN-like repositories (includes CRAN) to use when installing packages.
 #'   For example, the URL of the RStudio sponsored CRAN mirror is \code{"https://cloud.r-project.org/"}.
 #'   And the URL of the Geological Survey R Archive Network (\href{https://owi.usgs.gov/R/gran.html}{GRAN})
 #'   is \code{"https://owi.usgs.gov/R"}.
-#' @param snapshot 'logical', 'Date', or 'character'.
+#' @param snapshot 'logical' flag, 'Date', or 'character' string.
 #'   Calendar date for a CRAN snapshot in time,
 #'   see the Microsoft R Application Network
 #'   (\href{https://mran.microsoft.com/}{MRAN}) website for details.
 #'   If true, the snapshot date is read from the first line of the package-details \code{file}.
 #'   A snapshot date can also be specified directly using the required date format, YYYY-MM-DD.
 #'   This argument masks any CRAN mirror specified in \code{repos}.
-#' @param local 'character'.
-#'   Vector of paths to local repositories.
+#' @param local 'character' vector.
+#'   Paths to local repositories.
 #'   Packages are installed from local files in these directories.
 #'   Files can contain \emph{binary} builds of packages (\file{.zip} on Windows and \file{.tgz} on macOS)
 #'   or be \emph{source} packages (\file{.tar.gz}).
-#' @param versions 'logical'.
+#' @param versions 'logical' flag.
 #'   If true, installed package versions will be identical to version numbers stored in the package-details \code{file}.
 #'   Only applies to packages from CRAN-like repositories and local package-installation files.
 #'   Requires that the \pkg{devtools} package is available,
 #'   see \code{\link[devtools]{install_version}} function.
-#' @param github 'logical'.
+#' @param github 'logical' flag.
 #'   If true, an attempt is made to install a subset of packages from \href{https://github.com/}{GitHub}.
 #'   Only applies to packages missing from the CRAN-like repositories (see \code{repos} argument).
 #'   Requires that the \pkg{githubinstall} package is available,
@@ -46,13 +46,13 @@
 #'   Package vignettes are not built using this option.
 #'   An example of an \R package that is only available on GitHub is \pkg{AnomalyDetection},
 #'   located at \href{https://github.com/twitter/AnomalyDetection}{twitter/AnomalyDetection}.
-#' @param quiet 'logical'.
-#'   If true, reduce the amount of output.
-#' @param parallel 'logical' or 'integer'.
+#' @param quiet 'logical' flag.
+#'   Whether to reduce the amount of output.
+#' @param parallel 'logical' flag or 'integer' count.
 #'   Whether to use parallel processes for a parallel install of more than one source package.
 #'   This argument can also be used to specify the number of cores to employ.
-#' @param pkg 'character'.
-#'   One or more names of packages located under \code{lib}.
+#' @param pkg 'character' vector.
+#'   Names of package(s) located under \code{lib}.
 #'   Only packages specified in \code{pkg}, and the packages that \code{pkg} depend on/link to/import/suggest,
 #'   will be included in the package-details \code{file}.
 #'
@@ -155,7 +155,7 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
 
   # set number of parallel process
   if (is.logical(parallel))
-    parallel <- if (parallel) max(1L, parallel::detectCores() - 1L) else 1L
+    parallel <- if (parallel) max(1, parallel::detectCores() - 1) else 1
 
   # set environment variable for certificates path
   if (.Platform$OS.type == "windows" && Sys.getenv("CURL_CA_BUNDLE") == "") {
@@ -389,10 +389,10 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
 #'
 #' This function checks whether a package(s) is installed under the library tree(s).
 #'
-#' @param x 'character'.
-#'   Vector of package names
-#' @param lib 'character'.
-#'   Vector of library trees
+#' @param x 'character' vector.
+#'   Package names
+#' @param lib 'character' vector.
+#'   Library trees
 #'
 #' @return A 'logical' vector the length of argument \code{x}.
 #'

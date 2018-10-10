@@ -6,29 +6,28 @@
 #' The applied output format attempts to adhere to the design recommendations
 #' for figures in United States Geological Survey (USGS) publications.
 #'
-#' @param fig 'text'.
-#'   Vector of figure plotting commands written in \R.
+#' @param fig 'character' vector.
+#'   Figure plotting commands written in \R.
 #'   The length of the vector is either equal to the number of subfigures,
 #'   or 1 when a single plot is desired.
 #'   An element in the vector contains the commands for creating a single plot.
-#' @param nr,nc 'integer'.
+#' @param nr,nc 'integer' count.
 #'   Maximum number of rows and columns in the subfigure layout on a page in the output document.
-#' @param label 'character'.
-#'   String containing the LaTeX label anchor.
+#' @param label 'character' string.
+#'   LaTeX label anchor.
 #'   Subfigures are labeled using a concatenation of the \code{label} argument and an index number.
 #'   For example, specifying \code{label = "id"} for a figure composed of 3 subfigures results in:
 #'   labels \code{"id-1"}, \code{"id-2"}, and \code{"id-3"}.
-#' @param title 'character'.
-#'   String containing the figure caption.
-#' @param title_lof 'character'.
-#'   String containing the figure caption to be listed at the beginning
-#'   of the paper in a \dQuote{List of Figures}.
-#' @param headings 'character'.
-#'   Vector of subfigure captions, values are recycled as necessary
+#' @param title 'character' string.
+#'   Figure caption
+#' @param title_lof 'character' string.
+#'   Figure caption to be listed at the beginning of the paper in a \dQuote{List of Figures}.
+#' @param headings 'character' vector.
+#'   Subfigure captions, values are recycled as necessary
 #'   to match the vector length of the \code{fig} argument.
 #'   To exclude a subfigure caption specify its vector element as \code{NA}.
-#' @param pos 'character'.
-#'   String for the placement specifiers to be used in \code{\\begin{figure}[pos]}.
+#' @param pos 'character' string.
+#'   Placement specifiers to be used in \code{\\begin{figure}[pos]}.
 #'   The specifiers can consist of the following characters in any order:
 #'   \itemize{
 #'     \item \code{"h"} place the float about at the same point it occurs in the source text;
@@ -116,12 +115,12 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
       caption <- NA
     }
 
-    if (i == n + 1L) cat("\\captionsetup[figure]{list=no}\n\n")
+    if (i == n + 1) cat("\\captionsetup[figure]{list=no}\n\n")
 
-    if ((i - 1L) %% n == 0) {
+    if ((i - 1) %% n == 0) {
       cat(sprintf("\\begin{figure}[%s]\n", pos))
       if (i > 1) cat("  \\ContinuedFloat\n")
-    } else if ((i - 1L) %% nc == 0) {
+    } else if ((i - 1) %% nc == 0) {
       cat("  \\par\\bigskip\n")
     } else {
       cat("  \\qquad\n")

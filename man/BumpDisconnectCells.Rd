@@ -9,16 +9,16 @@ BumpDisconnectCells(rs, min.overlap = 2, bump.by = 0.1,
 }
 \arguments{
 \item{rs}{'Raster*'.
-A collection of two raster layers, the first and second layers represent
+Collection of two raster layers, the first and second layers represent
 the upper and lower surface of a 3D model layer.}
 
-\item{min.overlap}{'numeric'.
+\item{min.overlap}{'numeric' number.
 Minimum vertical overlap between horizontally adjacent model cells.}
 
-\item{bump.by}{'numeric'.
+\item{bump.by}{'numeric' number.
 Amount to decrease a cell value by during each iteration of the algorithm.}
 
-\item{max.itr}{'numeric'.
+\item{max.itr}{'integer' count.
 Maximum number of iterations.}
 }
 \value{

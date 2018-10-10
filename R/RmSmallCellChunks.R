@@ -5,7 +5,7 @@
 #' The cell chunk with the largest surface area is preserved and all others removed.
 #'
 #' @param r 'RasterLayer'.
-#'   A raster grid layer with cell values.
+#'   Raster grid layer with cell values.
 #'
 #' @return Returns a 'RasterLayer' object, \code{r} with cell values in the smaller cell chunks set to \code{NA}.
 #'
@@ -47,7 +47,7 @@ RmSmallCellChunks <- function(r) {
 
   biggest.chunk <- chunks[which(chunk.sizes == max(chunk.sizes))]
   n <- length(biggest.chunk)
-  if (n > 1L) warning(sprintf("There are %d raster chunks with largest area.", n))
+  if (n > 1) warning(sprintf("There are %d raster chunks with largest area.", n))
 
   chunk.numbers[!is.na(chunk.numbers) & !chunk.numbers %in% biggest.chunk] <- NA
   r.values[is.na(chunk.numbers)] <- NA

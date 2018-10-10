@@ -2,17 +2,17 @@
 % Please edit documentation in R/ReadCodeChunks.R
 \name{ReadCodeChunks}
 \alias{ReadCodeChunks}
-\title{Read Code Chunks}
+\title{Read Knitr Code Chunks}
 \usage{
 ReadCodeChunks(path)
 }
 \arguments{
-\item{path}{'character'.
+\item{path}{'character' string.
 Path name of the \bold{knitr} source document (\file{.Rnw} or \file{.Rmd}),
 or R code that has been extracted from a \bold{knitr} source document (\file{.R}).}
 }
 \value{
-Returns a 'list' object of length equal to the number of code chunks in \code{path}.
+Returns a 'list' of length equal to the number of code chunks in \code{path}.
   Each 'list' component is named after its corresponding chunk name (\code{chunk-name}).
   The returned object includes the value of the \code{path} argument as an attribute.
 }

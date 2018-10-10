@@ -1,4 +1,4 @@
-#' Plot Method for Cross Sections
+#' Plot Cross Section
 #'
 #' This function creates a cross-section view of raster data.
 #' A key showing how the colors map to raster values is shown below the map.
@@ -8,58 +8,56 @@
 #'   Piecewise linear transect line.
 #' @param rs 'RasterStack' or 'RasterBrick'.
 #'   Collection of raster layers with the same extent and resolution.
-#' @param geo.lays 'character'.
-#'   Vector of names in \code{rs} that specify the geometry-raster layers;
+#' @param geo.lays 'character' vector.
+#'   Names in \code{rs} that specify the geometry-raster layers;
 #'   these must be given in decreasing order, that is,
 #'   from the upper most (such as land surface) to the lowest (such as a bedrock surface).
-#' @param val.lays 'character'.
-#'   Vector of names in \code{rs} that specify the value-raster layers (optional).
+#' @param val.lays 'character' vector.
+#'   Names in \code{rs} that specify the value-raster layers (optional).
 #'   Values from the first layer are mapped as colors to
 #'   the area between the first and second geometry layers;
 #'   the second layer mapped between the second and third geometry layers, and so on.
-#' @param wt.lay 'character'.
+#' @param wt.lay 'character' string.
 #'   Name in \code{rs} that specifies the water-table-raster layer (optional).
-#' @param n 'integer'.
+#' @param n 'integer' count.
 #'   Desired number of intervals to partition the range of raster values (optional).
-#' @param breaks 'numeric'.
-#'   Vector of break points used to partition the colors representing
-#'   numeric raster values (optional).
-#' @param col 'character'.
-#'   Vector of colors to be used in the plot.
+#' @param breaks 'numeric' vector.
+#'   Break points used to partition the colors representing numeric raster values (optional).
+#' @param col 'character' vector.
+#'   Colors to be used in the plot.
 #'   This argument requires \code{breaks} specification for numeric raster values
 #'   and overrides any palette function specification.
 #'   For numeric values there should be one less color than breaks.
 #'   Categorical data require a color for each category.
-#' @param ylab 'character'.
+#' @param ylab 'character' string.
 #'   Label for the \emph{y} axis.
-#' @param unit 'character'.
+#' @param unit 'character' string.
 #'   Label for the measurement unit of the \emph{x}- and \emph{y}-axes.
-#' @param id 'character'.
-#'   Vector of length 2 giving the labels for the end points of the transect line,
-#'   defaults to \emph{A--A'}.
+#' @param id 'character' vector of length 2.
+#'   Labels for the end points of the transect line, defaults to \emph{A--A'}.
 #' @param features 'SpatialPointsDataFrame'.
 #'   Point features adjacent to the transect line that are used
 #'   as reference labels for the upper geometry layer.
 #'   Labels taken from first column of embedded data table.
-#' @param max.feature.dist 'numeric'.
+#' @param max.feature.dist 'numeric' number.
 #'   Maximum distance from a point feature to the transect line,
 #'   specified in the units of the \code{rs} projection.
-#' @param draw.sep 'logical'.
-#'   If true, lines separating geometry layers are drawn.
-#' @param is.categorical 'logical'.
+#' @param draw.sep 'logical' flag.
+#'   Whether lines separating geometry layers are drawn.
+#' @param is.categorical 'logical' flag.
 #'   If true, cell values in \code{val.lays} represent categorical data;
 #'   otherwise, these data values are assumed continuous.
-#' @param bg.col 'character'.
+#' @param bg.col 'character' string.
 #'   Color used for the background of the area below the top geometry-raster layer.
-#' @param wt.col 'character'.
+#' @param wt.col 'character' string.
 #'   Color used for the water-table line.
-#' @param bend.label 'character'.
-#'   Vector of labels to place at top of the bend-in-section lines,
+#' @param bend.label 'character' vector.
+#'   Labels to place at top of the bend-in-section lines,
 #'   values are recycled as necessary to the number of bends.
 #' @inheritParams PlotMap
 #'
 #' @return Used for the side-effect of a new plot generated.
-#'   Returns a 'list' object with the following graphical parameters:
+#'   Returns a 'list' with the following graphical parameters:
 #'   \describe{
 #'     \item{din}{device dimensions \code{(width, height)}, in inches.}
 #'     \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}
@@ -179,10 +177,10 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   for (i in seq_along(val.lays)) {
     for (j in seq_along(eat)) {
       seg <- as.matrix(eat[[j]]@data)
-      for (k in seq(1, nrow(seg) - 1L, by=2)) {
+      for (k in seq(1, nrow(seg) - 1, by=2)) {
         v <- as.numeric(seg[k, val.lays[i]])
-        p <- rbind(seg[c(k, k + 1L), c("dist", geo.lays[i])],
-                   seg[c(k + 1L, k), c("dist", geo.lays[i + 1L])],
+        p <- rbind(seg[c(k, k + 1), c("dist", geo.lays[i])],
+                   seg[c(k + 1, k), c("dist", geo.lays[i + 1])],
                    seg[k, c("dist", geo.lays[i]), drop=FALSE])
         if (anyNA(p)) next
         cell.values <- c(cell.values, v)
@@ -207,7 +205,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
         breaks <- seq(min(at), max(at), length.out=n)
       }
       intervals <- findInterval(cell.values, breaks, all.inside=TRUE)
-      if (is.null(col)) col <- pal(length(breaks) - 1L)
+      if (is.null(col)) col <- pal(length(breaks) - 1)
       cell.cols <- col[intervals]
     }
     cols <- unique(cell.cols)
@@ -342,7 +340,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     color <- ifelse(length(color) == 1 && !is.na(color), color, "#1F1F1F")
     drawl <- ifelse(length(drawl) == 1 && !is.na(drawl), drawl, TRUE)
     metho <- ifelse(length(metho) == 1 && !is.na(metho), metho, "flattest")
-    contour.breaks <- if (length(breaks) > 20) pretty(breaks, 20L) else breaks
+    contour.breaks <- if (length(breaks) > 20) pretty(breaks, 20) else breaks
     ncontours <- length(contour.breaks)
     raster::contour(r, maxpixels=length(r), levels=contour.breaks,
                     labels=formatC(contour.breaks, big.mark=","), xlim=xlim,

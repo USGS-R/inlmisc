@@ -13,8 +13,8 @@ AddInsetMap(p, col = c("#D8D8D8", "#BFA76F"), main.label = list(label =
 \item{p}{'SpatialPolygons'.
 Polygon describing the large map.}
 
-\item{col}{'character'.
-Vector of length 2 giving the colors for filling the large map polygon \code{p} and the smaller plot extent rectangle.}
+\item{col}{'character' vector of length 2.
+Colors for filling the large map polygon \code{p} and the smaller plot extent rectangle.}
 
 \item{main.label}{'list'.
 List with components \code{label} and \code{adj}.
@@ -23,23 +23,23 @@ The text label and position (x and y adjustment of the label) for the large map,
 \item{sub.label}{'list'.
 Identical to the \code{main.label} argument but for the plot extent rectangle.}
 
-\item{loc}{'character'.
+\item{loc}{'character' string.
 Position of the inset map in the main plot region;
 see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
-\item{inset}{'numeric'.
+\item{inset}{'numeric' vector of length 1 or 2.
 Inset distance(s) from the margins as a fraction of the main plot region.
 Defaults to 2 percent of the axis range.}
 
-\item{width}{'numeric'.
+\item{width}{'numeric' number.
 Width of the inset map in inches.}
 
-\item{e}{'numeric'.
-Vector of length 4 describing the extent of the smaller axis-aligned rectangle (relative to the larger map polygon).
+\item{e}{'numeric' vector of length 4.
+Extent of the smaller axis-aligned rectangle (relative to the larger map polygon).
 Defaults to the user coordinate extent of the main plot region, see \code{par("usr")}.}
 
-\item{bty}{'character'.
-The type of box to be drawn about the inset map.
+\item{bty}{'character' string.
+Type of box to be drawn about the inset map.
 A value of \code{"o"} (the default) results in a box and a value of \code{"n"} supresses the box.}
 }
 \value{

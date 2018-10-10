@@ -13,23 +13,23 @@ SavePackageDetails(file = "R-packages.tsv", lib = .libPaths(),
   pkg = NULL)
 }
 \arguments{
-\item{file}{'character'.
+\item{file}{'character' string.
 Name of the file for reading (or writing) the list of package details.
 For a file name that does not contain an absolute path,
 the name is assumed relative to the current working directory (see \code{\link{getwd}} function).
 A \file{.gz} file extension indicates the file is compressed by \emph{gzip}.}
 
-\item{lib}{'character'.
-The library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}} function),
+\item{lib}{'character' vector.
+Library tree(s) to search through when locating installed packages (see \code{\link{.libPaths}} function),
 or the library directory where to install packages.}
 
-\item{repos}{'character'.
-Vector of base URL(s) of the CRAN-like repositories (includes CRAN) to use when installing packages.
+\item{repos}{'character' vector.
+Base URL(s) of the CRAN-like repositories (includes CRAN) to use when installing packages.
 For example, the URL of the RStudio sponsored CRAN mirror is \code{"https://cloud.r-project.org/"}.
 And the URL of the Geological Survey R Archive Network (\href{https://owi.usgs.gov/R/gran.html}{GRAN})
 is \code{"https://owi.usgs.gov/R"}.}
 
-\item{snapshot}{'logical', 'Date', or 'character'.
+\item{snapshot}{'logical' flag, 'Date', or 'character' string.
 Calendar date for a CRAN snapshot in time,
 see the Microsoft R Application Network
 (\href{https://mran.microsoft.com/}{MRAN}) website for details.
@@ -37,19 +37,19 @@ If true, the snapshot date is read from the first line of the package-details \c
 A snapshot date can also be specified directly using the required date format, YYYY-MM-DD.
 This argument masks any CRAN mirror specified in \code{repos}.}
 
-\item{local}{'character'.
-Vector of paths to local repositories.
+\item{local}{'character' vector.
+Paths to local repositories.
 Packages are installed from local files in these directories.
 Files can contain \emph{binary} builds of packages (\file{.zip} on Windows and \file{.tgz} on macOS)
 or be \emph{source} packages (\file{.tar.gz}).}
 
-\item{versions}{'logical'.
+\item{versions}{'logical' flag.
 If true, installed package versions will be identical to version numbers stored in the package-details \code{file}.
 Only applies to packages from CRAN-like repositories and local package-installation files.
 Requires that the \pkg{devtools} package is available,
 see \code{\link[devtools]{install_version}} function.}
 
-\item{github}{'logical'.
+\item{github}{'logical' flag.
 If true, an attempt is made to install a subset of packages from \href{https://github.com/}{GitHub}.
 Only applies to packages missing from the CRAN-like repositories (see \code{repos} argument).
 Requires that the \pkg{githubinstall} package is available,
@@ -60,15 +60,15 @@ Package vignettes are not built using this option.
 An example of an \R package that is only available on GitHub is \pkg{AnomalyDetection},
 located at \href{https://github.com/twitter/AnomalyDetection}{twitter/AnomalyDetection}.}
 
-\item{parallel}{'logical' or 'integer'.
+\item{parallel}{'logical' flag or 'integer' count.
 Whether to use parallel processes for a parallel install of more than one source package.
 This argument can also be used to specify the number of cores to employ.}
 
-\item{quiet}{'logical'.
-If true, reduce the amount of output.}
+\item{quiet}{'logical' flag.
+Whether to reduce the amount of output.}
 
-\item{pkg}{'character'.
-One or more names of packages located under \code{lib}.
+\item{pkg}{'character' vector.
+Names of package(s) located under \code{lib}.
 Only packages specified in \code{pkg}, and the packages that \code{pkg} depend on/link to/import/suggest,
 will be included in the package-details \code{file}.}
 }

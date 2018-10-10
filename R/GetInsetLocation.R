@@ -1,23 +1,23 @@
-#' Determine Location for Inset Graphics
+#' Get Location for Inset
 #'
 #' This function determines the location that may be used to
-#' position an inset graphics in the main plot region.
+#' position an inset in the main plot region.
 #'
-#' @param dx,dy 'numeric'.
-#'   Width and height of the inset graphics, respectively.
-#' @param loc 'character'.
+#' @param dx,dy 'numeric' number.
+#'   Width and height of the inset, respectively.
+#' @param loc 'character' string.
 #'   Single keyword used to specify the position of the inset in the main plot region:
 #'   \code{"bottomright"}, \code{"bottom"}, \code{"bottomleft"}, \code{"left"},
 #'   \code{"topleft"}, \code{"top"}, \code{"topright"}, \code{"right"},
 #'   or \code{"center"} to denote inset location.
-#' @param inset 'numeric'.
-#'   Vector of length 2 giving the inset distance from the margins as a fraction of the main plot region.
+#' @param inset 'numeric' vector of length 1 or 2.
+#'   Inset distance from the margins as a fraction of the main plot region.
 #'   Value is recycled as necessary.
-#' @param pad 'numeric'.
-#'   Vector of length 2 giving the padding distance from the margins in user coordinate units.
+#' @param pad 'numeric' vector of length 1 or 2.
+#'   Padding distance from the margins in user coordinate units.
 #'   Value is recycled as necessary.
-#' @param padin 'numeric'.
-#'   Vector of length 2 giving the padding distance from the margins in inches.
+#' @param padin 'numeric' vector of length 1 or 2.
+#'   Padding distance from the margins in inches.
 #'   Value is recycled as necessary.
 #'
 #' @return Returns a 'numeric' vector of length 2 giving the user coordinates

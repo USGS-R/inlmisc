@@ -8,7 +8,7 @@ RmSmallCellChunks(r)
 }
 \arguments{
 \item{r}{'RasterLayer'.
-A raster grid layer with cell values.}
+Raster grid layer with cell values.}
 }
 \value{
 Returns a 'RasterLayer' object, \code{r} with cell values in the smaller cell chunks set to \code{NA}.

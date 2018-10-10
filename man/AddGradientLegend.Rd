@@ -9,32 +9,32 @@ AddGradientLegend(breaks, pal = GetTolColors, at = NULL, n = 5,
   8), ...)
 }
 \arguments{
-\item{breaks}{'numeric'.
-Set of finite numeric breakpoints for the colors, must be in increasing order.}
+\item{breaks}{'numeric' vector.
+Finite numeric breakpoints for the colors, must be in increasing order.}
 
 \item{pal}{'function'.
 Color palette function to be used to assign colors in the legend.}
 
-\item{at}{'numeric'.
-Vector of points at which tick-marks and labels are to be drawn.}
+\item{at}{'numeric' vector.
+Points at which tick-marks and labels are to be drawn.}
 
-\item{n}{'integer'.
+\item{n}{'integer' count.
 Desired number of tick-marks to be drawn.
 Unused if \code{at} argument is specified.}
 
-\item{labels}{'logical' or 'character'.
+\item{labels}{'logical' flag or 'character' vector.
 Can either be a logical value specifying whether annotations are to be made at the tickmarks,
-or a character or expression vector of labels to be placed at the tickpoints.}
+or a vector of labels to be placed at the tickpoints.}
 
-\item{scientific}{'logical'.
+\item{scientific}{'logical' flag.
 Indicates if labels should be formatted for scientific notation,
 see \code{\link{ToScientific}} for details.}
 
-\item{title}{'character'.
+\item{title}{'character' string.
 Title to be placed at the top of the legend.}
 
-\item{strip.dim}{'numeric'.
-Dimensions of the color strip, in picas.}
+\item{strip.dim}{'numeric' vector of length 1 or 2.
+Dimensions (width and height) of the color strip, in picas.}
 
 \item{...}{Additional arguments to be passed to the \code{\link{GetInsetLocation}} function---used
 to position the legend in the main plot region.}

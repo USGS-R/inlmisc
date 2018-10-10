@@ -5,13 +5,13 @@
 #' a minimum vertical overlap between adjacent model cells is achieved.
 #'
 #' @param rs 'Raster*'.
-#'   A collection of two raster layers, the first and second layers represent
+#'   Collection of two raster layers, the first and second layers represent
 #'   the upper and lower surface of a 3D model layer.
-#' @param min.overlap 'numeric'.
+#' @param min.overlap 'numeric' number.
 #'   Minimum vertical overlap between horizontally adjacent model cells.
-#' @param bump.by 'numeric'.
+#' @param bump.by 'numeric' number.
 #'   Amount to decrease a cell value by during each iteration of the algorithm.
-#' @param max.itr 'numeric'.
+#' @param max.itr 'integer' count.
 #'   Maximum number of iterations.
 #'
 #' @details During each iteration of the algorithm:
@@ -44,13 +44,13 @@
 #' r_bot_new <- r_bot + r
 #'
 
-BumpDisconnectCells <- function(rs, min.overlap=2, bump.by=0.1, max.itr=1e+04) {
+BumpDisconnectCells <- function(rs, min.overlap=2, bump.by=0.1, max.itr=10000) {
 
   stopifnot(inherits(rs, c("RasterStack", "RasterBrick")))
   stopifnot(raster::nlayers(rs) >= 2)
   checkmate::assertNumber(min.overlap, lower=0, finite=TRUE)
   checkmate::assertNumber(bump.by, lower=0, finite=TRUE)
-  checkmate::assertNumber(max.itr, lower=1, finite=TRUE)
+  checkmate::assertCount(max.itr)
 
   r <- rs[[2]]
 
@@ -59,10 +59,10 @@ BumpDisconnectCells <- function(rs, min.overlap=2, bump.by=0.1, max.itr=1e+04) {
   cols <- raster::colFromCell(r, cell)
 
   d <- cbind(cell, c1=NA, c2=NA, c3=NA, c4=NA)
-  d[, "c1"] <- raster::cellFromRowCol(r, rows + 1L, cols)
-  d[, "c2"] <- raster::cellFromRowCol(r, rows, cols - 1L)
-  d[, "c3"] <- raster::cellFromRowCol(r, rows - 1L, cols)
-  d[, "c4"] <- raster::cellFromRowCol(r, rows, cols + 1L)
+  d[, "c1"] <- raster::cellFromRowCol(r, rows + 1, cols)
+  d[, "c2"] <- raster::cellFromRowCol(r, rows, cols - 1)
+  d[, "c3"] <- raster::cellFromRowCol(r, rows - 1, cols)
+  d[, "c4"] <- raster::cellFromRowCol(r, rows, cols + 1)
 
   itr <- 0L
   while(TRUE) {

@@ -6,22 +6,22 @@
 #' That is, it splits the MODFLOW cell-by-cell flow data into subsets,
 #' computes summary statistics for each, and returns a resulting summary table.
 #'
-#' @param budget 'character' or 'list'.
+#' @param budget 'character' string or 'list'.
 #'   Either the path to a MODFLOW cell-by-cell budget file or
 #'   the object returned from the \code{\link{ReadModflowBinary}} function.
-#' @param desc 'character'.
-#'    Vector of data-type descriptors, such as \code{c("wells", "drains")}.
-#'    If missing, all data types are summarized.
-#' @param id 'character'.
-#'    Name of auxiliary variable, a variable of additional values associated with each cell
-#'    saved using the \emph{\bold{"AUXILIARY"}} output option.
+#' @param desc 'character' vector.
+#'   Data-type descriptors, such as \code{c("wells", "drains")}.
+#'   If missing, all data types are summarized.
+#' @param id 'character' string.
+#'   Name of auxiliary variable, a variable of additional values associated with each cell
+#'   saved using the \emph{\bold{"AUXILIARY"}} output option.
 #'
 #' @details Subsets are grouped by data type (desc), stress period
 #'   (kper), time step (kstp), and optional auxiliary variable.
 #'   Data in the MODFLOW cell-by-cell budget file must be saved using the
 #'   \emph{\bold{"COMPACT BUDGET"}} output option.
 #'
-#' @return Returns a 'data.frame' object with the following variables:
+#' @return Returns a 'data.frame' with the following variables:
 #'   \describe{
 #'     \item{desc}{description of data type, such as "wells".}
 #'     \item{kper}{stress period}

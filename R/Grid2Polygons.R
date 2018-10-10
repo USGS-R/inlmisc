@@ -7,29 +7,27 @@
 #'
 #' @param grd 'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.
 #'    Spatial grid
-#' @param zcol 'character' or 'integer'.
+#' @param zcol 'character' string or 'integer' count.
 #'    Layer to extract from a multi-layer spatial grid.
-#' @param level 'logical'.
+#' @param level 'logical' flag.
 #'    If true, a set of levels is used to partition the range of attribute values, its default is false.
-#' @param at 'numeric'.
-#'    Vector giving breakpoints along the range of attribute values.
-#' @param cuts 'integer'.
+#' @param at 'numeric' vector.
+#'    Breakpoints along the range of attribute values.
+#' @param cuts 'integer' count.
 #'    Number of levels the range of attribute values would be divided into.
-#' @param pretty 'logical'.
+#' @param pretty 'logical' flag.
 #'    Whether to use pretty cut locations.
-#' @param xlim 'numeric'.
-#'    Vector of length 2 giving left and right limits of the spatial grid,
+#' @param xlim 'numeric' vector of length 2.
+#'    Left and right limits of the spatial grid, data outside these limits is excluded.
+#' @param ylim 'numeric' vector of length 2.
+#'    Lower and upper limits of the spatial grid,
 #'    data outside these limits is excluded.
-#' @param ylim 'numeric'.
-#'    Vector of length 2 giving lower and upper limits of the spatial grid,
-#'    data outside these limits is excluded.
-#' @param zlim 'numeric'.
-#'    Vector of length 2 giving minimum and maximum limits of the attribute variable,
-#'    data outside these limits is excluded.
+#' @param zlim 'numeric' vector of length 2.
+#'    Minimum and maximum limits of the attribute variable, data outside these limits is excluded.
 #' @param ply 'SpatialPolygons', or 'SpatialGridDataFrame'.
 #'    Cropping polygon
 #'
-#' @return Returns an object of 'SpatialPolygonsDataFrame'.
+#' @return Returns an object of 'SpatialPolygonsDataFrame' class.
 #'   The objects \code{data} slot is a data frame, number of rows equal to
 #'   the number of \code{Polygons} objects and a single column containing attribute values.
 #'   If \code{level} is true, attribute values are set equal to the midpoint between breakpoints.
@@ -182,7 +180,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
       else
         at <- seq(zlim[1], zlim[2], length.out=cuts)
     }
-    zc <- at[1:(length(at) - 1L)] + diff(at) / 2
+    zc <- at[1:(length(at) - 1)] + diff(at) / 2
     z <- zc[findInterval(grd[], at, rightmost.closed=TRUE)]
   } else {
     z <- as.numeric(grd[])
@@ -199,15 +197,15 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   ymax <- raster::ymax(grd)
   x <- seq(xmin, xmax, by=dx)
   y <- seq(ymin, ymax, by=dy)
-  nnodes <- (m + 1L) * (n + 1L)
+  nnodes <- (m + 1) * (n + 1)
   nelems <- m * n
   nodes <- 1:nnodes
   elems <- 1:nelems
-  coords <- cbind(x=rep(x, m + 1L), y=rep(rev(y), each=n + 1L))
-  n1 <- unlist(lapply(1:m, function(i) seq(1L, n) + (i - 1L) * (n + 1L)))
-  n2 <- n1 + 1L
-  n4 <- unlist(lapply(1:m, function(i) seq(1L, n) + i * (n + 1L)))
-  n3 <- n4 + 1L
+  coords <- cbind(x=rep(x, m + 1), y=rep(rev(y), each=n + 1))
+  n1 <- unlist(lapply(1:m, function(i) seq(1, n) + (i - 1) * (n + 1)))
+  n2 <- n1 + 1
+  n4 <- unlist(lapply(1:m, function(i) seq(1, n) + i * (n + 1)))
+  n3 <- n4 + 1
   elem.nodes <- cbind(n1, n2, n3, n4)
 
   # define segments in each element

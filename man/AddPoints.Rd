@@ -15,107 +15,107 @@ AddPoints(x, y = NULL, z = NULL, zcol = 1, crs = NULL,
   add = TRUE, ...)
 }
 \arguments{
-\item{x, y}{'numeric' or 'SpatialPoints*'.
-The x and y coordinates for the centers of the circle symbols.
+\item{x, y}{'numeric' vector or 'SpatialPoints*'.
+\emph{x} and \emph{y} coordinates for the centers of the circle symbols.
 If numeric, can be specified in any way which is accepted by \code{\link{xy.coords}}.}
 
-\item{z}{'numeric', 'integer', or 'factor'.
+\item{z}{'numeric' vector, 'integer' vector, or 'factor'.
 Attribute variable.
 For objects of class factor, a fixed radius is used for circle symbols,
 see \code{inches} argument description.}
 
-\item{zcol}{'integer' or 'character'.
-Attribute name or column number to extract from if \code{x} is of class SpatialGridDataFrame.}
+\item{zcol}{'integer' count or 'character' string.
+Attribute name or column number to extract from if \code{x} is of class 'SpatialGridDataFrame'.}
 
-\item{crs}{'character' or 'CRS'.
+\item{crs}{'character' string or 'CRS'.
 Coordinate reference system arguments}
 
-\item{xlim}{'numeric'.
-Vector of length 2 giving the x limits for the plot.}
+\item{xlim}{'numeric' vector of length 2.
+\emph{x} limits for the plot.}
 
-\item{ylim}{'numeric'.
-Vector of length 2 giving the y limits for the plot.}
+\item{ylim}{'numeric' vector of length 2.
+\emph{y} limits for the plot.}
 
-\item{zlim}{'numeric'.
-Vector of length 2 giving the z limits for the plot.}
+\item{zlim}{'numeric' vector of length 2.
+\emph{z} limits for the plot.}
 
-\item{inches}{'numeric'.
-Vector of length 2 giving the radii limits for the drawn circle symbol.
+\item{inches}{'numeric' vector of length 2.
+Radii limits for the drawn circle symbol.
 Alternatively, a single number can be given resulting in
 a fixed radius being used for all circle symbols;
 this overrides proportional circles and the function
 behaves like the \code{\link{points}} function.}
 
-\item{scaling}{'character'.
+\item{scaling}{'character' string.
 Selects the scaling algorithm to use for symbol mapping.
 Specify \code{"perceptual"} or \code{"mathematical"} for
 proportional scaling (Tanimura and others, 2006),
 or "radius" for scaling symbol size to radius (usually a bad idea).}
 
-\item{bg}{'character' or 'function'.
+\item{bg}{'character' vector or 'function'.
 Fill color(s) for circle symbols.
 A color palette also may be specified.}
 
-\item{bg.neg}{'character' or 'function'.
+\item{bg.neg}{'character' vector or 'function'.
 Fill color(s) for circle symbols corresponding to negative \code{z} values.
 A color palette also may be specified.
 For circle symbols corresponding to positive \code{z} values,
 the \code{bg} argument is used for color(s).}
 
-\item{fg}{'character'.
+\item{fg}{'character' string.
 Outer-line color for circle symbols.
 Specify a value of \code{NA} to remove the symbols outer line, and
 \code{NULL} to match the outer-line color with the symbols fill color.}
 
-\item{lwd}{'numeric'.
+\item{lwd}{'numeric' number.
 Line width for drawing circle symbols.}
 
-\item{cex}{'character'.
+\item{cex}{'numeric' number.
 Character expansion factor for legend labels.}
 
-\item{format}{'character'.
+\item{format}{'character' string.
 Formatting for legend values, see \code{\link{formatC}} for options.}
 
-\item{legend.loc}{'character'.
+\item{legend.loc}{'character' string.
 Position of the legend in the main plot region;
 see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
-\item{inset}{'numeric'.
+\item{inset}{'numeric' number.
 Inset distance of the legend from the margins as a fraction of the main plot region.
 Defaults to 2 percent of the axis range.}
 
-\item{bty}{'character'.
-The type of box to be drawn about the legend.
+\item{bty}{'character' string.
+Type of box to be drawn about the legend.
 A value of \code{"o"} (the default) results in a box and
 a value of \code{"n"} supresses the box.}
 
-\item{breaks}{'numeric'.
-Set of finite breakpoints for the legend circle symbols.}
+\item{breaks}{'numeric' vector.
+Finite breakpoints for the legend circle symbols.}
 
-\item{break.labels}{'character'.
-Vector of break labels with length equal to \code{breaks}.}
+\item{break.labels}{'character' vector.
+Break labels with length equal to \code{breaks}.}
 
-\item{quantile.breaks}{'logical'.
+\item{quantile.breaks}{'logical' flag.
 If true, \code{breaks} are set to the sample quantiles of \code{z}.}
 
-\item{make.intervals}{'logical'.
+\item{make.intervals}{'logical' flag.
 If true, represent \code{z} within intervals.
 See \code{\link{findInterval}} function for details.
 Unused if \code{quantile.breaks} is true.}
 
-\item{title}{'character'.
+\item{title}{'character' string.
 Main title to be placed at the top of the legend.}
 
-\item{subtitle}{'character'.
+\item{subtitle}{'character' string.
 Legend subtitle to be placed below the main title.}
 
-\item{draw.legend}{'logical'.
+\item{draw.legend}{'logical' flag.
 If true, a legend is drawn.}
 
-\item{draw.points}{'logical'.
+\item{draw.points}{'logical' flag.
 If true, the circle symobls are drawn.}
 
-\item{add}{'logical'.
+\item{add}{'logical' flag.
 If true, circle symbols (and an optional legend) are added to an existing plot.}
 
 \item{...}{Graphics parameters to be passed to \code{\link{PlotMap}}.

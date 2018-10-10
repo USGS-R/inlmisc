@@ -2,7 +2,7 @@
 % Please edit documentation in R/PlotMap.R
 \name{PlotMap}
 \alias{PlotMap}
-\title{Plot Method for Maps}
+\title{Plot Map}
 \usage{
 PlotMap(r, layer = 1, att = NULL, n = NULL, breaks = NULL,
   xlim = NULL, ylim = NULL, zlim = NULL, asp = NULL,
@@ -17,49 +17,49 @@ PlotMap(r, layer = 1, att = NULL, n = NULL, breaks = NULL,
 }
 \arguments{
 \item{r}{'Raster*', 'Spatial*', or 'CRS'.
-An object that can be converted to a raster layer, or coordinate reference system (CRS).}
+Object that can be converted to a raster layer, or coordinate reference system (CRS).}
 
-\item{layer}{'integer'.
+\item{layer}{'integer' count.
 Layer to extract from if \code{r} is of class 'RasterStack/Brick' or 'SpatialGridDataFrame'.}
 
-\item{att}{'integer' or 'character'.
-The levels attribute to use in the Raster Attribute Table (RAT);
+\item{att}{'integer' count or 'character' string.
+Levels attribute to use in the Raster Attribute Table (RAT);
 requires \code{r} values of class factor.}
 
-\item{n}{'integer'.
+\item{n}{'integer' count.
 Desired number of intervals to partition the range of raster values (or \code{zlim} if specified) (optional).}
 
-\item{breaks}{'numeric'.
-Vector of break points used to partition the colors representing numeric raster values (optional).}
+\item{breaks}{'numeric' vector.
+Break points used to partition the colors representing numeric raster values (optional).}
 
-\item{xlim}{'numeric'.
-Vector of length 2 giving the minimum and maximum values for the \emph{x}-axis.}
+\item{xlim}{'numeric' vector of length 2.
+Minimum and maximum values for the \emph{x}-axis.}
 
-\item{ylim}{'numeric'.
-Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.}
+\item{ylim}{'numeric' vector of length 2.
+Minimum and maximum values for the \emph{y}-axis.}
 
-\item{zlim}{'numeric'.
-Vector of length 2 giving the minimum and maximum raster values for which colors should be plotted.}
+\item{zlim}{'numeric' vector of length 2.
+Minimum and maximum raster values for which colors should be plotted.}
 
-\item{asp}{'numeric'.
+\item{asp}{'numeric' number.
 \emph{y/x} aspect ratio for spatial axes.
 Defaults to 1 (one unit on the \emph{x}-axis equals one unit on the \emph{y}-axis) when \code{r} is projected,
 otherwise, a calculated value based on axes limits is used.}
 
-\item{extend.xy}{'logical'.
+\item{extend.xy}{'logical' flag.
 If true, the spatial limits will be extended to the next tick mark on the axes beyond the grid extent.}
 
-\item{extend.z}{'logical'.
+\item{extend.z}{'logical' flag.
 If true, the raster value limits will be extended to the next tick mark on the color key beyond the measured range.
 Not used if the \code{zlim} argument is specified.}
 
-\item{reg.axs}{'logical'.
+\item{reg.axs}{'logical' flag.
 If true, the spatial data range is extended.}
 
-\item{dms.tick}{'logical'.
+\item{dms.tick}{'logical' flag.
 If true and \code{r} is projected, the axes tickmarks are specified in degrees, minutes, and decimal seconds (DMS).}
 
-\item{bg.lines}{'logical'.
+\item{bg.lines}{'logical' flag.
 If true, grids or graticules are drawn in back of the raster layer using white lines and a grey background.}
 
 \item{bg.image}{'RasterLayer'.
@@ -67,42 +67,42 @@ An image to be drawn in back of the main raster layer \code{r}, image colors are
 Raster values typically represent hill shading based on the slope and aspect of land-surface elevations,
 see \code{\link[raster]{hillShade}} function.}
 
-\item{bg.image.alpha}{'numeric'.
+\item{bg.image.alpha}{'numeric' number.
 Opacity of the background image from 0 to 1.}
 
 \item{pal}{'function'.
 Color palette to be used to assign colors in the plot.}
 
-\item{col}{'character'.
-Vector of colors to be used in the plot.
+\item{col}{'character' vector.
+Colors to be used in the plot.
 This argument requires \code{breaks} specification for numeric values of \code{r} and
 overrides any palette function specification.
 For numeric values there should be one less color than breaks.
 Factors require a color for each level.}
 
-\item{max.dev.dim}{'numeric'.
-Vector of length 2 giving the maximum width and height for the graphics device in picas, respectively.
+\item{max.dev.dim}{'numeric' vector of length 2.
+Maximum width and height for the graphics device in picas, respectively.
 Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimeter, or 12 points.
 Suggested dimensions for single-column, double-column, and side title figures are
 \code{c(21, 56)}, \code{c(43, 56)}, and \code{c(56, 43)}, respectively.
 This argument is only applicable when the \code{file} argument is specified.}
 
 \item{labels}{'list'.
-Describes the location and values of labels in the color key.
+Location and values of labels in the color key.
 This list may include components \code{at} and \code{labels}.}
 
-\item{scale.loc}{'character'.
+\item{scale.loc}{'character' string.
 Position of the scale bar in the main plot region;
 see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
-\item{arrow.loc}{'character'.
+\item{arrow.loc}{'character' string.
 Position of the north arrow in the main plot region;
 see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
-\item{explanation}{'character'.
+\item{explanation}{'character' string.
 Label explaining the raster cell value.}
 
-\item{credit}{'character'.
+\item{credit}{'character' string.
 Label crediting the base map.}
 
 \item{shade}{'list'.
@@ -137,13 +137,13 @@ The lines are described using a list of arguments supplied to the plot method fo
 class '\code{\link[=SpatialLines-class]{SpatialLines}}'.
 Passed arguments include \code{x}, \code{col}, and \code{lwd}.}
 
-\item{draw.key}{'logical'.
-If true, a color key should be drawn.}
+\item{draw.key}{'logical' flag.
+Whether a color key should be drawn.}
 
-\item{draw.raster}{'logical'.
-If true, the raster image is drawn.}
+\item{draw.raster}{'logical' flag.
+Whether the raster image should be drawn.}
 
-\item{file}{'character'.
+\item{file}{'character' string.
 Name of the output file.
 Specifying this argument will start a graphics device driver for producing a
 PDF or PNG file format---the file extension determines the format type.
@@ -151,16 +151,16 @@ The width and height of the graphics region will be automagically determined and
 included with the function's returned values, see "Value" section for details;
 these device dimensions can be useful when creating similar map layouts in dynamic reports.}
 
-\item{close.file}{'logical'.
-If true, the graphics device driver is shut down when the function exits.
+\item{close.file}{'logical' flag.
+Whether the graphics device driver should be shut down after the function exits.
 Unused if \code{file = NULL}}
 
-\item{useRaster}{'logical'.
+\item{useRaster}{'logical' flag.
 If true, a bitmap raster is used to plot \code{r} instead of using individual polygons for each raster cell.
 If \code{UseRaster} is not specified, raster images are used when the \code{\link{getOption}("preferRaster")} is true.
 Unused if \code{simplify = TRUE}.}
 
-\item{simplify}{'numeric'.
+\item{simplify}{'numeric' number.
 Specifying this argument will convert the raster \code{r} to spatial polygons prior to plotting,
 see \code{\link{Grid2Polygons}} function for details.
 If \code{simplify > 0} the geometry of the spatial polygons is generalized using the
@@ -170,7 +170,7 @@ See \code{gSimplify} function for additional information.}
 }
 \value{
 Used for the side-effect of a new plot generated.
-  Returns a 'list' object with the following graphical parameters:
+  Returns a 'list' with the following graphical parameters:
   \describe{
     \item{din}{device dimensions \code{c(width, height)}, in inches.}
     \item{usr}{extremes of the coordinates of the plotting region \code{c(x1, x2, y1, y2)}.}

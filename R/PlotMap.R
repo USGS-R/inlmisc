@@ -1,73 +1,73 @@
-#' Plot Method for Maps
+#' Plot Map
 #'
 #' This function maps raster data and geographical features.
 #' A key showing how the colors map to raster values is shown below the map.
 #' The width and height of the graphics region will be automagically determined in some cases.
 #'
 #' @param r 'Raster*', 'Spatial*', or 'CRS'.
-#'   An object that can be converted to a raster layer, or coordinate reference system (CRS).
-#' @param layer 'integer'.
+#'   Object that can be converted to a raster layer, or coordinate reference system (CRS).
+#' @param layer 'integer' count.
 #'   Layer to extract from if \code{r} is of class 'RasterStack/Brick' or 'SpatialGridDataFrame'.
-#' @param att 'integer' or 'character'.
-#'   The levels attribute to use in the Raster Attribute Table (RAT);
+#' @param att 'integer' count or 'character' string.
+#'   Levels attribute to use in the Raster Attribute Table (RAT);
 #'   requires \code{r} values of class factor.
-#' @param n 'integer'.
+#' @param n 'integer' count.
 #'   Desired number of intervals to partition the range of raster values (or \code{zlim} if specified) (optional).
-#' @param breaks 'numeric'.
-#'   Vector of break points used to partition the colors representing numeric raster values (optional).
-#' @param xlim 'numeric'.
-#'   Vector of length 2 giving the minimum and maximum values for the \emph{x}-axis.
-#' @param ylim 'numeric'.
-#'   Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.
-#' @param zlim 'numeric'.
-#'   Vector of length 2 giving the minimum and maximum raster values for which colors should be plotted.
-#' @param asp 'numeric'.
+#' @param breaks 'numeric' vector.
+#'   Break points used to partition the colors representing numeric raster values (optional).
+#' @param xlim 'numeric' vector of length 2.
+#'   Minimum and maximum values for the \emph{x}-axis.
+#' @param ylim 'numeric' vector of length 2.
+#'   Minimum and maximum values for the \emph{y}-axis.
+#' @param zlim 'numeric' vector of length 2.
+#'   Minimum and maximum raster values for which colors should be plotted.
+#' @param asp 'numeric' number.
 #'   \emph{y/x} aspect ratio for spatial axes.
 #'   Defaults to 1 (one unit on the \emph{x}-axis equals one unit on the \emph{y}-axis) when \code{r} is projected,
 #'   otherwise, a calculated value based on axes limits is used.
-#' @param extend.xy 'logical'.
+#' @param extend.xy 'logical' flag.
 #'   If true, the spatial limits will be extended to the next tick mark on the axes beyond the grid extent.
-#' @param extend.z 'logical'.
+#' @param extend.z 'logical' flag.
 #'   If true, the raster value limits will be extended to the next tick mark on the color key beyond the measured range.
 #'   Not used if the \code{zlim} argument is specified.
-#' @param reg.axs 'logical'.
+#' @param reg.axs 'logical' flag.
 #'   If true, the spatial data range is extended.
-#' @param dms.tick 'logical'.
+#' @param dms.tick 'logical' flag.
 #'   If true and \code{r} is projected, the axes tickmarks are specified in degrees, minutes, and decimal seconds (DMS).
-#' @param bg.lines 'logical'.
+#' @param bg.lines 'logical' flag.
 #'   If true, grids or graticules are drawn in back of the raster layer using white lines and a grey background.
 #' @param bg.image 'RasterLayer'.
 #'   An image to be drawn in back of the main raster layer \code{r}, image colors are derived from a vector of gray levels.
 #'   Raster values typically represent hill shading based on the slope and aspect of land-surface elevations,
 #'   see \code{\link[raster]{hillShade}} function.
-#' @param bg.image.alpha 'numeric'.
+#' @param bg.image.alpha 'numeric' number.
 #'   Opacity of the background image from 0 to 1.
 #' @param pal 'function'.
 #'   Color palette to be used to assign colors in the plot.
-#' @param col 'character'.
-#'   Vector of colors to be used in the plot.
+#' @param col 'character' vector.
+#'   Colors to be used in the plot.
 #'   This argument requires \code{breaks} specification for numeric values of \code{r} and
 #'   overrides any palette function specification.
 #'   For numeric values there should be one less color than breaks.
 #'   Factors require a color for each level.
-#' @param max.dev.dim 'numeric'.
-#'   Vector of length 2 giving the maximum width and height for the graphics device in picas, respectively.
+#' @param max.dev.dim 'numeric' vector of length 2.
+#'   Maximum width and height for the graphics device in picas, respectively.
 #'   Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimeter, or 12 points.
 #'   Suggested dimensions for single-column, double-column, and side title figures are
 #'   \code{c(21, 56)}, \code{c(43, 56)}, and \code{c(56, 43)}, respectively.
 #'   This argument is only applicable when the \code{file} argument is specified.
 #' @param labels 'list'.
-#'   Describes the location and values of labels in the color key.
+#'   Location and values of labels in the color key.
 #'   This list may include components \code{at} and \code{labels}.
-#' @param scale.loc 'character'.
+#' @param scale.loc 'character' string.
 #'   Position of the scale bar in the main plot region;
 #'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
-#' @param arrow.loc 'character'.
+#' @param arrow.loc 'character' string.
 #'   Position of the north arrow in the main plot region;
 #'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
-#' @param explanation 'character'.
+#' @param explanation 'character' string.
 #'   Label explaining the raster cell value.
-#' @param credit 'character'.
+#' @param credit 'character' string.
 #'   Label crediting the base map.
 #' @param shade 'list'.
 #'   If specified, a semi-transparent shade layer is drawn on top of the raster layer.
@@ -96,25 +96,25 @@
 #'   The lines are described using a list of arguments supplied to the plot method for
 #'   class '\code{\link[=SpatialLines-class]{SpatialLines}}'.
 #'   Passed arguments include \code{x}, \code{col}, and \code{lwd}.
-#' @param draw.key 'logical'.
-#'   If true, a color key should be drawn.
-#' @param draw.raster 'logical'.
-#'   If true, the raster image is drawn.
-#' @param file 'character'.
+#' @param draw.key 'logical' flag.
+#'   Whether a color key should be drawn.
+#' @param draw.raster 'logical' flag.
+#'   Whether the raster image should be drawn.
+#' @param file 'character' string.
 #'   Name of the output file.
 #'   Specifying this argument will start a graphics device driver for producing a
 #'   PDF or PNG file format---the file extension determines the format type.
 #'   The width and height of the graphics region will be automagically determined and
 #'   included with the function's returned values, see "Value" section for details;
 #'   these device dimensions can be useful when creating similar map layouts in dynamic reports.
-#' @param close.file 'logical'.
-#'   If true, the graphics device driver is shut down when the function exits.
+#' @param close.file 'logical' flag.
+#'   Whether the graphics device driver should be shut down after the function exits.
 #'   Unused if \code{file = NULL}
-#' @param useRaster 'logical'.
+#' @param useRaster 'logical' flag.
 #'   If true, a bitmap raster is used to plot \code{r} instead of using individual polygons for each raster cell.
 #'   If \code{UseRaster} is not specified, raster images are used when the \code{\link{getOption}("preferRaster")} is true.
 #'   Unused if \code{simplify = TRUE}.
-#' @param simplify 'numeric'.
+#' @param simplify 'numeric' number.
 #'   Specifying this argument will convert the raster \code{r} to spatial polygons prior to plotting,
 #'   see \code{\link{Grid2Polygons}} function for details.
 #'   If \code{simplify > 0} the geometry of the spatial polygons is generalized using the
@@ -123,7 +123,7 @@
 #'   See \code{gSimplify} function for additional information.
 #'
 #' @return Used for the side-effect of a new plot generated.
-#'   Returns a 'list' object with the following graphical parameters:
+#'   Returns a 'list' with the following graphical parameters:
 #'   \describe{
 #'     \item{din}{device dimensions \code{c(width, height)}, in inches.}
 #'     \item{usr}{extremes of the coordinates of the plotting region \code{c(x1, x2, y1, y2)}.}
@@ -283,8 +283,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
         if (is.na(zl[2])) zl[2] <- default.zl[2]
       }
       if (is.null(breaks)) {
-        if (is.null(n) || n > 200L) {
-          breaks <- seq(zl[1], zl[2], length.out=200L)
+        if (is.null(n) || n > 200) {
+          breaks <- seq(zl[1], zl[2], length.out=200)
           at1 <- pretty(if (extend.z) zran else zl)
         } else {
           breaks <- pretty(zl, n=n)
@@ -564,7 +564,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     color <- ifelse(length(color) == 1 && !is.na(color), color, "#1F1F1F")
     drawl <- ifelse(length(drawl) == 1 && !is.na(drawl), drawl, TRUE)
     metho <- ifelse(length(metho) == 1 && !is.na(metho), metho, "flattest")
-    contour.breaks <- if (n + 1L > 20L) pretty(zl, 20L) else breaks
+    contour.breaks <- if (n + 1 > 20) pretty(zl, 20) else breaks
     raster::contour(r, maxpixels=length(r), levels=contour.breaks,
                     labels=formatC(contour.breaks, big.mark=","),
                     xlim=xl, ylim=yl, zlim=zl, labcex=0.5, drawlabels=drawl,

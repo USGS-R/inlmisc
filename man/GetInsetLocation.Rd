@@ -2,31 +2,31 @@
 % Please edit documentation in R/GetInsetLocation.R
 \name{GetInsetLocation}
 \alias{GetInsetLocation}
-\title{Determine Location for Inset Graphics}
+\title{Get Location for Inset}
 \usage{
 GetInsetLocation(dx, dy, loc = "bottomright", inset = 0, pad = 0,
   padin = 0)
 }
 \arguments{
-\item{dx, dy}{'numeric'.
-Width and height of the inset graphics, respectively.}
+\item{dx, dy}{'numeric' number.
+Width and height of the inset, respectively.}
 
-\item{loc}{'character'.
+\item{loc}{'character' string.
 Single keyword used to specify the position of the inset in the main plot region:
 \code{"bottomright"}, \code{"bottom"}, \code{"bottomleft"}, \code{"left"},
 \code{"topleft"}, \code{"top"}, \code{"topright"}, \code{"right"},
 or \code{"center"} to denote inset location.}
 
-\item{inset}{'numeric'.
-Vector of length 2 giving the inset distance from the margins as a fraction of the main plot region.
+\item{inset}{'numeric' vector of length 1 or 2.
+Inset distance from the margins as a fraction of the main plot region.
 Value is recycled as necessary.}
 
-\item{pad}{'numeric'.
-Vector of length 2 giving the padding distance from the margins in user coordinate units.
+\item{pad}{'numeric' vector of length 1 or 2.
+Padding distance from the margins in user coordinate units.
 Value is recycled as necessary.}
 
-\item{padin}{'numeric'.
-Vector of length 2 giving the padding distance from the margins in inches.
+\item{padin}{'numeric' vector of length 1 or 2.
+Padding distance from the margins in inches.
 Value is recycled as necessary.}
 }
 \value{
@@ -35,7 +35,7 @@ Returns a 'numeric' vector of length 2 giving the user coordinates
 }
 \description{
 This function determines the location that may be used to
-position an inset graphics in the main plot region.
+position an inset in the main plot region.
 }
 \examples{
 plot(NA, NA, xlim = c(0, 100), ylim = c(0, 1),

@@ -2,7 +2,7 @@
 % Please edit documentation in R/PlotGraph.R
 \name{PlotGraph}
 \alias{PlotGraph}
-\title{Plot Method for Graphs}
+\title{Plot Graph}
 \usage{
 PlotGraph(x, y, xlab, ylab, main = NULL, asp = NA, xlim = NULL,
   ylim = NULL, xn = 5, yn = 5, ylog = FALSE, type = "s",
@@ -12,39 +12,38 @@ PlotGraph(x, y, xlab, ylab, main = NULL, asp = NA, xlim = NULL,
   boxwex = 0.8, center.date.labels = FALSE, bg.polygon = NULL)
 }
 \arguments{
-\item{x, y}{'Date', 'numeric', 'matrix', or 'data.frame'.
-Vectors or matrices of data for plotting.
-The vector length or number of rows should match.
+\item{x, y}{'Date' vector, 'numeric' vector, 'matrix', or 'data.frame'.
+Data for plotting where the vector length or number of rows should match.
 If \code{y} is missing, then \code{x = x[, 1]} and \code{y = x[, -1]}.}
 
-\item{xlab}{'character'.
+\item{xlab}{'character' string.
 Title for \emph{x} axis.}
 
-\item{ylab}{'character'.
-Vector of length 2 giving the title for the 1st and 2nd-\emph{y} axes.
+\item{ylab}{'character' vector of length 2.
+Title for the 1st and 2nd-\emph{y} axes.
 The title for the 2nd-\emph{y} axis is optional and requires \code{conversion.factor} be specified.}
 
-\item{main}{'character'.
+\item{main}{'character' string.
 Main title for the plot.}
 
-\item{asp}{'numeric'.
+\item{asp}{'numeric' number.
 \emph{y/x} aspect ratio for spatial axes.
 Defaults to 1 (one unit on the \emph{x}-axis equals one unit on the \emph{y}-axis) when \code{r} is projected,
 otherwise, a calculated value based on axes limits is used.}
 
-\item{xlim}{'numeric' or 'Date'.
-Vector of length 2 giving the minimum and maximum values for the \emph{x}-axis.}
+\item{xlim}{'numeric' or 'Date' vector of length 2.
+Minimum and maximum values for the \emph{x}-axis.}
 
-\item{ylim}{'numeric'.
-Vector of length 2 giving the minimum and maximum values for the \emph{y}-axis.}
+\item{ylim}{'numeric' vector of length 2.
+Minimum and maximum values for the \emph{y}-axis.}
 
-\item{xn, yn}{'integer'.
+\item{xn, yn}{'integer' count.
 Desired number of intervals between tick-marks on the \emph{x}- and \emph{y}-axis, respectively.}
 
-\item{ylog}{'logical'.
-If true, a logarithm scale is used for the \emph{y} axis.}
+\item{ylog}{'logical' flag.
+Whether a logarithm scale is used for the \emph{y} axis.}
 
-\item{type}{'character'.
+\item{type}{'character' string.
 Plot type, possible types are
 \itemize{
   \item "p" for \bold{p}oints,
@@ -57,57 +56,58 @@ Plot type, possible types are
 }
 Characters in \code{type} are cycled through; such as, "pl" alternately plots points and lines.}
 
-\item{lty}{'integer'.
+\item{lty}{'integer' vector.
 Line type, see \code{\link{par}} function for all possible types.
 Line types are used cyclically.}
 
-\item{lwd}{'numeric'.
+\item{lwd}{'numeric' number.
 Line width}
 
-\item{pch}{'integer'.
+\item{pch}{'integer' count.
 Point type, see \code{\link{points}} function for all possible types.}
 
-\item{col}{character or function.
+\item{col}{'character' vector or 'function'.
 Point or line color, see \code{\link{par}} function for all possible ways this can be specified.
 Colors are used cyclically.}
 
-\item{bg}{'character'.
-Vector of background colors for the open plot symbols given by \code{pch = 21:25} as in \code{\link{points}}.}
+\item{bg}{'character' vector.
+Background colors for the open plot symbols given by \code{pch = 21:25} as in \code{\link{points}}.}
 
-\item{fill}{'character'.
+\item{fill}{'character' string.
 Used to create filled area plots. Specify
 \code{"tozeroy"} to fill to zero on the \emph{y}-axis;
 \code{"tominy"} to fill to the minimum \emph{y} value in the plotting region; and
 \code{"tomaxy"} to fill to the maximum.
 Requires plot \code{type = "l"}, \code{"b"}, and \code{"s"}.}
 
-\item{fillcolor}{'character'.
-Vector of colors for basic filled area plots.
+\item{fillcolor}{'character' vector.
+Colors for basic filled area plots.
 Defaults to a half-transparent variant of the line color (\code{col}).}
 
-\item{pt.cex}{'numeric'.
+\item{pt.cex}{'numeric' number.
 Expansion factor for the points.}
 
-\item{xpd}{'logical'.
-If false, point and (or) line symbols are clipped to the plot region.}
+\item{xpd}{'logical' flag.
+Whether to prevent point and (or) line symbols from being clipped to the plot region.}
 
-\item{seq.date.by}{'character', 'numeric', or 'difftime'.
-The increment of the date sequence, see the \code{by} argument in the \code{\link{seq.Date}} function for all possible ways this can be specified.}
+\item{seq.date.by}{'character' string, 'numeric' number, or 'difftime'.
+The increment of the date sequence, see the \code{by} argument
+in the \code{\link{seq.Date}} function for all possible ways this can be specified.}
 
-\item{scientific}{'logical'.
-Vector of length 3 that indicates if axes labels should be encoded in nice scientific format.
+\item{scientific}{'logical' vector of length 1, 2, or 3.
+Whether axes labels should be encoded in nice scientific format.
 Vector elements correspond to the \emph{x}-axis, \code{y}-axis, and second \emph{y}-axis labels.
 Values are recycled as necessary.
 Missing values correspond to the current default penalty (see \code{\link{options}("scipen")})
 to be applied when deciding to print numeric values in fixed or scientific notation.}
 
-\item{conversion.factor}{'numeric'.
-A conversion factor for the 2nd-\emph{y} axis.}
+\item{conversion.factor}{'numeric' number.
+Conversion factor for the 2nd-\emph{y} axis.}
 
-\item{boxwex}{'numeric'.
-A scale factor to be applied to all boxes, only applicable for box-and-whisker plots.}
+\item{boxwex}{'numeric' number.
+Scale factor to be applied to all boxes, only applicable for box-and-whisker plots.}
 
-\item{center.date.labels}{'logical'.
+\item{center.date.labels}{'logical' flag.
 If true, date labels are horizontally centered between \emph{x}-axis tickmarks.}
 
 \item{bg.polygon}{'list'.

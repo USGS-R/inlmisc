@@ -8,21 +8,21 @@ FormatPval(x, digits = max(1, getOption("digits") - 2),
   eps = .Machine$double.eps, na.form = "NA", scientific = NA)
 }
 \arguments{
-\item{x}{'numeric'.
-Vector of p-values.}
+\item{x}{'numeric' vector.
+\emph{p}-values}
 
-\item{digits}{'integer'.
+\item{digits}{'integer' count.
 Number of significant digits to be used.}
 
-\item{eps}{'numeric'.
-Numerical tolerance;
+\item{eps}{'numeric' number.
+Numerical tolerance,
 values less than \code{eps} are formatted as \code{"< [eps]"}.}
 
-\item{na.form}{'character'.
+\item{na.form}{'character' string.
 Value used for missing values.}
 
-\item{scientific}{'logical'.
-Indicates whether values should be encoded in scientific format.
+\item{scientific}{'logical' flag.
+Whether values should be encoded in scientific format.
 A missing value lets \R decide whether fixed or scientific notation is used.}
 }
 \value{
@@ -39,7 +39,7 @@ format.pval(x)
 
 x <- c(0.1, 0.0001, 1e-27)
 FormatPval(x, scientific = TRUE)
-FormatPval(x, digits = 3L, eps = 0.001)
+FormatPval(x, digits = 3, eps = 0.001)
 
 }
 \seealso{

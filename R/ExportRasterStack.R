@@ -1,18 +1,18 @@
-#' Export Raster Stack
+#' Export a Raster Stack
 #'
 #' This function writes a raster-stack, a collection of raster layers,
 #' to local directories using multiple file formats.
 #'
 #' @param rs 'RasterStack' or 'RasterBrick'.
-#'   A collection of \code{\linkS4class{RasterLayer}} objects with
+#'   Collection of \code{\linkS4class{RasterLayer}} objects with
 #'   the same extent and resolution.
-#' @param path 'character'.
+#' @param path 'character' string.
 #'   Path name to write raster stack.
-#' @param zip 'character'.
+#' @param zip 'character' string.
 #'   If there is no zip program on your path (on windows),
 #'   you can supply the full path to a \file{zip.exe} here, in order to make a KMZ file.
-#' @param col 'character'.
-#'   Vector of colors
+#' @param col 'character' vector.
+#'   Color names
 #'
 #' @details Five local directories are created under \code{path} and
 #'   named after their intended file formats:

@@ -4,7 +4,7 @@
 #' the convex hull of a set of spatial points.
 #'
 #' @param obj 'SpatialPoints*'.
-#'   Spatial-points object
+#'   Spatial points
 #'
 #' @return Returns an object of class 'SpatialPolygons'.
 #'

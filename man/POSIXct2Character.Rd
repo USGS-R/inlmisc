@@ -2,15 +2,15 @@
 % Please edit documentation in R/POSIXct2Character.R
 \name{POSIXct2Character}
 \alias{POSIXct2Character}
-\title{Convert class from POSIXct to Character}
+\title{Convert Class from POSIXct to Character}
 \usage{
 POSIXct2Character(x, fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3")
 }
 \arguments{
-\item{x}{'POSIXct'.
-Vector of calendar dates and times.}
+\item{x}{'POSIXct' vector.
+Calendar date and time}
 
-\item{fmt}{'character'.
+\item{fmt}{'character' string.
 Conversion specification format}
 }
 \value{

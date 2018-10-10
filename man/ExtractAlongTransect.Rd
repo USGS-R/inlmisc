@@ -2,7 +2,7 @@
 % Please edit documentation in R/ExtractAlongTransect.R
 \name{ExtractAlongTransect}
 \alias{ExtractAlongTransect}
-\title{Extract Raster Values Along Transect Line}
+\title{Extract Raster Values Along a Transect Line}
 \usage{
 ExtractAlongTransect(transect, r)
 }

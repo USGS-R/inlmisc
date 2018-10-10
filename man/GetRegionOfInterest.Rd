@@ -8,7 +8,7 @@ GetRegionOfInterest(obj)
 }
 \arguments{
 \item{obj}{'SpatialPoints*'.
-Spatial-points object}
+Spatial points}
 }
 \value{
 Returns an object of class 'SpatialPolygons'.

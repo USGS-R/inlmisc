@@ -1,4 +1,4 @@
-#' Add Miscellaneous Web Map Elements
+#' Add Miscellaneous Elements to Web Map
 #'
 #' These functions can be used to augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
 #' The \code{AddHomeButton} function adds a button that zooms to the initial map extent.
@@ -8,38 +8,38 @@
 #'
 #' @param map '\link[leaflet]{leaflet}'.
 #'   Map widget object
-#' @param extent 'Spatial*', 'Raster*', 'Extent', 'matrix', or 'numeric'.
+#' @param extent 'Spatial*', 'Raster*', 'Extent', 'matrix', or 'numeric' vector.
 #'   Extent object (or object from which an \code{\link[raster]{extent}} object can be extracted/created)
 #'   representing a rectangular geographical area on the map.
 #'   The extent must be specified in the coordinate reference system (CRS) of the web map,
 #'   usually in latitude and longitude using WGS 84 (also known as \href{https://epsg.io/4326}{EPSG:4326}).
 #'   By default, the extent object is read from the map widget.
-#' @param position 'character'.
+#' @param position 'character' string.
 #'   Position of the button on the web map.
 #'   Possible values are \code{"topleft"}, \code{"topright"}, \code{"bottomleft"}, and \code{"bottomright"}.
-#' @param clusterId 'character'.
+#' @param clusterId 'character' string.
 #'   Identification for the marker cluster layer.
-#' @param group 'character'.
+#' @param group 'character' string.
 #'   Name of the group whose features will be searched.
-#' @param propertyName 'character'.
+#' @param propertyName 'character' string.
 #'   Property name used to describe markers, such as, \code{"label"} and \code{"popup"}.
-#' @param zoom 'integer'.
+#' @param zoom 'integer' count.
 #'   Zoom level for move to location after marker found in search.
-#' @param textPlaceholder 'character'.
-#'   Text message to show in search element.
-#' @param openPopup 'logical'.
+#' @param textPlaceholder 'character' string.
+#'   Message to show in search element.
+#' @param openPopup 'logical' flag.
 #'   Whether to open the marker popup associated with the searched for marker.
-#' @param labels 'character'.
-#'   Vector of text labels in the legend.
-#' @param colors 'character'.
-#'   Vector of (HTML) colors corresponding to \code{labels}.
-#' @param radius 'numeric'.
+#' @param labels 'character' vector.
+#'   Labels in the legend.
+#' @param colors 'character' vector.
+#'   HTML colors corresponding to \code{labels}.
+#' @param radius 'numeric' number.
 #'   Border radius of symbols in the legend, in pixels.
-#' @param opacity 'numeric'.
+#' @param opacity 'numeric' number.
 #'   Opacity of symbols in the legend, from 0 to 1.
-#' @param symbol 'character'.
+#' @param symbol 'character' string.
 #'   Symbol type in the legend, either \code{"square"} or \code{"circle"}.
-#' @param title 'character'.
+#' @param title 'character' string.
 #'   Legend title
 #'
 #' @return Used for the side-effect of a button placed on a web map.
@@ -66,7 +66,7 @@
 #'
 #' labels <- c("Non-capital", "Capital")
 #' colors <- c("green", "red")
-#' fillColor <- colors[(city@data$capital > 0) + 1L]
+#' fillColor <- colors[(city@data$capital > 0) + 1]
 #' map <- CreateWebMap("Topo")
 #' map <- leaflet::addCircleMarkers(map, radius = 6, color = "white", weight = 1,
 #'                                  opacity = 1, fillColor = fillColor, fillOpacity = 1,

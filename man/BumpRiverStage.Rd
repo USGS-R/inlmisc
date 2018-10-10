@@ -14,7 +14,7 @@ Numeric cell values representing river stages.}
 Designates the location of discharge outlets.
 The \code{\link{rasterize}} function is used to locate outlet cells in the raster grid \code{r}.}
 
-\item{min.drop}{'numeric'.
+\item{min.drop}{'numeric' number.
 Minimum drop in stage between adjacent river cells.}
 }
 \value{

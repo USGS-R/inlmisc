@@ -8,35 +8,34 @@ PrintFigure(fig, nr = 1, nc = 1, label = "", title = "",
   title_lof = title, headings = "", pos = "")
 }
 \arguments{
-\item{fig}{'text'.
-Vector of figure plotting commands written in \R.
+\item{fig}{'character' vector.
+Figure plotting commands written in \R.
 The length of the vector is either equal to the number of subfigures,
 or 1 when a single plot is desired.
 An element in the vector contains the commands for creating a single plot.}
 
-\item{nr, nc}{'integer'.
+\item{nr, nc}{'integer' count.
 Maximum number of rows and columns in the subfigure layout on a page in the output document.}
 
-\item{label}{'character'.
-String containing the LaTeX label anchor.
+\item{label}{'character' string.
+LaTeX label anchor.
 Subfigures are labeled using a concatenation of the \code{label} argument and an index number.
 For example, specifying \code{label = "id"} for a figure composed of 3 subfigures results in:
 labels \code{"id-1"}, \code{"id-2"}, and \code{"id-3"}.}
 
-\item{title}{'character'.
-String containing the figure caption.}
+\item{title}{'character' string.
+Figure caption}
 
-\item{title_lof}{'character'.
-String containing the figure caption to be listed at the beginning
-of the paper in a \dQuote{List of Figures}.}
+\item{title_lof}{'character' string.
+Figure caption to be listed at the beginning of the paper in a \dQuote{List of Figures}.}
 
-\item{headings}{'character'.
-Vector of subfigure captions, values are recycled as necessary
+\item{headings}{'character' vector.
+Subfigure captions, values are recycled as necessary
 to match the vector length of the \code{fig} argument.
 To exclude a subfigure caption specify its vector element as \code{NA}.}
 
-\item{pos}{'character'.
-String for the placement specifiers to be used in \code{\\begin{figure}[pos]}.
+\item{pos}{'character' string.
+Placement specifiers to be used in \code{\\begin{figure}[pos]}.
 The specifiers can consist of the following characters in any order:
 \itemize{
   \item \code{"h"} place the float about at the same point it occurs in the source text;

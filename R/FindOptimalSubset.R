@@ -1,14 +1,14 @@
-#' Genetic Algorithm for Subset Selection
+#' Find Optimal Subset Using a GA
 #'
 #' This function identifies an optimal subset of a fixed size \code{k}
 #' from a finite sequence of length \code{n}.
 #' A distributed multiple-population genetic algorithm (GA) is used to do
 #' subset selection based on the maximization of a user-supplied fitness function.
 #'
-#' @param n 'integer'.
+#' @param n 'integer' count.
 #'   Maximum permissible index, that is, the length of the finite sequence (\code{1:n}).
 #'   The GA chooses a subset from this sequence.
-#' @param k 'integer'.
+#' @param k 'integer' count.
 #'   Number of indices to choose, that is, the fixed size of the subset.
 #' @param Fitness 'function'.
 #'   Fitness function, also known as the objective function, is any allowable \R function which
@@ -19,38 +19,38 @@
 #'   Recall that the GA searches for a maximum fitness value.
 #' @param ...
 #'   Additional arguments to be passed to the fitness function.
-#' @param popSize 'integer'.
+#' @param popSize 'integer' count.
 #'   Population size
-#' @param migrationRate 'numeric'.
+#' @param migrationRate 'numeric' number.
 #'   Proportion of individuals that should migrate between islands.
-#' @param migrationInterval 'integer'.
+#' @param migrationInterval 'integer' count.
 #'   Number of iterations at which exchange of individuals takes place.
 #'   This interval between migrations is called an \emph{epoch}.
-#' @param pcrossover 'numeric'.
+#' @param pcrossover 'numeric' number.
 #'   Probability of crossover between pairs of chromosomes.
-#' @param pmutation 'numeric'.
+#' @param pmutation 'numeric' number.
 #'   Probability of mutation in a parent chromosome.
-#' @param elitism 'integer'.
+#' @param elitism 'integer' count.
 #'   Number of chromosomes to survive into the next generation.
-#' @param maxiter 'integer'.
+#' @param maxiter 'integer' count.
 #'   Maximum number of iterations to run before the GA search is halted.
-#' @param run 'integer'.
+#' @param run 'integer' count.
 #'   Number of consecutive generations without any improvement in the
 #'   \dQuote{best} fitness value before the GA is stopped.
-#' @param suggestions 'matrix'.
+#' @param suggestions integer 'matrix'.
 #'   Integer chromosomes to be included in the initial population.
 #'   See returned \code{solution} component for a suggested value for this arugment.
-#' @param parallel 'logical' or 'integer'.
+#' @param parallel 'logical' flag or 'integer' count.
 #'   Whether to use parallel computing.
 #'   This argument can also be used to specify the number of cores
 #'   (and number of islands) to employ; by default,
 #'   this is taken from \code{\link[parallel]{detectCores}}.
 #'   The \pkg{parallel} and \pkg{doParallel} packages must be
 #'   installed for parallel computing to work.
-#' @param monitor 'Function'.
-#'   A function that takes as input the current state of the \code{\link[=gaisl-class]{gaisl-class}} object,
+#' @param monitor 'function'.
+#'   Function that takes as input the current state of the \code{\link[=gaisl-class]{gaisl-class}} object,
 #'   and is run at each epoch of the islands GA search.
-#' @param seed 'integer'.
+#' @param seed 'integer' count.
 #'   Random number generator state for random number generation, used to replicate the results.
 #'   The \pkg{doRNG} package must be installed if using parallel computing.
 #'
@@ -122,7 +122,7 @@
 FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
                               migrationRate=0.1, migrationInterval=10,
                               pcrossover=0.8, pmutation=0.1, elitism=0,
-                              maxiter=1000L, run=maxiter, suggestions=NULL,
+                              maxiter=1000, run=maxiter, suggestions=NULL,
                               parallel=TRUE, monitor=NULL, seed=NULL) {
 
   # check arguments
@@ -222,7 +222,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   j <- sample(seq_along(decoded_parent), size=1)
   i <- 0L
   repeat {
-    if ((i <- i + 1L) > 100) stop("Runnaway loop during mutation")
+    if ((i <- i + 1) > 100) stop("Runnaway loop during mutation")
     x <- decoded_parent
     x[j] <- sample(idxs, size=1)
     x_sorted <- sort(x)
@@ -265,12 +265,12 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
 #' Where a chromosome is a set of numbers that defines a proposed solution to the
 #' problem that a genetic algorithm is trying to solve.
 #'
-#' @param x 'numeric'.
-#'   Integer representation of chromosome, a vector of integer values.
-#' @param n 'integer'.
+#' @param x 'integer' vector.
+#'   Integer representation of chromosome.
+#' @param n 'integer' count.
 #'   Maximum permissible number in the integer chromosome,
 #'   used to calculate the bit width of a binary string.
-#' @param y 'numeric'.
+#' @param y 'integer' vector.
 #'   Binary representation of chromosome, a vector of \code{0}s and \code{1}s.
 #'
 #' @return
@@ -307,7 +307,7 @@ EncodeChromosome <- function(x, n) {
 DecodeChromosome <- function(y, n) {
   width <- .CountBits(n)
   vapply(seq(1, length(y), by=width), function(i) {
-    GA::binary2decimal(y[i:(i + width - 1L)])
+    GA::binary2decimal(y[i:(i + width - 1)])
   }, 0)
 }
 

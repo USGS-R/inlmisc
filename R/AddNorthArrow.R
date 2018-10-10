@@ -7,11 +7,11 @@
 #'   that can be extracted using the \code{\link[raster:projection]{crs}} function.
 #'   If missing (the default) the north arrow is point to the top of the plot
 #'   unless the \code{rotate} argument is specified.
-#' @param len 'numeric'.
+#' @param len 'numeric' number.
 #'   Arrow length expressed as a fraction of the plot height, by default is 5-percent.
-#' @param lab 'character'.
+#' @param lab 'character' string.
 #'   North label, by default is \dQuote{N}.
-#' @param rotate 'numeric'.
+#' @param rotate 'numeric' number.
 #'   Arrow offset-rotation in degrees, where positive values are taken to be clockwise.
 #' @param ...
 #'   Additional arguments to be passed to the \code{\link{GetInsetLocation}} function---used

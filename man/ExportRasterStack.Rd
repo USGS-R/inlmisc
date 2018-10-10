@@ -2,24 +2,24 @@
 % Please edit documentation in R/ExportRasterStack.R
 \name{ExportRasterStack}
 \alias{ExportRasterStack}
-\title{Export Raster Stack}
+\title{Export a Raster Stack}
 \usage{
 ExportRasterStack(rs, path, zip = "", col = NULL)
 }
 \arguments{
 \item{rs}{'RasterStack' or 'RasterBrick'.
-A collection of \code{\linkS4class{RasterLayer}} objects with
+Collection of \code{\linkS4class{RasterLayer}} objects with
 the same extent and resolution.}
 
-\item{path}{'character'.
+\item{path}{'character' string.
 Path name to write raster stack.}
 
-\item{zip}{'character'.
+\item{zip}{'character' string.
 If there is no zip program on your path (on windows),
 you can supply the full path to a \file{zip.exe} here, in order to make a KMZ file.}
 
-\item{col}{'character'.
-Vector of colors}
+\item{col}{'character' vector.
+Color names}
 }
 \value{
 Used for the side-effect files written to disk.

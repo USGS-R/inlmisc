@@ -1,10 +1,10 @@
-#' Convert class from POSIXct to Character
+#' Convert Class from POSIXct to Character
 #'
 #' This function converts objects from '\link{POSIXct}' to '\link{character}' class.
 #'
-#' @param x 'POSIXct'.
-#'   Vector of calendar dates and times.
-#' @param fmt 'character'.
+#' @param x 'POSIXct' vector.
+#'   Calendar date and time
+#' @param fmt 'character' string.
 #'   Conversion specification format
 #'
 #' @return Returns a 'character' vector representing time.
@@ -52,10 +52,10 @@ POSIXct2Character <- function(x, fmt="%Y-%m-%d %H:%M:%OS3") {
 
   pos <- gregexpr("%OS[[:digit:]]+", fmt)[[1]]
   if (pos > 0) {
-    pos <- pos + c(3L, attr(pos, "match.length"))
+    pos <- pos + c(3, attr(pos, "match.length"))
     dec.digits <- as.integer(substr(fmt, pos[1], pos[2]))
     x <- as.POSIXlt(x, tz=attr(x, "tzone"))
-    x$sec <- round(x$sec, dec.digits) + 10^(-dec.digits - 1L)
+    x$sec <- round(x$sec, dec.digits) + 10^(-dec.digits - 1)
   }
   format(x, format=fmt)
 }
