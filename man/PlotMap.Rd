@@ -80,7 +80,7 @@ overrides any palette function specification.
 For numeric values there should be one less color than breaks.
 Factors require a color for each level.}
 
-\item{max.dev.dim}{'numeric' vector of length 2.
+\item{max.dev.dim}{'numeric' vector of length 2, value is recycled as necessary.
 Maximum width and height for the graphics device in picas, respectively.
 Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimeter, or 12 points.
 Suggested dimensions for single-column, double-column, and side title figures are

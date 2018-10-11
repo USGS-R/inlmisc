@@ -1,7 +1,7 @@
 #' Get Location for Inset
 #'
 #' Calculate \emph{x} and \emph{y} co-ordinates that can be used to
-#' position an inset in a plot frame at a keyword specified location.
+#' position an inset in a plot frame at a specified keyword location.
 #'
 #' @param dx,dy 'numeric' number.
 #'   Width and height of the inset, respectively.
@@ -10,15 +10,12 @@
 #'   \code{"bottomright"}, \code{"bottom"}, \code{"bottomleft"}, \code{"left"},
 #'   \code{"topleft"}, \code{"top"}, \code{"topright"}, \code{"right"},
 #'   or \code{"center"} to denote inset location.
-#' @param inset 'numeric' vector of length 1 or 2.
+#' @param inset 'numeric' vector of length 1 or 2, value is recycled as necessary.
 #'   Inset distance from the margins as a fraction of the main plot region.
-#'   Value is recycled as necessary.
-#' @param pad 'numeric' vector of length 1 or 2.
+#' @param pad 'numeric' vector of length 1 or 2, value is recycled as necessary.
 #'   Padding distance from the margins in user coordinate units.
-#'   Value is recycled as necessary.
-#' @param padin 'numeric' vector of length 1 or 2.
+#' @param padin 'numeric' vector of length 1 or 2, value is recycled as necessary.
 #'   Padding distance from the margins in inches.
-#'   Value is recycled as necessary.
 #'
 #' @return Returns a 'numeric' vector of length 2 giving the user coordinates
 #'   for the bottom-left corner of the inset.

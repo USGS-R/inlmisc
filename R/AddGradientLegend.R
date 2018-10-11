@@ -19,7 +19,7 @@
 #'   see \code{\link{ToScientific}} for details.
 #' @param title 'character' string.
 #'   Title to be placed at the top of the legend.
-#' @param strip.dim 'numeric' vector of length 1 or 2.
+#' @param strip.dim 'numeric' vector of length 1 or 2, value is recycled as necessary.
 #'   Dimensions (width and height) of the color strip, in picas.
 #' @param ...
 #'   Additional arguments to be passed to the \code{\link{GetInsetLocation}} function---used

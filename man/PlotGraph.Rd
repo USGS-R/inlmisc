@@ -94,7 +94,7 @@ Whether to prevent point and (or) line symbols from being clipped to the plot re
 The increment of the date sequence, see the \code{by} argument
 in the \code{\link{seq.Date}} function for all possible ways this can be specified.}
 
-\item{scientific}{'logical' vector of length 1, 2, or 3.
+\item{scientific}{'logical' vector of length 1, 2, or 3, value is recycled as necessary.
 Whether axes labels should be encoded in nice scientific format.
 Vector elements correspond to the \emph{x}-axis, \code{y}-axis, and second \emph{y}-axis labels.
 Values are recycled as necessary.

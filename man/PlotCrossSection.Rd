@@ -42,7 +42,7 @@ otherwise, a calculated value based on axes limits is used.}
 \item{ylim}{'numeric' vector of length 2.
 Minimum and maximum values for the \emph{y}-axis.}
 
-\item{max.dev.dim}{'numeric' vector of length 2.
+\item{max.dev.dim}{'numeric' vector of length 2, value is recycled as necessary.
 Maximum width and height for the graphics device in picas, respectively.
 Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimeter, or 12 points.
 Suggested dimensions for single-column, double-column, and side title figures are

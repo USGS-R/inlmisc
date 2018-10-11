@@ -27,7 +27,7 @@ Identical to the \code{main.label} argument but for the plot extent rectangle.}
 Position of the inset map in the main plot region;
 see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
-\item{inset}{'numeric' vector of length 1 or 2.
+\item{inset}{'numeric' vector of length 1 or 2, value is recycled as necessary.
 Inset distance(s) from the margins as a fraction of the main plot region.
 Defaults to 2 percent of the axis range.}
 

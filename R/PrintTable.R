@@ -26,9 +26,8 @@
 #'   to the table as a whole, or to the column headings.
 #' @param footnotes 'character' string.
 #'   Label placed at the end of the table to provide explanations of individual entries in the table.
-#' @param nrec 'integer' vector of length 1 or 2.
+#' @param nrec 'integer' vector of length 1 or 2, value is recycled as necessary.
 #'   Maximum number of records to show on the first page, and every subsequent page, respectively.
-#'   Value is recycled as necessary.
 #' @param hline 'integer' vector.
 #'   Numbers between 1 and \code{nrow(d) - 1} indicating the table rows after which
 #'   a horizontal line should appear.

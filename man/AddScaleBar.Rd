@@ -8,10 +8,10 @@ AddScaleBar(unit = NULL, conv.fact = NULL, vert.exag = NULL,
   longlat = FALSE, loc = "bottomleft", ...)
 }
 \arguments{
-\item{unit}{'character' vector of length 1 or 2.
+\item{unit}{'character' vector of length 1 or 2, value is recycled as necessary.
 Label(s) describing the unit of measurement of scale distances, such as "METERS".}
 
-\item{conv.fact}{'numeric' vector of length 1 or 2.
+\item{conv.fact}{'numeric' vector of length 1 or 2, value is recycled as necessary.
 Conversion factor(s) for changing the unit of measurement for scale distances.
 For example, if user coordinates of the plotting region are in meters,
 specify \code{3.28084} to display scale distances in feet.

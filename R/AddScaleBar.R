@@ -2,9 +2,9 @@
 #'
 #' Add a scale bar (also known as a rake scale) to a plot.
 #'
-#' @param unit 'character' vector of length 1 or 2.
+#' @param unit 'character' vector of length 1 or 2, value is recycled as necessary.
 #'   Label(s) describing the unit of measurement of scale distances, such as "METERS".
-#' @param conv.fact 'numeric' vector of length 1 or 2.
+#' @param conv.fact 'numeric' vector of length 1 or 2, value is recycled as necessary.
 #'   Conversion factor(s) for changing the unit of measurement for scale distances.
 #'   For example, if user coordinates of the plotting region are in meters,
 #'   specify \code{3.28084} to display scale distances in feet.

@@ -17,17 +17,14 @@ Single keyword used to specify the position of the inset in the main plot region
 \code{"topleft"}, \code{"top"}, \code{"topright"}, \code{"right"},
 or \code{"center"} to denote inset location.}
 
-\item{inset}{'numeric' vector of length 1 or 2.
-Inset distance from the margins as a fraction of the main plot region.
-Value is recycled as necessary.}
+\item{inset}{'numeric' vector of length 1 or 2, value is recycled as necessary.
+Inset distance from the margins as a fraction of the main plot region.}
 
-\item{pad}{'numeric' vector of length 1 or 2.
-Padding distance from the margins in user coordinate units.
-Value is recycled as necessary.}
+\item{pad}{'numeric' vector of length 1 or 2, value is recycled as necessary.
+Padding distance from the margins in user coordinate units.}
 
-\item{padin}{'numeric' vector of length 1 or 2.
-Padding distance from the margins in inches.
-Value is recycled as necessary.}
+\item{padin}{'numeric' vector of length 1 or 2, value is recycled as necessary.
+Padding distance from the margins in inches.}
 }
 \value{
 Returns a 'numeric' vector of length 2 giving the user coordinates
@@ -35,7 +32,7 @@ Returns a 'numeric' vector of length 2 giving the user coordinates
 }
 \description{
 Calculate \emph{x} and \emph{y} co-ordinates that can be used to
-position an inset in a plot frame at a keyword specified location.
+position an inset in a plot frame at a specified keyword location.
 }
 \examples{
 plot(NA, NA, xlim = c(0, 100), ylim = c(0, 1),
