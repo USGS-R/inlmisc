@@ -119,8 +119,7 @@ Passed arguments include \code{"x"} and \code{"col"}.}
 Used for the side-effect of a new plot generated.
 }
 \description{
-This function draws a sequence of points, lines, or
-box-and-whiskers using specified coordinates.
+Draw a sequence of points, lines, or box-and-whiskers.
 }
 \details{
 Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 columns.

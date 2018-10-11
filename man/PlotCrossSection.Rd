@@ -138,7 +138,7 @@ Used for the side-effect of a new plot generated.
   }
 }
 \description{
-This function creates a cross-section view of raster data.
+Draw a cross-section view of raster data.
 A key showing how the colors map to raster values is shown below the map.
 The width and height of the graphics region will be automagically determined in some cases.
 }

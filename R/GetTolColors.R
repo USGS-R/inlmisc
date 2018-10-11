@@ -1,7 +1,7 @@
-#' Get Paul Tol's Color Schemes
+#' Get Paul Tol Color Schemes
 #'
-#' This function creates a vector of \code{n} colors from
-#' qualitative, diverging, and sequential color schemes by Paul Tol (2018).
+#' Create a vector of \code{n} colors from qualitative, diverging,
+#' and sequential color schemes by Paul Tol (2018).
 #' All colors are defined in sRGB color space.
 #'
 #' @param n 'integer' count.

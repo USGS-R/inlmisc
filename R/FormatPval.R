@@ -1,7 +1,6 @@
 #' Format P Values
 #'
-#' This function is intended for formatting \emph{p}-values.
-#' Scientific notation is written with LaTeX commands.
+#' Format \emph{p}-values
 #'
 #' @param x 'numeric' vector.
 #'   \emph{p}-values
@@ -13,7 +12,7 @@
 #' @param na.form 'character' string.
 #'   Value used for missing values.
 #' @param scientific 'logical' flag.
-#'   Whether values should be encoded in scientific format.
+#'   Whether values should be encoded in scientific format using LaTeX notation.
 #'   A missing value lets \R decide whether fixed or scientific notation is used.
 #'
 #' @return A 'character' vector of formatted \emph{p}-values.

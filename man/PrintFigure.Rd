@@ -51,7 +51,7 @@ The specifiers can consist of the following characters in any order:
 Invisible \code{NULL}
 }
 \description{
-This function prints the LaTeX code associated with the supplied figure.
+Print the LaTeX code associated with the supplied figure.
 A figure can be composed of several subfigures
 and passed to the function as \R plotting commands.
 The applied output format attempts to adhere to the design recommendations

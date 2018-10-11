@@ -1,7 +1,6 @@
 #' Plot Graph
 #'
-#' This function draws a sequence of points, lines, or
-#' box-and-whiskers using specified coordinates.
+#' Draw a sequence of points, lines, or box-and-whiskers.
 #'
 #' @param x,y 'Date' vector, 'numeric' vector, 'matrix', or 'data.frame'.
 #'   Data for plotting where the vector length or number of rows should match.

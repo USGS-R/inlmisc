@@ -17,7 +17,7 @@ Returns a 'list' of length equal to the number of code chunks in \code{path}.
   The returned object includes the value of the \code{path} argument as an attribute.
 }
 \description{
-This function reads \bold{knitr} code chunks into the current session.
+Read \bold{knitr} code chunks into the current session.
 }
 \details{
 If the source document is \file{.Rnw} or \file{.Rmd} the \code{purl} function is used to extract the R code.

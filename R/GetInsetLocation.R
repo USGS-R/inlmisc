@@ -1,7 +1,7 @@
 #' Get Location for Inset
 #'
-#' This function determines the location that may be used to
-#' position an inset in the main plot region.
+#' Calculate \emph{x} and \emph{y} co-ordinates that can be used to
+#' position an inset in a plot frame at a keyword specified location.
 #'
 #' @param dx,dy 'numeric' number.
 #'   Width and height of the inset, respectively.

@@ -68,7 +68,7 @@ The arguments \code{type}, \code{hline.after} and \code{add.to.row} should not b
 Invisible \code{NULL}
 }
 \description{
-This function prints the LaTeX code associated with the supplied data table.
+Print the LaTeX code associated with the supplied data table.
 The applied output format attempts to adhere to the design recommendations
 for tables in United States Geological Survey (USGS) publications.
 }

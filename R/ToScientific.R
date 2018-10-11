@@ -1,6 +1,6 @@
 #' Format for Scientific Notation
 #'
-#' This function formats numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.
+#' Format numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.
 #'
 #' @param x 'numeric' vector.
 #'   Numbers

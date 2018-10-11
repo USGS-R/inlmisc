@@ -22,15 +22,14 @@ values less than \code{eps} are formatted as \code{"< [eps]"}.}
 Value used for missing values.}
 
 \item{scientific}{'logical' flag.
-Whether values should be encoded in scientific format.
+Whether values should be encoded in scientific format using LaTeX notation.
 A missing value lets \R decide whether fixed or scientific notation is used.}
 }
 \value{
 A 'character' vector of formatted \emph{p}-values.
 }
 \description{
-This function is intended for formatting \emph{p}-values.
-Scientific notation is written with LaTeX commands.
+Format \emph{p}-values
 }
 \examples{
 x <- c(stats::runif(5), pi^-100, NA)

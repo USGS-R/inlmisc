@@ -1,6 +1,6 @@
 #' Extract Raster Values Along a Transect Line
 #'
-#' This function extracts values from raster layer(s) along a user defined transect line.
+#' Extract values from raster layer(s) along a user defined transect line.
 #'
 #' @param transect 'SpatialPoints' or 'SpatialLines'.
 #'   Transect line or its vertices.

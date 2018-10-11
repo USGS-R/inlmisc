@@ -1,7 +1,6 @@
 #' Find Optimal Subset Using a GA
 #'
-#' This function identifies an optimal subset of a fixed size \code{k}
-#' from a finite sequence of length \code{n}.
+#' Find optimal subset of a fixed size \code{k} from a finite sequence of length \code{n}.
 #' A distributed multiple-population genetic algorithm (GA) is used to do
 #' subset selection based on the maximization of a user-supplied fitness function.
 #'

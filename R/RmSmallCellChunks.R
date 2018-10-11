@@ -1,6 +1,6 @@
 #' Remove Small Cell Chunks
 #'
-#' This function identifies cell chunks in a single raster grid layer,
+#' Remove small cell chunks from a raster layer,
 #' where a cell chunk is defined as a group of connected cells with non-missing values.
 #' The cell chunk with the largest surface area is preserved and all others removed.
 #'

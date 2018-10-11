@@ -1,6 +1,6 @@
 #' Get Number of Days in a Year and Month
 #'
-#' This function determines the number of days in a year and month.
+#' Calculate the number of days in a year and month.
 #'
 #' @param x 'integer' vector.
 #'   Year and month, with a required date format of \code{YYYYMM}.

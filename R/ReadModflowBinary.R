@@ -1,8 +1,7 @@
 #' Read MODFLOW Binary File
 #'
-#' This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}-based models,
+#' Read binary files output from \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}-based models,
 #' the U.S. Geological Survey's three-dimensional finite-difference groundwater model.
-#' It reads data from binary files produced by MODFLOW.
 #'
 #' @param path 'character' string.
 #'   Path to a MODFLOW binary file.

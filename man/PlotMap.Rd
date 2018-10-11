@@ -178,7 +178,7 @@ Used for the side-effect of a new plot generated.
   }
 }
 \description{
-This function maps raster data and geographical features.
+Draw a map of raster data and geographical features.
 A key showing how the colors map to raster values is shown below the map.
 The width and height of the graphics region will be automagically determined in some cases.
 }

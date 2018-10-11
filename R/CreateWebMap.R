@@ -1,6 +1,6 @@
 #' Create a Web Map Using TNM Services
 #'
-#' This function creates a \href{http://leafletjs.com/}{Leaflet} map widget with base maps offered through
+#' Create a \href{http://leafletjs.com/}{Leaflet} map widget with base maps offered through
 #' The National Map (\href{https://nationalmap.gov/}{TNM}).
 #' Information about the content of these base maps can be found within the
 #' \href{https://viewer.nationalmap.gov/help/3.0\%20TNM\%20Base\%20Maps.htm}{TNM Base Maps} document.
@@ -25,7 +25,7 @@
 #'   This function integrates TNM endpoint services within an interactive web map using
 #'   \href{https://rstudio.github.io/leaflet/}{Leaflet for R}.
 #'
-#' @return Returns a 'leaflet' hypertext markup language (HTML) widget object with TNM base maps.
+#' @return Returns a 'leaflet' hypertext markup language (HTML) widget object.
 #'   See example for instructions on how to add additional graphic layers
 #'   (such as points, lines, and polygons) to the map widget.
 #'   Graphic layers added to the web map must be in latitude and longitude using WGS 84

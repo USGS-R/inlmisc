@@ -23,7 +23,7 @@ A 'list' is returned with components of class 'SpatialPointsDataFrame'.
   }
 }
 \description{
-This function extracts values from raster layer(s) along a user defined transect line.
+Extract values from raster layer(s) along a user defined transect line.
 }
 \details{
 The transect line is described using a simple polygonal chain.

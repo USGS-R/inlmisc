@@ -30,7 +30,7 @@ to position the north arrow in the main plot region.}
 Used for the side-effect of a north arrow drawn on the current graphics device.
 }
 \description{
-This function can be used to add a north arrow aligned to true north to a plot.
+Add a north arrow aligned to true north to a plot.
 }
 \examples{
 m <- datasets::volcano

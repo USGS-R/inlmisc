@@ -44,7 +44,7 @@ For \code{type = "latex"}, returns a 'character' vector of the same length as ar
   And for \code{type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
 }
 \description{
-This function formats numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.
+Format numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.
 }
 \examples{
 x <- c(-1e+09, 0, NA, pi * 10^(-5:5))

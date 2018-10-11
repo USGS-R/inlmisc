@@ -38,7 +38,7 @@ to position the scale bar in the main plot region.}
 Used for the side-effect of a scale bar drawn on the current graphics device.
 }
 \description{
-This function can be used to add a scale bar (also known as a rake scale) to a plot.
+Add a scale bar (also known as a rake scale) to a plot.
 }
 \examples{
 plot(-100:100, -100:100, type = "n", xlab = "x in meters", ylab = "y in meters", asp = 2)

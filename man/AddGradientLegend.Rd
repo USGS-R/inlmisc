@@ -43,7 +43,7 @@ to position the legend in the main plot region.}
 Used for the side-effect of a legend drawn on the current graphics device.
 }
 \description{
-This function can be used to add a continuous color gradient legend strip to a plot.
+Add a continuous color gradient legend strip to a plot.
 }
 \examples{
 plot(NA, xlim = c(0, 100), ylim = c(-10, 10),

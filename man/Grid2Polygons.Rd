@@ -49,7 +49,7 @@ Returns an object of 'SpatialPolygonsDataFrame' class.
   with clockwise meaning island, and counter-clockwise meaning hole.
 }
 \description{
-This function converts gridded spatial data to spatial polygons.
+Convert gridded spatial data to spatial polygons.
 Image files created with spatial polygons are reduced in size,
 can easily be transformed from one coordinate reference system to another,
 and result in much "cleaner" images when plotted.

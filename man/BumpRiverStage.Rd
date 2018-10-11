@@ -22,7 +22,7 @@ Returns a 'RasterLayer' with cell values representing the vertical change in str
   These changes can be added to \code{r} to ensure that water always flows downhill.
 }
 \description{
-This function decreases stage values in river cells if they are implausible
+Decrease stage values in river cells if they are implausible
 with respect to water always flowing downhill.
 }
 \details{

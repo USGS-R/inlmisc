@@ -125,7 +125,7 @@ Unused if \code{add = TRUE}.}
 Used for the side-effect of a bubble map drawn on the current graphics device.
 }
 \description{
-This function can be used to add point symbols to a plot.
+Add point symbols to a plot.
 Proportional circle symbols may be used to represent point data,
 where symbol area varies in proportion to an attribute variable.
 }

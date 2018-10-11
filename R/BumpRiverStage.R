@@ -1,6 +1,6 @@
 #' Adjust Implausible River Stage
 #'
-#' This function decreases stage values in river cells if they are implausible
+#' Decrease stage values in river cells if they are implausible
 #' with respect to water always flowing downhill.
 #'
 #' @param r 'RasterLayer'.

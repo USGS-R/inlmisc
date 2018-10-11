@@ -34,8 +34,8 @@ Returns a 'numeric' vector of length 2 giving the user coordinates
   for the bottom-left corner of the inset.
 }
 \description{
-This function determines the location that may be used to
-position an inset in the main plot region.
+Calculate \emph{x} and \emph{y} co-ordinates that can be used to
+position an inset in a plot frame at a keyword specified location.
 }
 \examples{
 plot(NA, NA, xlim = c(0, 100), ylim = c(0, 1),

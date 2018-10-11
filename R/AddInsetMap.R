@@ -1,6 +1,6 @@
 #' Add Inset Map to Plot
 #'
-#' This function can be used to add an inset map to a plot.
+#' Add an inset map to a plot.
 #'
 #' @param p 'SpatialPolygons'.
 #'   Polygon describing the large map.

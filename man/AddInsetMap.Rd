@@ -46,7 +46,7 @@ A value of \code{"o"} (the default) results in a box and a value of \code{"n"} s
 Used for the side-effect of a inset map drawn on the current graphics device.
 }
 \description{
-This function can be used to add an inset map to a plot.
+Add an inset map to a plot.
 }
 \examples{
 file <- system.file("extdata/county.geojson", package = "inlmisc")[1]

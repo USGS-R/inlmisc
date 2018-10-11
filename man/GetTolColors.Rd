@@ -2,7 +2,7 @@
 % Please edit documentation in R/GetTolColors.R
 \name{GetTolColors}
 \alias{GetTolColors}
-\title{Get Paul Tol's Color Schemes}
+\title{Get Paul Tol Color Schemes}
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
   end = 1, bias = 1, reverse = FALSE, blind = NULL, gray = FALSE)
@@ -74,8 +74,8 @@ If argument \code{n} is specified,
   see \sQuote{Examples} section for usage.
 }
 \description{
-This function creates a vector of \code{n} colors from
-qualitative, diverging, and sequential color schemes by Paul Tol (2018).
+Create a vector of \code{n} colors from qualitative, diverging,
+and sequential color schemes by Paul Tol (2018).
 All colors are defined in sRGB color space.
 }
 \details{

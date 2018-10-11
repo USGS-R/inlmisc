@@ -1,6 +1,6 @@
 #' Add Color Key to Plot
 #'
-#' This function can be used to add a color key to a plot.
+#' Add a color key to a plot.
 #'
 #' @param breaks 'numeric' vector.
 #'   Finite breakpoints for the colors:

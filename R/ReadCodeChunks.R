@@ -1,6 +1,6 @@
 #' Read Knitr Code Chunks
 #'
-#' This function reads \bold{knitr} code chunks into the current session.
+#' Read \bold{knitr} code chunks into the current session.
 #'
 #' @param path 'character' string.
 #'   Path name of the \bold{knitr} source document (\file{.Rnw} or \file{.Rmd}),

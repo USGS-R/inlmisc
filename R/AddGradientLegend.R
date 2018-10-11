@@ -1,6 +1,6 @@
 #' Add Color Gradient Legend to Plot
 #'
-#' This function can be used to add a continuous color gradient legend strip to a plot.
+#' Add a continuous color gradient legend strip to a plot.
 #'
 #' @param breaks 'numeric' vector.
 #'   Finite numeric breakpoints for the colors, must be in increasing order.

@@ -1,6 +1,6 @@
 #' Overlay Multi-Polygon Objects
 #'
-#' Determines the intersection or difference between two multi-polygon objects.
+#' Calculate the intersection or difference between two multi-polygon objects.
 #'
 #' @param x 'SpatialPolygons*'.
 #'   Multi-polygon object

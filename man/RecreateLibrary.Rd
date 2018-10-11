@@ -79,7 +79,7 @@ The \code{SavePackageDetails} function returns (invisibly) the MD5 hash of the p
   The \code{RecreateLibrary} function returns (invisibly) \code{NULL}.
 }
 \description{
-These functions can be used to recreate an existing library on a new installation of \R.
+Recreate an existing library on a new installation of \R.
 The \code{SavePackageDetails} function writes the details of installed packages to a text file.
 And the \code{RecreateLibrary} function reads this file and downloads and installs any
 \sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),

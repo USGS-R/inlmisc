@@ -1,6 +1,6 @@
 #' Add Points to Plot
 #'
-#' This function can be used to add point symbols to a plot.
+#' Add point symbols to a plot.
 #' Proportional circle symbols may be used to represent point data,
 #' where symbol area varies in proportion to an attribute variable.
 #'

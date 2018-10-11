@@ -2,7 +2,7 @@
 % Please edit documentation in R/POSIXct2Character.R
 \name{POSIXct2Character}
 \alias{POSIXct2Character}
-\title{Convert Class from POSIXct to Character}
+\title{Convert from POSIXct to Character Class}
 \usage{
 POSIXct2Character(x, fmt = "\%Y-\%m-\%d \%H:\%M:\%OS3")
 }
@@ -17,7 +17,7 @@ Conversion specification format}
 Returns a 'character' vector representing time.
 }
 \description{
-This function converts objects from '\link{POSIXct}' to '\link{character}' class.
+Convert objects from '\link{POSIXct}' class to '\link{character}' class.
 }
 \note{
 R incorrectly formats objects of calss '\link{POSIXct}' with fractional seconds.

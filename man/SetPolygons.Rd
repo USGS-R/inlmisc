@@ -29,7 +29,7 @@ Specifying \code{NA}, the default, indicates no buffer.}
 Returns an object of 'SpatialPolygons*' class.
 }
 \description{
-Determines the intersection or difference between two multi-polygon objects.
+Calculate the intersection or difference between two multi-polygon objects.
 }
 \details{
 This function tests if the resulting geometry is valid, see \code{\link{gIsValid}}.

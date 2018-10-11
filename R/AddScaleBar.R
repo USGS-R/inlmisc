@@ -1,6 +1,6 @@
 #' Add Scale Bar to Plot
 #'
-#' This function can be used to add a scale bar (also known as a rake scale) to a plot.
+#' Add a scale bar (also known as a rake scale) to a plot.
 #'
 #' @param unit 'character' vector of length 1 or 2.
 #'   Label(s) describing the unit of measurement of scale distances, such as "METERS".

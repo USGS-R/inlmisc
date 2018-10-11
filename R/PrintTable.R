@@ -1,6 +1,6 @@
 #' Print as LaTeX Table
 #'
-#' This function prints the LaTeX code associated with the supplied data table.
+#' Print the LaTeX code associated with the supplied data table.
 #' The applied output format attempts to adhere to the design recommendations
 #' for tables in United States Geological Survey (USGS) publications.
 #'

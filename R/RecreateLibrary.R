@@ -1,6 +1,6 @@
 #' Recreate R Library
 #'
-#' These functions can be used to recreate an existing library on a new installation of \R.
+#' Recreate an existing library on a new installation of \R.
 #' The \code{SavePackageDetails} function writes the details of installed packages to a text file.
 #' And the \code{RecreateLibrary} function reads this file and downloads and installs any
 #' \sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),
@@ -387,7 +387,7 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
 
 #' Check whether Package is Installed
 #'
-#' This function checks whether a package(s) is installed under the library tree(s).
+#' Check whether a package(s) is installed under the library tree(s).
 #'
 #' @param x 'character' vector.
 #'   Package names
