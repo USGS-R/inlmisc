@@ -40,8 +40,8 @@ By default, commas are placed every 3 decimal places for numbers larger than 999
 \item{...}{Not used}
 }
 \value{
-For \code{type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
-  And for \code{type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
+When \code{type = "latex"} returns a 'character' vector of the same length as argument \code{x}.
+  And when \code{type = "plotmath"} returns a 'expression' vector of the same length as \code{x}.
 }
 \description{
 Format numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.

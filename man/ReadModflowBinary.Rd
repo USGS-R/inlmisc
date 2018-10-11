@@ -24,8 +24,8 @@ Whether data associated with the stress period at time zero should be removed.}
 }
 \value{
 Returns a 'list' of length equal to the
-  number of times data are written to the binary file.
-  The following list components are returned:
+  number of times data were written to the binary file.
+  List components are as follows:
   \describe{
     \item{d}{matrix of values.
       The matrix dimensions typically coincide with the horizontal model grid.

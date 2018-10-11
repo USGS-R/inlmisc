@@ -26,7 +26,7 @@ Whether values should be encoded in scientific format using LaTeX notation.
 A missing value lets \R decide whether fixed or scientific notation is used.}
 }
 \value{
-A 'character' vector of formatted \emph{p}-values.
+Returns a 'character' vector of formatted \emph{p}-values.
 }
 \description{
 Format \emph{p}-values

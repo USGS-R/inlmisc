@@ -11,7 +11,7 @@
 #'
 #' @details Keys are enclosed into markups of the form \code{$(KEY)} and \code{@\{CODE\}}.
 #'
-#' @return Returns a vector of character strings after key replacement.
+#' @return Returns a 'character' vector of strings after key replacement.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

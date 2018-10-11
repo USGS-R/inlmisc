@@ -22,7 +22,8 @@ Amount to decrease a cell value by during each iteration of the algorithm.}
 Maximum number of iterations.}
 }
 \value{
-Returns a 'RasterLayer' that can be added to \code{rs[[2]]} to ensure connectivity between model layer cells.
+Returns an object of class 'RasterLayer' that can be added to
+  \code{rs[[2]]} to ensure connectivity between model layer cells.
   Cell values in the returned raster grid represent vertical adjustments.
 }
 \description{

@@ -27,7 +27,7 @@ Can either be a logical value specifying whether annotations are to be made at t
 or a vector of labels to be placed at the tickpoints.}
 
 \item{scientific}{'logical' flag.
-Indicates if labels should be formatted for scientific notation,
+Whether labels should be formatted for scientific notation,
 see \code{\link{ToScientific}} for details.}
 
 \item{title}{'character' string.

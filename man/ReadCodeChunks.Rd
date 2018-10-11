@@ -13,7 +13,7 @@ or R code that has been extracted from a \bold{knitr} source document (\file{.R}
 }
 \value{
 Returns a 'list' of length equal to the number of code chunks in \code{path}.
-  Each 'list' component is named after its corresponding chunk name (\code{chunk-name}).
+  Each list component is named after its corresponding chunk name (\code{chunk-name}).
   The returned object includes the value of the \code{path} argument as an attribute.
 }
 \description{

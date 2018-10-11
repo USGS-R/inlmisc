@@ -59,9 +59,9 @@
 #'   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
 #'   global land cover classification (Hansen and others, 1998).
 #'
-#' @return If argument \code{n} is specified,
-#'   returns an object of class 'Tol' that inherits behavior from the 'character' class;
-#'   and if \code{n} is unspecified, a variant of the \code{GetTolColors} function is
+#' @return When argument \code{n} is specified
+#'   returns an object of class 'Tol' that inherits behavior from the 'character' class.
+#'   And when \code{n} is unspecified a variant of the \code{GetTolColors} function is
 #'   returned that has default (formal) argument values set equal to the values specified by the user.
 #'
 #'   The Tol-class object is comprised of a 'character' vector of \code{n} colors in the RGB color system.

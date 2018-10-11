@@ -42,7 +42,8 @@
 #' @param title 'character' string.
 #'   Legend title
 #'
-#' @return Used for the side-effect of a button placed on a web map.
+#' @return Returns an object of class 'leaflet'.
+#'   A new \code{map} object with added element.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

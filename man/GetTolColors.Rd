@@ -52,9 +52,9 @@ Whether to subset/reorder the \code{"bright"}, \code{"high-contrast"}, \code{"vi
 and \code{"muted"} schemes to work well after conversion to gray scale.}
 }
 \value{
-If argument \code{n} is specified,
-  returns an object of class 'Tol' that inherits behavior from the 'character' class;
-  and if \code{n} is unspecified, a variant of the \code{GetTolColors} function is
+When argument \code{n} is specified
+  returns an object of class 'Tol' that inherits behavior from the 'character' class.
+  And when \code{n} is unspecified a variant of the \code{GetTolColors} function is
   returned that has default (formal) argument values set equal to the values specified by the user.
 
   The Tol-class object is comprised of a 'character' vector of \code{n} colors in the RGB color system.

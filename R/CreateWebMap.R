@@ -25,7 +25,7 @@
 #'   This function integrates TNM endpoint services within an interactive web map using
 #'   \href{https://rstudio.github.io/leaflet/}{Leaflet for R}.
 #'
-#' @return Returns a 'leaflet' hypertext markup language (HTML) widget object.
+#' @return Returns an object of class 'leaflet', a hypertext markup language (HTML) widget object.
 #'   See example for instructions on how to add additional graphic layers
 #'   (such as points, lines, and polygons) to the map widget.
 #'   Graphic layers added to the web map must be in latitude and longitude using WGS 84

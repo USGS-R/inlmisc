@@ -15,7 +15,7 @@
 #'   Can either be a logical value specifying whether annotations are to be made at the tickmarks,
 #'   or a vector of labels to be placed at the tickpoints.
 #' @param scientific 'logical' flag.
-#'   Indicates if labels should be formatted for scientific notation,
+#'   Whether labels should be formatted for scientific notation,
 #'   see \code{\link{ToScientific}} for details.
 #' @param title 'character' string.
 #'   Title to be placed at the top of the legend.

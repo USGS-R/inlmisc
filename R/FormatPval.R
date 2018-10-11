@@ -15,7 +15,7 @@
 #'   Whether values should be encoded in scientific format using LaTeX notation.
 #'   A missing value lets \R decide whether fixed or scientific notation is used.
 #'
-#' @return A 'character' vector of formatted \emph{p}-values.
+#' @return Returns a 'character' vector of formatted \emph{p}-values.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

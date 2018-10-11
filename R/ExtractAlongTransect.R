@@ -10,7 +10,7 @@
 #' @details The transect line is described using a simple polygonal chain.
 #'   The transect line and raster layer(s) must be specified in a coordinate reference system.
 #'
-#' @return A 'list' is returned with components of class 'SpatialPointsDataFrame'.
+#' @return Returns a 'list' with components of class 'SpatialPointsDataFrame'.
 #'   These components represent continuous piecewise line segments along the transect.
 #'   The following variables are specified for each coordinate point in the line segment:
 #'   \describe{

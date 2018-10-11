@@ -72,7 +72,8 @@ Symbol type in the legend, either \code{"square"} or \code{"circle"}.}
 Legend title}
 }
 \value{
-Used for the side-effect of a button placed on a web map.
+Returns an object of class 'leaflet'.
+  A new \code{map} object with added element.
 }
 \description{
 Augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.

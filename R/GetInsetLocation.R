@@ -1,4 +1,4 @@
-#' Get Location for Inset
+#' Get Location for Inset in Plot
 #'
 #' Calculate \emph{x} and \emph{y} co-ordinates that can be used to
 #' position an inset in a plot frame at a specified keyword location.

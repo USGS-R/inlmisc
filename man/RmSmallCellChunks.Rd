@@ -11,7 +11,8 @@ RmSmallCellChunks(r)
 Raster grid layer with cell values.}
 }
 \value{
-Returns a 'RasterLayer' object, \code{r} with cell values in the smaller cell chunks set to \code{NA}.
+Returns an object of class 'RasterLayer' giving
+  \code{r} with cell values in the smaller cell chunks set to \code{NA}.
 }
 \description{
 Remove small cell chunks from a raster layer,

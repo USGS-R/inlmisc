@@ -11,8 +11,8 @@ GetDaysInMonth(x)
 Year and month, with a required date format of \code{YYYYMM}.}
 }
 \value{
-Returns an 'integer' vector indicating the number of days
-  in each year and month value specified in \code{x}.
+Returns a 'integer' vector indicating the number of days
+  for each year and month value in \code{x}.
 }
 \description{
 Calculate the number of days in a year and month.
