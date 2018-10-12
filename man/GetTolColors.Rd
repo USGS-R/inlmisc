@@ -13,7 +13,7 @@ Number of colors to be in the palette.
 The maximum number of colors in a generated palette is dependent on the specified color scheme,
 see \sQuote{Details} section for maximum values.}
 
-\item{scheme}{'character' vector.
+\item{scheme}{'character' string.
 Color scheme name: specify
 \code{"bright"}, \code{"high-contrast"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
 \code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
@@ -103,7 +103,6 @@ The sequential color schemes \code{"YlOrBr"} and \code{"iridescent"}
   work well for conversion to gray scale.
 }
 \examples{
-
 cols <- GetTolColors(n = 10)
 print(cols)
 plot(cols)
