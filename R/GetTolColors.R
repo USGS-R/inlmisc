@@ -541,22 +541,29 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
 # Plot function for 'Tol' color palette
 
 plot.Tol <- function(x, ...) {
-  checkmate::assertClass(x, c("Tol", "character"), ordered=TRUE)
+  checkmate::assertCharacter(x, any.missing=FALSE, min.len=1)
+  stopifnot(all(.IsColor(x)))
 
   n <- length(x)
-  arg <- as.list(attr(x, "call"))
 
-  txt <- c(paste0("n = ", n),
-           paste0("scheme = '", arg$scheme, "'"),
-           paste0("alpha = ", arg$alpha),
-           paste0("start = ", arg$start, ", end = ", arg$end),
-           paste0("bias = ", arg$bias),
-           paste0("reverse = ", arg$reverse),
-           paste0("blind = '", arg$blind, "'"),
-           paste0("gray = ", arg$gray))
-  is <- c(TRUE, TRUE, !is.null(arg$alpha), arg$start > 0 | arg$end < 1,
-          arg$bias != 1, arg$reverse, !is.null(arg$blind), arg$gray)
-  main <- paste(txt[is], collapse=", ")
+  if (inherits(x, "Tol")) {
+    arg <- as.list(attr(x, "call"))
+    txt <- c(paste0("n = ", n),
+             paste0("scheme = '", arg$scheme, "'"),
+             paste0("alpha = ", arg$alpha),
+             paste0("start = ", arg$start, ", end = ", arg$end),
+             paste0("bias = ", arg$bias),
+             paste0("reverse = ", arg$reverse),
+             paste0("blind = '", arg$blind, "'"),
+             paste0("gray = ", arg$gray))
+    is <- c(TRUE, TRUE, !is.null(arg$alpha), arg$start > 0 | arg$end < 1,
+            arg$bias != 1, arg$reverse, !is.null(arg$blind), arg$gray)
+    main <- paste(txt[is], collapse=", ")
+    reverse <- arg$reverse
+  } else {
+    main <- NULL
+    reverse <- FALSE
+  }
 
   if (n > 34) {  # cutoff criterion for drawing tick labels
     border <- NA
@@ -566,7 +573,7 @@ plot.Tol <- function(x, ...) {
     labels <- gsub(" ", "\n", names(x))
     if (length(labels) == 0) {
       labels <- seq_along(x)
-      if (arg$reverse) labels <- rev(labels)
+      if (reverse) labels <- rev(labels)
     }
   }
 
@@ -614,3 +621,11 @@ plot.Tol <- function(x, ...) {
   structure(x, bad=bad, call=call, class=append("Tol", class(x)))
 }
 
+
+# Check for valid color names
+
+.IsColor <- function(x) {
+  vapply(x, function(i) tryCatch({
+    is.matrix(grDevices::col2rgb(i))
+  }, error=function(e) FALSE), TRUE)
+}

@@ -625,10 +625,3 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   txt <- paste0(txt, ifelse(s.round != 0, paste0(sep, s.round, "\""), ""))
   txt
 }
-
-
-.IsColor <- function(x) {
-  vapply(x, function(i) tryCatch({
-    is.matrix(grDevices::col2rgb(i))
-  }, error=function(e) FALSE), TRUE)
-}
