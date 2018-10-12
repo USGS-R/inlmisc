@@ -3,9 +3,10 @@
 #' Move the critical midpoint in a diverging color scheme.
 #'
 #' @param lim 'numeric' vector of length 2 or more.
-#'   Data range
+#'   Data range or values that will be used to calculate
+#'   the interval between the smallest and largest values.
 #' @param mid 'numeric' number.
-#'   Critical midpoint of data range
+#'   Critical midpoint of data range.
 #' @param scheme 'character' string.
 #'   Diverging color scheme name: specify \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"}.
 #' @param buffer 'numeric' number [0, 0.5).
@@ -27,8 +28,7 @@
 #' inlmisc:::plot.Tol(Fun(10))
 #'
 #' # Data range (lim)
-#' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
-#' plot(GetTolColors(10, scheme = "sunset"))
+#' op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
 #' inlmisc:::plot.Tol(SetPaletteMidpoint(lim = c( -5,  5))(10))
 #' inlmisc:::plot.Tol(SetPaletteMidpoint(lim = c(-10,  0))(10))
 #' inlmisc:::plot.Tol(SetPaletteMidpoint(lim = c(  0, 10))(10))
@@ -65,12 +65,14 @@
 
 SetPaletteMidpoint <- function(lim, mid=0, scheme=c("sunset", "BuRd", "PRGn"), buffer=0) {
 
-  checkmate::assertNumeric(lim, finite=TRUE, any.missing=FALSE, min.len=2)
+  checkmate::assertNumeric(lim, all.missing=FALSE, min.len=2)
   checkmate::assertNumber(mid, finite=TRUE)
   scheme <- match.arg(scheme)
   checkmate::qassert(buffer, "N1[0, 0.5)")
 
   lim <- range(lim, na.rm=TRUE)
+  if (lim[1] == lim[2]) stop()
+
   if (lim[1] < mid & lim[2] > mid) {
     ratio <- diff(c(lim[1], mid)) / diff(lim)
   } else if (lim[1] < mid) {
@@ -79,12 +81,12 @@ SetPaletteMidpoint <- function(lim, mid=0, scheme=c("sunset", "BuRd", "PRGn"), b
     ratio <- 0
   }
 
-  Pal <- function(...) {
+  Fun <- function(...) {
     Pal1 <- GetTolColors(scheme=scheme, start=0, end=0.5 - buffer)
     Pal2 <- GetTolColors(scheme=scheme, start=0.5 + buffer, end=1)
     n1 <- round(... * ratio)
     n2 <- ... - n1
     c(Pal1(n1), Pal2(n2))
   }
-  Pal
+  Fun
 }

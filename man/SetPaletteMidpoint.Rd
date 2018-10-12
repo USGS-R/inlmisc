@@ -9,10 +9,11 @@ SetPaletteMidpoint(lim, mid = 0, scheme = c("sunset", "BuRd", "PRGn"),
 }
 \arguments{
 \item{lim}{'numeric' vector of length 2 or more.
-Data range}
+Data range or values that will be used to calculate
+the interval between the smallest and largest values.}
 
 \item{mid}{'numeric' number.
-Critical midpoint of data range}
+Critical midpoint of data range.}
 
 \item{scheme}{'character' string.
 Diverging color scheme name: specify \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"}.}
@@ -32,8 +33,7 @@ Fun <- SetPaletteMidpoint(lim = c(-3, 7))
 inlmisc:::plot.Tol(Fun(10))
 
 # Data range (lim)
-op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
-plot(GetTolColors(10, scheme = "sunset"))
+op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
 inlmisc:::plot.Tol(SetPaletteMidpoint(lim = c( -5,  5))(10))
 inlmisc:::plot.Tol(SetPaletteMidpoint(lim = c(-10,  0))(10))
 inlmisc:::plot.Tol(SetPaletteMidpoint(lim = c(  0, 10))(10))

@@ -1,5 +1,7 @@
 # inlmisc 0.4.3.9000
 
+- Add `SetPaletteMidpoint` function, used to move the critical midpoint in a diverging color scheme.
+
 - In `plot.Tol` function, permit plotting of color palettes that are not of class 'Tol'.
 
 - Tidy help documentation

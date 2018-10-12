@@ -212,7 +212,7 @@ Hansen, M., DeFries, R., Townshend, J.R.G., and Sohlberg, R., 1998,
   accessed September 24, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
 }
 \seealso{
-\code{\link[grDevices]{col2rgb}}
+\code{\link{SetPaletteMidpoint}}, \code{\link[grDevices]{col2rgb}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
