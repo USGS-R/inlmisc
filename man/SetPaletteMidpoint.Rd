@@ -13,13 +13,13 @@ Data range or values that will be used to calculate
 the interval between the smallest and largest values.}
 
 \item{mid}{'numeric' number.
-Critical midpoint of data range.}
+Critical midpoint of data range, defaults to 0.}
 
 \item{scheme}{'character' string.
 Diverging color scheme name: specify \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"}.}
 
 \item{buffer}{'numeric' number [0, 0.5).
-Color level buffer around critical midpoint.}
+Color level buffer around the critical midpoint.}
 }
 \value{
 Returns a 'function' that takes an 'integer' argument (the required number of colors)
