@@ -4,11 +4,11 @@
 \alias{SetPaletteMidpoint}
 \title{Set Color Palette Midpoint}
 \usage{
-SetPaletteMidpoint(lim, mid = 0, scheme = c("sunset", "BuRd", "PRGn"),
+SetPaletteMidpoint(ran, mid = 0, scheme = c("sunset", "BuRd", "PRGn"),
   buffer = 0, bias = TRUE)
 }
 \arguments{
-\item{lim}{'numeric' vector of length 2 or more.
+\item{ran}{'numeric' vector of length 2 or more.
 Data range or values that will be used to calculate the range.}
 
 \item{mid}{'numeric' number.
@@ -31,50 +31,50 @@ Returns a 'function' that takes an 'integer' argument (the required number of co
 Move the critical midpoint in a diverging color scheme.
 }
 \examples{
-Fun <- SetPaletteMidpoint(lim = c(-3, 7))
+Fun <- SetPaletteMidpoint(ran = c(-3, 7))
 inlmisc:::plot.Tol(Fun(10))
 
-# Data range (lim)
+# Data range (ran)
 n <- 10
 op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim = c( -5,  5))(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim = c(-10,  0))(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim = c(  0, 10))(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran = c( -5,  5))(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran = c(-10,  0))(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran = c(  0, 10))(n))
 par(op)
 
 # Diverging color schemes (scheme)
-lim <- c(-5, 5); n <- 255
+ran <- c(-5, 5); n <- 255
 op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, scheme = "sunset")(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, scheme = "BuRd")(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, scheme = "PRGn")(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, scheme = "sunset")(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, scheme = "BuRd")(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, scheme = "PRGn")(n))
 par(op)
 
 # Midpoint of data range (mid)
-lim <- c(-5, 5); n <- 255
+ran <- c(-5, 5); n <- 255
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, mid = -6)(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, mid = -2)(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, mid =  0)(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, mid =  2)(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, mid =  6)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, mid = -6)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, mid = -2)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, mid =  0)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, mid =  2)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, mid =  6)(n))
 par(op)
 
 # Midpont buffer (buffer)
-lim <- c(-5, 5); n <- 10
+ran <- c(-5, 5); n <- 10
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, buffer = 0.0)(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, buffer = 0.1)(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, buffer = 0.2)(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, buffer = 0.3)(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, buffer = 0.4)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, buffer = 0.0)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, buffer = 0.1)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, buffer = 0.2)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, buffer = 0.3)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, buffer = 0.4)(n))
 par(op)
 
 # Allow bias in color spacing (bias)
-lim <- c(-3, 7); n <- 20
+ran <- c(-3, 7); n <- 20
 op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, bias = TRUE)(n))
-inlmisc:::plot.Tol(SetPaletteMidpoint(lim, bias = FALSE)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, bias = TRUE)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(ran, bias = FALSE)(n))
 par(op)
 
 }
