@@ -57,7 +57,7 @@ inlmisc:::plot.Tol(SetPaletteMidpoint(lim, mid =  2)(255))
 inlmisc:::plot.Tol(SetPaletteMidpoint(lim, mid =  6)(255))
 par(op)
 
-# Color level buffer (buffer)
+# Midpont buffer (buffer)
 lim <- c(-5, 5)
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
 inlmisc:::plot.Tol(SetPaletteMidpoint(lim, buffer = 0.0)(10))
