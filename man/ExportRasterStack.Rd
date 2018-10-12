@@ -25,7 +25,7 @@ Color names}
 Used for the side-effect files written to disk.
 }
 \description{
-This function writes a raster-stack, a collection of raster layers,
+Write a raster-stack, a collection of raster layers,
 to local directories using multiple file formats.
 }
 \details{

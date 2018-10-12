@@ -8,10 +8,10 @@ AddScaleBar(unit = NULL, conv.fact = NULL, vert.exag = NULL,
   longlat = FALSE, loc = "bottomleft", ...)
 }
 \arguments{
-\item{unit}{'character' vector of length 1 or 2.
+\item{unit}{'character' vector of length 1 or 2, value is recycled as necessary.
 Label(s) describing the unit of measurement of scale distances, such as "METERS".}
 
-\item{conv.fact}{'numeric' vector of length 1 or 2.
+\item{conv.fact}{'numeric' vector of length 1 or 2, value is recycled as necessary.
 Conversion factor(s) for changing the unit of measurement for scale distances.
 For example, if user coordinates of the plotting region are in meters,
 specify \code{3.28084} to display scale distances in feet.
@@ -38,7 +38,7 @@ to position the scale bar in the main plot region.}
 Used for the side-effect of a scale bar drawn on the current graphics device.
 }
 \description{
-This function can be used to add a scale bar (also known as a rake scale) to a plot.
+Add a scale bar (also known as a rake scale) to a plot.
 }
 \examples{
 plot(-100:100, -100:100, type = "n", xlab = "x in meters", ylab = "y in meters", asp = 2)

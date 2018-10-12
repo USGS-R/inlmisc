@@ -1,7 +1,7 @@
-#' Get Paul Tol's Color Schemes
+#' Get Paul Tol Color Schemes
 #'
-#' This function creates a vector of \code{n} colors from
-#' qualitative, diverging, and sequential color schemes by Paul Tol (2018).
+#' Create a vector of \code{n} colors from qualitative, diverging,
+#' and sequential color schemes by Paul Tol (2018).
 #' All colors are defined in sRGB color space.
 #'
 #' @param n 'integer' count.
@@ -59,9 +59,9 @@
 #'   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
 #'   global land cover classification (Hansen and others, 1998).
 #'
-#' @return If argument \code{n} is specified,
-#'   returns an object of class 'Tol' that inherits behavior from the 'character' class;
-#'   and if \code{n} is unspecified, a variant of the \code{GetTolColors} function is
+#' @return When argument \code{n} is specified
+#'   returns an object of class 'Tol' that inherits behavior from the 'character' class.
+#'   And when \code{n} is unspecified a variant of the \code{GetTolColors} function is
 #'   returned that has default (formal) argument values set equal to the values specified by the user.
 #'
 #'   The Tol-class object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
@@ -541,32 +541,39 @@ GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
 # Plot function for 'Tol' color palette
 
 plot.Tol <- function(x, ...) {
-  checkmate::assertClass(x, c("Tol", "character"), ordered=TRUE)
+  checkmate::assertCharacter(x, any.missing=FALSE, min.len=1)
+  stopifnot(all(.IsColor(x)))
 
   n <- length(x)
-  arg <- as.list(attr(x, "call"))
 
-  txt <- c(paste0("n = ", n),
-           paste0("scheme = '", arg$scheme, "'"),
-           paste0("alpha = ", arg$alpha),
-           paste0("start = ", arg$start, ", end = ", arg$end),
-           paste0("bias = ", arg$bias),
-           paste0("reverse = ", arg$reverse),
-           paste0("blind = '", arg$blind, "'"),
-           paste0("gray = ", arg$gray))
-  is <- c(TRUE, TRUE, !is.null(arg$alpha), arg$start > 0 | arg$end < 1,
-          arg$bias != 1, arg$reverse, !is.null(arg$blind), arg$gray)
-  main <- paste(txt[is], collapse=", ")
+  if (inherits(x, "Tol")) {
+    arg <- as.list(attr(x, "call"))
+    txt <- c(paste0("n = ", n),
+             paste0("scheme = '", arg$scheme, "'"),
+             paste0("alpha = ", arg$alpha),
+             paste0("start = ", arg$start, ", end = ", arg$end),
+             paste0("bias = ", arg$bias),
+             paste0("reverse = ", arg$reverse),
+             paste0("blind = '", arg$blind, "'"),
+             paste0("gray = ", arg$gray))
+    is <- c(TRUE, TRUE, !is.null(arg$alpha), arg$start > 0 | arg$end < 1,
+            arg$bias != 1, arg$reverse, !is.null(arg$blind), arg$gray)
+    main <- paste(txt[is], collapse=", ")
+    reverse <- arg$reverse
+  } else {
+    main <- NULL
+    reverse <- FALSE
+  }
 
-  border <- "#D3D3D3"
   if (n > 34) {  # cutoff criterion for drawing tick labels
     border <- NA
     labels <- FALSE
   } else {
+    border <- "#D3D3D3"
     labels <- gsub(" ", "\n", names(x))
     if (length(labels) == 0) {
       labels <- seq_along(x)
-      if (arg$reverse) labels <- rev(labels)
+      if (reverse) labels <- rev(labels)
     }
   }
 
@@ -581,7 +588,7 @@ plot.Tol <- function(x, ...) {
   graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=x, border=border, lwd=0.5)
   graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels, tick=FALSE,
                  line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
-  graphics::box(lwd=0.5, col=border)
+  graphics::box(lwd=0.5, col="#D3D3D3")
 
   invisible()
 }
@@ -614,3 +621,11 @@ plot.Tol <- function(x, ...) {
   structure(x, bad=bad, call=call, class=append("Tol", class(x)))
 }
 
+
+# Check for valid color names
+
+.IsColor <- function(x) {
+  vapply(x, function(i) tryCatch({
+    is.matrix(grDevices::col2rgb(i))
+  }, error=function(e) FALSE), TRUE)
+}

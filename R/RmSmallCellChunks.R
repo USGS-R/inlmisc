@@ -1,13 +1,14 @@
 #' Remove Small Cell Chunks
 #'
-#' This function identifies cell chunks in a single raster grid layer,
+#' Remove small cell chunks from a raster layer,
 #' where a cell chunk is defined as a group of connected cells with non-missing values.
 #' The cell chunk with the largest surface area is preserved and all others removed.
 #'
 #' @param r 'RasterLayer'.
 #'   Raster grid layer with cell values.
 #'
-#' @return Returns a 'RasterLayer' object, \code{r} with cell values in the smaller cell chunks set to \code{NA}.
+#' @return Returns an object of class 'RasterLayer' giving
+#'   \code{r} with cell values in the smaller cell chunks set to \code{NA}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

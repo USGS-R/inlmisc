@@ -1,6 +1,6 @@
 #' Add Color Gradient Legend to Plot
 #'
-#' This function can be used to add a continuous color gradient legend strip to a plot.
+#' Add a continuous color gradient legend strip to a plot.
 #'
 #' @param breaks 'numeric' vector.
 #'   Finite numeric breakpoints for the colors, must be in increasing order.
@@ -15,11 +15,11 @@
 #'   Can either be a logical value specifying whether annotations are to be made at the tickmarks,
 #'   or a vector of labels to be placed at the tickpoints.
 #' @param scientific 'logical' flag.
-#'   Indicates if labels should be formatted for scientific notation,
+#'   Whether labels should be formatted for scientific notation,
 #'   see \code{\link{ToScientific}} for details.
 #' @param title 'character' string.
 #'   Title to be placed at the top of the legend.
-#' @param strip.dim 'numeric' vector of length 1 or 2.
+#' @param strip.dim 'numeric' vector of length 1 or 2, value is recycled as necessary.
 #'   Dimensions (width and height) of the color strip, in picas.
 #' @param ...
 #'   Additional arguments to be passed to the \code{\link{GetInsetLocation}} function---used

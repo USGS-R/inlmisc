@@ -40,10 +40,10 @@ Suggests:
     roxygen2,
     testthat
 License: CC0
-Copyright: This software is in the public domain because it contains materials
-    that originally came from the USGS, an agency of the United States
-    Department of Interior. For more information, see the official USGS
-    copyright policy at https://www2.usgs.gov/visual-id/credit_usgs.html
+Copyright: This software is in the public domain because it contains materials that
+    originally came from the USGS, an agency of the United States Department of Interior.
+    For more information, see the official USGS copyright policy at
+    https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits
 URL: https://github.com/USGS-R/inlmisc
 BugReports: https://github.com/USGS-R/inlmisc/issues
 Encoding: UTF-8

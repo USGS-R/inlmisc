@@ -1,6 +1,6 @@
-#' Add Miscellaneous Elements to Web Map
+#' Add Elements to Web Map
 #'
-#' These functions can be used to augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
+#' Augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
 #' The \code{AddHomeButton} function adds a button that zooms to the initial map extent.
 #' The \code{AddClusterButton} function adds a button that toggles marker clusters on and off.
 #' The \code{AddSearchButton} function adds a control that may be used to search markers/features location by property.
@@ -42,7 +42,8 @@
 #' @param title 'character' string.
 #'   Legend title
 #'
-#' @return Used for the side-effect of a button placed on a web map.
+#' @return Returns an object of class 'leaflet'.
+#'   A new \code{map} object with added element.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

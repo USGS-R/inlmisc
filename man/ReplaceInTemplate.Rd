@@ -14,10 +14,10 @@ Template text}
 Values to replace in \code{text}.}
 }
 \value{
-Returns a vector of character strings after key replacement.
+Returns a 'character' vector of strings after key replacement.
 }
 \description{
-This function replaces keys within special markups in a template text with specified values.
+Replace keys within special markups in a template text with specified values.
 Pieces of \R code can be put into the markups of the template text,
 and are evaluated during the replacement.
 }

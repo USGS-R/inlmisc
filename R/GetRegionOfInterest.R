@@ -1,7 +1,6 @@
 #' Get Region of Interest
 #'
-#' This function calculates the spatial polygon describing
-#' the convex hull of a set of spatial points.
+#' Create a spatial polygon describing the convex hull of a set of spatial points.
 #'
 #' @param obj 'SpatialPoints*'.
 #'   Spatial points

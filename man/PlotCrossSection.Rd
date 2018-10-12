@@ -42,7 +42,7 @@ otherwise, a calculated value based on axes limits is used.}
 \item{ylim}{'numeric' vector of length 2.
 Minimum and maximum values for the \emph{y}-axis.}
 
-\item{max.dev.dim}{'numeric' vector of length 2.
+\item{max.dev.dim}{'numeric' vector of length 2, value is recycled as necessary.
 Maximum width and height for the graphics device in picas, respectively.
 Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimeter, or 12 points.
 Suggested dimensions for single-column, double-column, and side title figures are
@@ -138,7 +138,7 @@ Used for the side-effect of a new plot generated.
   }
 }
 \description{
-This function creates a cross-section view of raster data.
+Draw a cross-section view of raster data.
 A key showing how the colors map to raster values is shown below the map.
 The width and height of the graphics region will be automagically determined in some cases.
 }

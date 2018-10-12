@@ -1,6 +1,6 @@
 #' Convert Class from POSIXct to Character
 #'
-#' This function converts objects from '\link{POSIXct}' to '\link{character}' class.
+#' Convert objects from '\link{POSIXct}' class to '\link{character}' class.
 #'
 #' @param x 'POSIXct' vector.
 #'   Calendar date and time

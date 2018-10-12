@@ -2,7 +2,7 @@
 #'
 #' Given upper and lower surfaces (raster layers) of a three-dimensional (3D) model layer,
 #' this function incrementally decreases lower cell values until
-#' a minimum vertical overlap between adjacent model cells is achieved.
+#' a minimum vertical overlap between adjacent model cells is satisfied.
 #'
 #' @param rs 'Raster*'.
 #'   Collection of two raster layers, the first and second layers represent
@@ -21,7 +21,8 @@
 #'   (2) For cells violating the minimum vertical overlap, lower raster layer (\code{rs[[2]]}) values are
 #'       decreased by the value specified in the \code{bump.by} argument.
 #'
-#' @return Returns a 'RasterLayer' that can be added to \code{rs[[2]]} to ensure connectivity between model layer cells.
+#' @return Returns an object of class 'RasterLayer' that can be added to
+#'   \code{rs[[2]]} to ensure connectivity between model layer cells.
 #'   Cell values in the returned raster grid represent vertical adjustments.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

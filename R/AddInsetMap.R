@@ -1,6 +1,6 @@
 #' Add Inset Map to Plot
 #'
-#' This function can be used to add an inset map to a plot.
+#' Add an inset map to a plot.
 #'
 #' @param p 'SpatialPolygons'.
 #'   Polygon describing the large map.
@@ -14,7 +14,7 @@
 #' @param loc 'character' string.
 #'   Position of the inset map in the main plot region;
 #'   see \code{\link{GetInsetLocation}} function for keyword descriptions.
-#' @param inset 'numeric' vector of length 1 or 2.
+#' @param inset 'numeric' vector of length 1 or 2, value is recycled as necessary.
 #'   Inset distance(s) from the margins as a fraction of the main plot region.
 #'   Defaults to 2 percent of the axis range.
 #' @param width 'numeric' number.

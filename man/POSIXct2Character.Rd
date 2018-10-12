@@ -17,7 +17,7 @@ Conversion specification format}
 Returns a 'character' vector representing time.
 }
 \description{
-This function converts objects from '\link{POSIXct}' to '\link{character}' class.
+Convert objects from '\link{POSIXct}' class to '\link{character}' class.
 }
 \note{
 R incorrectly formats objects of calss '\link{POSIXct}' with fractional seconds.

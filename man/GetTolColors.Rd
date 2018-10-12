@@ -2,7 +2,7 @@
 % Please edit documentation in R/GetTolColors.R
 \name{GetTolColors}
 \alias{GetTolColors}
-\title{Get Paul Tol's Color Schemes}
+\title{Get Paul Tol Color Schemes}
 \usage{
 GetTolColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
   end = 1, bias = 1, reverse = FALSE, blind = NULL, gray = FALSE)
@@ -52,9 +52,9 @@ Whether to subset/reorder the \code{"bright"}, \code{"high-contrast"}, \code{"vi
 and \code{"muted"} schemes to work well after conversion to gray scale.}
 }
 \value{
-If argument \code{n} is specified,
-  returns an object of class 'Tol' that inherits behavior from the 'character' class;
-  and if \code{n} is unspecified, a variant of the \code{GetTolColors} function is
+When argument \code{n} is specified
+  returns an object of class 'Tol' that inherits behavior from the 'character' class.
+  And when \code{n} is unspecified a variant of the \code{GetTolColors} function is
   returned that has default (formal) argument values set equal to the values specified by the user.
 
   The Tol-class object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
@@ -74,8 +74,8 @@ If argument \code{n} is specified,
   see \sQuote{Examples} section for usage.
 }
 \description{
-This function creates a vector of \code{n} colors from
-qualitative, diverging, and sequential color schemes by Paul Tol (2018).
+Create a vector of \code{n} colors from qualitative, diverging,
+and sequential color schemes by Paul Tol (2018).
 All colors are defined in sRGB color space.
 }
 \details{

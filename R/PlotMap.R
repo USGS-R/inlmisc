@@ -1,6 +1,6 @@
 #' Plot Map
 #'
-#' This function maps raster data and geographical features.
+#' Draw a map of raster data and geographical features.
 #' A key showing how the colors map to raster values is shown below the map.
 #' The width and height of the graphics region will be automagically determined in some cases.
 #'
@@ -50,7 +50,7 @@
 #'   overrides any palette function specification.
 #'   For numeric values there should be one less color than breaks.
 #'   Factors require a color for each level.
-#' @param max.dev.dim 'numeric' vector of length 2.
+#' @param max.dev.dim 'numeric' vector of length 2, value is recycled as necessary.
 #'   Maximum width and height for the graphics device in picas, respectively.
 #'   Where 1 pica is equal to 1/6 of an inch, 4.2333 of a millimeter, or 12 points.
 #'   Suggested dimensions for single-column, double-column, and side title figures are
@@ -624,11 +624,4 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   txt <- paste0(txt, ifelse(m != 0 | s.round != 0, paste0(sep, m, "'"), ""))
   txt <- paste0(txt, ifelse(s.round != 0, paste0(sep, s.round, "\""), ""))
   txt
-}
-
-
-.IsColor <- function(x) {
-  vapply(x, function(i) tryCatch({
-    is.matrix(grDevices::col2rgb(i))
-  }, error=function(e) FALSE), TRUE)
 }

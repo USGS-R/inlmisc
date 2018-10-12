@@ -1,6 +1,6 @@
 #' Add North Arrow to Plot
 #'
-#' This function can be used to add a north arrow aligned to true north to a plot.
+#' Add a north arrow aligned to true north to a plot.
 #'
 #' @param crs 'CRS', 'Raster*', or 'Spatial'.
 #'   Coordinate reference system (CRS), or any object with a CRS attribute

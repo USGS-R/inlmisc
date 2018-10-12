@@ -40,9 +40,8 @@ to the table as a whole, or to the column headings.}
 \item{footnotes}{'character' string.
 Label placed at the end of the table to provide explanations of individual entries in the table.}
 
-\item{nrec}{'integer' vector of length 1 or 2.
-Maximum number of records to show on the first page, and every subsequent page, respectively.
-Value is recycled as necessary.}
+\item{nrec}{'integer' vector of length 1 or 2, value is recycled as necessary.
+Maximum number of records to show on the first page, and every subsequent page, respectively.}
 
 \item{hline}{'integer' vector.
 Numbers between 1 and \code{nrow(d) - 1} indicating the table rows after which
@@ -68,7 +67,7 @@ The arguments \code{type}, \code{hline.after} and \code{add.to.row} should not b
 Invisible \code{NULL}
 }
 \description{
-This function prints the LaTeX code associated with the supplied data table.
+Print the LaTeX code associated with the supplied data table.
 The applied output format attempts to adhere to the design recommendations
 for tables in United States Geological Survey (USGS) publications.
 }

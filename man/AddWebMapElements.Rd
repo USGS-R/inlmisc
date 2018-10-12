@@ -6,7 +6,7 @@
 \alias{AddClusterButton}
 \alias{AddSearchButton}
 \alias{AddLegend}
-\title{Add Miscellaneous Elements to Web Map}
+\title{Add Elements to Web Map}
 \usage{
 AddHomeButton(map, extent = NULL, position = "topleft")
 
@@ -72,10 +72,11 @@ Symbol type in the legend, either \code{"square"} or \code{"circle"}.}
 Legend title}
 }
 \value{
-Used for the side-effect of a button placed on a web map.
+Returns an object of class 'leaflet'.
+  A new \code{map} object with added element.
 }
 \description{
-These functions can be used to augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
+Augment a \href{http://leafletjs.com/}{Leaflet} web map with additional elements.
 The \code{AddHomeButton} function adds a button that zooms to the initial map extent.
 The \code{AddClusterButton} function adds a button that toggles marker clusters on and off.
 The \code{AddSearchButton} function adds a control that may be used to search markers/features location by property.

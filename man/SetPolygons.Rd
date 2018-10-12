@@ -26,10 +26,10 @@ the specified width, see \code{gBuffer}.
 Specifying \code{NA}, the default, indicates no buffer.}
 }
 \value{
-Returns an object of 'SpatialPolygons*' class.
+Returns an object of class 'SpatialPolygons*'.
 }
 \description{
-Determines the intersection or difference between two multi-polygon objects.
+Calculate the intersection or difference between two multi-polygon objects.
 }
 \details{
 This function tests if the resulting geometry is valid, see \code{\link{gIsValid}}.

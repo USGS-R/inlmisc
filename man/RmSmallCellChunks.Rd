@@ -11,10 +11,11 @@ RmSmallCellChunks(r)
 Raster grid layer with cell values.}
 }
 \value{
-Returns a 'RasterLayer' object, \code{r} with cell values in the smaller cell chunks set to \code{NA}.
+Returns an object of class 'RasterLayer' giving
+  \code{r} with cell values in the smaller cell chunks set to \code{NA}.
 }
 \description{
-This function identifies cell chunks in a single raster grid layer,
+Remove small cell chunks from a raster layer,
 where a cell chunk is defined as a group of connected cells with non-missing values.
 The cell chunk with the largest surface area is preserved and all others removed.
 }

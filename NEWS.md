@@ -1,5 +1,9 @@
 # inlmisc 0.4.3.9000
 
+- In `plot.Tol` function, permit plotting of color palettes that are not of class 'Tol'.
+
+- Tidy help documentation
+
 - Add `GetRegionOfInterest` function, used to calculate the region of interest from spatial points.
 
 - In `FindOptimalSubset` function: improve matrix construction of `suggestions`;

@@ -27,13 +27,13 @@ Can either be a logical value specifying whether annotations are to be made at t
 or a vector of labels to be placed at the tickpoints.}
 
 \item{scientific}{'logical' flag.
-Indicates if labels should be formatted for scientific notation,
+Whether labels should be formatted for scientific notation,
 see \code{\link{ToScientific}} for details.}
 
 \item{title}{'character' string.
 Title to be placed at the top of the legend.}
 
-\item{strip.dim}{'numeric' vector of length 1 or 2.
+\item{strip.dim}{'numeric' vector of length 1 or 2, value is recycled as necessary.
 Dimensions (width and height) of the color strip, in picas.}
 
 \item{...}{Additional arguments to be passed to the \code{\link{GetInsetLocation}} function---used
@@ -43,7 +43,7 @@ to position the legend in the main plot region.}
 Used for the side-effect of a legend drawn on the current graphics device.
 }
 \description{
-This function can be used to add a continuous color gradient legend strip to a plot.
+Add a continuous color gradient legend strip to a plot.
 }
 \examples{
 plot(NA, xlim = c(0, 100), ylim = c(-10, 10),

@@ -94,7 +94,7 @@ Whether to prevent point and (or) line symbols from being clipped to the plot re
 The increment of the date sequence, see the \code{by} argument
 in the \code{\link{seq.Date}} function for all possible ways this can be specified.}
 
-\item{scientific}{'logical' vector of length 1, 2, or 3.
+\item{scientific}{'logical' vector of length 1, 2, or 3, value is recycled as necessary.
 Whether axes labels should be encoded in nice scientific format.
 Vector elements correspond to the \emph{x}-axis, \code{y}-axis, and second \emph{y}-axis labels.
 Values are recycled as necessary.
@@ -119,8 +119,7 @@ Passed arguments include \code{"x"} and \code{"col"}.}
 Used for the side-effect of a new plot generated.
 }
 \description{
-This function draws a sequence of points, lines, or
-box-and-whiskers using specified coordinates.
+Draw a sequence of points, lines, or box-and-whiskers.
 }
 \details{
 Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 columns.

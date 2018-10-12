@@ -1,6 +1,6 @@
 #' Adjust Implausible River Stage
 #'
-#' This function decreases stage values in river cells if they are implausible
+#' Decrease stage values in river cells if they are implausible
 #' with respect to water always flowing downhill.
 #'
 #' @param r 'RasterLayer'.
@@ -17,7 +17,7 @@
 #'   that are obstructing downhill surface-water flow.
 #'   Stage values for these problematic cells are then lowered to an acceptable elevation.
 #'
-#' @return Returns a 'RasterLayer' with cell values representing the vertical change in stream stage.
+#' @return Returns an object of class 'RasterLayer' with cell values representing the vertical change in stream stage.
 #'   These changes can be added to \code{r} to ensure that water always flows downhill.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

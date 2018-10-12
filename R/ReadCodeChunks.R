@@ -1,6 +1,6 @@
 #' Read Knitr Code Chunks
 #'
-#' This function reads \bold{knitr} code chunks into the current session.
+#' Read \bold{knitr} code chunks into the current session.
 #'
 #' @param path 'character' string.
 #'   Path name of the \bold{knitr} source document (\file{.Rnw} or \file{.Rmd}),
@@ -13,7 +13,7 @@
 #'   names like \code{unnamed-chunk-i} where \code{i} is the chunk number.
 #'
 #' @return Returns a 'list' of length equal to the number of code chunks in \code{path}.
-#'   Each 'list' component is named after its corresponding chunk name (\code{chunk-name}).
+#'   Each list component is named after its corresponding chunk name (\code{chunk-name}).
 #'   The returned object includes the value of the \code{path} argument as an attribute.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

@@ -1,6 +1,6 @@
 #' Replace Values in a Template Text
 #'
-#' This function replaces keys within special markups in a template text with specified values.
+#' Replace keys within special markups in a template text with specified values.
 #' Pieces of \R code can be put into the markups of the template text,
 #' and are evaluated during the replacement.
 #'
@@ -11,7 +11,7 @@
 #'
 #' @details Keys are enclosed into markups of the form \code{$(KEY)} and \code{@\{CODE\}}.
 #'
-#' @return Returns a vector of character strings after key replacement.
+#' @return Returns a 'character' vector of strings after key replacement.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

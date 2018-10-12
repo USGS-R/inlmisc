@@ -1,10 +1,9 @@
 #' Summarize MODFLOW Water Budget
 #'
-#' This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}-based models,
-#' the U.S. Geological Survey's three-dimensional finite-difference groundwater model.
-#' It summarizes volumetric flow rates by boundary condition types.
-#' That is, it splits the MODFLOW cell-by-cell flow data into subsets,
-#' computes summary statistics for each, and returns a resulting summary table.
+#' Summarize \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}
+#' volumetric flow rates by boundary condition types.
+#' Cell-by-cell flow data is split into subsets,
+#' summary statistics computed for each subset, and a summary table returned.
 #'
 #' @param budget 'character' string or 'list'.
 #'   Either the path to a MODFLOW cell-by-cell budget file or

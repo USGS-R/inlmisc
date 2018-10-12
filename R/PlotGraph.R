@@ -1,7 +1,6 @@
 #' Plot Graph
 #'
-#' This function draws a sequence of points, lines, or
-#' box-and-whiskers using specified coordinates.
+#' Draw a sequence of points, lines, or box-and-whiskers.
 #'
 #' @param x,y 'Date' vector, 'numeric' vector, 'matrix', or 'data.frame'.
 #'   Data for plotting where the vector length or number of rows should match.
@@ -59,7 +58,7 @@
 #' @param seq.date.by 'character' string, 'numeric' number, or 'difftime'.
 #'   The increment of the date sequence, see the \code{by} argument
 #'   in the \code{\link{seq.Date}} function for all possible ways this can be specified.
-#' @param scientific 'logical' vector of length 1, 2, or 3.
+#' @param scientific 'logical' vector of length 1, 2, or 3, value is recycled as necessary.
 #'   Whether axes labels should be encoded in nice scientific format.
 #'   Vector elements correspond to the \emph{x}-axis, \code{y}-axis, and second \emph{y}-axis labels.
 #'   Values are recycled as necessary.

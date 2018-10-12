@@ -1,6 +1,6 @@
 #' Overlay Multi-Polygon Objects
 #'
-#' Determines the intersection or difference between two multi-polygon objects.
+#' Calculate the intersection or difference between two multi-polygon objects.
 #'
 #' @param x 'SpatialPolygons*'.
 #'   Multi-polygon object
@@ -18,7 +18,7 @@
 #'
 #' @details This function tests if the resulting geometry is valid, see \code{\link{gIsValid}}.
 #'
-#' @return Returns an object of 'SpatialPolygons*' class.
+#' @return Returns an object of class 'SpatialPolygons*'.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

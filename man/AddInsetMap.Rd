@@ -27,7 +27,7 @@ Identical to the \code{main.label} argument but for the plot extent rectangle.}
 Position of the inset map in the main plot region;
 see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 
-\item{inset}{'numeric' vector of length 1 or 2.
+\item{inset}{'numeric' vector of length 1 or 2, value is recycled as necessary.
 Inset distance(s) from the margins as a fraction of the main plot region.
 Defaults to 2 percent of the axis range.}
 
@@ -46,7 +46,7 @@ A value of \code{"o"} (the default) results in a box and a value of \code{"n"} s
 Used for the side-effect of a inset map drawn on the current graphics device.
 }
 \description{
-This function can be used to add an inset map to a plot.
+Add an inset map to a plot.
 }
 \examples{
 file <- system.file("extdata/county.geojson", package = "inlmisc")[1]

@@ -41,7 +41,7 @@ Minimum and maximum limits of the attribute variable, data outside these limits 
 Cropping polygon}
 }
 \value{
-Returns an object of 'SpatialPolygonsDataFrame' class.
+Returns an object of class 'SpatialPolygonsDataFrame'.
   The objects \code{data} slot is a data frame, number of rows equal to
   the number of \code{Polygons} objects and a single column containing attribute values.
   If \code{level} is true, attribute values are set equal to the midpoint between breakpoints.
@@ -49,7 +49,7 @@ Returns an object of 'SpatialPolygonsDataFrame' class.
   with clockwise meaning island, and counter-clockwise meaning hole.
 }
 \description{
-This function converts gridded spatial data to spatial polygons.
+Convert gridded spatial data to spatial polygons.
 Image files created with spatial polygons are reduced in size,
 can easily be transformed from one coordinate reference system to another,
 and result in much "cleaner" images when plotted.

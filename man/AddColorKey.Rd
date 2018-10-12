@@ -57,7 +57,7 @@ Margin size in inches and of the form \code{c(bottom, left, top, right)}.}
 Used for the side-effect of a color key drawn on the current graphics device.
 }
 \description{
-This function can be used to add a color key to a plot.
+Add a color key to a plot.
 }
 \examples{
 op <- par(mfrow = c(7, 1), omi = c(1, 1, 1, 1), mar = c(2, 3, 2, 3))

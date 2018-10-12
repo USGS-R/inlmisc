@@ -1,6 +1,6 @@
 #' Format for Scientific Notation
 #'
-#' This function formats numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.
+#' Format numbers in scientific notation \eqn{m \times 10^{n}}{m x 10^n}.
 #'
 #' @param x 'numeric' vector.
 #'   Numbers
@@ -27,8 +27,8 @@
 #'   Not used
 #'
 #' @return
-#'   For \code{type = "latex"}, returns a 'character' vector of the same length as argument \code{x}.
-#'   And for \code{type = "plotmath"}, returns an 'expression' vector of the same length as \code{x}.
+#'   When \code{type = "latex"} returns a 'character' vector of the same length as argument \code{x}.
+#'   And when \code{type = "plotmath"} returns a 'expression' vector of the same length as \code{x}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

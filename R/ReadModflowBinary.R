@@ -1,8 +1,7 @@
 #' Read MODFLOW Binary File
 #'
-#' This is a utility function for \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}-based models,
+#' Read binary files output from \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}-based models,
 #' the U.S. Geological Survey's three-dimensional finite-difference groundwater model.
-#' It reads data from binary files produced by MODFLOW.
 #'
 #' @param path 'character' string.
 #'   Path to a MODFLOW binary file.
@@ -16,8 +15,8 @@
 #'   Whether data associated with the stress period at time zero should be removed.
 #'
 #' @return Returns a 'list' of length equal to the
-#'   number of times data are written to the binary file.
-#'   The following list components are returned:
+#'   number of times data were written to the binary file.
+#'   List components are as follows:
 #'   \describe{
 #'     \item{d}{matrix of values.
 #'       The matrix dimensions typically coincide with the horizontal model grid.
