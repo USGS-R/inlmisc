@@ -5,12 +5,11 @@
 \title{Set Color Palette Midpoint}
 \usage{
 SetPaletteMidpoint(lim, mid = 0, scheme = c("sunset", "BuRd", "PRGn"),
-  buffer = 0)
+  buffer = 0, bias = TRUE)
 }
 \arguments{
 \item{lim}{'numeric' vector of length 2 or more.
-Data range or values that will be used to calculate
-the interval between the smallest and largest values.}
+Data range or values that will be used to calculate the range.}
 
 \item{mid}{'numeric' number.
 Critical midpoint of data range, defaults to 0.}
@@ -20,6 +19,9 @@ Diverging color scheme name: specify \code{"sunset"}, \code{"BuRd"}, or \code{"P
 
 \item{buffer}{'numeric' number [0, 0.5).
 Color level buffer around the critical midpoint.}
+
+\item{bias}{'logical' flag.
+Whether to allow bias in the color spacing.}
 }
 \value{
 Returns a 'function' that takes an 'integer' argument (the required number of colors)
@@ -66,6 +68,13 @@ inlmisc:::plot.Tol(SetPaletteMidpoint(lim, buffer = 0.1)(n))
 inlmisc:::plot.Tol(SetPaletteMidpoint(lim, buffer = 0.2)(n))
 inlmisc:::plot.Tol(SetPaletteMidpoint(lim, buffer = 0.3)(n))
 inlmisc:::plot.Tol(SetPaletteMidpoint(lim, buffer = 0.4)(n))
+par(op)
+
+# Allow bias in color spacing (bias)
+lim <- c(-3, 7); n <- 20
+op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0))
+inlmisc:::plot.Tol(SetPaletteMidpoint(lim, bias = TRUE)(n))
+inlmisc:::plot.Tol(SetPaletteMidpoint(lim, bias = FALSE)(n))
 par(op)
 
 }
