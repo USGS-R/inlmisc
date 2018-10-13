@@ -101,11 +101,10 @@ MovePaletteMidpoint <- function(ran, mid=0, buffer=0, bias=TRUE,
   }
 
   Fun <- function(...) {
-    Pal1 <- GetTolColors(scheme=scheme, alpha=alpha, start=0 + adj[1], end=0.5 - buf)
-    Pal2 <- GetTolColors(scheme=scheme, alpha=alpha, start=0.5 + buf, end=1 - adj[2])
     n1 <- round(... * ratio)
     n2 <- ... - n1
-    c(Pal1(n1), Pal2(n2))
+    c(GetTolColors(n1, scheme=scheme, alpha=alpha, start=0 + adj[1], end=0.5 - buf),
+      GetTolColors(n2, scheme=scheme, alpha=alpha, start=0.5 + buf, end=1 - adj[2]))
   }
   Fun
 }
