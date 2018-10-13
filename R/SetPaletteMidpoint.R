@@ -26,7 +26,7 @@
 #'
 #' @examples
 #' Fun <- SetPaletteMidpoint(ran = c(-3, 7))
-#' inlmisc:::plot.Tol(Fun(10))
+#' inlmisc:::plot.Tol(Fun(255))
 #'
 #' # Data range (ran)
 #' n <- 10
