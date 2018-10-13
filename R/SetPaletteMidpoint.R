@@ -36,7 +36,7 @@
 #' inlmisc:::plot.Tol(SetPaletteMidpoint(ran = c(  0, 10))(n))
 #' par(op)
 #'
-#' # Diverging color schemes (scheme)
+#' # Color schemes (scheme)
 #' ran <- c(-5, 5); n <- 255
 #' op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
 #' inlmisc:::plot.Tol(SetPaletteMidpoint(ran, scheme = "sunset")(n))
@@ -54,7 +54,7 @@
 #' inlmisc:::plot.Tol(SetPaletteMidpoint(ran, mid =  6)(n))
 #' par(op)
 #'
-#' # Midpont buffer (buffer)
+#' # Buffer around midpoint (buffer)
 #' ran <- c(-5, 5); n <- 10
 #' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
 #' inlmisc:::plot.Tol(SetPaletteMidpoint(ran, buffer = 0.0)(n))
@@ -64,7 +64,7 @@
 #' inlmisc:::plot.Tol(SetPaletteMidpoint(ran, buffer = 0.4)(n))
 #' par(op)
 #'
-#' # Allow bias in color spacing (bias)
+#' # Bias in color spacing (bias)
 #' ran <- c(-3, 7); n <- 20
 #' op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0))
 #' inlmisc:::plot.Tol(SetPaletteMidpoint(ran, bias = TRUE)(n))
