@@ -85,7 +85,7 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link{SetPaletteMidpoint}}, \code{\link[grDevices]{col2rgb}}
+#' @seealso \code{\link{MovePaletteMidpoint}}, \code{\link[grDevices]{col2rgb}}
 #'
 #' @references
 #'   Hansen, M., DeFries, R., Townshend, J.R.G., and Sohlberg, R., 1998,
