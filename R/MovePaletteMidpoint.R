@@ -6,13 +6,14 @@
 #'   Data range or values that will be used to calculate the range.
 #' @param mid 'numeric' number.
 #'   Critical midpoint of data range, defaults to 0.
-#' @param scheme 'character' string.
-#'   Diverging color scheme: specify \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"}.
-#'   Partial string matching is supported so argument may be abbreviated.
 #' @param buffer 'numeric' number.
 #'   Color level buffer around the critical midpoint measured as a fraction of the data range.
 #' @param bias 'logical' flag.
 #'   Whether to allow bias in the color spacing.
+#' @param scheme 'character' string.
+#'   Diverging color scheme name: specify \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"}.
+#'   Partial string matching is supported so argument may be abbreviated.
+#' @inheritParams GetTolColors
 #'
 #' @return Returns a 'function' that takes an 'integer' argument (the required number of colors)
 #'   and returns a 'character' vector of colors.
@@ -35,14 +36,6 @@
 #' inlmisc:::plot.Tol(MovePaletteMidpoint(ran = c( -5,  5))(n))
 #' inlmisc:::plot.Tol(MovePaletteMidpoint(ran = c(-10,  0))(n))
 #' inlmisc:::plot.Tol(MovePaletteMidpoint(ran = c(  0, 10))(n))
-#' par(op)
-#'
-#' # Color schemes (scheme)
-#' ran <- c(-5, 5); n <- 255
-#' op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(ran, scheme = "sunset")(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(ran, scheme = "BuRd")(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(ran, scheme = "PRGn")(n))
 #' par(op)
 #'
 #' # Midpoint of data range (mid)
@@ -73,14 +66,15 @@
 #' par(op)
 #'
 
-MovePaletteMidpoint <- function(ran, mid=0, scheme=c("sunset", "BuRd", "PRGn"),
-                                buffer=0, bias=TRUE) {
+MovePaletteMidpoint <- function(ran, mid=0, buffer=0, bias=TRUE,
+                                scheme=c("sunset", "BuRd", "PRGn"), alpha=NULL) {
 
   checkmate::assertNumeric(ran, all.missing=FALSE, min.len=2)
   checkmate::assertNumber(mid, finite=TRUE)
   scheme <- match.arg(scheme)
   checkmate::qassert(buffer, "N1[0, 1)")
   checkmate::assertFlag(bias)
+  checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
 
   ran <- range(ran, na.rm=TRUE)
   if (ran[1] == ran[2]) stop()
@@ -107,8 +101,8 @@ MovePaletteMidpoint <- function(ran, mid=0, scheme=c("sunset", "BuRd", "PRGn"),
   }
 
   Fun <- function(...) {
-    Pal1 <- GetTolColors(scheme=scheme, start=0 + adj[1], end=0.5 - buf)
-    Pal2 <- GetTolColors(scheme=scheme, start=0.5 + buf, end=1 - adj[2])
+    Pal1 <- GetTolColors(start=0 + adj[1], end=0.5 - buf, scheme=scheme, alpha=alpha)
+    Pal2 <- GetTolColors(start=0.5 + buf, end=1 - adj[2], scheme=scheme, alpha=alpha)
     n1 <- round(... * ratio)
     n2 <- ... - n1
     c(Pal1(n1), Pal2(n2))

@@ -4,8 +4,8 @@
 \alias{MovePaletteMidpoint}
 \title{Move Midpoint of Color Palette}
 \usage{
-MovePaletteMidpoint(ran, mid = 0, scheme = c("sunset", "BuRd", "PRGn"),
-  buffer = 0, bias = TRUE)
+MovePaletteMidpoint(ran, mid = 0, buffer = 0, bias = TRUE,
+  scheme = c("sunset", "BuRd", "PRGn"), alpha = NULL)
 }
 \arguments{
 \item{ran}{'numeric' vector of length 2 or more.
@@ -14,15 +14,19 @@ Data range or values that will be used to calculate the range.}
 \item{mid}{'numeric' number.
 Critical midpoint of data range, defaults to 0.}
 
-\item{scheme}{'character' string.
-Diverging color scheme: specify \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"}.
-Partial string matching is supported so argument may be abbreviated.}
-
 \item{buffer}{'numeric' number.
 Color level buffer around the critical midpoint measured as a fraction of the data range.}
 
 \item{bias}{'logical' flag.
 Whether to allow bias in the color spacing.}
+
+\item{scheme}{'character' string.
+Diverging color scheme name: specify \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"}.
+Partial string matching is supported so argument may be abbreviated.}
+
+\item{alpha}{'numeric' number.
+Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
+Specify as \code{NULL} to exclude the alpha channel value from colors.}
 }
 \value{
 Returns a 'function' that takes an 'integer' argument (the required number of colors)
@@ -41,14 +45,6 @@ op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
 inlmisc:::plot.Tol(MovePaletteMidpoint(ran = c( -5,  5))(n))
 inlmisc:::plot.Tol(MovePaletteMidpoint(ran = c(-10,  0))(n))
 inlmisc:::plot.Tol(MovePaletteMidpoint(ran = c(  0, 10))(n))
-par(op)
-
-# Color schemes (scheme)
-ran <- c(-5, 5); n <- 255
-op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, scheme = "sunset")(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, scheme = "BuRd")(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, scheme = "PRGn")(n))
 par(op)
 
 # Midpoint of data range (mid)
