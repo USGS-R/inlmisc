@@ -71,9 +71,9 @@ MovePaletteMidpoint <- function(ran, mid=0, buffer=0, bias=TRUE,
 
   checkmate::assertNumeric(ran, all.missing=FALSE, min.len=2)
   checkmate::assertNumber(mid, finite=TRUE)
-  scheme <- match.arg(scheme)
   checkmate::qassert(buffer, "N1[0, 1)")
   checkmate::assertFlag(bias)
+  scheme <- match.arg(scheme)
   checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
 
   ran <- range(ran, na.rm=TRUE)
@@ -101,8 +101,8 @@ MovePaletteMidpoint <- function(ran, mid=0, buffer=0, bias=TRUE,
   }
 
   Fun <- function(...) {
-    Pal1 <- GetTolColors(start=0 + adj[1], end=0.5 - buf, scheme=scheme, alpha=alpha)
-    Pal2 <- GetTolColors(start=0.5 + buf, end=1 - adj[2], scheme=scheme, alpha=alpha)
+    Pal1 <- GetTolColors(scheme=scheme, alpha=alpha, start=0 + adj[1], end=0.5 - buf)
+    Pal2 <- GetTolColors(scheme=scheme, alpha=alpha, start=0.5 + buf, end=1 - adj[2])
     n1 <- round(... * ratio)
     n2 <- ... - n1
     c(Pal1(n1), Pal2(n2))
