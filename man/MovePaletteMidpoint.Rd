@@ -4,24 +4,25 @@
 \alias{MovePaletteMidpoint}
 \title{Move Midpoint of Color Palette}
 \usage{
-MovePaletteMidpoint(ran, mid = 0, buffer = 0, bias = TRUE,
+MovePaletteMidpoint(x, midpoint = 0, buffer = 0, bias = TRUE,
   scheme = c("sunset", "BuRd", "PRGn"), alpha = NULL)
 }
 \arguments{
-\item{ran}{'numeric' vector of length 2 or more.
-Data range or values that will be used to calculate the range.}
+\item{x}{'numeric' object that can be passed to the \code{\link{range}} function
+with \code{NA}'s removed.}
 
-\item{mid}{'numeric' number.
-Critical midpoint of data range, defaults to 0.}
+\item{midpoint}{'numeric' number.
+Critical midpoint of data range, defaults to zero.}
 
 \item{buffer}{'numeric' number.
-Color level buffer around the critical midpoint measured as a fraction of the data range.}
+Color level buffer around the critical midpoint measured as a fraction of the color range.}
 
 \item{bias}{'logical' flag.
 Whether to allow bias in the color spacing.}
 
 \item{scheme}{'character' string.
 Diverging color scheme name: specify \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"}.
+Schemes are provided by the \code{\link{GetTolColors}} function.
 Partial string matching is supported so argument may be abbreviated.}
 
 \item{alpha}{'numeric' number.
@@ -36,47 +37,46 @@ Returns a 'function' that takes an 'integer' argument (the required number of co
 Move the critical midpoint of a diverging color palette.
 }
 \examples{
-Fun <- MovePaletteMidpoint(ran = c(-3, 7))
+Fun <- MovePaletteMidpoint(c(-3, 7))
 inlmisc:::plot.Tol(Fun(255))
 
-# Data range (ran)
-n <- 10
-op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran = c( -5,  5))(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran = c(-10,  0))(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran = c(  0, 10))(n))
+# Range of a set of data (x)
+n <- 20
+op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x = c(-10,  0))(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x = c( -7,  3))(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x = c( -5,  5))(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x = c( -3,  7))(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x = c(  0, 10))(n))
 par(op)
 
-# Midpoint of data range (mid)
-ran <- c(-5, 5); n <- 255
+# Midpoint of data range (midpoint)
+x <- c(-5, 5); n <- 255
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, mid = -6)(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, mid = -2)(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, mid =  0)(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, mid =  2)(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, mid =  6)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, midpoint = -6)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, midpoint = -2)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, midpoint =  0)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, midpoint =  2)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, midpoint =  6)(n))
 par(op)
 
 # Buffer around midpoint (buffer)
-ran <- c(-5, 5); n <- 10
+x <- c(-5, 5); n <- 20
 op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, buffer = 0.0)(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, buffer = 0.2)(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, buffer = 0.4)(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, buffer = 0.6)(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, buffer = 0.8)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, buffer = 0.0)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, buffer = 0.2)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, buffer = 0.4)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, buffer = 0.6)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, buffer = 0.8)(n))
 par(op)
 
 # Bias in color spacing (bias)
-ran <- c(-3, 7); n <- 20
+x <- c(-3, 7); n <- 20
 op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, bias = TRUE)(n))
-inlmisc:::plot.Tol(MovePaletteMidpoint(ran, bias = FALSE)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, bias = TRUE)(n))
+inlmisc:::plot.Tol(MovePaletteMidpoint(x, bias = FALSE)(n))
 par(op)
 
-}
-\seealso{
-\code{\link{GetTolColors}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
