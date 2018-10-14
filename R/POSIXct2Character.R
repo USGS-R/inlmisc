@@ -1,4 +1,4 @@
-#' Convert Class from POSIXct to Character
+#' Convert from POSIXct to Character
 #'
 #' Convert objects from '\link{POSIXct}' class to '\link{character}' class.
 #'

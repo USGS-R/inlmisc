@@ -8,7 +8,7 @@
 #'   Number of colors to be in the palette.
 #'   The maximum number of colors in a generated palette is dependent on the specified color scheme,
 #'   see \sQuote{Details} section for maximum values.
-#' @param scheme 'character' vector.
+#' @param scheme 'character' string.
 #'   Color scheme name: specify
 #'   \code{"bright"}, \code{"high-contrast"}, \code{"vibrant"}, \code{"muted"}, \code{"pale"},
 #'   \code{"dark"}, \code{"light"}, or \code{"ground cover"} for a qualitative color scheme;
@@ -85,7 +85,7 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link[grDevices]{col2rgb}}
+#' @seealso \code{\link{MovePaletteMidpoint}}, \code{\link[grDevices]{col2rgb}}
 #'
 #' @references
 #'   Hansen, M., DeFries, R., Townshend, J.R.G., and Sohlberg, R., 1998,
@@ -101,7 +101,6 @@
 #' @export
 #'
 #' @examples
-#'
 #' cols <- GetTolColors(n = 10)
 #' print(cols)
 #' plot(cols)
@@ -204,7 +203,10 @@
 GetTolColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
                          bias=1, reverse=FALSE, blind=NULL, gray=FALSE) {
 
-  if (!missing(n)) checkmate::assertCount(n, positive=TRUE)
+  if (!missing(n)) {
+    checkmate::assertCount(n)
+    if (n == 0) return(NULL)
+  }
   checkmate::assertFlag(gray)
   nmax <- c("bright"           = ifelse(gray, 3, 7),  # qualitative
             "vibrant"          = ifelse(gray, 4, 7),
