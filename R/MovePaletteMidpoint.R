@@ -70,21 +70,20 @@
 MovePaletteMidpoint <- function(x, midpoint=0, buffer=0, bias=TRUE,
                                 scheme=c("sunset", "BuRd", "PRGn"), alpha=NULL) {
 
-  checkmate::assertNumeric(x, all.missing=FALSE, min.len=2)
+  x <- range(x, na.rm=TRUE)
+  checkmate::assertNumeric(x, finite=TRUE, any.missing=FALSE, len=2,
+                           unique=TRUE, sorted=TRUE)
   checkmate::assertNumber(midpoint, finite=TRUE)
   checkmate::qassert(buffer, "N1[0, 1)")
   checkmate::assertFlag(bias)
   scheme <- match.arg(scheme)
   checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
 
-  ran <- range(x, na.rm=TRUE)
-  if (ran[1] == ran[2]) stop()
-
   buf <- buffer / 2
 
-  if (ran[1] < midpoint & ran[2] > midpoint) {
-    ratio <- diff(c(ran[1], midpoint)) / diff(ran)
-  } else if (ran[1] < midpoint) {
+  if (x[1] < midpoint & x[2] > midpoint) {
+    ratio <- diff(c(x[1], midpoint)) / diff(x)
+  } else if (x[1] < midpoint) {
     ratio <- 1
   } else {
     ratio <- 0
@@ -93,8 +92,8 @@ MovePaletteMidpoint <- function(x, midpoint=0, buffer=0, bias=TRUE,
   if (bias || ratio %in% c(0, 0.5, 1)) {
     adj <- c(0, 0)
   } else {
-    d1 <- diff(c(ran[1], midpoint))
-    d2 <- diff(c(midpoint, ran[2]))
+    d1 <- diff(c(x[1], midpoint))
+    d2 <- diff(c(midpoint, x[2]))
     if (d1 < d2)
       adj <- c((0.5 - buf) * (d1 / d2), 0)
     else
