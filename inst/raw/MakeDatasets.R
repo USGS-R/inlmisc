@@ -12,7 +12,7 @@ MakeDatasets <- function() {
               "grey"   = "#BBBBBB"),
     gray  = c("yellow", "red", "green"),
     type  = "Qualitative",
-    cite  = "Tol, 2018, p. 5",
+    cite  = "Tol, 2018, p.~5",
     nmax  = 7
   )
 
@@ -24,7 +24,7 @@ MakeDatasets <- function() {
               "white"  = "#FFFFFF"),
     gray  = c("white", "yellow", "red", "blue", "black"),
     type  = "Qualitative",
-    cite  = "Tol, 2018, p. 5",
+    cite  = "Tol, 2018, p.~5",
     nmax  = 5
   )
 
@@ -38,7 +38,7 @@ MakeDatasets <- function() {
               "grey"    = "#BBBBBB"),
     gray  = c("grey", "orange", "magenta", "blue"),
     type  = "Qualitative",
-    cite  = "Tol, 2018, p. 5",
+    cite  = "Tol, 2018, p.~5",
     nmax  = 7
   )
 
@@ -55,7 +55,7 @@ MakeDatasets <- function() {
     gray  = c("sand", "teal", "purple", "green", "indigo"),
     bad   = c("pale grey" = "#DDDDDD"),
     type  = "Qualitative",
-    cite  = "Tol, 2018, p. 5",
+    cite  = "Tol, 2018, p.~5",
     nmax  = 9
   )
 
@@ -67,7 +67,7 @@ MakeDatasets <- function() {
               "pale red"    = "#FFCCCC",
               "pale grey"   = "#DDDDDD"),
     type  = "Qualitative",
-    cite  = "Tol, 2018, p. 5",
+    cite  = "Tol, 2018, p.~5",
     nmax  = 6
   )
 
@@ -79,7 +79,7 @@ MakeDatasets <- function() {
               "dark red"    = "#663333",
               "dark grey"   = "#555555"),
     type  = "Qualitative",
-    cite  = "Tol, 2018, p. 5",
+    cite  = "Tol, 2018, p.~5",
     nmax  = 6
   )
 
@@ -94,7 +94,7 @@ MakeDatasets <- function() {
               "olive"        = "#AAAA00",
               "pale grey"    = "#DDDDDD"),
     type  = "Qualitative",
-    cite  = "Tol, 2018, p. 6",
+    cite  = "Tol, 2018, p.~6",
     nmax  = 9
   )
 
@@ -114,7 +114,7 @@ MakeDatasets <- function() {
               "bare ground"                 = "#FFEE88",
               "urban and built"             = "#BB0011"),
     type  = "Qualitative",
-    cite  = "Tol, 2018, p. 19",
+    cite  = "Tol, 2018, p.~19",
     nmax  = 14
   )
 
@@ -132,7 +132,7 @@ MakeDatasets <- function() {
               "#A50026"),
     bad   = "#FFFFFF",
     type  = "Diverging",
-    cite  = "Tol, 2018, p. 9",
+    cite  = "Tol, 2018, p.~9",
     nmax  = Inf
   )
 
@@ -148,7 +148,7 @@ MakeDatasets <- function() {
               "#B2182B"),
     bad   = "#FFEE99",
     type  = "Diverging",
-    cite  = "Tol, 2018, p. 9",
+    cite  = "Tol, 2018, p.~9",
     nmax  = Inf
   )
 
@@ -164,7 +164,7 @@ MakeDatasets <- function() {
               "#1B7837"),
     bad   = "#FFEE99",
     type  = "Diverging",
-    cite  = "Tol, 2018, p. 9",
+    cite  = "Tol, 2018, p.~9",
     nmax  = Inf
   )
 
@@ -180,7 +180,7 @@ MakeDatasets <- function() {
               "#662506"),
     bad   = "#888888",
     type  = "Sequential",
-    cite  = "Tol, 2018, p. 11",
+    cite  = "Tol, 2018, p.~11",
     nmax  = Inf
   )
 
@@ -210,7 +210,7 @@ MakeDatasets <- function() {
               "#46353A"),
     bad   = "#999999",
     type  = "Sequential",
-    cite  = "Tol, 2018, p. 11",
+    cite  = "Tol, 2018, p.~11",
     nmax  = Inf
   )
 
@@ -246,7 +246,7 @@ MakeDatasets <- function() {
               "29" = "#42150A"),
     bad   = "#777777",
     type  = "Sequential",
-    cite  = "Tol, 2018, p. 12--13",
+    cite  = "Tol, 2018, p.~12--13",
     nmax  = 23
   )
 
@@ -287,7 +287,7 @@ MakeDatasets <- function() {
               "#521A13"),
     bad   = "#666666",
     type  = "Sequential",
-    cite  = "Tol, 2018, p. 12",
+    cite  = "Tol, 2018, p.~12",
     nmax  = Inf
   )
 
