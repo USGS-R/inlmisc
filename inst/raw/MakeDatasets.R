@@ -359,7 +359,7 @@ MakeDatasets <- function() {
     g2 <- sprintf("\\adjustimage{width=%spx, natwidth=%s, natheight=%s, valign=m}{%s}", h, h, h, f2)
 
     grDevices::png(f1, width=w, height=h, res=200)
-    inlmisc:::plot.inlcol(pal, simple=TRUE)
+    inlmisc:::plot.inlcol(pal, label=FALSE)
     dev.off()
 
     if (is.null(scheme$bad)) {

@@ -328,14 +328,14 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
 
 # Plot function for 'inlcol' color palette
 
-plot.inlcol <- function(x, ..., simple=FALSE) {
+plot.inlcol <- function(x, ..., label=TRUE) {
   checkmate::assertCharacter(x, any.missing=FALSE, min.len=1)
   stopifnot(all(.IsColor(x)))
-  checkmate::assertFlag(simple)
+  checkmate::assertFlag(label)
 
   n <- length(x)
 
-  if (!simple && inherits(x, "inlcol")) {
+  if (label && inherits(x, "inlcol")) {
     arg <- as.list(attr(x, "call"))
     txt <- c(paste0("n = ", n),
              paste0("scheme = '", arg$scheme, "'"),
@@ -354,7 +354,7 @@ plot.inlcol <- function(x, ..., simple=FALSE) {
     reverse <- FALSE
   }
 
-  if (!simple && n < 35) {  # cutoff criterion for drawing tick labels
+  if (label && n < 35) {  # cutoff criterion for drawing tick labels
     border <- "#D3D3D3"
     labels <- gsub(" ", "\n", names(x))
     if (length(labels) == 0) {
@@ -370,7 +370,7 @@ plot.inlcol <- function(x, ..., simple=FALSE) {
   # colorspace::rainbow_hcl function documentation,
   # authored by Achim Zeileis and accessed August 8, 2018
   # at https://CRAN.R-project.org/package=colorspace
-  mar <- if (simple) c(0, 0, 0, 0) else c(3, 2, 2, 2)
+  mar <- if (label) c(3, 2, 2, 2) else c(0, 0, 0, 0)
   op <- graphics::par(mar=mar); on.exit(graphics::par(op))
   graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
                          xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
