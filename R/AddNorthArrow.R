@@ -34,7 +34,7 @@
 #' y <- seq(from = 6478705, length.out = nrow(m), by = 10)
 #' r <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
 #'                     crs = "+init=epsg:27200")
-#' PlotMap(r, pal = terrain.colors)
+#' PlotMap(r, pal = GetColors(scheme = "DEM screen"))
 #' AddNorthArrow(raster::crs(r), loc = "center")
 #' AddNorthArrow(raster::crs(r), inset = 0.1)
 #' AddNorthArrow(raster::crs(r), loc = "topleft", inset = 0.1)

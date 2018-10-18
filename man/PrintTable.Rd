@@ -10,7 +10,7 @@ PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
   landscape = FALSE, ...)
 }
 \arguments{
-\item{d}{'data.frame'.
+\item{d}{'data.frame' or 'matrix'.
 Data table to print.}
 
 \item{colheadings}{'character' vector.

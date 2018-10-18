@@ -65,7 +65,7 @@ ExportRasterStack <- function(rs, path, zip="", col=NULL) {
   if (zip != "") checkmate::assertFileExists(zip)
   checkmate::assertCharacter(col, null.ok=TRUE)
 
-  if (is.null(col)) col <- GetTolColors(255, start=0.3, end=0.9)
+  if (is.null(col)) col <- GetColors(255, start=0.3, end=0.9)
 
   dir.create(path, showWarnings=FALSE, recursive=TRUE)
   dir.create(path.csv <- file.path(path, "csv"), showWarnings=FALSE)

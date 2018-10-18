@@ -4,7 +4,7 @@
 #' The applied output format attempts to adhere to the design recommendations
 #' for tables in United States Geological Survey (USGS) publications.
 #'
-#' @param d 'data.frame'.
+#' @param d 'data.frame' or 'matrix'.
 #'   Data table to print.
 #' @param colheadings 'character' vector.
 #'   Column headings.
@@ -109,7 +109,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
                        title=NULL, headnotes=NULL, footnotes=NULL, nrec=nrow(d),
                        hline=NULL, na="--", rm_dup=NULL, landscape=FALSE, ...) {
 
-  checkmate::assertDataFrame(d, min.rows=1, min.cols=1)
+  stopifnot(inherits(d, c("data.frame", "matrix")))
   checkmate::assertCharacter(colheadings, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
   checkmate::assertCharacter(align, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
   checkmate::assertIntegerish(digits, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
@@ -123,6 +123,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
   checkmate::assertInt(rm_dup, lower=1, upper=ncol(d), null.ok=TRUE)
   checkmate::assertFlag(landscape)
 
+  d <- as.data.frame(d, stringsAsFactors=FALSE)
   if (is.null(colheadings)) colheadings <- colnames(d)
   colnames(d) <- sprintf("{\\normalfont\\bfseries\\sffamily \\makecell{%s}}", colheadings)
 
@@ -173,8 +174,10 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
         tbl[[j]][duplicated(tbl[, seq_len(j), drop=FALSE])] <- ""
 
     tbl <- xtable::xtable(tbl)
-    xtable::caption(tbl) <- caption
-    if (length(caption) > 0) xtable::label(tbl) <- label
+    if (length(caption) > 0) {
+      xtable::caption(tbl) <- caption
+      xtable::label(tbl) <- label
+    }
 
     row_names <- utils::type.convert(rownames(d))
     row_align <- ifelse(is.numeric(row_names), "r", "l")

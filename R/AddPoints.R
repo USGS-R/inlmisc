@@ -130,7 +130,7 @@
 #'           quantile.breaks = TRUE, add = FALSE)
 #'
 #' z <- as.factor(rep(c("dog", "cat", "ant", "pig", "bat"), length.out = n))
-#' bg <- GetTolColors(nlevels(z), scheme = "bright", alpha = 0.8)
+#' bg <- GetColors(nlevels(z), scheme = "bright", alpha = 0.8)
 #' AddPoints(x, z = z, bg = bg, add = FALSE)
 #'
 #' AddPoints(x, draw.legend = FALSE, add = FALSE)

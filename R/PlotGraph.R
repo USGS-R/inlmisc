@@ -109,7 +109,7 @@
 #'
 #' y <- sapply(1:3, function(i) sample((1:100) + i * 100, n, replace = TRUE))
 #' m <- cbind(as.numeric(x), y)
-#' col <- GetTolColors(3, scheme = "bright")
+#' col <- GetColors(3, scheme = "bright")
 #' PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b", pch = 15:17,
 #'           col = col, pt.cex = 0.9)
 #' legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
@@ -193,7 +193,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
       col <- col(n)
     } else {
       scheme <- if (n > 7) "smooth rainbow" else "bright"
-      col <- GetTolColors(n, scheme=scheme)
+      col <- GetColors(n, scheme=scheme)
     }
   }
 
