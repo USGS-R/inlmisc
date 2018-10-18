@@ -80,7 +80,8 @@ The suggested data type for color schemes and the characteristics of generated p
   \bold{Bad}: color provided for bad data.
   \bold{Abbreviations}: --, no limit placed on the number of colors in the palette because colors are interpolated]
 
-  \figure{table.png}
+  \if{html}{\figure{table.svg}{options: alt="Table describing color schemes"}}
+  \if{latex}{\figure{table.pdf}}
 
   Schemes \code{"pale"},  \code{"dark"}, and \code{"ground cover"} are
   intended to be accessed in their entirety and subset using vector element names.

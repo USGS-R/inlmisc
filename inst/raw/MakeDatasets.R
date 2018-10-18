@@ -352,20 +352,20 @@ MakeDatasets <- function() {
     n <- ifelse(is.finite(scheme$nmax), scheme$nmax, 255)
     pal <- inlmisc::GetColors(n, scheme=names(schemes)[i])
 
-    f1 <- sprintf("%s_%03d.png", "g1", i)
-    f2 <- sprintf("%s_%03d.png", "g2", i)
-    w <- 50; h <- 10
-    g1 <- sprintf("\\adjustimage{width=%spx, natwidth=%s, natheight=%s, valign=m}{%s}", w, w, h, f1)
-    g2 <- sprintf("\\adjustimage{width=%spx, natwidth=%s, natheight=%s, valign=m}{%s}", h, h, h, f2)
+    f1 <- sprintf("%s_%03d.eps", "g1", i)
+    f2 <- sprintf("%s_%03d.eps", "g2", i)
+    w <- 100; h <- 10
+    g1 <- sprintf("\\adjustimage{width=%spx, height=%spx, valign=m}{%s}", w, h, f1)
+    g2 <- sprintf("\\adjustimage{width=%spx, height=%spx, valign=m}{%s}", h, h, f2)
 
-    grDevices::png(f1, width=w, height=h, res=200)
+    grDevices::postscript(f1, width=w / 72, height=h / 72, horizontal=FALSE,, paper="special")
     inlmisc:::plot.inlcol(pal, label=FALSE)
     dev.off()
 
     if (is.null(scheme$bad)) {
       g2 <- ""
     } else {
-      suppressWarnings(grDevices::png(f2, width=h, height=h, res=200))
+      grDevices::postscript(f2, width=h / 72, height=h / 72, horizontal=FALSE, paper="special")
       graphics::par(mar=c(0, 0, 0, 0))
       graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=NULL,
                              xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
@@ -385,30 +385,28 @@ MakeDatasets <- function() {
       "Bad"     = g2,
       "Source"  = scheme$cite)
   }))
-
   m[duplicated(m[, "Type"]), "Type"] <- ""
 
   sink("table.tex")
-  cat("\\documentclass{article}",
-      "\\usepackage[paperwidth=5.5in, paperheight=7in, noheadfoot, margin=0in]{geometry}",
+  cat("\\documentclass[varwidth=\\maxdimen, border=10pt]{standalone}",
       "\\usepackage{booktabs}",
       "\\usepackage{makecell}",
       "\\usepackage{adjustbox}",
-      "\\begin{document}",
-      "\\pagestyle{empty}", sep="\n")
+      "\\begin{document}", sep="\n")
   inlmisc::PrintTable(m, align=c("l", "l", "c", "c", "c", "l"))
   cat("\\end{document}\n")
   sink()
 
-  tools::texi2dvi("table.tex", clean=TRUE)
-  system2("dvipng", args=c("-D 120", "-T tight", "-o table.png", "table.dvi"),
-          stdout=FALSE, stderr=FALSE, invisible=TRUE)
+  tools::texi2pdf("table.tex", clean=TRUE)
+
+  args <- c("--without-gui", "--file=table.pdf", "--export-plain-svg=table.svg")
+  system2("inkscape", args=args, stdout=FALSE, stderr=FALSE, invisible=TRUE)
 
   dir.create(path <- "../../man/figures/", showWarnings=FALSE)
-  stopifnot(file.copy("table.png", path, overwrite=TRUE))
+  stopifnot(file.copy(c("table.pdf", "table.svg"), path, overwrite=TRUE))
 
-  unlink(list.files(pattern="^g[1-2]_[0-9]{3}\\.png$"))
-  unlink(sprintf("table.%s", c("png", "dvi", "tex")))
+  unlink(list.files(pattern="^g[1-2]_[0-9]{3}\\.eps$"))
+  unlink(sprintf("table.%s", c("tex", "pdf", "svg")))
 
   save(schemes, file="../../R/sysdata.rda")
 
