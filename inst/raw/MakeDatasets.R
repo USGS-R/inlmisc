@@ -355,17 +355,17 @@ MakeDatasets <- function() {
     f1 <- sprintf("%s_%03d.png", "g1", i)
     f2 <- sprintf("%s_%03d.png", "g2", i)
     w <- 50; h <- 10
-    g1 <- sprintf("\\includegraphics[width=%spx, natwidth=%s, natheight=%s]{%s}", w, w, h, f1)
-    g2 <- sprintf("\\includegraphics[width=%spx, natwidth=%s, natheight=%s]{%s}", h, h, h, f2)
+    g1 <- sprintf("\\adjustimage{width=%spx, natwidth=%s, natheight=%s, valign=m}{%s}", w, w, h, f1)
+    g2 <- sprintf("\\adjustimage{width=%spx, natwidth=%s, natheight=%s, valign=m}{%s}", h, h, h, f2)
 
-    grDevices::png(f1, width=w, height=h, res=120)
+    grDevices::png(f1, width=w, height=h, res=200)
     inlmisc:::plot.inlcol(pal, simple=TRUE)
     dev.off()
 
     if (is.null(scheme$bad)) {
       g2 <- ""
     } else {
-      suppressWarnings(grDevices::png(f2, width=h, height=h, res=120))
+      suppressWarnings(grDevices::png(f2, width=h, height=h, res=200))
       graphics::par(mar=c(0, 0, 0, 0))
       graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=NULL,
                              xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
@@ -393,7 +393,7 @@ MakeDatasets <- function() {
       "\\usepackage[paperwidth=5.5in, paperheight=7in, noheadfoot, margin=0in]{geometry}",
       "\\usepackage{booktabs}",
       "\\usepackage{makecell}",
-      "\\usepackage{graphicx}",
+      "\\usepackage{adjustbox}",
       "\\begin{document}",
       "\\pagestyle{empty}", sep="\n")
   inlmisc::PrintTable(m, align=c("l", "l", "c", "c", "c", "l"))
