@@ -399,7 +399,7 @@ MakeDatasets <- function() {
       "\\usepackage{makecell}",
       "\\usepackage{adjustbox}",
       "\\begin{document}", sep="\n")
-  inlmisc::PrintTable(m, align=c("l", "l", "c", "c", "c", "l"), size="normalsize")
+  inlmisc::PrintTable(m, align=c("l", "l", "c", "c", "c", "l"))
   cat("\\end{document}\n")
   sink()
 
