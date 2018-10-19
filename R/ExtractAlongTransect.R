@@ -50,7 +50,7 @@
 #' xlim <- range(vapply(segs, function(i) range(i@data[, "dist"]), c(0, 0)))
 #' ylim <- range(vapply(segs, function(i) range(i@data[, "value"], na.rm = TRUE), c(0, 0)))
 #' plot(NA, type = "n", xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim)
-#' cols <- GetTolColors(length(segs), scheme = "bright")
+#' cols <- GetColors(length(segs), scheme = "bright")
 #' for (i in seq_along(segs))
 #'   lines(segs[[i]]@data[, c("dist", "value")], col = cols[i])
 #' coords <- sp::coordinates(transect)

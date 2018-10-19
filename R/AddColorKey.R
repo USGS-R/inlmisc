@@ -53,7 +53,7 @@
 #' AddColorKey(breaks = breaks, at = breaks[as.logical(seq_along(breaks) %% 2)],
 #'             scipen = NULL, log = TRUE)
 #' AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
-#' AddColorKey(is.categorical = TRUE, col = GetTolColors(5, scheme = "bright"))
+#' AddColorKey(is.categorical = TRUE, col = GetColors(5, scheme = "bright"))
 #' par(op)
 #'
 
@@ -84,7 +84,7 @@ AddColorKey <- function(breaks, is.categorical=FALSE, col=NULL, at=NULL,
   }
 
   if (is.null(col))
-    col <- GetTolColors(length(breaks) - 1, start=0.3, end=0.9)
+    col <- GetColors(length(breaks) - 1, start=0.3, end=0.9)
 
   if (is.null(at)) at <- breaks
 

@@ -69,7 +69,7 @@ AddColorKey(breaks = breaks, log = TRUE)
 AddColorKey(breaks = breaks, at = breaks[as.logical(seq_along(breaks) \%\% 2)],
             scipen = NULL, log = TRUE)
 AddColorKey(is.categorical = TRUE, labels = LETTERS[1:5])
-AddColorKey(is.categorical = TRUE, col = GetTolColors(5, scheme = "bright"))
+AddColorKey(is.categorical = TRUE, col = GetColors(5, scheme = "bright"))
 par(op)
 
 }

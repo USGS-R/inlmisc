@@ -1,20 +1,20 @@
-#' Move Midpoint of Color Palette
+#' Move Midpoint of Color Scheme
 #'
-#' Move the critical midpoint of a diverging color palette.
+#' Move the critical midpoint of a diverging color scheme.
 #'
 #' @param x 'numeric' object that can be passed to the \code{\link{range}} function
 #'   with \code{NA}'s removed.
 #' @param midpoint 'numeric' number.
-#'   Critical midpoint of data range, defaults to zero.
+#'   Critical midpoint of the data range, defaults to zero.
 #' @param buffer 'numeric' number.
 #'   Color level buffer around the critical midpoint measured as a fraction of the color range.
 #' @param bias 'logical' flag.
 #'   Whether to allow bias in the color spacing.
 #' @param scheme 'character' string.
 #'   Diverging color scheme name: specify \code{"sunset"}, \code{"BuRd"}, or \code{"PRGn"}.
-#'   Schemes are provided by the \code{\link{GetTolColors}} function.
+#'   Schemes are provided by the \code{\link{GetColors}} function.
 #'   Partial string matching is supported so argument may be abbreviated.
-#' @inheritParams GetTolColors
+#' @inheritParams GetColors
 #'
 #' @return Returns a 'function' that takes an 'integer' argument (the required number of colors)
 #'   and returns a 'character' vector of colors.
@@ -26,49 +26,49 @@
 #' @export
 #'
 #' @examples
-#' Fun <- MovePaletteMidpoint(c(-3, 7))
-#' inlmisc:::plot.Tol(Fun(255))
+#' Fun <- MoveMidpoint(c(-3, 7))
+#' inlmisc:::plot.inlcol(Fun(255))
 #'
 #' # Range of a set of data (x)
 #' n <- 20
 #' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x = c(-10,  0))(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x = c( -7,  3))(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x = c( -5,  5))(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x = c( -3,  7))(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x = c(  0, 10))(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x = c(-10,  0))(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x = c( -7,  3))(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x = c( -5,  5))(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x = c( -3,  7))(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x = c(  0, 10))(n))
 #' par(op)
 #'
 #' # Midpoint of data range (midpoint)
 #' x <- c(-5, 5); n <- 255
 #' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, midpoint = -6)(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, midpoint = -2)(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, midpoint =  0)(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, midpoint =  2)(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, midpoint =  6)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, midpoint = -6)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, midpoint = -2)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, midpoint =  0)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, midpoint =  2)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, midpoint =  6)(n))
 #' par(op)
 #'
 #' # Buffer around midpoint (buffer)
 #' x <- c(-5, 5); n <- 20
 #' op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, buffer = 0.0)(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, buffer = 0.2)(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, buffer = 0.4)(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, buffer = 0.6)(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, buffer = 0.8)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, buffer = 0.0)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, buffer = 0.2)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, buffer = 0.4)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, buffer = 0.6)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, buffer = 0.8)(n))
 #' par(op)
 #'
 #' # Bias in color spacing (bias)
 #' x <- c(-3, 7); n <- 20
 #' op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, bias = TRUE)(n))
-#' inlmisc:::plot.Tol(MovePaletteMidpoint(x, bias = FALSE)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, bias = TRUE)(n))
+#' inlmisc:::plot.inlcol(MoveMidpoint(x, bias = FALSE)(n))
 #' par(op)
 #'
 
-MovePaletteMidpoint <- function(x, midpoint=0, buffer=0, bias=TRUE,
-                                scheme=c("sunset", "BuRd", "PRGn"), alpha=NULL) {
+MoveMidpoint <- function(x, midpoint=0, buffer=0, bias=TRUE,
+                         scheme=c("sunset", "BuRd", "PRGn"), alpha=NULL) {
 
   x <- range(x, na.rm=TRUE)
   checkmate::assertNumeric(x, finite=TRUE, any.missing=FALSE, len=2,
@@ -103,8 +103,8 @@ MovePaletteMidpoint <- function(x, midpoint=0, buffer=0, bias=TRUE,
   Fun <- function(...) {
     n1 <- round(... * ratio)
     n2 <- ... - n1
-    c(GetTolColors(n1, scheme=scheme, alpha=alpha, start=adj[1], end=0.5 - buf),
-      GetTolColors(n2, scheme=scheme, alpha=alpha, start=0.5 + buf, end=1 - adj[2]))
+    c(GetColors(n1, scheme=scheme, alpha=alpha, start=adj[1], end=0.5 - buf),
+      GetColors(n2, scheme=scheme, alpha=alpha, start=0.5 + buf, end=1 - adj[2]))
   }
   Fun
 }

@@ -200,7 +200,7 @@ meuse.grid <- raster::raster(meuse.grid, layer = "soil")
 model <- gstat::gstat(id = "zinc", formula = zinc~1, locations = ~x+y, data = meuse)
 r <- raster::interpolate(meuse.grid, model)
 r <- raster::mask(r, meuse.grid)
-Pal <- function(n) GetTolColors(n, start=0.3, end=0.9)
+Pal <- function(n) GetColors(n, start=0.3, end=0.9)
 breaks <- seq(0, 2000, by = 200)
 credit <- paste("Data collected in a flood plain of the river Meuse,",
                 "near the village of Stein (Netherlands),",
@@ -224,10 +224,10 @@ r <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
 credit <- paste("Digitized from a topographic map by Ross Ihaka",
                 "on a grid with 10-meter by 10-meter spacing.")
 explanation <- "Elevation on Auckland's Maunga Whau volcano, in meters."
-PlotMap(r, extend.z = TRUE, pal = terrain.colors, scale.loc = "bottomright",
-        arrow.loc = "topright", explanation = explanation, credit = credit,
-        shade = list(alpha = 0.3), contour.lines = list(col = "#1F1F1FA6"),
-        useRaster = TRUE)
+PlotMap(r, extend.z = TRUE, pal = GetColors(scheme = "DEM screen"),
+        scale.loc = "bottomright", arrow.loc = "topright",
+        explanation = explanation, credit = credit, shade = list(alpha = 0.3),
+        contour.lines = list(col = "#1F1F1FA6"), useRaster = TRUE)
 
 out <- PlotMap(r, file = "Rplots1.pdf")
 print(out)
