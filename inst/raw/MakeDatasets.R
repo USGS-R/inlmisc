@@ -414,6 +414,11 @@ MakeDatasets <- function() {
     dir.create(path <- "../../man/figures/", showWarnings=FALSE)
   stopifnot(file.copy(c("table.pdf", "table.svg"), path, overwrite=TRUE))
 
+  width <- dim(rsvg::rsvg("table.svg"))[2]
+  fmt <- c("#'   \\if{html}{\\figure{table.svg}{options: width=%d alt=\"Table: schemes\"}}",
+           "#'   \\if{latex}{\\figure{table.pdf}{options: width=%.2fcm}}")
+  cat(sprintf(fmt[1], width), sprintf(fmt[2], width * 0.0264583333), sep="\n")
+
   unlink(list.files(pattern="^g[1-2]_[0-9]{3}\\.eps$"))
   unlink(sprintf("table.%s", c("tex", "pdf", "svg")))
 

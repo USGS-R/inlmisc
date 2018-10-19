@@ -41,10 +41,10 @@
 #'   \bold{Bad}: color provided for bad data.
 #'   \bold{Abbreviations}: --, no limit placed on the number of colors in the palette because colors are interpolated]
 #'
-#'   \if{html}{\figure{table.svg}{options: alt="Table describing color schemes"}}
-#'   \if{latex}{\figure{table.pdf}}
+#'   \if{html}{\figure{table.svg}{options: width=511 alt="Table: schemes"}}
+#'   \if{latex}{\figure{table.pdf}{options: width=13.52cm}}
 #'
-#'   Schemes \code{"pale"},  \code{"dark"}, and \code{"ground cover"} are
+#'   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
 #'   intended to be accessed in their entirety and subset using vector element names.
 #'   The very specific \code{"ground cover"} scheme is a color-blind safe version of the
 #'   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
