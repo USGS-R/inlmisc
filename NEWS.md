@@ -1,6 +1,9 @@
 # inlmisc 0.4.3.9000
 
-- Add `MovePaletteMidpoint` function, used to move the critical midpoint in a diverging color scheme.
+- In `PrintTable` function: `d` argument can be of class 'matrix'; and
+  a default caption is no longer added when `title` and `headnotes` arguments are not specified.
+
+- Add `MoveMidpoint` function, used to move the critical midpoint in a diverging color scheme.
 
 - In `plot.Tol` function, permit plotting of color palettes that are not of class 'Tol'.
 
@@ -19,9 +22,11 @@
   and for `scale.loc` argument from `"bottom"` to `NULL`;
   make font/line color darker for section breaks and features.
 
-- In `GetTolColors` function: add `"high-contrast"` and `"iridescent"` schemes;
+- Rename `GetTolColors` function to `GetColors`.
+
+- In `GetColors` function: add additional color schemes;
   change `blind` argument option from `"monochromacy"` to `"monochrome"`; and
-  when argument `n` is unspecified, return a variant of the `GetTolColors` function.
+  when argument `n` is unspecified, return a variant of the `GetColors` function.
 
 - For leaflet-search plugin, change version from `2.8.0` to `2.9.6` and tidy wrapper functions.
 
