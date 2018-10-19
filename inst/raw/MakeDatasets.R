@@ -388,21 +388,30 @@ MakeDatasets <- function() {
   m[duplicated(m[, "Type"]), "Type"] <- ""
 
   sink("table.tex")
-  cat("\\documentclass[varwidth=\\maxdimen, border=10pt]{standalone}",
+  cat("\\documentclass[varwidth=\\maxdimen, border=0pt]{standalone}",
+      "\\usepackage[T1]{fontenc}",
+      "\\usepackage{mathptmx}",
+      "\\usepackage{amsfonts}",
+      "\\usepackage{textcomp}",
+      "\\renewcommand{\\sfdefault}{lmss}",
+      "\\renewcommand{\\ttdefault}{lmtt}",
       "\\usepackage{booktabs}",
       "\\usepackage{makecell}",
       "\\usepackage{adjustbox}",
       "\\begin{document}", sep="\n")
-  inlmisc::PrintTable(m, align=c("l", "l", "c", "c", "c", "l"))
+  inlmisc::PrintTable(m, align=c("l", "l", "c", "c", "c", "l"), size="normalsize")
   cat("\\end{document}\n")
   sink()
 
   tools::texi2pdf("table.tex", clean=TRUE)
 
-  args <- c("--without-gui", "--file=table.pdf", "--export-plain-svg=table.svg")
+  args <- c("--without-gui",
+            "--file=table.pdf",
+            "--export-plain-svg=table.svg")
   system2("inkscape", args=args, stdout=FALSE, stderr=FALSE, invisible=TRUE)
 
-  dir.create(path <- "../../man/figures/", showWarnings=FALSE)
+  if (dir.exists("../../man"))
+    dir.create(path <- "../../man/figures/", showWarnings=FALSE)
   stopifnot(file.copy(c("table.pdf", "table.svg"), path, overwrite=TRUE))
 
   unlink(list.files(pattern="^g[1-2]_[0-9]{3}\\.eps$"))
