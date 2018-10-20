@@ -1,6 +1,6 @@
-# Make Datasets and Figures
+# Internal Datasets and Figures
 
-Internal package datasets and figures are created using the following commands:
+Create internal package datasets and figures using the following commands:
 
 ```r
 setwd(".")

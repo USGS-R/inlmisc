@@ -830,7 +830,7 @@ MakeDatasets <- function() {
     checkmate::assertNumber(x$nmax)
   }))
 
-  save(schemes, file="../../R/sysdata.rda")
+  if (dir.exists("../../R")) save(schemes, file="../../R/sysdata.rda")
 
   invisible()
 }
