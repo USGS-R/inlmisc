@@ -122,10 +122,6 @@ plot(GetColors(6, scheme = "pale"))
 plot(GetColors(7, scheme = "vibrant"))
 par(op)
 
-op <- par(oma = c(1, 0, 0, 0), cex = 0.7)
-plot(GetColors(14, scheme = "ground cover"))
-par(op)
-
 # Sequential color schemes (scheme)
 op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
 plot(GetColors( 23, scheme = "discrete rainbow"))
