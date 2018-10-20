@@ -41,8 +41,8 @@
 #'   \bold{Bad}: color provided for bad data.
 #'   \bold{Abbreviations}: --, no limit placed on the number of colors in the palette because colors are interpolated]
 #'
-#'   \if{html}{\figure{table.svg}{options: width=511 alt="Table: schemes"}}
-#'   \if{latex}{\figure{table.pdf}{options: width=13.52cm}}
+#'   \if{html}{\figure{table.svg}{options: width=533 alt="Table: schemes"}}
+#'   \if{latex}{\figure{table.pdf}{options: width=14.10cm}}
 #'
 #'   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
 #'   intended to be accessed in their entirety and subset using vector element names.
@@ -90,6 +90,10 @@
 #'   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.1, 20 p.,
 #'   accessed September 24, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
 #'
+#'   Wessel, P., Smith, W.H.F., Scharroo, R., Luis, J.F., and Wobbe, R., 2013,
+#'   Generic Mapping Tools: Improved version released, AGU, v. 94, no. 45, p. 409--410
+#'   doi:\href{https://doi.org/10.1002/2013EO450001}{10.1002/2013EO450001}
+#'
 #' @keywords color
 #'
 #' @export
@@ -136,15 +140,6 @@
 #' plot(GetColors( 23, scheme = "discrete rainbow"))
 #' plot(GetColors( 34, scheme = "smooth rainbow"))
 #' plot(GetColors(255, scheme = "smooth rainbow"))
-#' par(op)
-#'
-#' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
-#' plot(GetColors(  7, scheme = "DEM print"))
-#' plot(GetColors(255, scheme = "DEM print"))
-#' plot(GetColors(  6, scheme = "DEM screen"))
-#' plot(GetColors(255, scheme = "DEM screen"))
-#' plot(GetColors(  8, scheme = "DEM poster"))
-#' plot(GetColors(255, scheme = "DEM poster"))
 #' par(op)
 #'
 #' # Alpha transparency (alpha)

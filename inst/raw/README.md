@@ -1,9 +1,11 @@
-# Make Internal Datasets
+# Make Datasets and Figures
 
-Internal package datasets are created using the following commands:
+Internal package datasets and figures are created using the following commands:
 
 ```r
 setwd(".")
 source("MakeDatasets.R")
 MakeDatasets()
+source("MakeFigures.R")
+MakeFigures()
 ```
