@@ -814,6 +814,137 @@ MakeDatasets <- function() {
     nmax  = Inf
   )
 
+  schemes[["GMT drywet"]] <- list(
+    color = c("#90682D",
+              "#FFD56B",
+              "#C1FF91",
+              "#36FFFC",
+              "#0D81FF",
+              "#2901C4",
+              "#093779"),
+    type  = "Sequential",
+    cite  = "Wessel and others, 2013",
+    nmax  = Inf
+  )
+
+  schemes[["GMT elevation"]] <- list(
+    color = c("#6C9D89",
+              "#7AAE97",
+              "#87BBA0",
+              "#AAC6AC",
+              "#DAD0B9",
+              "#DBBEA9",
+              "#DBC6BB",
+              "#DDD8D5",
+              "#E5E4E5",
+              "#F6F6F6",
+              "#FEFFFE"),
+    type  = "Sequential",
+    cite  = "Wessel and others, 2013",
+    nmax  = Inf
+  )
+
+  schemes[["GMT gebco"]] <- list(
+    color = c("#00F0FF",
+              "#00F0FF",
+              "#23FFFF",
+              "#23FFFF",
+              "#5AFFFF",
+              "#5AFFFF",
+              "#8CFFE6",
+              "#8CFFE6",
+              "#A5FFD7",
+              "#A5FFD7",
+              "#C3FFD7",
+              "#C3FFD7",
+              "#D2FFD7",
+              "#D2FFD7",
+              "#E6FFF0",
+              "#E6FFF0",
+              "#EBFFFF",
+              "#EBFFFF"),
+    type  = "Sequential",
+    cite  = "Wessel and others, 2013",
+    nmax  = Inf
+  )
+
+  schemes[["GMT globe"]] <- list(
+    color = c("#9900FF",
+              "#9900FF",
+              "#9900FF",
+              "#9900FF",
+              "#8811FF",
+              "#8811FF",
+              "#7722FF",
+              "#7722FF",
+              "#6633FF",
+              "#6633FF",
+              "#5544FF",
+              "#5544FF",
+              "#4455FF",
+              "#4455FF",
+              "#3366FF",
+              "#3366FF",
+              "#2277FF",
+              "#2277FF",
+              "#1188FF",
+              "#1188FF",
+              "#0099FF",
+              "#0099FF",
+              "#1BA4FF",
+              "#1BA4FF",
+              "#36AFFF",
+              "#36AFFF",
+              "#51BAFF",
+              "#51BAFF",
+              "#6CC5FF",
+              "#6CC5FF",
+              "#86D0FF",
+              "#86D0FF",
+              "#A1DBFF",
+              "#A1DBFF",
+              "#BCE6FF",
+              "#BCE6FF",
+              "#D7F1FF",
+              "#D7F1FF",
+              "#F1FCFF",
+              "#F1FCFF",
+              "#336600",
+              "#33CC66",
+              "#BBE492",
+              "#FFDCB9",
+              "#F3CA89",
+              "#E6B858",
+              "#D9A627",
+              "#A89A1F",
+              "#A49019",
+              "#A28613",
+              "#9F7B0D",
+              "#9C7107",
+              "#996600",
+              "#A25959",
+              "#B27676",
+              "#B79393",
+              "#C2B0B0",
+              "#CCCCCC",
+              "#E5E5E5",
+              "#F2F2F2",
+              "#FFFFFF",
+              "#FFFFFF",
+              "#FFFFFF"),
+    type  = "Diverging",
+    cite  = "Wessel and others, 2013",
+    nmax  = Inf
+  )
+
+  schemes[["GMT gray"]] <- list(
+    color = c("#000000",
+              "#FFFFFF"),
+    type  = "Sequential",
+    cite  = "Wessel and others, 2013",
+    nmax  = Inf
+  )
+
   schemes <- schemes[order(vapply(schemes, function(x) x$type, ""), names(schemes))]
 
   invisible(lapply(schemes, function(x) {

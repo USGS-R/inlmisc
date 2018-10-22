@@ -1,6 +1,6 @@
 MakeFigures<- function() {
 
-  schemes <- inlmisc:::schemes
+  load("../../R/sysdata.rda")
 
   m <- do.call("rbind", lapply(seq_along(schemes), function(i) {
     scheme <- schemes[[i]]
