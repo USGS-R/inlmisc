@@ -38,11 +38,11 @@
 #'   [\bold{Type}: is the type of data being represented, either qualitative, diverging, or sequential.
 #'   \bold{Max n}: is the maximum number of colors in a generated palette.
 #'   And the maximum \code{n} value when palette colors are designed for gray-scale conversion is enclosed in parentheses.
-#'   \bold{Bad}: color provided for bad data.
+#'   \bold{NaN}: color provided for missing or bad data.
 #'   \bold{Abbreviations}: --, no limit placed on the number of colors in the palette because colors are interpolated]
 #'
-#'   \if{html}{\figure{table.svg}{options: width=533 alt="Table: schemes"}}
-#'   \if{latex}{\figure{table.pdf}{options: width=14.10cm}}
+#'   \if{html}{\figure{table.svg}{options: width=537 alt="Table: schemes"}}
+#'   \if{latex}{\figure{table.pdf}{options: width=14.21cm}}
 #'
 #'   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
 #'   intended to be accessed in their entirety and subset using vector element names.
@@ -62,8 +62,8 @@
 #'   Attributes of the returned object include:
 #'   \code{"names"}, the informal names assigned to colors in the palette,
 #'   where \code{NULL} indicates no color names are specified;
-#'   \code{"bad"}, a 'character' string giving the color meant for bad data, in hexadecimal format,
-#'   where \code{NA} indicates no bad color is specified; and
+#'   \code{"NaN"}, a 'character' string giving the color meant for missing data, in hexadecimal format,
+#'   where \code{NA} indicates no color is specified; and
 #'   \code{"call"}, an object of class '\link{call}' giving the unevaluated function call (expression)
 #'   that can be used to reproduce the color palette.
 #'   Use the \code{\link{eval}} function to evaluate the \code{"call"} argument.
@@ -76,7 +76,7 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link{MoveMidpoint}}, \code{\link[grDevices]{col2rgb}}
+#' @seealso \code{\link[grDevices]{col2rgb}}
 #'
 #' @references
 #'   Dewez, Thomas, 2004, Variations on a DEM palette, accessed October 15, 2018 at
@@ -130,12 +130,12 @@
 #' # Sequential color schemes (scheme)
 #' op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
 #' plot(GetColors( 23, scheme = "discrete rainbow"))
-#' plot(GetColors( 23, scheme = "iridescent"))
-#' plot(GetColors(255, scheme = "iridescent"))
 #' plot(GetColors( 34, scheme = "smooth rainbow"))
 #' plot(GetColors(255, scheme = "smooth rainbow"))
 #' plot(GetColors(  9, scheme = "YlOrBr"))
 #' plot(GetColors(255, scheme = "YlOrBr"))
+#' plot(GetColors( 23, scheme = "iridescent"))
+#' plot(GetColors(255, scheme = "iridescent"))
 #' par(op)
 #'
 #' # Alpha transparency (alpha)
@@ -205,15 +205,14 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
   }
   checkmate::assertFlag(gray)
 
-  nmax <- vapply(schemes, function(x) {
-    if (gray) length(x$gray) else x$nmax
-  }, 0)
+  scheme <- match.arg(scheme, names(schemes))
+  s <- schemes[[scheme]]
+  nmax <- if(gray) length(s$gray) else s$nmax
 
-  scheme <- match.arg(scheme, names(nmax))
-  if (!missing(n) && n > nmax[scheme])
+  if (!missing(n) && n > nmax)
     stop("n = ", n, " exceeds the maximum number of colors in palette: ",
-         nmax[scheme], " for '", scheme, "' scheme.")
-  if (gray && nmax[scheme] == 0)
+         nmax, " for '", scheme, "' scheme.")
+  if (gray && nmax == 0)
     stop("gray component not available for '", scheme, "' scheme.")
 
   checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
@@ -231,7 +230,7 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
       stop("simulating partial color blindness requires the dichromat package")
   }
 
-  if (nmax[scheme] < Inf && (start > 0 | end < 1))
+  if (nmax < Inf && (start > 0 | end < 1))
     warning("'start' and 'end' apply only to interpolated color schemes")
 
   if (missing(n)) {
@@ -245,11 +244,8 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
     return(Pal)
   }
 
-  color <- schemes[[scheme]]$color
-  if (gray) color <- color[schemes[[scheme]]$gray]
-
-  bad <- schemes[[scheme]]$bad
-  if (is.null(bad))  bad <- as.character(NA)
+  color <- s$data$color; names(color) <- s$data$name
+  if (gray) color <- color[s$gray]
 
   if (scheme == "discrete rainbow") {
     idx <- list(c(10),
@@ -277,44 +273,47 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
                 c( 1,  2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29))
     pal <- color[idx[[n]]]
     if (reverse) pal <- rev(pal)
-  } else if (nmax[scheme] < Inf) {
+  } else if (nmax < Inf) {
     if (reverse) color <- rev(color)
     pal <- color[1:n]
   } else {
-    if (reverse) color <- rev(color)
-    norm <- (seq_along(color) - 1) / (length(color) - 1)
-    idxs <- seq.int(which.min(abs(norm - start)), which.min(abs(norm - end)), 1)
-    if (length(idxs) < 2) stop("problem with 'start' and (or) 'end' argument")
-    pal <- grDevices::colorRampPalette(color[idxs], bias=bias)(n)
+    value <- s$data$value
+    if (is.null(value)) value <- seq_along(s$data$color)
+    value <- scales::rescale(value)
+    if (reverse) {
+      color <- rev(color)
+      value <- rev(1 - value)
+    }
+    color <- scales::gradient_n_pal(color, values=value)(seq(start, end, length.out=255))
+    pal <- grDevices::colorRampPalette(color, bias=bias, space="Lab")(n)
   }
+
+  nan <- ifelse(is.null(s$nan), as.character(NA), s$nan)
 
   if (!is.null(blind) | !is.null(alpha)) {
     pal_names <- names(pal)
-    bad_names <- names(bad)
     if (!is.null(blind)) {
       if (blind == "monochrome") {
         pal <- .Col2Gray(pal)
-        if (!is.na(bad)) bad <- .Col2Gray(bad)
+        if (!is.null(nan)) nan <- .Col2Gray(nan)
       } else {
         pal <- dichromat::dichromat(pal, type=blind)
-        if (!is.na(bad)) bad <- dichromat::dichromat(bad, type=blind)
+        if (!is.null(nan)) nan <- dichromat::dichromat(nan, type=blind)
       }
     }
     if (!is.null(alpha)) {
       pal <- grDevices::adjustcolor(pal, alpha.f=alpha)
-      if (!is.na(bad)) bad <- grDevices::adjustcolor(bad, alpha.f=alpha)
+      if (!is.null(nan)) nan <- grDevices::adjustcolor(nan, alpha.f=alpha)
     }
     names(pal) <- pal_names
-    names(bad) <- bad_names
   }
 
   cl <- as.call(list(quote(GetColors), "n"=n, "scheme"=scheme, "alpha"=alpha,
                      "start"=start, "end"=end, "bias"=bias, "reverse"=reverse,
                      "blind"=blind, "gray"=gray))
 
-  .MakeInlcolClass(pal, bad, cl)
+  .MakeInlcolClass(pal, nan, cl)
 }
-
 
 #' @export
 
@@ -393,14 +392,14 @@ plot.inlcol <- function(x, ..., label=TRUE) {
 
 # Constructor function for 'inlcol' class
 
-.MakeInlcolClass <- function(x, bad, call) {
+.MakeInlcolClass <- function(x, nan, call) {
   pattern <- "^#(\\d|[a-f]){6,8}$"
   checkmate::assertCharacter(x, pattern=pattern, ignore.case=TRUE,
                              any.missing=FALSE, min.len=1)
-  checkmate::assertString(bad, na.ok=TRUE, pattern=pattern, ignore.case=TRUE)
+  checkmate::assertString(nan, na.ok=TRUE, pattern=pattern, ignore.case=TRUE)
   stopifnot(is.call(call))
   stopifnot(all(names(formals(GetColors)) %in% names(as.list(call))))
-  structure(x, bad=bad, call=call, class=append("inlcol", class(x)))
+  structure(x, nan=nan, call=call, class=append("inlcol", class(x)))
 }
 
 

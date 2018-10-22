@@ -3,10 +3,6 @@
 - In `PrintTable` function: `d` argument can be of class 'matrix'; and
   a default caption is no longer added when `title` and `headnotes` arguments are not specified.
 
-- Add `MoveMidpoint` function, used to move the critical midpoint in a diverging color scheme.
-
-- In `plot.Tol` function, permit plotting of color palettes that are not of class 'Tol'.
-
 - Tidy help documentation
 
 - Add `GetRegionOfInterest` function, used to calculate the region of interest from spatial points.
@@ -23,10 +19,10 @@
   make font/line color darker for section breaks and features.
 
 - Rename `GetTolColors` function to `GetColors`.
-
-- In `GetColors` function: add additional color schemes;
-  change `blind` argument option from `"monochromacy"` to `"monochrome"`; and
-  when argument `n` is unspecified, return a variant of the `GetColors` function.
+  In `GetColors` function: add additional color schemes;
+  change `blind` argument option from `"monochromacy"` to `"monochrome"`;
+  when argument `n` is unspecified, return a variant of the `GetColors` function; and
+  add additional color schemes.
 
 - For leaflet-search plugin, change version from `2.8.0` to `2.9.6` and tidy wrapper functions.
 

@@ -26,6 +26,7 @@ Imports:
     raster,
     rgdal,
     rgeos,
+    scales,
     sp,
     stats,
     tools,

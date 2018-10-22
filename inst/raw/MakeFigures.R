@@ -3,9 +3,10 @@ MakeFigures<- function() {
   load("../../R/sysdata.rda")
 
   m <- do.call("rbind", lapply(seq_along(schemes), function(i) {
-    scheme <- schemes[[i]]
 
-    n <- ifelse(is.finite(scheme$nmax), scheme$nmax, 255)
+    s <- schemes[[i]]
+
+    n <- ifelse(is.finite(s$nmax), s$nmax, 255)
     pal <- inlmisc::GetColors(n, scheme=names(schemes)[i])
 
     f1 <- sprintf("%s_%03d.eps", "g1", i)
@@ -18,7 +19,7 @@ MakeFigures<- function() {
     inlmisc:::plot.inlcol(pal, label=FALSE)
     dev.off()
 
-    if (is.null(scheme$bad)) {
+    if (is.null(s$nan)) {
       g2 <- ""
     } else {
       grDevices::postscript(f2, width=h / 72, height=h / 72, horizontal=FALSE, paper="special")
@@ -26,20 +27,20 @@ MakeFigures<- function() {
       graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=NULL,
                              xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
                              xlab="", ylab="")
-      graphics::rect(0, 0, 1, 1, col=scheme$bad, border=NA, lwd=0.5)
+      graphics::rect(0, 0, 1, 1, col=s$nan, border=NA, lwd=0.5)
       graphics::box(lwd=0.5, col="#D3D3D3")
       dev.off()
     }
 
-    n <- format(ifelse(is.finite(scheme$nmax), scheme$nmax, "--"))
-    if (!is.null(scheme$gray)) n <- sprintf("%s (%s)", n, length(scheme$gray))
+    n <- format(ifelse(is.finite(s$nmax), s$nmax, "--"))
+    if (!is.null(s$gray)) n <- sprintf("%s (%s)", n, length(s$gray))
 
-    c("Type"    = scheme$type,
+    c("Type"    = s$type,
       "Scheme"  = names(schemes)[i],
       "Palette" = g1,
       "Max n"   = n,
-      "Bad"     = g2,
-      "Source"  = scheme$cite)
+      "NaN"     = g2,
+      "Source"  = s$cite)
   }))
   m[duplicated(m[, "Type"]), "Type"] <- ""
 

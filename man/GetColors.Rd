@@ -58,8 +58,8 @@ When argument \code{n} is specified the function
   Attributes of the returned object include:
   \code{"names"}, the informal names assigned to colors in the palette,
   where \code{NULL} indicates no color names are specified;
-  \code{"bad"}, a 'character' string giving the color meant for bad data, in hexadecimal format,
-  where \code{NA} indicates no bad color is specified; and
+  \code{"NaN"}, a 'character' string giving the color meant for missing data, in hexadecimal format,
+  where \code{NA} indicates no color is specified; and
   \code{"call"}, an object of class '\link{call}' giving the unevaluated function call (expression)
   that can be used to reproduce the color palette.
   Use the \code{\link{eval}} function to evaluate the \code{"call"} argument.
@@ -77,11 +77,11 @@ The suggested data type for color schemes and the characteristics of generated p
   [\bold{Type}: is the type of data being represented, either qualitative, diverging, or sequential.
   \bold{Max n}: is the maximum number of colors in a generated palette.
   And the maximum \code{n} value when palette colors are designed for gray-scale conversion is enclosed in parentheses.
-  \bold{Bad}: color provided for bad data.
+  \bold{NaN}: color provided for missing or bad data.
   \bold{Abbreviations}: --, no limit placed on the number of colors in the palette because colors are interpolated]
 
-  \if{html}{\figure{table.svg}{options: width=533 alt="Table: schemes"}}
-  \if{latex}{\figure{table.pdf}{options: width=14.10cm}}
+  \if{html}{\figure{table.svg}{options: width=537 alt="Table: schemes"}}
+  \if{latex}{\figure{table.pdf}{options: width=14.21cm}}
 
   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
   intended to be accessed in their entirety and subset using vector element names.
@@ -125,12 +125,12 @@ par(op)
 # Sequential color schemes (scheme)
 op <- par(mfrow = c(7, 1), oma = c(0, 0, 0, 0))
 plot(GetColors( 23, scheme = "discrete rainbow"))
-plot(GetColors( 23, scheme = "iridescent"))
-plot(GetColors(255, scheme = "iridescent"))
 plot(GetColors( 34, scheme = "smooth rainbow"))
 plot(GetColors(255, scheme = "smooth rainbow"))
 plot(GetColors(  9, scheme = "YlOrBr"))
 plot(GetColors(255, scheme = "YlOrBr"))
+plot(GetColors( 23, scheme = "iridescent"))
+plot(GetColors(255, scheme = "iridescent"))
 par(op)
 
 # Alpha transparency (alpha)
@@ -208,7 +208,7 @@ Dewez, Thomas, 2004, Variations on a DEM palette, accessed October 15, 2018 at
   doi:\href{https://doi.org/10.1002/2013EO450001}{10.1002/2013EO450001}
 }
 \seealso{
-\code{\link{MoveMidpoint}}, \code{\link[grDevices]{col2rgb}}
+\code{\link[grDevices]{col2rgb}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
