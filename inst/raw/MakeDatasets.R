@@ -415,7 +415,10 @@ MakeDatasets <- function() {
     nmax = Inf,
     back = "#000000",
     fore = "#FFFFFF",
-    nan  = "#BEBEBE"
+    nan  = "#BEBEBE",
+    note = strwrap("Color table for bathymetry modeled after IBCSO
+                    at depth but turning lighter towards sea level
+                    Designed by P. Wessel, SOEST")
   )
 
   schemes[["GMT bathy"]] <- list(
@@ -435,7 +438,11 @@ MakeDatasets <- function() {
     nmax = Inf,
     back = "#000000",
     fore = "#F5FFFF",
-    nan  = "#BEBEBE"
+    nan  = "#BEBEBE",
+    note = strwrap("Color table for bathymetry modeled after IBCSO
+                    at depth but going through an aquamarine patch
+                    between 2009-3000, then into lightblue to white
+                    Designed by P. Wessel, SOEST")
   )
 
   schemes[["GMT copper"]] <- list(
@@ -447,7 +454,8 @@ MakeDatasets <- function() {
                     "),
     type = "Sequential",
     cite = "Wessel and others, 2013",
-    nmax = Inf
+    nmax = Inf,
+    note = strwrap("Simulates the COPPER colormap in MATLAB")
   )
 
   schemes[["GMT cubhelix"]] <- list(
@@ -715,7 +723,10 @@ MakeDatasets <- function() {
     nmax = Inf,
     back = "#000000",
     fore = "#FFFFFF",
-    nan  = "#FF0000"
+    nan  = "#FF0000",
+    note = strwrap("Dave Green, Cambridge
+                    Designed for intensities
+                    From ch05m151010.cpt at cpt city")
   )
 
   schemes[["GMT dem1"]] <- list(
@@ -734,7 +745,10 @@ MakeDatasets <- function() {
     nmax  = Inf,
     back = "#336600",
     fore = "#FFFFFF",
-    nan  = "#336600"
+    nan  = "#336600",
+    note = strwrap("Color table for topography, via cpt-city
+                    Designed by: Thomas Dewez for printing
+                    Modified by P Wessel to avoid discontinuities")
   )
 
   schemes[["GMT dem2"]] <- list(
@@ -754,7 +768,8 @@ MakeDatasets <- function() {
     nmax = Inf,
     back = "#BEBEBE",
     fore = "#FFFFFF",
-    nan  = "#000000"
+    nan  = "#000000",
+    note = "Paul Wessel, modified from DEM_poster at cpt city to yield brown"
   )
 
   schemes[["GMT dem3"]] <- list(
@@ -773,7 +788,9 @@ MakeDatasets <- function() {
     nmax = Inf,
     back = "#000000",
     fore = "#FFFFFF",
-    nan  = "#BEBEBE"
+    nan  = "#BEBEBE",
+    note = strwrap("Color table for topography
+                    Designed by P. Wessel, SOEST")
   )
 
   schemes[["GMT dem4"]] <- list(
@@ -936,7 +953,12 @@ MakeDatasets <- function() {
     nmax = Inf,
     back = "#000000",
     fore = "#EBE9EB",
-    nan  = "#FF00FF"
+    nan  = "#FF00FF",
+    note = strwrap("Originally wiki-schwarzwald-cont.cpt continuous version extracted from
+                    http://commons.wikimedia.org/wiki/File:Schwarzwald-topographie.png
+                    Author: wikipedia users W-j-s, Jide
+                    License: Creative Commons Attribution-Share Alike 3.0 Unported
+                    J.J. Green 2012")
   )
 
   schemes[["GMT drywet"]] <- list(
@@ -950,9 +972,11 @@ MakeDatasets <- function() {
                     #2901C4, 10
                     #093779, 12
                     "),
-    type  = "Sequential",
-    cite  = "Wessel and others, 2013",
-    nmax  = Inf
+    type = "Sequential",
+    cite = "Wessel and others, 2013",
+    nmax = Inf,
+    note = strwrap("Dry to Wet color table
+                    Created by Ed Maurer, University of Washington")
   )
 
   schemes[["GMT elevation"]] <- list(
@@ -975,7 +999,10 @@ MakeDatasets <- function() {
     nmax = Inf,
     back = "#000000",
     fore = "#FFFFFF",
-    nan  = "#BEBEBE"
+    nan  = "#BEBEBE",
+    note = strwrap("Washed out color table for topography, via cpt-city
+                    Designed by: Tom Patterson
+                    Modified by P Wessel to avoid discontinuities")
   )
 
   schemes[["GMT gebco"]] <- list(
@@ -997,8 +1024,11 @@ MakeDatasets <- function() {
     nmax = Inf,
     back = "#FFFFFF",
     fore = "#000000",
-    nan  = "#808080"
+    nan  = "#808080",
+    note = strwrap("Bathymetry color table approximating the GEBCO charts.
+                    Designed by Andrew Goodwillie, Lamont-Doherty Earth Observatory")
   )
+
 
   schemes[["GMT globe"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -1053,7 +1083,11 @@ MakeDatasets <- function() {
     nmax  = Inf,
     back = "#FFFFFF",
     fore = "#000000",
-    nan  = "#808080"
+    nan  = "#808080",
+    note = strwrap("Color table using in global relief maps
+                    Bathymetry colours manually redefined for blue-shade effect and
+                    new topography colour scheme for use with Generic Mapping Tools.
+                    Designed by Designed by Lester M. Anderson ( arctica1963@gmail.com )")
   )
 
   schemes[["GMT gray"]] <- list(
@@ -1064,7 +1098,8 @@ MakeDatasets <- function() {
                     "),
     type  = "Sequential",
     cite  = "Wessel and others, 2013",
-    nmax  = Inf
+    nmax  = Inf,
+    note = strwrap("Plain linear gray color table.")
   )
 
   schemes <- schemes[order(vapply(schemes, function(x) x$type, ""), names(schemes))]
@@ -1088,6 +1123,8 @@ MakeDatasets <- function() {
     stopifnot(inlmisc:::.IsColor(x$back, null.ok=TRUE))
     stopifnot(inlmisc:::.IsColor(x$fore, null.ok=TRUE))
     stopifnot(inlmisc:::.IsColor(x$nan,  null.ok=TRUE))
+
+    checkmate::assertCharacter(x$note, null.ok=TRUE)
   }))
 
   if (dir.exists("../../R")) save(schemes, file="../../R/sysdata.rda")
