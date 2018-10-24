@@ -279,15 +279,15 @@ MakeDatasets <- function() {
   schemes[["discrete rainbow"]] <- list(
     data = read.csv(strip.white=TRUE, text="
                     color,   name
-                    #E8ECFB,  1
-                    #D9CCE3,  2
-                    #D1BBD7,  3
-                    #CAACCB,  4
-                    #BA8DB4,  5
-                    #AE76A3,  6
-                    #AA6F9E,  7
-                    #994F88,  8
-                    #882E72,  9
+                    #E8ECFB, 1
+                    #D9CCE3, 2
+                    #D1BBD7, 3
+                    #CAACCB, 4
+                    #BA8DB4, 5
+                    #AE76A3, 6
+                    #AA6F9E, 7
+                    #994F88, 8
+                    #882E72, 9
                     #1965B0, 10
                     #437DBF, 11
                     #5289C7, 12
@@ -362,7 +362,7 @@ MakeDatasets <- function() {
   schemes[["DEM print"]] <- list(
     data = read.csv(strip.white=TRUE, text="
                     color,   value
-                    #336600,   0
+                    #336600, 0
                     #81C31F, 100
                     #FFFFCC, 200
                     #F4BD45, 400
@@ -381,16 +381,16 @@ MakeDatasets <- function() {
   schemes[["DEM screen"]] <- list(
     data = read.csv(strip.white=TRUE, text="
                     color,   value
-                    #008435,   0
+                    #008435, 0
                     #33CC00, 100
                     #F4F071, 200
                     #F4BD45, 400
                     #99642B, 600
                     #FFFFFF, 800
                     "),
-    type  = "Sequential",
-    cite  = "Thomas Dewez, 2004",
-    nmax  = Inf,
+    type = "Sequential",
+    cite = "Thomas Dewez, 2004",
+    nmax = Inf,
     back = "#FFFFFF",
     fore = "#008435",
     nan  = "#008435"
@@ -399,18 +399,18 @@ MakeDatasets <- function() {
   schemes[["DEM poster"]] <- list(
     data = read.csv(strip.white=TRUE, text="
                     color,   value
-                    #006147,    0
-                    #107A2F,   50
-                    #E8D77D,  500
+                    #006147, 0
+                    #107A2F, 50
+                    #E8D77D, 500
                     #A14300, 1200
                     #9E0000, 1700
                     #6E6E6E, 2800
                     #FFFFFF, 4000
                     #FFFFFF, 4900
                     "),
-    type  = "Sequential",
-    cite  = "Thomas Dewez, 2004",
-    nmax  = Inf,
+    type = "Sequential",
+    cite = "Thomas Dewez, 2004",
+    nmax = Inf,
     back = "#99CCFF",
     fore = "#99CCFF",
     nan  = "#99CCFF"
