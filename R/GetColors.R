@@ -8,7 +8,7 @@
 #'   see \sQuote{Details} section for maximum values.
 #' @param scheme 'character' string.
 #'   Name of color scheme, see \sQuote{Details} section for scheme descriptions.
-#'   Partial string matching is supported so argument may be abbreviated.
+#'   Argument choices may be abbreviated as long as there is no ambiguity.
 #' @param alpha 'numeric' number.
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 #'   Specify as \code{NULL} to exclude the alpha channel value from colors.
@@ -27,7 +27,7 @@
 #'   \code{"monochrome"} for total-color blindness.
 #'   A partial-color blindness simulation requires that the \pkg{dichromat} package is available,
 #'   see \code{\link[dichromat]{dichromat}} function for additional information.
-#'   Partial string matching is supported so argument may be abbreviated.
+#'   Argument choices may be abbreviated as long as there is no ambiguity.
 #' @param gray 'logical' flag.
 #'   Whether to subset/reorder the \code{"bright"}, \code{"high-contrast"}, \code{"vibrant"},
 #'   and \code{"muted"} schemes to work well after conversion to gray scale.
@@ -41,8 +41,8 @@
 #'   \bold{F}: foreground color.
 #'   \bold{Abbreviations}: --, not available]
 #'
-#'   \if{html}{\figure{table.svg}{options: width=465 alt="Table: schemes"}}
-#'   \if{latex}{\figure{table.pdf}{options: width=12.30cm}}
+#'   \if{html}{\figure{table.svg}{options: width=467 alt="Table: schemes"}}
+#'   \if{latex}{\figure{table.pdf}{options: width=12.36cm}}
 #'
 #'   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
 #'   intended to be accessed in their entirety and subset using vector element names.

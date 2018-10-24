@@ -15,7 +15,7 @@ see \sQuote{Details} section for maximum values.}
 
 \item{scheme}{'character' string.
 Name of color scheme, see \sQuote{Details} section for scheme descriptions.
-Partial string matching is supported so argument may be abbreviated.}
+Argument choices may be abbreviated as long as there is no ambiguity.}
 
 \item{alpha}{'numeric' number.
 Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
@@ -39,7 +39,7 @@ Type of color blindness to simulate: specify \code{"deutan"} for green-blind vis
 \code{"monochrome"} for total-color blindness.
 A partial-color blindness simulation requires that the \pkg{dichromat} package is available,
 see \code{\link[dichromat]{dichromat}} function for additional information.
-Partial string matching is supported so argument may be abbreviated.}
+Argument choices may be abbreviated as long as there is no ambiguity.}
 
 \item{gray}{'logical' flag.
 Whether to subset/reorder the \code{"bright"}, \code{"high-contrast"}, \code{"vibrant"},
@@ -80,8 +80,8 @@ The suggested data type for color schemes and the characteristics of generated p
   \bold{F}: foreground color.
   \bold{Abbreviations}: --, not available]
 
-  \if{html}{\figure{table.svg}{options: width=465 alt="Table: schemes"}}
-  \if{latex}{\figure{table.pdf}{options: width=12.30cm}}
+  \if{html}{\figure{table.svg}{options: width=467 alt="Table: schemes"}}
+  \if{latex}{\figure{table.pdf}{options: width=12.36cm}}
 
   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
   intended to be accessed in their entirety and subset using vector element names.

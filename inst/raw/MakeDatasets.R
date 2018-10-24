@@ -497,13 +497,20 @@ MakeDatasets <- function() {
 .GetGMTCpt <- function(x, ...) {
   checkmate::assertCharacter(x, any.missing=FALSE, min.len=1, unique=TRUE)
 
+  host <- "raw.githubusercontent.com"
   path <- "GenericMappingTools/gmt/master/share/cpt"
-  file <- sprintf("https://raw.githubusercontent.com/%s/%s.cpt", path, x)
+  file <- sprintf("https://%s/%s/%s.cpt", host, path, x)
 
   is <- !vapply(file, RCurl::url.exists, FALSE)
   if (any(is)) stop("URL responds with error:\n", paste(file[is], collapse="\n"))
 
-  cpt <- lapply(file, .ReadCpt, cite="Wessel and others, 2013", ...)
+  destdir <- file.path(getwd(), "cpt")
+  dir.create(destdir, showWarnings=FALSE)
+
+  destfile <- file.path(destdir, basename(file))
+  for (i in seq_along(file)) utils::download.file(file[i], destfile[i], quiet=TRUE)
+
+  cpt <- lapply(destfile, .ReadCpt, cite="Wessel and others, 2013", ...)
   names(cpt) <- paste("GMT", x)
   cpt
 }
