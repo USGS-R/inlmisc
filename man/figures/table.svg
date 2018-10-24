@@ -5,9 +5,9 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   viewBox="0 0 459.95999 702.22534"
+   viewBox="0 0 464.83334 702.22534"
    height="702.22534"
-   width="459.95999"
+   width="464.83334"
    xml:space="preserve"
    id="svg2"
    version="1.1"><metadata
@@ -381,19 +381,19 @@
        id="g12"><path
          id="path14"
          style="fill:none;stroke:#000000;stroke-width:0.79699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-         d="M 0,0 H 344.97" /></g><text
+         d="M 0,0 H 348.625" /></g><text
        id="text18"
        style="font-variant:normal;font-weight:bold;font-size:8.96640015px;font-family:LMSans10;-inkscape-font-specification:LMSans10-Bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
        transform="matrix(1,0,0,-1,15.659,515.414)"><tspan
          id="tspan16"
          y="0"
-         x="0 5.7501521 10.233353 15.542357 58.599907 64.079277 68.462944 73.493996 78.076721 85.8479 154.51349 160.53711 165.24448 167.53539 172.11812 175.74234 179.36656 231.19324 239.96059 244.66795 252.43285 270.85971 293.091 315.59039">TypeSchemePaletteMaxnNBF</tspan></text>
+         x="0 5.7501521 10.233353 15.542357 58.599907 64.079277 68.462944 73.493996 78.076721 85.8479 154.51349 160.53711 165.24448 167.53539 172.11812 175.74234 179.36656 231.19324 239.96059 244.66795 252.43285 270.85971 293.091 317.41953">TypeSchemePaletteMaxnNBF</tspan></text>
 <g
        transform="translate(0,510.112)"
        id="g20"><path
          id="path22"
          style="fill:none;stroke:#000000;stroke-width:0.498;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-         d="M 0,0 H 344.97" /></g><text
+         d="M 0,0 H 348.625" /></g><text
        id="text26"
        style="font-variant:normal;font-size:8.96640015px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
        transform="matrix(1,0,0,-1,5.978,498.04)"><tspan
@@ -1225,7 +1225,7 @@
                transform="matrix(1,0,0,-1,309.795,498.04)"><tspan
                  id="tspan592"
                  y="0"
-                 x="0 21.958714">––</tspan></text>
+                 x="0 23.778893">––</tspan></text>
 <text
                id="text598"
                style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -2051,7 +2051,7 @@
                        transform="matrix(1,0,0,-1,309.795,485.718)"><tspan
                          id="tspan1160"
                          y="0"
-                         x="0 21.958714">––</tspan></text>
+                         x="0 23.778893">––</tspan></text>
 <text
                        id="text1166"
                        style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -2877,7 +2877,7 @@
                                transform="matrix(1,0,0,-1,309.795,473.395)"><tspan
                                  id="tspan1728"
                                  y="0"
-                                 x="0 21.958714">––</tspan><tspan
+                                 x="0 23.778893">––</tspan><tspan
                                  id="tspan1730"
                                  y="12.323"
                                  x="-303.81699 -297.34326 -292.86005 -288.87897 -286.38632 -283.89365 -281.401 -277.41992 -274.92725 -272.65875 -268.31006">Qualitative</tspan></text>
@@ -2937,7 +2937,7 @@
                                    transform="matrix(1,0,0,-1,251.398,461.072)"><tspan
                                    id="tspan1776"
                                    y="0"
-                                   x="0 6.7248001 9.7106113 14.193811 36.439449 58.398163 80.35688">7(3)–––</tspan></text>
+                                   x="0 6.7248001 9.7106113 14.193811 36.439449 58.398163 82.177055">7(3)–––</tspan></text>
 <text
                                    id="text1782"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -2991,7 +2991,7 @@
                                    transform="matrix(1,0,0,-1,257.746,448.749)"><tspan
                                    id="tspan1820"
                                    y="0"
-                                   x="0 30.091238 52.049953 74.008667">6–––</tspan></text>
+                                   x="0 30.091238 52.049953 75.828842">6–––</tspan></text>
 <text
                                    id="text1826"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -3069,7 +3069,7 @@
                                    transform="matrix(1,0,0,-1,255.504,436.427)"><tspan
                                    id="tspan1880"
                                    y="0"
-                                   x="0 4.4832001 32.33284 54.291553 76.250267">14–––</tspan></text>
+                                   x="0 4.4832001 32.33284 54.291553 78.070442">14–––</tspan></text>
 <text
                                    id="text1886"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -3120,7 +3120,7 @@
                                    transform="matrix(1,0,0,-1,251.398,424.104)"><tspan
                                    id="tspan1922"
                                    y="0"
-                                   x="0 6.7248001 9.7106113 14.193811 36.439449 58.398163 80.35688">5(5)–––</tspan></text>
+                                   x="0 6.7248001 9.7106113 14.193811 36.439449 58.398163 82.177055">5(5)–––</tspan></text>
 <text
                                    id="text1928"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -3183,7 +3183,7 @@
                                    transform="matrix(1,0,0,-1,257.746,411.781)"><tspan
                                    id="tspan1972"
                                    y="0"
-                                   x="0 30.091238 52.049953 74.008667">9–––</tspan></text>
+                                   x="0 30.091238 52.049953 75.828842">9–––</tspan></text>
 <text
                                    id="text1978"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -3246,7 +3246,7 @@
                                    transform="matrix(1,0,0,-1,251.398,399.459)"><tspan
                                    id="tspan2022"
                                    y="0"
-                                   x="0 6.7248001 9.7106113 14.193811 36.439449 58.398163 80.35688">9(5)–––</tspan></text>
+                                   x="0 6.7248001 9.7106113 14.193811 36.439449 58.398163 82.177055">9(5)–––</tspan></text>
 <text
                                    id="text2028"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -3300,7 +3300,7 @@
                                    transform="matrix(1,0,0,-1,257.746,387.136)"><tspan
                                    id="tspan2066"
                                    y="0"
-                                   x="0 30.091238 52.049953 74.008667">6–––</tspan></text>
+                                   x="0 30.091238 52.049953 75.828842">6–––</tspan></text>
 <text
                                    id="text2072"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -3357,7 +3357,7 @@
                                    transform="matrix(1,0,0,-1,251.398,374.813)"><tspan
                                    id="tspan2112"
                                    y="0"
-                                   x="0 6.7248001 9.7106113 14.193811 36.439449 58.398163 80.35688">7(4)–––</tspan><tspan
+                                   x="0 6.7248001 9.7106113 14.193811 36.439449 58.398163 82.177055">7(4)–––</tspan><tspan
                                    id="tspan2114"
                                    y="12.322"
                                    x="-245.42 -240.43468 -236.4536 -231.9704 -227.4872 -223.50612 -219.02292 -216.53026 -214.0376 -210.05652">Sequential</tspan></text>
@@ -4195,7 +4195,7 @@
                                    id="path2698"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g2700"><g
                                    transform="scale(1.00003)"
                                    id="g2702"><g
@@ -4211,7 +4211,7 @@
                                    id="path2718"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-361.525)"
+                                   transform="translate(-330.82,-361.525)"
                                    id="g2720"><text
                                    id="text2724"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -5046,7 +5046,7 @@
                                    id="path3302"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g3304"><g
                                    transform="scale(1.00003)"
                                    id="g3306"><g
@@ -5062,7 +5062,7 @@
                                    id="path3322"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-349.203)"
+                                   transform="translate(-330.82,-349.203)"
                                    id="g3324"><text
                                    id="text3328"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -5897,7 +5897,7 @@
                                    id="path3906"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g3908"><g
                                    transform="scale(1.00003)"
                                    id="g3910"><g
@@ -5913,7 +5913,7 @@
                                    id="path3926"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-336.88)"
+                                   transform="translate(-330.82,-336.88)"
                                    id="g3928"><text
                                    id="text3932"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -6043,7 +6043,7 @@
                                    transform="matrix(1,0,0,-1,309.795,325.522)"><tspan
                                    id="tspan4030"
                                    y="0"
-                                   x="0 21.958714">––</tspan></text>
+                                   x="0 23.778893">––</tspan></text>
 <text
                                    id="text4036"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -6878,7 +6878,7 @@
                                    id="path4614"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g4616"><g
                                    transform="scale(1.00003)"
                                    id="g4618"><g
@@ -6894,7 +6894,7 @@
                                    id="path4634"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-312.234)"
+                                   transform="translate(-330.82,-312.234)"
                                    id="g4636"><text
                                    id="text4640"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -7729,7 +7729,7 @@
                                    id="path5218"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g5220"><g
                                    transform="scale(1.00003)"
                                    id="g5222"><g
@@ -7745,7 +7745,7 @@
                                    id="path5238"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-299.912)"
+                                   transform="translate(-330.82,-299.912)"
                                    id="g5240"><text
                                    id="text5244"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -8553,7 +8553,7 @@
                                    transform="matrix(1,0,0,-1,287.84,288.554)"><tspan
                                    id="tspan5784"
                                    y="0"
-                                   x="0 21.958714 43.908463">–––</tspan></text>
+                                   x="0 21.958714 45.737606">–––</tspan></text>
 <text
                                    id="text5790"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -9388,7 +9388,7 @@
                                    id="path6368"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g6370"><g
                                    transform="scale(1.00003)"
                                    id="g6372"><g
@@ -9404,7 +9404,7 @@
                                    id="path6388"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-275.266)"
+                                   transform="translate(-330.82,-275.266)"
                                    id="g6390"><text
                                    id="text6394"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -10239,7 +10239,7 @@
                                    id="path6972"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g6974"><g
                                    transform="scale(1.00003)"
                                    id="g6976"><g
@@ -10255,7 +10255,7 @@
                                    id="path6992"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-262.944)"
+                                   transform="translate(-330.82,-262.944)"
                                    id="g6994"><text
                                    id="text6998"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -11090,7 +11090,7 @@
                                    id="path7576"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g7578"><g
                                    transform="scale(1.00003)"
                                    id="g7580"><g
@@ -11106,7 +11106,7 @@
                                    id="path7596"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-250.621)"
+                                   transform="translate(-330.82,-250.621)"
                                    id="g7598"><text
                                    id="text7602"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -11941,7 +11941,7 @@
                                    id="path8180"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g8182"><g
                                    transform="scale(1.00003)"
                                    id="g8184"><g
@@ -11957,7 +11957,7 @@
                                    id="path8200"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-238.298)"
+                                   transform="translate(-330.82,-238.298)"
                                    id="g8202"><text
                                    id="text8206"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -12792,7 +12792,7 @@
                                    id="path8784"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g8786"><g
                                    transform="scale(1.00003)"
                                    id="g8788"><g
@@ -12808,7 +12808,7 @@
                                    id="path8804"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-225.976)"
+                                   transform="translate(-330.82,-225.976)"
                                    id="g8806"><text
                                    id="text8810"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -13616,7 +13616,7 @@
                                    transform="matrix(1,0,0,-1,287.84,214.618)"><tspan
                                    id="tspan9350"
                                    y="0"
-                                   x="0 21.958714 43.908463">–––</tspan></text>
+                                   x="0 21.958714 45.737606">–––</tspan></text>
 <text
                                    id="text9356"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -14451,7 +14451,7 @@
                                    id="path9934"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g9936"><g
                                    transform="scale(1.00003)"
                                    id="g9938"><g
@@ -14467,7 +14467,7 @@
                                    id="path9954"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-201.33)"
+                                   transform="translate(-330.82,-201.33)"
                                    id="g9956"><text
                                    id="text9960"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -15302,7 +15302,7 @@
                                    id="path10538"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g10540"><g
                                    transform="scale(1.00003)"
                                    id="g10542"><g
@@ -15318,7 +15318,7 @@
                                    id="path10558"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-189.007)"
+                                   transform="translate(-330.82,-189.007)"
                                    id="g10560"><text
                                    id="text10564"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -16153,7 +16153,7 @@
                                    id="path11142"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g11144"><g
                                    transform="scale(1.00003)"
                                    id="g11146"><g
@@ -16169,7 +16169,7 @@
                                    id="path11162"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-176.685)"
+                                   transform="translate(-330.82,-176.685)"
                                    id="g11164"><text
                                    id="text11168"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -16977,7 +16977,7 @@
                                    transform="matrix(1,0,0,-1,287.84,165.327)"><tspan
                                    id="tspan11708"
                                    y="0"
-                                   x="0 21.958714 43.908463">–––</tspan></text>
+                                   x="0 21.958714 45.737606">–––</tspan></text>
 <text
                                    id="text11714"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -17785,7 +17785,7 @@
                                    transform="matrix(1,0,0,-1,287.84,153.005)"><tspan
                                    id="tspan12254"
                                    y="0"
-                                   x="0 21.958714 43.908463">–––</tspan></text>
+                                   x="0 21.958714 45.737606">–––</tspan></text>
 <text
                                    id="text12260"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -18593,7 +18593,7 @@
                                    transform="matrix(1,0,0,-1,287.84,140.682)"><tspan
                                    id="tspan12800"
                                    y="0"
-                                   x="0 21.958714 43.908463">–––</tspan></text>
+                                   x="0 21.958714 45.737606">–––</tspan></text>
 <text
                                    id="text12806"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -19403,7 +19403,7 @@
                                    y="0"
                                    x="0 21.958714">––</tspan></text>
 <g
-                                   transform="translate(328.992,127.394)"
+                                   transform="translate(330.82,127.394)"
                                    id="g13350"><g
                                    transform="scale(1.00003)"
                                    id="g13352"><g
@@ -19419,7 +19419,7 @@
                                    id="path13368"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-127.394)"
+                                   transform="translate(-330.82,-127.394)"
                                    id="g13370"><text
                                    id="text13374"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -20227,7 +20227,7 @@
                                    transform="matrix(1,0,0,-1,287.84,116.036)"><tspan
                                    id="tspan13914"
                                    y="0"
-                                   x="0 21.958714 43.908463">–––</tspan></text>
+                                   x="0 21.958714 45.737606">–––</tspan></text>
 <text
                                    id="text13920"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -21053,7 +21053,7 @@
                                    id="path14482"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g14484"><g
                                    transform="scale(1.00003)"
                                    id="g14486"><g
@@ -21069,7 +21069,7 @@
                                    id="path14502"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-102.749)"
+                                   transform="translate(-330.82,-102.749)"
                                    id="g14504"><text
                                    id="text14508"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -21904,7 +21904,7 @@
                                    id="path15086"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(21.955)"
+                                   transform="translate(23.783)"
                                    id="g15088"><g
                                    transform="scale(1.00003)"
                                    id="g15090"><g
@@ -21920,7 +21920,7 @@
                                    id="path15106"
                                    style="fill:none;stroke:#d3d3d3;stroke-width:3.79999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
                                    d="M 0,0 H 100 V 100 H 0 V 0" /></g></g></g></g></g><g
-                                   transform="translate(-328.992,-90.426)"
+                                   transform="translate(-330.82,-90.426)"
                                    id="g15108"><text
                                    id="text15112"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -22728,7 +22728,7 @@
                                    transform="matrix(1,0,0,-1,287.84,79.068)"><tspan
                                    id="tspan15652"
                                    y="0"
-                                   x="0 21.958714 43.908463">–––</tspan></text>
+                                   x="0 21.958714 45.737606">–––</tspan></text>
 <text
                                    id="text15658"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -23554,7 +23554,7 @@
                                    transform="matrix(1,0,0,-1,309.795,66.746)"><tspan
                                    id="tspan16220"
                                    y="0"
-                                   x="0 21.958714">––</tspan></text>
+                                   x="0 23.778893">––</tspan></text>
 <text
                                    id="text16226"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -24380,7 +24380,7 @@
                                    transform="matrix(1,0,0,-1,309.795,54.423)"><tspan
                                    id="tspan16788"
                                    y="0"
-                                   x="0 21.958714">––</tspan></text>
+                                   x="0 23.778893">––</tspan></text>
 <text
                                    id="text16794"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -25206,13 +25206,13 @@
                                    transform="matrix(1,0,0,-1,309.795,42.1)"><tspan
                                    id="tspan17356"
                                    y="0"
-                                   x="0 21.958714">––</tspan></text>
+                                   x="0 23.778893">––</tspan></text>
 <g
                                    transform="translate(0,36.848)"
                                    id="g17360"><path
                                    id="path17362"
                                    style="fill:none;stroke:#000000;stroke-width:0.498;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-                                   d="M 0,0 H 344.97" /></g><text
+                                   d="M 0,0 H 348.625" /></g><text
                                    id="text17366"
                                    style="font-variant:normal;font-size:6.97380018px;font-family:NimbusRomNo9L;-inkscape-font-specification:NimbusRomNo9L-Regu;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
                                    transform="matrix(1,0,0,-1,5.978,29.084)"><tspan
@@ -25253,5 +25253,5 @@
                                    transform="matrix(1,0,0,-1,12.204,3.288)"><tspan
                                    id="tspan17384"
                                    y="0"
-                                   x="0 7.7469697 11.728051 15.215981 18.703911 22.684992 27.41925 31.400333 35.883533 42.608334 47.091534 49.58419 54.06739 58.048473 61.034286 66.763817 69.749626 74.232826 78.716026 83.199226 87.682426 92.909836 95.895645 99.876732 102.36939 106.35047 110.33155 113.81948 117.80056 124.52536 129.00856 133.49176 137.97496 141.95604 147.18346 149.67612 154.15932 160.382 166.85574 173.32948 182.04482 187.52328 191.50436 194.99229 198.48022 202.46132 207.68872 214.16246 218.14354 222.62674 226.60783 229.59364 233.57472 238.30898 243.2943 247.7775 252.2607 254.75336 257.246 263.46869 268.94717 271.43982 275.4209 279.40198 283.88519 287.37311 293.59579 298.07901 302.56219 304.8038">Wesselandothers(2013)releasedundertheGNULesserGeneralPublicLicensev3.0</tspan></text>
+                                   x="0 7.7469697 11.728051 15.215981 18.703911 22.684992 27.41925 31.400333 35.883533 42.608334 47.091534 49.58419 54.06739 58.048473 61.034286 66.763817 69.749626 74.232826 78.716026 83.199226 87.682426 92.909836 95.895645 99.876732 102.36939 106.35047 110.33155 113.81948 117.80056 124.52536 129.00856 133.49176 137.97496 141.95604 147.18346 149.67612 154.15932 160.382 166.85574 173.32948 182.04482 187.52328 191.50436 194.99229 198.48022 202.46132 207.68872 214.16246 218.14354 222.62674 226.60783 229.59364 233.57472 238.30898 243.2943 247.7775 252.2607 254.75336 257.246 263.46869 268.94717 271.43982 275.4209 279.40198 283.88519 287.37311 293.59579 298.07901 304.8038 309.28699 314.5144 317.00708 320.98816 323.4808 327.46188">Wesselandothers(2013)releasedundertheGNULesserGeneralPublicLicensev3orlater</tspan></text>
 </g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></g></svg>

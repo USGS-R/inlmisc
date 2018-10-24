@@ -432,15 +432,6 @@ MakeDatasets <- function() {
   line <- readLines(file)
   line <- line[-grep("^(#$|#-+)", line)]
 
-  Col2Hex <- function(x) {
-    checkmate::assertString(x, na.ok=FALSE)
-    if (grepl("^[0-9]{1,3}/[0-9]{1,3}/[0-9]{1,3}$", x))
-      val <- as.integer(strsplit(x, "/")[[1]])
-    else
-      val <- t(grDevices::col2rgb(x))[1, ]
-    grDevices::rgb(val[1], val[2], val[3], maxColorValue=255)
-  }
-
   nm <- c("N", "B", "F")
   color <- lapply(nm, function(key) {
     idx <- grep(sprintf("^%s[ |\t]", key), line)
@@ -448,7 +439,7 @@ MakeDatasets <- function() {
     x <- strsplit(line[idx], "[ \t]")[[1]]
     x <- tail(x, 1)
     line <<- line[-idx]
-    Col2Hex(x)
+    .Col2Hex(x)
   })
   names(color) <- nm
 
@@ -470,8 +461,8 @@ MakeDatasets <- function() {
   m <- do.call("rbind", lapply(line, function(x) {
     elem <- strsplit(x, "\t")[[1]]
     elem <- elem[elem != ""]
-    elem[2] <- Col2Hex(elem[2])
-    elem[4] <- Col2Hex(elem[4])
+    elem[2] <- .Col2Hex(elem[2])
+    elem[4] <- .Col2Hex(elem[4])
     elem
   }))
   d <- as.data.frame(rbind(m[, 1:2], m[nrow(m), 3:4]), stringsAsFactors=FALSE)
@@ -490,6 +481,16 @@ MakeDatasets <- function() {
             note = note)
    l[vapply(l, is.null, FALSE)] <- NULL
    l
+}
+
+
+.Col2Hex <- function(x) {
+  checkmate::assertString(x, na.ok=FALSE)
+  if (grepl("^[0-9]{1,3}/[0-9]{1,3}/[0-9]{1,3}$", x))
+    val <- as.integer(strsplit(x, "/")[[1]])
+  else
+    val <- t(grDevices::col2rgb(x))[1, ]
+  grDevices::rgb(val[1], val[2], val[3], maxColorValue=255)
 }
 
 

@@ -51,7 +51,7 @@ MakeFigures<- function() {
   txt <- levels(cite)
   txt[grep("^Paul T", txt)] <- "Paul Tol (2018) granted permission to use"
   txt[grep("^Thomas", txt)] <- "Thomas Dewez (2004) granted permission to use"
-  txt[grep("^Wessel", txt)] <- "Wessel and others (2013) released under the GNU Lesser General Public License v3.0"
+  txt[grep("^Wessel", txt)] <- "Wessel and others (2013) released under the GNU Lesser General Public License v3 or later"
 
   x <- sprintf("\\footnotemark[%d] %s", seq_along(txt), txt)
   footnotes <- paste(x, collapse="\\\\")
