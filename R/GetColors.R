@@ -1,8 +1,6 @@
 #' Get Palette Colors
 #'
 #' Create a vector of \code{n} colors from qualitative, diverging, and sequential color schemes.
-#' All colors are defined in sRGB color space.
-#' The color schemes used in this function are included with the permission of their author.
 #'
 #' @param n 'integer' count.
 #'   Number of colors to be in the palette.
@@ -38,17 +36,16 @@
 #'   [\bold{Type}: is the type of data being represented, either qualitative, diverging, or sequential.
 #'   \bold{Max n}: is the maximum number of colors in a generated palette.
 #'   And the maximum \code{n} value when palette colors are designed for gray-scale conversion is enclosed in parentheses.
-#'   \bold{NaN}: color provided for missing or bad data.
-#'   \bold{Abbreviations}: --, no limit placed on the number of colors in the palette because colors are interpolated]
+#'   \bold{N}: not-a-number color.
+#'   \bold{B}: background color.
+#'   \bold{F}: foreground color.
+#'   \bold{Abbreviations}: --, not available]
 #'
-#'   \if{html}{\figure{table.svg}{options: width=537 alt="Table: schemes"}}
-#'   \if{latex}{\figure{table.pdf}{options: width=14.21cm}}
+#'   \if{html}{\figure{table.svg}{options: width=460 alt="Table: schemes"}}
+#'   \if{latex}{\figure{table.pdf}{options: width=12.17cm}}
 #'
 #'   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
 #'   intended to be accessed in their entirety and subset using vector element names.
-#'   The very specific \code{"ground cover"} scheme is a color-blind safe version of the
-#'   \href{http://glcf.umd.edu/data/landcover/data.shtml}{AVHRR}
-#'   global land cover classification by Hansen and others (1998).
 #'
 #' @return When argument \code{n} is specified the function
 #'   returns an object of class 'inlcol' that inherits behavior from the 'character' class.
@@ -76,15 +73,9 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link[grDevices]{col2rgb}}
-#'
 #' @references
 #'   Dewez, Thomas, 2004, Variations on a DEM palette, accessed October 15, 2018 at
 #'   \url{http://soliton.vm.bytemark.co.uk/pub/cpt-city/td/index.html}
-#'
-#'   Hansen, M., DeFries, R., Townshend, J.R.G., and Sohlberg, R., 1998,
-#'   UMD Global Land Cover Classification, 1 Kilometer, 1.0:
-#'   Department of Geography, University of Maryland, College Park, Maryland, 1981-1994.
 #'
 #'   Tol, Paul, 2018, Colour Schemes:
 #'   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.1, 20 p.,
@@ -93,6 +84,8 @@
 #'   Wessel, P., Smith, W.H.F., Scharroo, R., Luis, J.F., and Wobbe, R., 2013,
 #'   Generic Mapping Tools: Improved version released, AGU, v. 94, no. 45, p. 409--410
 #'   doi:\href{https://doi.org/10.1002/2013EO450001}{10.1002/2013EO450001}
+#'
+#' @seealso \code{\link[grDevices]{col2rgb}}
 #'
 #' @keywords color
 #'

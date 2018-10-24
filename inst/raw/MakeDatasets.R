@@ -2,7 +2,26 @@ MakeDatasets <- function() {
 
   options(stringsAsFactors=FALSE)
 
-  schemes <- list()
+  schemes <- .GetGMTCpt(c("abyss",
+                          "bathy",
+                          "copper",
+                          "cubhelix",
+                          "dem1",
+                          "dem2",
+                          "dem3",
+                          "dem4",
+                          "drywet",
+                          "elevation",
+                          "gebco",
+                          "globe",
+                          "gray",
+                          "haxby",
+                          "hot",
+                          "ibcso",
+                          "jet",
+                          "ocean",
+                          "relief",
+                          "seafloor"))
 
   schemes[["bright"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -17,7 +36,7 @@ MakeDatasets <- function() {
                     "),
     gray = c("yellow", "red", "green"),
     type = "Qualitative",
-    cite = "Tol, 2018, p.~5",
+    cite = "Paul Tol, 2018",
     nmax = 7
   )
 
@@ -32,7 +51,7 @@ MakeDatasets <- function() {
                     "),
     gray = c("white", "yellow", "red", "blue", "black"),
     type = "Qualitative",
-    cite = "Tol, 2018, p.~5",
+    cite = "Paul Tol, 2018",
     nmax = 5
   )
 
@@ -49,7 +68,7 @@ MakeDatasets <- function() {
                     "),
     gray = c("grey", "orange", "magenta", "blue"),
     type = "Qualitative",
-    cite = "Tol, 2018, p.~5",
+    cite = "Paul Tol, 2018",
     nmax = 7
   )
 
@@ -68,7 +87,7 @@ MakeDatasets <- function() {
                     "),
     gray = c("sand", "teal", "purple", "green", "indigo"),
     type = "Qualitative",
-    cite = "Tol, 2018, p.~5",
+    cite = "Paul Tol, 2018",
     nmax = 9,
     nas  = "#DDDDDD"
   )
@@ -84,7 +103,7 @@ MakeDatasets <- function() {
                     #DDDDDD, pale grey
                     "),
     type = "Qualitative",
-    cite = "Tol, 2018, p.~5",
+    cite = "Paul Tol, 2018",
     nmax = 6
   )
 
@@ -99,7 +118,7 @@ MakeDatasets <- function() {
                     #555555, dark grey
                     "),
     type = "Qualitative",
-    cite = "Tol, 2018, p.~5",
+    cite = "Paul Tol, 2018",
     nmax = 6
   )
 
@@ -119,7 +138,7 @@ MakeDatasets <- function() {
                     #DDDDDD, pale grey
                     "),
     type = "Qualitative",
-    cite = "Tol, 2018, p.~6",
+    cite = "Paul Tol, 2018",
     nmax = 9
   )
 
@@ -142,7 +161,7 @@ MakeDatasets <- function() {
                     #BB0011, urban and built
                     "),
     type = "Qualitative",
-    cite = "Tol, 2018, p.~19",
+    cite = "Paul Tol, 2018",
     nmax = 14
   )
 
@@ -162,7 +181,7 @@ MakeDatasets <- function() {
                     #A50026
                     "),
     type = "Diverging",
-    cite = "Tol, 2018, p.~9",
+    cite = "Paul Tol, 2018",
     nmax = Inf,
     nan  = "#FFFFFF"
   )
@@ -181,7 +200,7 @@ MakeDatasets <- function() {
                     #B2182B
                     "),
     type = "Diverging",
-    cite = "Tol, 2018, p.~9",
+    cite = "Paul Tol, 2018",
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -200,7 +219,7 @@ MakeDatasets <- function() {
                     #1B7837
                     "),
     type = "Diverging",
-    cite = "Tol, 2018, p.~9",
+    cite = "Paul Tol, 2018",
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -219,7 +238,7 @@ MakeDatasets <- function() {
                     #662506
                     "),
     type = "Sequential",
-    cite = "Tol, 2018, p.~11",
+    cite = "Paul Tol, 2018",
     nmax = Inf,
     nan  = "#888888"
   )
@@ -252,7 +271,7 @@ MakeDatasets <- function() {
                     #46353A
                     "),
     type = "Sequential",
-    cite = "Tol, 2018, p.~11",
+    cite = "Paul Tol, 2018",
     nmax = Inf,
     nan  = "#999999"
   )
@@ -291,7 +310,7 @@ MakeDatasets <- function() {
                     #42150A, 29
                     "),
     type = "Sequential",
-    cite = "Tol, 2018, p.~12--13",
+    cite = "Paul Tol, 2018",
     nmax = 23,
     nan  = "#777777"
   )
@@ -335,7 +354,7 @@ MakeDatasets <- function() {
                     #521A13
                     "),
     type = "Sequential",
-    cite = "Tol, 2018, p.~12",
+    cite = "Paul Tol, 2018",
     nmax = Inf,
     nan  = "#666666"
   )
@@ -352,7 +371,7 @@ MakeDatasets <- function() {
                     #FFFFFF, 800
                     "),
     type = "Sequential",
-    cite = "Dewez, 2004",
+    cite = "Thomas Dewez, 2004",
     nmax = Inf,
     back = "#336600",
     fore = "#FFFFFF",
@@ -370,7 +389,7 @@ MakeDatasets <- function() {
                     #FFFFFF, 800
                     "),
     type  = "Sequential",
-    cite  = "Dewez, 2004",
+    cite  = "Thomas Dewez, 2004",
     nmax  = Inf,
     back = "#FFFFFF",
     fore = "#008435",
@@ -390,744 +409,131 @@ MakeDatasets <- function() {
                     #FFFFFF, 4900
                     "),
     type  = "Sequential",
-    cite  = "Dewez, 2004",
+    cite  = "Thomas Dewez, 2004",
     nmax  = Inf,
     back = "#99CCFF",
     fore = "#99CCFF",
     nan  = "#99CCFF"
   )
 
-  schemes[["GMT abyss"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color,   value
-                    #000000, -8000
-                    #141E35, -7000
-                    #263C6A, -6000
-                    #2E5085, -5000
-                    #3563A0, -4000
-                    #4897D3, -3000
-                    #5AB9E9, -2000
-                    #8DD2EF, -1000
-                    #F5FFFF,     0
-                    "),
-    type = "Sequential",
-    cite = "Wessel and others, 2013",
-    nmax = Inf,
-    back = "#000000",
-    fore = "#FFFFFF",
-    nan  = "#BEBEBE",
-    note = strwrap("Color table for bathymetry modeled after IBCSO
-                    at depth but turning lighter towards sea level
-                    Designed by P. Wessel, SOEST")
-  )
-
-  schemes[["GMT bathy"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color,   value
-                    #000000, -8000
-                    #1F284F, -7000
-                    #263C6A, -6000
-                    #3563A0, -4000
-                    #4897D3, -3500
-                    #66CDAA, -2500
-                    #8DD2EF, -1000
-                    #F5FFFF,     0
-                    "),
-    type = "Sequential",
-    cite = "Wessel and others, 2013",
-    nmax = Inf,
-    back = "#000000",
-    fore = "#F5FFFF",
-    nan  = "#BEBEBE",
-    note = strwrap("Color table for bathymetry modeled after IBCSO
-                    at depth but going through an aquamarine patch
-                    between 2009-3000, then into lightblue to white
-                    Designed by P. Wessel, SOEST")
-  )
-
-  schemes[["GMT copper"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color,   value
-                    #000000, 0
-                    #FF9F66, 0.796875
-                    #FFC880, 1
-                    "),
-    type = "Sequential",
-    cite = "Wessel and others, 2013",
-    nmax = Inf,
-    note = strwrap("Simulates the COPPER colormap in MATLAB")
-  )
-
-  schemes[["GMT cubhelix"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color
-                    #000000
-                    #010001
-                    #030103
-                    #040104
-                    #060206
-                    #080208
-                    #090309
-                    #0A040B
-                    #0C040D
-                    #0D050F
-                    #0E0611
-                    #0F0613
-                    #110715
-                    #120817
-                    #130919
-                    #140A1B
-                    #140B1D
-                    #150B1F
-                    #160C21
-                    #170D23
-                    #170E25
-                    #180F27
-                    #181129
-                    #19122B
-                    #19132D
-                    #19142F
-                    #1A1530
-                    #1A1632
-                    #1A1834
-                    #1A1936
-                    #1A1A38
-                    #1A1C39
-                    #1A1D3B
-                    #1A1F3C
-                    #1A203E
-                    #1A223F
-                    #1A2341
-                    #192542
-                    #192643
-                    #192845
-                    #192946
-                    #182B47
-                    #182D48
-                    #182E49
-                    #17304A
-                    #17324A
-                    #17344B
-                    #17354C
-                    #16374C
-                    #16394D
-                    #163A4D
-                    #153C4D
-                    #153E4E
-                    #15404E
-                    #15424E
-                    #15434E
-                    #15454E
-                    #14474E
-                    #14494E
-                    #144A4D
-                    #154C4D
-                    #154E4D
-                    #154F4C
-                    #15514C
-                    #15534B
-                    #16544B
-                    #16564A
-                    #165849
-                    #175949
-                    #175B48
-                    #185C47
-                    #195E46
-                    #1A5F45
-                    #1B6144
-                    #1B6243
-                    #1C6342
-                    #1E6542
-                    #1F6641
-                    #206740
-                    #21683F
-                    #236A3D
-                    #246B3C
-                    #266C3B
-                    #276D3A
-                    #296E3A
-                    #2B6F39
-                    #2D7038
-                    #2F7137
-                    #317236
-                    #337235
-                    #357334
-                    #377433
-                    #397433
-                    #3C7532
-                    #3E7631
-                    #417631
-                    #437730
-                    #467730
-                    #48782F
-                    #4B782F
-                    #4E782F
-                    #51792E
-                    #53792E
-                    #56792E
-                    #59792E
-                    #5C7A2E
-                    #5F7A2F
-                    #627A2F
-                    #657A2F
-                    #687A30
-                    #6B7A30
-                    #6E7A31
-                    #717A32
-                    #747A32
-                    #787A33
-                    #7B7A34
-                    #7E7A35
-                    #817A37
-                    #847A38
-                    #877A39
-                    #8A793B
-                    #8D793C
-                    #90793E
-                    #937940
-                    #967941
-                    #997943
-                    #9B7945
-                    #9E7947
-                    #A1794A
-                    #A4784C
-                    #A6784E
-                    #A97851
-                    #AB7853
-                    #AE7856
-                    #B07858
-                    #B2785B
-                    #B5785E
-                    #B77860
-                    #B97863
-                    #BB7966
-                    #BD7969
-                    #BF796C
-                    #C1796F
-                    #C27972
-                    #C47A75
-                    #C67A78
-                    #C77A7C
-                    #C97B7F
-                    #CA7B82
-                    #CB7C85
-                    #CC7C88
-                    #CD7D8C
-                    #CE7D8F
-                    #CF7E92
-                    #D07F95
-                    #D17F99
-                    #D1809C
-                    #D2819F
-                    #D382A2
-                    #D383A5
-                    #D383A9
-                    #D484AC
-                    #D485AF
-                    #D487B2
-                    #D488B5
-                    #D489B8
-                    #D48ABA
-                    #D48BBD
-                    #D48CC0
-                    #D38EC3
-                    #D38FC5
-                    #D390C8
-                    #D292CB
-                    #D293CD
-                    #D295CF
-                    #D196D2
-                    #D098D4
-                    #D09AD6
-                    #CF9BD8
-                    #CF9DDA
-                    #CE9EDC
-                    #CDA0DE
-                    #CDA2E0
-                    #CCA4E2
-                    #CBA5E3
-                    #CBA7E5
-                    #CAA9E6
-                    #C9ABE7
-                    #C9ACE9
-                    #C8AEEA
-                    #C7B0EB
-                    #C7B2EC
-                    #C6B4ED
-                    #C5B6EE
-                    #C5B7EF
-                    #C4B9EF
-                    #C4BBF0
-                    #C3BDF1
-                    #C3BFF1
-                    #C2C1F2
-                    #C2C2F2
-                    #C2C4F2
-                    #C1C6F3
-                    #C1C8F3
-                    #C1CAF3
-                    #C1CBF3
-                    #C1CDF3
-                    #C1CFF3
-                    #C1D0F3
-                    #C1D2F3
-                    #C1D4F3
-                    #C1D5F3
-                    #C2D7F2
-                    #C2D8F2
-                    #C3DAF2
-                    #C3DBF2
-                    #C4DDF1
-                    #C4DEF1
-                    #C5E0F1
-                    #C6E1F1
-                    #C7E2F0
-                    #C8E4F0
-                    #C8E5F0
-                    #CAE6EF
-                    #CBE7EF
-                    #CCE8EF
-                    #CDE9EF
-                    #CEEBEF
-                    #D0ECEE
-                    #D1EDEE
-                    #D2EEEE
-                    #D4EFEE
-                    #D5F0EE
-                    #D7F0EE
-                    #D9F1EE
-                    #DAF2EE
-                    #DCF3EF
-                    #DEF4EF
-                    #DFF4EF
-                    #E1F5F0
-                    #E3F6F0
-                    #E5F7F0
-                    #E7F7F1
-                    #E8F8F2
-                    #EAF8F2
-                    #ECF9F3
-                    #EEFAF4
-                    #F0FAF5
-                    #F2FBF6
-                    #F4FBF7
-                    #F5FCF8
-                    #F7FCF9
-                    #F9FDFA
-                    #FBFDFC
-                    #FDFEFD
-                    #FFFFFF
-                    "),
-    type = "Sequential",
-    cite = "Wessel and others, 2013",
-    nmax = Inf,
-    back = "#000000",
-    fore = "#FFFFFF",
-    nan  = "#FF0000",
-    note = strwrap("Dave Green, Cambridge
-                    Designed for intensities
-                    From ch05m151010.cpt at cpt city")
-  )
-
-  schemes[["GMT dem1"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color,   value
-                    #336600,   0
-                    #81C31F, 100
-                    #FFFFCC, 200
-                    #F4BD45, 400
-                    #66330C, 500
-                    #663300, 600
-                    #FFFFFF, 800
-                    "),
-    type  = "Sequential",
-    cite  = "Wessel and others, 2013",
-    nmax  = Inf,
-    back = "#336600",
-    fore = "#FFFFFF",
-    nan  = "#336600",
-    note = strwrap("Color table for topography, via cpt-city
-                    Designed by: Thomas Dewez for printing
-                    Modified by P Wessel to avoid discontinuities")
-  )
-
-  schemes[["GMT dem2"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color,   value
-                    #006147,    0
-                    #107A2F,   50
-                    #E8D77D,  500
-                    #A14300, 1200
-                    #643219, 1700
-                    #6E6E6E, 2800
-                    #FFFFFF, 4000
-                    #FFFFFF, 4900
-                    "),
-    type = "Sequential",
-    cite = "Wessel and others, 2013",
-    nmax = Inf,
-    back = "#BEBEBE",
-    fore = "#FFFFFF",
-    nan  = "#000000",
-    note = "Paul Wessel, modified from DEM_poster at cpt city to yield brown"
-  )
-
-  schemes[["GMT dem3"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color,   value
-                    #3CB371,    0
-                    #DEB887, 1000
-                    #CD6600, 2000
-                    #8B4513, 3000
-                    #EED5B7, 4000
-                    #EEEEE0, 5000
-                    #FFFAFA, 6000
-                    "),
-    type = "Sequential",
-    cite = "Wessel and others, 2013",
-    nmax = Inf,
-    back = "#000000",
-    fore = "#FFFFFF",
-    nan  = "#BEBEBE",
-    note = strwrap("Color table for topography
-                    Designed by P. Wessel, SOEST")
-  )
-
-  schemes[["GMT dem4"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color,   value
-                    #B0F2D8,    0
-                    #B1F3D6,   10
-                    #B2F5D2,   20
-                    #B2F5CC,   30
-                    #B3F5C6,   40
-                    #B2F6C0,   50
-                    #B2F7BC,   60
-                    #B4F9B7,   70
-                    #B7F9B4,   80
-                    #BCFAB4,   90
-                    #C2FAB4,  100
-                    #C8FBB4,  110
-                    #CEFCB4,  120
-                    #D4FDB3,  130
-                    #DCFDB4,  140
-                    #E3FEB4,  150
-                    #EAFFB4,  160
-                    #F1FFB5,  170
-                    #F8FFB5,  180
-                    #FDFFB4,  190
-                    #FBFCAE,  200
-                    #F1F7A4,  210
-                    #E5F399,  220
-                    #D8EE8E,  230
-                    #C8E782,  240
-                    #BAE177,  250
-                    #ACDB6D,  260
-                    #9CD663,  270
-                    #8ECF5A,  280
-                    #7EC953,  290
-                    #6FC44B,  300
-                    #5FBE43,  310
-                    #4EB83A,  320
-                    #3FB233,  330
-                    #32AD2D,  340
-                    #27A72B,  350
-                    #1EA22C,  360
-                    #189C2F,  370
-                    #129632,  380
-                    #0E9035,  390
-                    #098B39,  400
-                    #07863D,  410
-                    #0C8440,  420
-                    #188440,  430
-                    #28863E,  440
-                    #358A3D,  450
-                    #418E3C,  460
-                    #4D903C,  470
-                    #589439,  480
-                    #649637,  490
-                    #6F9835,  500
-                    #799C33,  510
-                    #829E31,  520
-                    #8BA22F,  530
-                    #95A42C,  540
-                    #9EA629,  550
-                    #A8A827,  560
-                    #B2AC24,  570
-                    #BDAF22,  580
-                    #C7B21E,  590
-                    #D1B31C,  600
-                    #DDB518,  610
-                    #E7B614,  620
-                    #F1B80E,  630
-                    #F9B808,  640
-                    #FBB204,  650
-                    #F7A802,  660
-                    #F19D02,  670
-                    #EB9202,  680
-                    #E58602,  690
-                    #DF7B02,  700
-                    #DB7002,  710
-                    #D66702,  720
-                    #D05D02,  730
-                    #CA5502,  740
-                    #C24B02,  750
-                    #BC4302,  760
-                    #B63B02,  770
-                    #B03202,  780
-                    #AB2B02,  790
-                    #A52402,  800
-                    #9F1E02,  810
-                    #991702,  820
-                    #941201,  830
-                    #8F0E01,  840
-                    #890800,  850
-                    #840500,  860
-                    #7E0400,  870
-                    #7B0802,  880
-                    #780D02,  890
-                    #771002,  900
-                    #761204,  910
-                    #761404,  920
-                    #761504,  930
-                    #751604,  940
-                    #751805,  950
-                    #731A06,  960
-                    #731D06,  970
-                    #711F07,  980
-                    #702108,  990
-                    #6F2308, 1000
-                    #6F2408, 1010
-                    #6E2609, 1020
-                    #6D280A, 1030
-                    #6D280A, 1040
-                    #6D2B0A, 1050
-                    #6C2D0B, 1060
-                    #6B2D0C, 1070
-                    #6B2F0C, 1080
-                    #6C310E, 1090
-                    #6F3512, 1100
-                    #723A17, 1110
-                    #753F1C, 1120
-                    #774320, 1130
-                    #7A4725, 1140
-                    #7E4B2C, 1150
-                    #825033, 1160
-                    #855639, 1170
-                    #895B40, 1180
-                    #8C6146, 1190
-                    #8E664D, 1200
-                    #926B55, 1210
-                    #95705B, 1220
-                    #987561, 1230
-                    #9A7B69, 1240
-                    #9E8371, 1250
-                    #A08979, 1260
-                    #A28F84, 1270
-                    #A5958D, 1280
-                    #A89C95, 1290
-                    #A9A29E, 1300
-                    #ACA9A6, 1310
-                    #AEAEAD, 1320
-                    #B0B0B0, 1330
-                    #B4B4B4, 1340
-                    #B7B7B7, 1350
-                    #BABABA, 1360
-                    #BEBEBE, 1370
-                    #C2C2C2, 1380
-                    #C6C6C6, 1390
-                    #CACACA, 1400
-                    #CECECE, 1410
-                    #D2D0D2, 1420
-                    #D7D4D7, 1430
-                    #DBD9DB, 1440
-                    #DDDBDD, 1450
-                    #E0DEE0, 1460
-                    #E4E2E4, 1470
-                    #E8E6E8, 1480
-                    #ECEAEC, 1490
-                    #EEECEE, 1500
-                    "),
-    type = "Sequential",
-    cite = "Wessel and others, 2013",
-    nmax = Inf,
-    back = "#000000",
-    fore = "#EBE9EB",
-    nan  = "#FF00FF",
-    note = strwrap("Originally wiki-schwarzwald-cont.cpt continuous version extracted from
-                    http://commons.wikimedia.org/wiki/File:Schwarzwald-topographie.png
-                    Author: wikipedia users W-j-s, Jide
-                    License: Creative Commons Attribution-Share Alike 3.0 Unported
-                    J.J. Green 2012")
-  )
-
-  schemes[["GMT drywet"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color,   value
-                    #90682D,  0
-                    #FFD56B,  2
-                    #C1FF91,  4
-                    #36FFFC,  6
-                    #0D81FF,  8
-                    #2901C4, 10
-                    #093779, 12
-                    "),
-    type = "Sequential",
-    cite = "Wessel and others, 2013",
-    nmax = Inf,
-    note = strwrap("Dry to Wet color table
-                    Created by Ed Maurer, University of Washington")
-  )
-
-  schemes[["GMT elevation"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color,   value
-                    #6C9D89,    0
-                    #7AAE97,   50
-                    #87BBA0,  200
-                    #AAC6AC,  600
-                    #DAD0B9, 1000
-                    #DBBEA9, 2000
-                    #DBC6BB, 3000
-                    #DDD8D5, 4000
-                    #E5E4E5, 5000
-                    #F6F6F6, 6000
-                    #FEFFFE, 7000
-                    "),
-    type = "Sequential",
-    cite = "Wessel and others, 2013",
-    nmax = Inf,
-    back = "#000000",
-    fore = "#FFFFFF",
-    nan  = "#BEBEBE",
-    note = strwrap("Washed out color table for topography, via cpt-city
-                    Designed by: Tom Patterson
-                    Modified by P Wessel to avoid discontinuities")
-  )
-
-  schemes[["GMT gebco"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color,   value
-                    #00F0FF, -7000
-                    #23FFFF, -6000
-                    #5AFFFF, -5000
-                    #8CFFE6, -4000
-                    #A5FFD7, -3000
-                    #C3FFD7, -2000
-                    #D2FFD7, -1000
-                    #E6FFF0,  -500
-                    #EBFFFF,  -200
-                    #EBFFFF,     0
-                    "),
-    type = "Sequential",
-    cite = "Wessel and others, 2013",
-    nmax = Inf,
-    back = "#FFFFFF",
-    fore = "#000000",
-    nan  = "#808080",
-    note = strwrap("Bathymetry color table approximating the GEBCO charts.
-                    Designed by Andrew Goodwillie, Lamont-Doherty Earth Observatory")
-  )
-
-
-  schemes[["GMT globe"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color,   value
-                    #9900FF, -10000
-                    #9900FF,  -9500
-                    #9900FF,  -9000
-                    #8811FF,  -8500
-                    #7722FF,  -8000
-                    #6633FF,  -7500
-                    #5544FF,  -7000
-                    #4455FF,  -6500
-                    #3366FF,  -6000
-                    #2277FF,  -5500
-                    #1188FF,  -5000
-                    #0099FF,  -4500
-                    #1BA4FF,  -4000
-                    #36AFFF,  -3500
-                    #51BAFF,  -3000
-                    #6CC5FF,  -2500
-                    #86D0FF,  -2000
-                    #A1DBFF,  -1500
-                    #BCE6FF,  -1000
-                    #D7F1FF,   -500
-                    #F1FCFF,   -200
-                    #336600,      0
-                    #33CC66,    100
-                    #BBE492,    200
-                    #FFDCB9,    500
-                    #F3CA89,   1000
-                    #E6B858,   1500
-                    #D9A627,   2000
-                    #A89A1F,   2500
-                    #A49019,   3000
-                    #A28613,   3500
-                    #9F7B0D,   4000
-                    #9C7107,   4500
-                    #996600,   5000
-                    #A25959,   5500
-                    #B27676,   6000
-                    #B79393,   6500
-                    #C2B0B0,   7000
-                    #CCCCCC,   7500
-                    #E5E5E5,   8000
-                    #F2F2F2,   8500
-                    #FFFFFF,   9000
-                    #FFFFFF,   9500
-                    #FFFFFF,  10000
-                    "),
-    type  = "Diverging",
-    cite  = "Wessel and others, 2013",
-    nmax  = Inf,
-    back = "#FFFFFF",
-    fore = "#000000",
-    nan  = "#808080",
-    note = strwrap("Color table using in global relief maps
-                    Bathymetry colours manually redefined for blue-shade effect and
-                    new topography colour scheme for use with Generic Mapping Tools.
-                    Designed by Designed by Lester M. Anderson ( arctica1963@gmail.com )")
-  )
-
-  schemes[["GMT gray"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color
-                    #000000
-                    #FFFFFF
-                    "),
-    type  = "Sequential",
-    cite  = "Wessel and others, 2013",
-    nmax  = Inf,
-    note = strwrap("Plain linear gray color table.")
-  )
-
   schemes <- schemes[order(vapply(schemes, function(x) x$type, ""), names(schemes))]
-
-  invisible(lapply(schemes, function(x) {
-    checkmate::assertDataFrame(x$data, any.missing=FALSE, min.rows=2, min.cols=1)
-
-    pattern <- "^#(\\d|[a-f]){6}$"
-    checkmate::assertCharacter(x$data$color, pattern=pattern, ignore.case=TRUE)
-    stopifnot(all(inlmisc:::.IsColor(x$data$color)))
-
-    checkmate::assertNumeric(x$data$value, finite=TRUE, unique=TRUE, sorted=TRUE, null.ok=TRUE)
-
-    checkmate::assertSubset(x$type, c("Qualitative", "Diverging", "Sequential"))
-    checkmate::assertString(x$cite)
-    checkmate::assertNumber(x$nmax)
-
-    checkmate::assertCharacter(x$back, pattern=pattern, ignore.case=TRUE, null.ok=TRUE)
-    checkmate::assertCharacter(x$fore, pattern=pattern, ignore.case=TRUE, null.ok=TRUE)
-    checkmate::assertCharacter(x$nan,  pattern=pattern, ignore.case=TRUE, null.ok=TRUE)
-    stopifnot(inlmisc:::.IsColor(x$back, null.ok=TRUE))
-    stopifnot(inlmisc:::.IsColor(x$fore, null.ok=TRUE))
-    stopifnot(inlmisc:::.IsColor(x$nan,  null.ok=TRUE))
-
-    checkmate::assertCharacter(x$note, null.ok=TRUE)
-  }))
-
+  invisible(lapply(schemes, .CheckScheme))
   if (dir.exists("../../R")) save(schemes, file="../../R/sysdata.rda")
+
+  invisible(schemes)
+}
+
+
+.ReadCpt <- function(file, cite=NULL, type=c("Sequential", "Diverging", "Qualitative")) {
+  checkmate::assertString(file)
+  checkmate::assertString(cite, null.ok=TRUE)
+  type <- match.arg(type)
+
+  line <- readLines(file)
+  line <- line[-grep("^(#$|#-+)", line)]
+
+  Col2Hex <- function(x) {
+    checkmate::assertString(x, na.ok=FALSE)
+    if (grepl("^[0-9]{1,3}/[0-9]{1,3}/[0-9]{1,3}$", x))
+      val <- as.integer(strsplit(x, "/")[[1]])
+    else
+      val <- t(grDevices::col2rgb(x))[1, ]
+    grDevices::rgb(val[1], val[2], val[3], maxColorValue=255)
+  }
+
+  nm <- c("N", "B", "F")
+  color <- lapply(nm, function(key) {
+    idx <- grep(sprintf("^%s[ |\t]", key), line)
+    if (length(idx) == 0) return(NULL)
+    x <- strsplit(line[idx], "[ \t]")[[1]]
+    x <- tail(x, 1)
+    line <<- line[-idx]
+    Col2Hex(x)
+  })
+  names(color) <- nm
+
+  nm <- c("COLOR_MODEL", "RANGE", "HINGE", "CYCLIC")
+  option <- lapply(nm, function(opt) {
+    idx <- grep(sprintf("^#[ \t]%s", opt), line)
+    if (length(idx) == 0) return(NULL)
+    x <- tail(strsplit(line[idx], "[ \t]")[[1]], 1)
+    line <<- line[-idx]
+    if (opt == "RANGE") x <- as.numeric(strsplit(x, "/")[[1]])
+    x
+  })
+  names(option) <- nm
+
+  idx <- grep("^#[ \t]", line)
+  note <- strwrap(substring(line[idx], 3), width=.Machine$integer.max)
+  line <- line[-idx]
+
+  m <- do.call("rbind", lapply(line, function(x) {
+    elem <- strsplit(x, "\t")[[1]]
+    elem <- elem[elem != ""]
+    elem[2] <- Col2Hex(elem[2])
+    elem[4] <- Col2Hex(elem[4])
+    elem
+  }))
+  d <- as.data.frame(rbind(m[, 1:2], m[nrow(m), 3:4]), stringsAsFactors=FALSE)
+  names(d) <- c("value", "color")
+  d$value <- as.numeric(d$value)
+  if (is.numeric(option$RANGE))
+    d$value <- seq(option$RANGE[1], option$RANGE[2], length.out=nrow(d))
+
+  l <- list(data = d,
+            type = type,
+            cite = cite,
+            nmax = Inf,
+            nan  = color$N,
+            back = color$B,
+            fore = color$F,
+            note = note)
+   l[vapply(l, is.null, FALSE)] <- NULL
+   l
+}
+
+
+.GetGMTCpt <- function(x, ...) {
+  checkmate::assertCharacter(x, any.missing=FALSE, min.len=1, unique=TRUE)
+
+  path <- "raw.githubusercontent.com/GenericMappingTools/gmt/master/share/cpt"
+  file <- sprintf("https://%s/%s.cpt", path, x)
+
+  is <- !vapply(file, RCurl::url.exists, FALSE)
+  if (any(is)) stop("URL responds with error:\n", paste(file[is], collapse="\n"))
+
+  cpt <- lapply(file, .ReadCpt, cite="Wessel and others, 2013", ...)
+  names(cpt) <- paste("GMT", x)
+  cpt
+}
+
+
+.CheckScheme <- function(x) {
+  checkmate::assertDataFrame(x$data, any.missing=FALSE, min.rows=2, min.cols=1)
+
+  pattern <- "^#(\\d|[a-f]){6}$"
+  checkmate::assertCharacter(x$data$color, pattern=pattern, ignore.case=TRUE)
+  stopifnot(all(inlmisc:::.IsColor(x$data$color)))
+
+  checkmate::qassert(x$data$name, c("0", "S", "X(0,)"))
+  checkmate::qassert(x$gray, c("0", "S", "X(0,)"))
+  checkmate::assertSubset(x$gray, x$data$name)
+
+  checkmate::assertNumeric(x$data$value, finite=TRUE, unique=TRUE,
+                           sorted=TRUE, null.ok=TRUE)
+
+  checkmate::assertSubset(x$type, c("Qualitative", "Diverging", "Sequential"))
+  checkmate::assertString(x$cite)
+  checkmate::assertNumber(x$nmax)
+
+  checkmate::assertCharacter(x$back, pattern=pattern, ignore.case=TRUE, null.ok=TRUE)
+  checkmate::assertCharacter(x$fore, pattern=pattern, ignore.case=TRUE, null.ok=TRUE)
+  checkmate::assertCharacter(x$nan,  pattern=pattern, ignore.case=TRUE, null.ok=TRUE)
+  stopifnot(inlmisc:::.IsColor(x$back, null.ok=TRUE))
+  stopifnot(inlmisc:::.IsColor(x$fore, null.ok=TRUE))
+  stopifnot(inlmisc:::.IsColor(x$nan,  null.ok=TRUE))
+
+  checkmate::assertCharacter(x$note, null.ok=TRUE)
 
   invisible()
 }
