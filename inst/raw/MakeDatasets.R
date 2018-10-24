@@ -497,8 +497,8 @@ MakeDatasets <- function() {
 .GetGMTCpt <- function(x, ...) {
   checkmate::assertCharacter(x, any.missing=FALSE, min.len=1, unique=TRUE)
 
-  path <- "raw.githubusercontent.com/GenericMappingTools/gmt/master/share/cpt"
-  file <- sprintf("https://%s/%s.cpt", path, x)
+  path <- "GenericMappingTools/gmt/master/share/cpt"
+  file <- sprintf("https://raw.githubusercontent.com/%s/%s.cpt", path, x)
 
   is <- !vapply(file, RCurl::url.exists, FALSE)
   if (any(is)) stop("URL responds with error:\n", paste(file[is], collapse="\n"))
