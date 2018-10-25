@@ -1,6 +1,7 @@
 # Internal Datasets
 
-Set working directory to current folder and read R code from the *internal-datasets.R* file.
+Set working directory to current folder and read R code from the
+*internal-datasets.R* file.
 
 ```r
 setwd(".")
@@ -20,7 +21,8 @@ and placed in the *cpt* folder.
 
 Rebuild the **inlmisc** package to reflect changes in the `schemes` object.
 
-Create a color palette summary table and save in the *../../man/figures/table.(pdf|svg)* files.
+Create a summary table for color schemes and save in the
+*../../man/figures/table.(pdf|svg)* files.
 
 ```r
 MakeTable()
