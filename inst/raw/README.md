@@ -1,9 +1,9 @@
 # Internal Datasets
 
-Set working directory and read code from the *internal-datasets.R* file.
+Set working directory to current folder and read R code from the *internal-datasets.R* file.
 
 ```r
-setwd(".")  # set path to current folder
+setwd(".")
 source("internal-datasets.R")
 ```
 
@@ -14,7 +14,7 @@ internal package dataset in the *../../R/sysdata.rda* file.
 MakeSysdata()
 ```
 
-Note that the source files for some palettes are downloaded from their
+Note that the source files for some color schemes are downloaded from their
 [repository](https://github.com/GenericMappingTools/gmt/tree/master/share/cpt)
 and placed in the *cpt* folder.
 
