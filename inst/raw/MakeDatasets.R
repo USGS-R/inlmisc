@@ -439,7 +439,7 @@ MakeDatasets <- function() {
     x <- strsplit(line[idx], "[ \t]")[[1]]
     x <- tail(x, 1)
     line <<- line[-idx]
-    .Col2Hex(x)
+    .Cpt2Hex(x)
   })
   names(color) <- nm
 
@@ -461,15 +461,15 @@ MakeDatasets <- function() {
   m <- do.call("rbind", lapply(line, function(x) {
     elem <- strsplit(x, "\t")[[1]]
     elem <- elem[elem != ""]
-    elem[2] <- .Col2Hex(elem[2])
-    elem[4] <- .Col2Hex(elem[4])
+    elem[2] <- .Cpt2Hex(elem[2])
+    elem[4] <- .Cpt2Hex(elem[4])
     elem
   }))
   d <- as.data.frame(rbind(m[, 1:2], m[nrow(m), 3:4]), stringsAsFactors=FALSE)
   names(d) <- c("value", "color")
   d$value <- as.numeric(d$value)
   if (is.numeric(option$RANGE))
-    d$value <- seq(option$RANGE[1], option$RANGE[2], length.out=nrow(d))
+    d$value <- option$RANGE[1] + diff(option$RANGE) * d$value
 
   l <- list(data = d,
             type = type,
@@ -484,7 +484,7 @@ MakeDatasets <- function() {
 }
 
 
-.Col2Hex <- function(x) {
+.Cpt2Hex <- function(x) {
   checkmate::assertString(x, na.ok=FALSE)
   if (grepl("^[0-9]{1,3}/[0-9]{1,3}/[0-9]{1,3}$", x))
     val <- as.integer(strsplit(x, "/")[[1]])
