@@ -46,8 +46,7 @@ or be \emph{source} packages (\file{.tar.gz}).}
 \item{versions}{'logical' flag.
 If true, installed package versions will be identical to version numbers stored in the package-details \code{file}.
 Only applies to packages from CRAN-like repositories and local package-installation files.
-Requires that the \pkg{devtools} package is available,
-see \code{\link[devtools]{install_version}} function.}
+Requires that the \pkg{devtools} package is available.}
 
 \item{github}{'logical' flag.
 If true, an attempt is made to install a subset of packages from \href{https://github.com/}{GitHub}.
