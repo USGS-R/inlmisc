@@ -48,12 +48,7 @@ MakeFigures<- function() {
 
   cite <- as.factor(vapply(schemes, function(x) x$cite, ""))
   m[, "Scheme"] <- sprintf("\\footnotemark[%d] %s", as.integer(cite), m[, "Scheme"])
-  txt <- levels(cite)
-  txt[grep("Tol", txt)] <- "Paul Tol (2018) granted permission to use and distribute."
-  txt[grep("Dewez", txt)] <- "Thomas Dewez (2004) granted permission to use and distribute."
-  txt[grep("Wessel", txt)] <- "Wessel and others (2013) released under the GNU Lesser General Public License v3 or later."
-
-  x <- sprintf("\\footnotemark[%d] %s", seq_along(txt), txt)
+  x <- sprintf("\\footnotemark[%d] %s", seq_along(levels(cite)), levels(cite))
   footnotes <- paste(x, collapse="\\\\")
 
   sink("table.tex")

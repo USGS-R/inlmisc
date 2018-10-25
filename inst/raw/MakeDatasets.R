@@ -36,7 +36,7 @@ MakeDatasets <- function() {
                     "),
     gray = c("yellow", "red", "green"),
     type = "Qualitative",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = 7
   )
 
@@ -51,7 +51,7 @@ MakeDatasets <- function() {
                     "),
     gray = c("white", "yellow", "red", "blue", "black"),
     type = "Qualitative",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = 5
   )
 
@@ -68,7 +68,7 @@ MakeDatasets <- function() {
                     "),
     gray = c("grey", "orange", "magenta", "blue"),
     type = "Qualitative",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = 7
   )
 
@@ -87,7 +87,7 @@ MakeDatasets <- function() {
                     "),
     gray = c("sand", "teal", "purple", "green", "indigo"),
     type = "Qualitative",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = 9,
     nas  = "#DDDDDD"
   )
@@ -103,7 +103,7 @@ MakeDatasets <- function() {
                     #DDDDDD, pale grey
                     "),
     type = "Qualitative",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = 6
   )
 
@@ -118,7 +118,7 @@ MakeDatasets <- function() {
                     #555555, dark grey
                     "),
     type = "Qualitative",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = 6
   )
 
@@ -138,7 +138,7 @@ MakeDatasets <- function() {
                     #DDDDDD, pale grey
                     "),
     type = "Qualitative",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = 9
   )
 
@@ -161,7 +161,7 @@ MakeDatasets <- function() {
                     #BB0011, urban and built
                     "),
     type = "Qualitative",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = 14
   )
 
@@ -181,7 +181,7 @@ MakeDatasets <- function() {
                     #A50026
                     "),
     type = "Diverging",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = Inf,
     nan  = "#FFFFFF"
   )
@@ -200,7 +200,7 @@ MakeDatasets <- function() {
                     #B2182B
                     "),
     type = "Diverging",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -219,7 +219,7 @@ MakeDatasets <- function() {
                     #1B7837
                     "),
     type = "Diverging",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -238,7 +238,7 @@ MakeDatasets <- function() {
                     #662506
                     "),
     type = "Sequential",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = Inf,
     nan  = "#888888"
   )
@@ -271,7 +271,7 @@ MakeDatasets <- function() {
                     #46353A
                     "),
     type = "Sequential",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = Inf,
     nan  = "#999999"
   )
@@ -310,7 +310,7 @@ MakeDatasets <- function() {
                     #42150A, 29
                     "),
     type = "Sequential",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = 23,
     nan  = "#777777"
   )
@@ -354,7 +354,7 @@ MakeDatasets <- function() {
                     #521A13
                     "),
     type = "Sequential",
-    cite = "Paul Tol, 2018",
+    cite = "Paul Tol (2018) granted permission to use and distribute.",
     nmax = Inf,
     nan  = "#666666"
   )
@@ -371,7 +371,7 @@ MakeDatasets <- function() {
                     #FFFFFF, 800
                     "),
     type = "Sequential",
-    cite = "Thomas Dewez, 2004",
+    cite = "Thomas Dewez (2004) granted permission to use and distribute.",
     nmax = Inf,
     back = "#336600",
     fore = "#FFFFFF",
@@ -389,7 +389,7 @@ MakeDatasets <- function() {
                     #FFFFFF, 800
                     "),
     type = "Sequential",
-    cite = "Thomas Dewez, 2004",
+    cite = "Thomas Dewez (2004) granted permission to use and distribute.",
     nmax = Inf,
     back = "#FFFFFF",
     fore = "#008435",
@@ -409,7 +409,7 @@ MakeDatasets <- function() {
                     #FFFFFF, 4900
                     "),
     type = "Sequential",
-    cite = "Thomas Dewez, 2004",
+    cite = "Thomas Dewez (2004) granted permission to use and distribute.",
     nmax = Inf,
     back = "#99CCFF",
     fore = "#99CCFF",
@@ -510,7 +510,9 @@ MakeDatasets <- function() {
   destfile <- file.path(destdir, basename(file))
   for (i in seq_along(file)) utils::download.file(file[i], destfile[i], quiet=TRUE)
 
-  cpt <- lapply(destfile, .ReadCpt, cite="Wessel and others, 2013", ...)
+  cite <- "Wessel and others (2013) released under the GNU Lesser General Public License v3 or later."
+
+  cpt <- lapply(destfile, .ReadCpt, cite=cite, ...)
   names(cpt) <- paste("GMT", x)
   cpt
 }
