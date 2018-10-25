@@ -41,8 +41,8 @@
 #'   \bold{F}: foreground color.
 #'   \bold{Abbreviations}: --, not available]
 #'
-#'   \if{html}{\figure{table.svg}{options: width=467 alt="Table: schemes"}}
-#'   \if{latex}{\figure{table.pdf}{options: width=12.36cm}}
+#'   \if{html}{\figure{table.svg}{alt="Table: color schemes"}}
+#'   \if{latex}{\figure{table.pdf}}
 #'
 #'   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
 #'   intended to be accessed in their entirety and subset using vector element names.
