@@ -45,8 +45,13 @@ performance of this software.
 
 R and other package dependencies have more restrictive licenses.
 
-Color schemes distributed with this software are included with the permission of
-the author, either explicitly or where the licence under which they were
-distributed allows it. For instance Generic Mapping Tools (GMT) color schemes
-are distributed under the GNU Lesser General Public License (LGPL) version 3 or
-later. Refer to the license notice included with the source files in raw/cpt/.
+Color schemes in the inlmisc package are included with the permission of
+the author, either explicitly or where the license under which they were
+distributed allows it. For instance, the Generic Mapping Tools (GMT) color
+palette tables are distributed under the GNU Lesser General Public License
+(LGPL) version 3 or later. Refer to the license notice included with the source
+files in raw/cpt/.
+
+The inlmisc package includes the leaflet-search software, a leaflet plugin
+distributed under the MIT license. Refer to the license notice included with
+the source files in htmlwidgets/plugins/leaflet-search/.
