@@ -81,7 +81,7 @@ The suggested data type for color schemes and the characteristics of generated p
   \bold{Abbreviations}: --, not available]
 
   \if{html}{\figure{table.svg}{alt="Table: color schemes"}}
-  \if{latex}{\figure{table.pdf}}
+  \if{latex}{\figure{table.pdf}{options: width=12.3698cm}}
 
   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
   intended to be accessed in their entirety and subset using vector element names.

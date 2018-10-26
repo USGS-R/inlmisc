@@ -20,6 +20,66 @@ MakeSysdata <- function() {
                              seafloor
                              "))
 
+  cite <- c("Thomas Dewez (2004) granted permission to use and distribute.",
+            "Paul Tol (2018) granted permission to use and distribute.")
+
+  schemes[["DEM print"]] <- list(
+    data = read.csv(strip.white=TRUE, text="
+                    value, color
+                        0, #336600
+                      100, #81C31F
+                      200, #FFFFCC
+                      400, #F4BD45
+                      500, #66330C
+                      600, #663300
+                      800, #FFFFFF
+                    "),
+    type = "Sequential",
+    cite = cite[1],
+    nmax = Inf,
+    back = "#336600",
+    fore = "#FFFFFF",
+    nan  = "#336600"
+  )
+
+  schemes[["DEM screen"]] <- list(
+    data = read.csv(strip.white=TRUE, text="
+                    value, color
+                        0, #008435
+                      100, #33CC00
+                      200, #F4F071
+                      400, #F4BD45
+                      600, #99642B
+                      800, #FFFFFF
+                    "),
+    type = "Sequential",
+    cite = cite[1],
+    nmax = Inf,
+    back = "#FFFFFF",
+    fore = "#008435",
+    nan  = "#008435"
+  )
+
+  schemes[["DEM poster"]] <- list(
+    data = read.csv(strip.white=TRUE, text="
+                    value, color
+                        0, #006147
+                       50, #107A2F
+                      500, #E8D77D
+                     1200, #A14300
+                     1700, #9E0000
+                     2800, #6E6E6E
+                     4000, #FFFFFF
+                     4900, #FFFFFF
+                    "),
+    type = "Sequential",
+    cite = cite[1],
+    nmax = Inf,
+    back = "#99CCFF",
+    fore = "#99CCFF",
+    nan  = "#99CCFF"
+  )
+
   schemes[["bright"]] <- list(
     data = read.csv(strip.white=TRUE, text="
                     name,   color
@@ -33,7 +93,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("yellow", "red", "green"),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = 7
   )
 
@@ -48,7 +108,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("white", "yellow", "red", "blue", "black"),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = 5
   )
 
@@ -65,7 +125,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("grey", "orange", "magenta", "blue"),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = 7
   )
 
@@ -84,7 +144,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("sand", "teal", "purple", "green", "indigo"),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = 9,
     nas  = "#DDDDDD"
   )
@@ -100,7 +160,7 @@ MakeSysdata <- function() {
                     pale grey,   #DDDDDD
                     "),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = 6
   )
 
@@ -115,7 +175,7 @@ MakeSysdata <- function() {
                     dark grey,   #555555
                     "),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = 6
   )
 
@@ -133,7 +193,7 @@ MakeSysdata <- function() {
                     pale grey,    #DDDDDD
                     "),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = 9
   )
 
@@ -156,7 +216,7 @@ MakeSysdata <- function() {
                     urban and built,             #BB0011
                     "),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = 14
   )
 
@@ -176,7 +236,7 @@ MakeSysdata <- function() {
                     #A50026
                     "),
     type = "Diverging",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = Inf,
     nan  = "#FFFFFF"
   )
@@ -195,7 +255,7 @@ MakeSysdata <- function() {
                     #B2182B
                     "),
     type = "Diverging",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -214,7 +274,7 @@ MakeSysdata <- function() {
                     #1B7837
                     "),
     type = "Diverging",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -233,7 +293,7 @@ MakeSysdata <- function() {
                     #662506
                     "),
     type = "Sequential",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = Inf,
     nan  = "#888888"
   )
@@ -266,7 +326,7 @@ MakeSysdata <- function() {
                     #46353A
                     "),
     type = "Sequential",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = Inf,
     nan  = "#999999"
   )
@@ -305,7 +365,7 @@ MakeSysdata <- function() {
                       29, #42150A
                     "),
     type = "Sequential",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = 23,
     nan  = "#777777"
   )
@@ -349,66 +409,9 @@ MakeSysdata <- function() {
                     #521A13
                     "),
     type = "Sequential",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite[2],
     nmax = Inf,
     nan  = "#666666"
-  )
-
-  schemes[["DEM print"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    value, color
-                        0, #336600
-                      100, #81C31F
-                      200, #FFFFCC
-                      400, #F4BD45
-                      500, #66330C
-                      600, #663300
-                      800, #FFFFFF
-                    "),
-    type = "Sequential",
-    cite = "Thomas Dewez (2004) granted permission to use and distribute.",
-    nmax = Inf,
-    back = "#336600",
-    fore = "#FFFFFF",
-    nan  = "#336600"
-  )
-
-  schemes[["DEM screen"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    value, color
-                        0, #008435
-                      100, #33CC00
-                      200, #F4F071
-                      400, #F4BD45
-                      600, #99642B
-                      800, #FFFFFF
-                    "),
-    type = "Sequential",
-    cite = "Thomas Dewez (2004) granted permission to use and distribute.",
-    nmax = Inf,
-    back = "#FFFFFF",
-    fore = "#008435",
-    nan  = "#008435"
-  )
-
-  schemes[["DEM poster"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    value, color
-                        0, #006147
-                       50, #107A2F
-                      500, #E8D77D
-                     1200, #A14300
-                     1700, #9E0000
-                     2800, #6E6E6E
-                     4000, #FFFFFF
-                     4900, #FFFFFF
-                    "),
-    type = "Sequential",
-    cite = "Thomas Dewez (2004) granted permission to use and distribute.",
-    nmax = Inf,
-    back = "#99CCFF",
-    fore = "#99CCFF",
-    nan  = "#99CCFF"
   )
 
   schemes <- schemes[order(vapply(schemes, function(x) x$type, ""), names(schemes))]
@@ -419,7 +422,9 @@ MakeSysdata <- function() {
 }
 
 
-.ReadCpt <- function(file, cite=NULL, type=c("Sequential", "Diverging", "Qualitative")) {
+.ReadCpt <- function(file, cite=NULL,
+                     type=c("Sequential", "Diverging", "Qualitative")) {
+
   checkmate::assertString(file)
   checkmate::assertString(cite, null.ok=TRUE)
   type <- match.arg(type)
@@ -511,8 +516,8 @@ MakeSysdata <- function() {
   listfile <- list.files(destdir, pattern="\\.cpt$", full.names=TRUE)
   unlink(listfile[!listfile %in% destfile])
 
-  cite <- "Wessel and others (2013) released under the GNU Lesser General Public License v3 or later."
-
+  cite <- paste("Wessel and others (2013) released under the",
+                "GNU Lesser General Public License v3 or later.")
   cpt <- lapply(destfile, .ReadCpt, cite=cite, ...)
   names(cpt) <- paste("GMT", x)
   cpt
