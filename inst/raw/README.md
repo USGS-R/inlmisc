@@ -4,7 +4,7 @@ Set working directory to current folder and read R code from the
 *internal-datasets.R* file.
 
 ```r
-setwd(".")
+setwd("<path/to/current/folder>")
 source("internal-datasets.R")
 ```
 
@@ -15,8 +15,8 @@ internal package dataset in the *../../R/sysdata.rda* file.
 MakeSysdata()
 ```
 
-Note that the source files for some color schemes are downloaded from their
-[repository](https://github.com/GenericMappingTools/gmt/tree/master/share/cpt)
+Note that the source files for some color schemes are downloaded from the
+[GMC repository](https://github.com/GenericMappingTools/gmt/tree/master/share/cpt)
 and placed in the *cpt* folder.
 
 Rebuild the **inlmisc** package to reflect changes in the `schemes` object.
