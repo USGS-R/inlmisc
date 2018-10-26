@@ -20,8 +20,8 @@ MakeSysdata <- function() {
                              seafloor
                              "))
 
-  cite <- c("Thomas Dewez (2004) granted permission to use and distribute.",
-            "Paul Tol (2018) granted permission to use and distribute.")
+  cite <- c("Dewez" = "Thomas Dewez (2004) granted permission to use and distribute.",
+            "Tol"   = "Paul Tol (2018) granted permission to use and distribute.")
 
   schemes[["DEM print"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -35,7 +35,7 @@ MakeSysdata <- function() {
                       800, #FFFFFF
                     "),
     type = "Sequential",
-    cite = cite[1],
+    cite = cite["Dewez"],
     nmax = Inf,
     back = "#336600",
     fore = "#FFFFFF",
@@ -53,7 +53,7 @@ MakeSysdata <- function() {
                       800, #FFFFFF
                     "),
     type = "Sequential",
-    cite = cite[1],
+    cite = cite["Dewez"],
     nmax = Inf,
     back = "#FFFFFF",
     fore = "#008435",
@@ -73,7 +73,7 @@ MakeSysdata <- function() {
                      4900, #FFFFFF
                     "),
     type = "Sequential",
-    cite = cite[1],
+    cite = cite["Dewez"],
     nmax = Inf,
     back = "#99CCFF",
     fore = "#99CCFF",
@@ -93,7 +93,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("yellow", "red", "green"),
     type = "Qualitative",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = 7
   )
 
@@ -108,7 +108,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("white", "yellow", "red", "blue", "black"),
     type = "Qualitative",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = 5
   )
 
@@ -125,7 +125,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("grey", "orange", "magenta", "blue"),
     type = "Qualitative",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = 7
   )
 
@@ -144,7 +144,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("sand", "teal", "purple", "green", "indigo"),
     type = "Qualitative",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = 9,
     nas  = "#DDDDDD"
   )
@@ -160,7 +160,7 @@ MakeSysdata <- function() {
                     pale grey,   #DDDDDD
                     "),
     type = "Qualitative",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = 6
   )
 
@@ -175,7 +175,7 @@ MakeSysdata <- function() {
                     dark grey,   #555555
                     "),
     type = "Qualitative",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = 6
   )
 
@@ -193,7 +193,7 @@ MakeSysdata <- function() {
                     pale grey,    #DDDDDD
                     "),
     type = "Qualitative",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = 9
   )
 
@@ -216,7 +216,7 @@ MakeSysdata <- function() {
                     urban and built,             #BB0011
                     "),
     type = "Qualitative",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = 14
   )
 
@@ -236,7 +236,7 @@ MakeSysdata <- function() {
                     #A50026
                     "),
     type = "Diverging",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#FFFFFF"
   )
@@ -255,7 +255,7 @@ MakeSysdata <- function() {
                     #B2182B
                     "),
     type = "Diverging",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -274,7 +274,7 @@ MakeSysdata <- function() {
                     #1B7837
                     "),
     type = "Diverging",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -293,7 +293,7 @@ MakeSysdata <- function() {
                     #662506
                     "),
     type = "Sequential",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#888888"
   )
@@ -326,7 +326,7 @@ MakeSysdata <- function() {
                     #46353A
                     "),
     type = "Sequential",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#999999"
   )
@@ -365,7 +365,7 @@ MakeSysdata <- function() {
                       29, #42150A
                     "),
     type = "Sequential",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = 23,
     nan  = "#777777"
   )
@@ -409,7 +409,7 @@ MakeSysdata <- function() {
                     #521A13
                     "),
     type = "Sequential",
-    cite = cite[2],
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#666666"
   )
@@ -432,8 +432,7 @@ MakeSysdata <- function() {
   line <- readLines(file)
   line <- line[-grep("^(#$|#-+)", line)]
 
-  nm <- c("N", "B", "F")
-  color <- lapply(nm, function(key) {
+  color <- lapply(c("N"="N", "B"="B", "F"="F"), function(key) {
     idx <- grep(sprintf("^%s[ |\t]", key), line)
     if (length(idx) == 0) return(NULL)
     x <- strsplit(line[idx], "[ \t]")[[1]]
@@ -441,7 +440,6 @@ MakeSysdata <- function() {
     line <<- line[-idx]
     .Cpt2Hex(x)
   })
-  names(color) <- nm
 
   nm <- c("COLOR_MODEL", "RANGE", "HINGE", "CYCLIC")
   option <- lapply(nm, function(opt) {
