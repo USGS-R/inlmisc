@@ -632,10 +632,12 @@ MakeTable <- function() {
             "--file=table.pdf",
             "--vacuum-defs",
             "--export-plain-svg=table.svg")
-  system2("inkscape", args=args, stdout=FALSE, stderr=FALSE, invisible=TRUE)
+  system2("inkscape", args=args, stdout=FALSE, stderr=FALSE)
+
+  tools::compactPDF("table.pdf", gs_quality="printer")
 
   args <- c("--trim-colors false", "table.svg", "table.svg")
-  system2("svgcleaner", args=args, stdout=FALSE, stderr=FALSE, invisible=TRUE)
+  system2("svgcleaner", args=args, stdout=FALSE, stderr=FALSE)
 
   if (dir.exists("../../man"))
     dir.create(path <- "../../man/figures/", showWarnings=FALSE)
