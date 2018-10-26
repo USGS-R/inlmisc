@@ -28,5 +28,5 @@ Create a summary table for color schemes and save in the
 MakeTable()
 ```
 
-Note that this command requires access to [inkscape](https://inkscape.org/)
-from the command line.
+Note that this command requires access to [inkscape](https://inkscape.org/) and
+[svgcleaner](https://github.com/RazrFalcon/svgcleaner) from the command line.
