@@ -491,7 +491,7 @@ MakeSysdata <- function() {
   file <- sprintf("https://%s/%s/%s/master/%s", host, owner, repo, path)
 
   nm <- tools::file_path_sans_ext(basename(file))
-  exclude <- c("polar", "red2green", "seis", "grayC", "cool")
+  exclude <- c("cool", "grayC", "polar", "red2green", "seis")
   file <- file[!nm %in% exclude]
 
   destdir <- file.path(getwd(), "cpt")
@@ -513,7 +513,7 @@ MakeSysdata <- function() {
   cpt <- lapply(seq_along(destfile), function(i) {
     .ReadCpt(destfile[i], cite=cite, type=type[i])
   })
-  names(cpt) <- paste("GMT", nm)
+  names(cpt) <- nm
 
   is <- !vapply(cpt, is.null, FALSE)
   cpt <- cpt[is]

@@ -32,10 +32,10 @@ MakeTable()
 
 Edit the command used to insert the standalone PDF version of the table
 into the R help documentation by manually changing the width of the page layout.
-Open the *../../R/GetColors.R* file and specify the width in centimeters.
+Open the *../../R/GetColors.R* file and specify the width in inches.
 
 ```
-\if{latex}{\figure{table.pdf}{options: width=<layout width>cm}}
+\if{latex}{\figure{table.pdf}{options: width=<layout width>in}}
 ```
 
 Note that a PDF viewer is currently used to determine the layout width.
