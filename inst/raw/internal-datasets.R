@@ -2,45 +2,10 @@ MakeSysdata <- function() {
 
   options(stringsAsFactors=FALSE)
 
-  schemes <- .GetGMTCpt(scan(what="character", strip.white=TRUE, quiet=TRUE, text="
-                             abyss
-                             bathy
-                             copper
-                             cubhelix
-                             dem1
-                             dem2
-                             dem3
-                             dem4
-                             drywet
-                             elevation
-                             gray
-                             hot
-                             jet
-                             ocean
-                             seafloor
-                             "))
+  schemes <- .GetGMTCpt()
 
   cite <- c("Dewez" = "Thomas Dewez (2004) granted permission to use and distribute.",
             "Tol"   = "Paul Tol (2018) granted permission to use and distribute.")
-
-  schemes[["DEM print"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    value, color
-                        0, #336600
-                      100, #81C31F
-                      200, #FFFFCC
-                      400, #F4BD45
-                      500, #66330C
-                      600, #663300
-                      800, #FFFFFF
-                    "),
-    type = "Sequential",
-    cite = cite["Dewez"],
-    nmax = Inf,
-    back = "#336600",
-    fore = "#FFFFFF",
-    nan  = "#336600"
-  )
 
   schemes[["DEM screen"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -422,15 +387,28 @@ MakeSysdata <- function() {
 }
 
 
-.ReadCpt <- function(file, cite=NULL,
-                     type=c("Sequential", "Diverging", "Qualitative")) {
+.ReadCpt <- function(file, cite=NULL, type="Sequential") {
 
   checkmate::assertString(file)
   checkmate::assertString(cite, null.ok=TRUE)
-  type <- match.arg(type)
+  type <- match.arg(type, c("Sequential", "Diverging", "Qualitative"))
 
   line <- readLines(file)
   line <- line[-grep("^(#$|#-+)", line)]
+
+  nm <- c("COLOR_MODEL", "RANGE", "HINGE", "CYCLIC")
+  option <- lapply(nm, function(opt) {
+    idx <- grep(sprintf("^#[ \t]%s", opt), line)
+    if (length(idx) == 0) return(NULL)
+    x <- tail(strsplit(line[idx], "[ \t]")[[1]], 1)
+    line <<- line[-idx]
+    if (opt == "COLOR_MODEL") x <- toupper(x)
+    if (opt == "RANGE") x <- as.numeric(strsplit(x, "/")[[1]])
+    x
+  })
+  names(option) <- nm
+
+  if (option$COLOR_MODEL != "RGB") return(NULL)
 
   color <- lapply(c("N"="N", "B"="B", "F"="F"), function(key) {
     idx <- grep(sprintf("^%s[ |\t]", key), line)
@@ -441,32 +419,28 @@ MakeSysdata <- function() {
     .Cpt2Hex(x)
   })
 
-  nm <- c("COLOR_MODEL", "RANGE", "HINGE", "CYCLIC")
-  option <- lapply(nm, function(opt) {
-    idx <- grep(sprintf("^#[ \t]%s", opt), line)
-    if (length(idx) == 0) return(NULL)
-    x <- tail(strsplit(line[idx], "[ \t]")[[1]], 1)
-    line <<- line[-idx]
-    if (opt == "RANGE") x <- as.numeric(strsplit(x, "/")[[1]])
-    x
-  })
-  names(option) <- nm
-
   idx <- grep("^#[ \t]", line)
   note <- strwrap(substring(line[idx], 3), width=.Machine$integer.max)
   line <- line[-idx]
 
   m <- do.call("rbind", lapply(line, function(x) {
-    elem <- strsplit(x, "\t")[[1]]
-    elem <- elem[elem != ""]
-    elem[2] <- .Cpt2Hex(elem[2])
-    elem[4] <- .Cpt2Hex(elem[4])
+    x <- strsplit(x, "[ \t]")[[1]]
+    x <- x[x != ""]
+    if (length(x) == 4) {
+      elem <- c(x[1], .Cpt2Hex(x[2]), x[3], .Cpt2Hex(x[4]))
+    } else if (length(x) == 8) {
+      elem <- c(x[1], .Cpt2Hex(x[2:4]), x[5], .Cpt2Hex(x[6:8]))
+    } else {
+      return(NULL)
+    }
     elem
   }))
 
+  if (is.null(m)) return(NULL)
+
   for (i in seq_len(nrow(m) - 1))
     if (!identical(m[i, 4], m[i + 1, 2]))
-      stop("Non-continuous colors in file: ", basename(file), call.=FALSE)
+      return(NULL)
 
   d <- as.data.frame(rbind(m[, 1:2], m[nrow(m), 3:4]), stringsAsFactors=FALSE)
   names(d) <- c("value", "color")
@@ -488,36 +462,63 @@ MakeSysdata <- function() {
 
 
 .Cpt2Hex <- function(x) {
-  checkmate::assertString(x, na.ok=FALSE)
-  if (grepl("^[0-9]{1,3}/[0-9]{1,3}/[0-9]{1,3}$", x))
-    val <- as.integer(strsplit(x, "/")[[1]])
-  else
-    val <- t(grDevices::col2rgb(x))[1, ]
-  grDevices::rgb(val[1], val[2], val[3], maxColorValue=255)
+  checkmate::assertVector(x, strict=TRUE, any.missing=FALSE, min.len=1, max.len=3)
+  if (length(x) == 1) {
+    if (grepl("/", x))
+      x <- as.integer(strsplit(x, "/")[[1]])
+    else
+      x <- t(grDevices::col2rgb(x))[1, ]
+  }
+  grDevices::rgb(x[1], x[2], x[3], maxColorValue=255)
 }
 
 
-.GetGMTCpt <- function(x, ...) {
-  checkmate::assertCharacter(x, any.missing=FALSE, min.len=1, unique=TRUE)
+.GetGMTCpt <- function() {
+
+  # code adapted from stackoverflow answer by lukeA, accessed October 27, 2018
+  # at https://stackoverflow.com/questions/25485216
+  host  <- "api.github.com"
+  owner <- "GenericMappingTools"
+  repo  <- "gmt"
+  fmt <- "https://%s/repos/%s/%s/git/trees/master?recursive=1"
+  path <- sprintf(fmt, host, owner, repo)
+  info <- httr::GET(sprintf(fmt, host, owner, repo))
+  httr::stop_for_status(info)
+  tree <- unlist(lapply(httr::content(info)$tree, "[", "path"), use.names=FALSE)
+  path <- grep("share/cpt/", tree, value=TRUE, fixed=TRUE)
 
   host <- "raw.githubusercontent.com"
-  path <- "GenericMappingTools/gmt/master/share/cpt"
-  file <- sprintf("https://%s/%s/%s.cpt", host, path, x)
+  file <- sprintf("https://%s/%s/%s/master/%s", host, owner, repo, path)
+
+  nm <- tools::file_path_sans_ext(basename(file))
+  exclude <- c("polar", "red2green", "seis", "grayC", "cool")
+  file <- file[!nm %in% exclude]
 
   destdir <- file.path(getwd(), "cpt")
   dir.create(destdir, showWarnings=FALSE)
 
   destfile <- file.path(destdir, basename(file))
-  for (i in seq_along(file)) utils::download.file(file[i], destfile[i], quiet=TRUE)
-
-  # remove cpt files that were not specified for download
-  listfile <- list.files(destdir, pattern="\\.cpt$", full.names=TRUE)
-  unlink(listfile[!listfile %in% destfile])
+  for (i in seq_along(file)) {
+    utils::download.file(file[i], destfile[i], quiet=TRUE)
+  }
 
   cite <- paste("Wessel and others (2013) released under the",
                 "GNU Lesser General Public License v3 or later.")
-  cpt <- lapply(destfile, .ReadCpt, cite=cite, ...)
-  names(cpt) <- paste("GMT", x)
+
+  nm <- tools::file_path_sans_ext(basename(file))
+  type <- rep("Sequential", length(nm))
+  div <- c("vik", "roma", "oleron", "cork", "broc")
+  type[nm %in% div] <- "Diverging"
+
+  cpt <- lapply(seq_along(destfile), function(i) {
+    .ReadCpt(destfile[i], cite=cite, type=type[i])
+  })
+  names(cpt) <- paste("GMT", nm)
+
+  is <- !vapply(cpt, is.null, FALSE)
+  cpt <- cpt[is]
+  unlink(destfile[!is])
+
   cpt
 }
 
@@ -638,9 +639,7 @@ MakeTable <- function() {
   system2("inkscape", args=arg, stdout=FALSE, stderr=FALSE)
 
   tools::compactPDF("table.pdf", gs_quality="printer")
-
-  arg <- c("--trim-colors false", "table.svg", "table.svg")
-  system2("svgcleaner", args=arg, stdout=FALSE, stderr=FALSE)
+  system2("svgcleaner", args=c("table.svg", "table.svg"), stdout=FALSE, stderr=FALSE)
 
   if (dir.exists("../../man"))
     dir.create(path <- "../../man/figures/", showWarnings=FALSE)
