@@ -2,10 +2,11 @@ MakeSysdata <- function() {
 
   options(stringsAsFactors=FALSE)
 
-  schemes <- .GetGMTCpt()
+  cite <- c("Dewez"  = "Thomas Dewez (2004) grants permission to use.",
+            "Tol"    = "Paul Tol (2018) grants permission to use.",
+            "Wessel" = "Wessel and others (2013) released under an open license.")
 
-  cite <- c("Dewez" = "Thomas Dewez (2004) granted permission to use and distribute.",
-            "Tol"   = "Paul Tol (2018) granted permission to use and distribute.")
+  schemes <- .GetGMTCpt(cite["Wessel"])
 
   schemes[["DEM screen"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -473,7 +474,7 @@ MakeSysdata <- function() {
 }
 
 
-.GetGMTCpt <- function() {
+.GetGMTCpt <- function(cite) {
 
   # code adapted from stackoverflow answer by lukeA, accessed October 27, 2018
   # at https://stackoverflow.com/questions/25485216
@@ -501,8 +502,6 @@ MakeSysdata <- function() {
   for (i in seq_along(file)) {
     utils::download.file(file[i], destfile[i], quiet=TRUE)
   }
-
-  cite <- "Wessel and others (2013) with schemes released under various open licenses."
 
   nm <- tools::file_path_sans_ext(basename(file))
   type <- rep("Sequential", length(nm))
@@ -563,10 +562,10 @@ MakeTable <- function() {
 
     s <- schemes[[i]]
 
-    n <- ifelse(is.finite(s$nmax), s$nmax, 255)
-    pal <- inlmisc::GetColors(n, scheme=names(schemes)[i])
-
     w <- 100; h <- 10
+
+    n <- ifelse(is.finite(s$nmax), s$nmax, w - 1)
+    pal <- inlmisc::GetColors(n, scheme=names(schemes)[i])
 
     fmt <- "%s_%03d.eps"
     f1 <- sprintf(fmt, "g1", i)
@@ -659,7 +658,7 @@ MakeTable <- function() {
                          xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
                          xlab="", ylab="")
   graphics::rect(0, 0, 1, 1, col=color, border=NA, lwd=0.5)
-  graphics::box(lwd=0.5, col="#D3D3D3")
+  graphics::box(lwd=0.25, col="#D3D3D3")
   dev.off()
 
   invisible()

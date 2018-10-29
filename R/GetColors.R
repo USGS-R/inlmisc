@@ -359,10 +359,17 @@ plot.inlcol <- function(x, ..., label=TRUE) {
   graphics::plot.default(NA, type="n", xlim=c(0, 1), ylim=c(0, 1), main=main,
                          xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
                          xlab="", ylab="", col.main="#333333", ...)
-  graphics::rect(0:(n - 1) / n, 0, 1:n / n, 1, col=x, border=border, lwd=0.5)
+  xl <- 0:(n - 1) / n
+  xr <- 1:n / n
+  if (any(grepl("^#(\\d|[a-f]){8}$", x, ignore.case=TRUE))) {
+    graphics::rect(0, 0, 1, 1, col="#FFFFFF", border=NA)
+  } else if (n > 1) {
+    xr <- c(utils::head(xr, -1) + 1 / (2 * n), utils::tail(xr, 1))
+  }
+  graphics::rect(xl, 0, xr, 1, col=x, border=border, lwd=0.25)
   graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels, tick=FALSE,
                  line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
-  graphics::box(lwd=0.5, col="#D3D3D3")
+  graphics::box(lwd=0.25, col="#D3D3D3")
 
   invisible()
 }
