@@ -502,8 +502,7 @@ MakeSysdata <- function() {
     utils::download.file(file[i], destfile[i], quiet=TRUE)
   }
 
-  cite <- paste("Wessel and others (2013) released under the",
-                "GNU Lesser General Public License v3 or later.")
+  cite <- "Wessel and others (2013) with schemes released under various open licenses."
 
   nm <- tools::file_path_sans_ext(basename(file))
   type <- rep("Sequential", length(nm))

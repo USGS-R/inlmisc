@@ -42,7 +42,7 @@
 #'   \bold{Abbreviations}: --, not available]
 #'
 #'   \if{html}{\figure{table.svg}{alt="Table: color schemes"}}
-#'   \if{latex}{\figure{table.pdf}{options: width=4.87in}}
+#'   \if{latex}{\figure{table.pdf}{options: width=4.79in}}
 #'
 #'   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
 #'   intended to be accessed in their entirety and subset using vector element names.
