@@ -634,6 +634,7 @@ MakeTable <- function() {
   arg <- c("--without-gui",
            "--file=table.pdf",
            "--vacuum-defs",
+           "--export-area-drawing",
            "--export-plain-svg=table.svg")
   system2("inkscape", args=arg, stdout=FALSE, stderr=FALSE)
 
