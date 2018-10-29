@@ -2,23 +2,49 @@ MakeSysdata <- function() {
 
   options(stringsAsFactors=FALSE)
 
-  schemes <- .GetGMTCpt(scan(what="character", strip.white=TRUE, quiet=TRUE, text="
-                             abyss
-                             bathy
-                             copper
-                             cubhelix
-                             dem1
-                             dem2
-                             dem3
-                             dem4
-                             drywet
-                             elevation
-                             gray
-                             hot
-                             jet
-                             ocean
-                             seafloor
-                             "))
+  cite <- c("Dewez"  = "Thomas Dewez (2004) grants permission to use.",
+            "Tol"    = "Paul Tol (2018) grants permission to use.",
+            "Wessel" = "Wessel and others (2013) released under an open license.")
+
+  schemes <- .GetGMTCpt(cite["Wessel"])
+
+  schemes[["DEM screen"]] <- list(
+    data = read.csv(strip.white=TRUE, text="
+                    value, color
+                        0, #008435
+                      100, #33CC00
+                      200, #F4F071
+                      400, #F4BD45
+                      600, #99642B
+                      800, #FFFFFF
+                    "),
+    type = "Sequential",
+    cite = cite["Dewez"],
+    nmax = Inf,
+    back = "#FFFFFF",
+    fore = "#008435",
+    nan  = "#008435"
+  )
+
+  schemes[["DEM poster"]] <- list(
+    data = read.csv(strip.white=TRUE, text="
+                    value, color
+                        0, #006147
+                       50, #107A2F
+                      500, #E8D77D
+                     1200, #A14300
+                     1700, #9E0000
+                     2800, #6E6E6E
+                     4000, #FFFFFF
+                     4900, #FFFFFF
+                    "),
+    type = "Sequential",
+    cite = cite["Dewez"],
+    nmax = Inf,
+    back = "#99CCFF",
+    fore = "#99CCFF",
+    nan  = "#99CCFF"
+  )
 
   schemes[["bright"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -33,7 +59,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("yellow", "red", "green"),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = 7
   )
 
@@ -48,7 +74,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("white", "yellow", "red", "blue", "black"),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = 5
   )
 
@@ -65,7 +91,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("grey", "orange", "magenta", "blue"),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = 7
   )
 
@@ -84,7 +110,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("sand", "teal", "purple", "green", "indigo"),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = 9,
     nas  = "#DDDDDD"
   )
@@ -100,7 +126,7 @@ MakeSysdata <- function() {
                     pale grey,   #DDDDDD
                     "),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = 6
   )
 
@@ -115,7 +141,7 @@ MakeSysdata <- function() {
                     dark grey,   #555555
                     "),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = 6
   )
 
@@ -133,7 +159,7 @@ MakeSysdata <- function() {
                     pale grey,    #DDDDDD
                     "),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = 9
   )
 
@@ -156,7 +182,7 @@ MakeSysdata <- function() {
                     urban and built,             #BB0011
                     "),
     type = "Qualitative",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = 14
   )
 
@@ -176,7 +202,7 @@ MakeSysdata <- function() {
                     #A50026
                     "),
     type = "Diverging",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#FFFFFF"
   )
@@ -195,7 +221,7 @@ MakeSysdata <- function() {
                     #B2182B
                     "),
     type = "Diverging",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -214,7 +240,7 @@ MakeSysdata <- function() {
                     #1B7837
                     "),
     type = "Diverging",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -233,7 +259,7 @@ MakeSysdata <- function() {
                     #662506
                     "),
     type = "Sequential",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#888888"
   )
@@ -266,7 +292,7 @@ MakeSysdata <- function() {
                     #46353A
                     "),
     type = "Sequential",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#999999"
   )
@@ -305,7 +331,7 @@ MakeSysdata <- function() {
                       29, #42150A
                     "),
     type = "Sequential",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = 23,
     nan  = "#777777"
   )
@@ -349,66 +375,9 @@ MakeSysdata <- function() {
                     #521A13
                     "),
     type = "Sequential",
-    cite = "Paul Tol (2018) granted permission to use and distribute.",
+    cite = cite["Tol"],
     nmax = Inf,
     nan  = "#666666"
-  )
-
-  schemes[["DEM print"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    value, color
-                        0, #336600
-                      100, #81C31F
-                      200, #FFFFCC
-                      400, #F4BD45
-                      500, #66330C
-                      600, #663300
-                      800, #FFFFFF
-                    "),
-    type = "Sequential",
-    cite = "Thomas Dewez (2004) granted permission to use and distribute.",
-    nmax = Inf,
-    back = "#336600",
-    fore = "#FFFFFF",
-    nan  = "#336600"
-  )
-
-  schemes[["DEM screen"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    value, color
-                        0, #008435
-                      100, #33CC00
-                      200, #F4F071
-                      400, #F4BD45
-                      600, #99642B
-                      800, #FFFFFF
-                    "),
-    type = "Sequential",
-    cite = "Thomas Dewez (2004) granted permission to use and distribute.",
-    nmax = Inf,
-    back = "#FFFFFF",
-    fore = "#008435",
-    nan  = "#008435"
-  )
-
-  schemes[["DEM poster"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    value, color
-                        0, #006147
-                       50, #107A2F
-                      500, #E8D77D
-                     1200, #A14300
-                     1700, #9E0000
-                     2800, #6E6E6E
-                     4000, #FFFFFF
-                     4900, #FFFFFF
-                    "),
-    type = "Sequential",
-    cite = "Thomas Dewez (2004) granted permission to use and distribute.",
-    nmax = Inf,
-    back = "#99CCFF",
-    fore = "#99CCFF",
-    nan  = "#99CCFF"
   )
 
   schemes <- schemes[order(vapply(schemes, function(x) x$type, ""), names(schemes))]
@@ -419,24 +388,14 @@ MakeSysdata <- function() {
 }
 
 
-.ReadCpt <- function(file, cite=NULL, type=c("Sequential", "Diverging", "Qualitative")) {
+.ReadCpt <- function(file, cite=NULL, type="Sequential") {
+
   checkmate::assertString(file)
   checkmate::assertString(cite, null.ok=TRUE)
-  type <- match.arg(type)
+  type <- match.arg(type, c("Sequential", "Diverging", "Qualitative"))
 
   line <- readLines(file)
   line <- line[-grep("^(#$|#-+)", line)]
-
-  nm <- c("N", "B", "F")
-  color <- lapply(nm, function(key) {
-    idx <- grep(sprintf("^%s[ |\t]", key), line)
-    if (length(idx) == 0) return(NULL)
-    x <- strsplit(line[idx], "[ \t]")[[1]]
-    x <- tail(x, 1)
-    line <<- line[-idx]
-    .Cpt2Hex(x)
-  })
-  names(color) <- nm
 
   nm <- c("COLOR_MODEL", "RANGE", "HINGE", "CYCLIC")
   option <- lapply(nm, function(opt) {
@@ -444,26 +403,45 @@ MakeSysdata <- function() {
     if (length(idx) == 0) return(NULL)
     x <- tail(strsplit(line[idx], "[ \t]")[[1]], 1)
     line <<- line[-idx]
+    if (opt == "COLOR_MODEL") x <- toupper(x)
     if (opt == "RANGE") x <- as.numeric(strsplit(x, "/")[[1]])
     x
   })
   names(option) <- nm
+
+  if (option$COLOR_MODEL != "RGB") return(NULL)
+
+  color <- lapply(c("N"="N", "B"="B", "F"="F"), function(key) {
+    idx <- grep(sprintf("^%s[ |\t]", key), line)
+    if (length(idx) == 0) return(NULL)
+    x <- strsplit(line[idx], "[ \t]")[[1]]
+    x <- tail(x, 1)
+    line <<- line[-idx]
+    .Cpt2Hex(x)
+  })
 
   idx <- grep("^#[ \t]", line)
   note <- strwrap(substring(line[idx], 3), width=.Machine$integer.max)
   line <- line[-idx]
 
   m <- do.call("rbind", lapply(line, function(x) {
-    elem <- strsplit(x, "\t")[[1]]
-    elem <- elem[elem != ""]
-    elem[2] <- .Cpt2Hex(elem[2])
-    elem[4] <- .Cpt2Hex(elem[4])
+    x <- strsplit(x, "[ \t]")[[1]]
+    x <- x[x != ""]
+    if (length(x) == 4) {
+      elem <- c(x[1], .Cpt2Hex(x[2]), x[3], .Cpt2Hex(x[4]))
+    } else if (length(x) == 8) {
+      elem <- c(x[1], .Cpt2Hex(x[2:4]), x[5], .Cpt2Hex(x[6:8]))
+    } else {
+      return(NULL)
+    }
     elem
   }))
 
+  if (is.null(m)) return(NULL)
+
   for (i in seq_len(nrow(m) - 1))
     if (!identical(m[i, 4], m[i + 1, 2]))
-      stop("Non-continuous colors in file: ", basename(file), call.=FALSE)
+      return(NULL)
 
   d <- as.data.frame(rbind(m[, 1:2], m[nrow(m), 3:4]), stringsAsFactors=FALSE)
   names(d) <- c("value", "color")
@@ -485,36 +463,60 @@ MakeSysdata <- function() {
 
 
 .Cpt2Hex <- function(x) {
-  checkmate::assertString(x, na.ok=FALSE)
-  if (grepl("^[0-9]{1,3}/[0-9]{1,3}/[0-9]{1,3}$", x))
-    val <- as.integer(strsplit(x, "/")[[1]])
-  else
-    val <- t(grDevices::col2rgb(x))[1, ]
-  grDevices::rgb(val[1], val[2], val[3], maxColorValue=255)
+  checkmate::assertVector(x, strict=TRUE, any.missing=FALSE, min.len=1, max.len=3)
+  if (length(x) == 1) {
+    if (grepl("/", x))
+      x <- as.integer(strsplit(x, "/")[[1]])
+    else
+      x <- t(grDevices::col2rgb(x))[1, ]
+  }
+  grDevices::rgb(x[1], x[2], x[3], maxColorValue=255)
 }
 
 
-.GetGMTCpt <- function(x, ...) {
-  checkmate::assertCharacter(x, any.missing=FALSE, min.len=1, unique=TRUE)
+.GetGMTCpt <- function(cite) {
+
+  # code adapted from stackoverflow answer by lukeA, accessed October 27, 2018
+  # at https://stackoverflow.com/questions/25485216
+  host  <- "api.github.com"
+  owner <- "GenericMappingTools"
+  repo  <- "gmt"
+  fmt <- "https://%s/repos/%s/%s/git/trees/master?recursive=1"
+  path <- sprintf(fmt, host, owner, repo)
+  info <- httr::GET(sprintf(fmt, host, owner, repo))
+  httr::stop_for_status(info)
+  tree <- unlist(lapply(httr::content(info)$tree, "[", "path"), use.names=FALSE)
+  path <- grep("share/cpt/", tree, value=TRUE, fixed=TRUE)
 
   host <- "raw.githubusercontent.com"
-  path <- "GenericMappingTools/gmt/master/share/cpt"
-  file <- sprintf("https://%s/%s/%s.cpt", host, path, x)
+  file <- sprintf("https://%s/%s/%s/master/%s", host, owner, repo, path)
+
+  nm <- tools::file_path_sans_ext(basename(file))
+  exclude <- c("cool", "grayC", "polar", "red2green", "seis")
+  file <- file[!nm %in% exclude]
 
   destdir <- file.path(getwd(), "cpt")
   dir.create(destdir, showWarnings=FALSE)
 
   destfile <- file.path(destdir, basename(file))
-  for (i in seq_along(file)) utils::download.file(file[i], destfile[i], quiet=TRUE)
+  for (i in seq_along(file)) {
+    utils::download.file(file[i], destfile[i], quiet=TRUE)
+  }
 
-  # remove cpt files that were not specified for download
-  listfile <- list.files(destdir, pattern="\\.cpt$", full.names=TRUE)
-  unlink(listfile[!listfile %in% destfile])
+  nm <- tools::file_path_sans_ext(basename(file))
+  type <- rep("Sequential", length(nm))
+  div <- c("berlin", "broc", "cork", "lisbon", "oleron", "roma", "split", "tofino", "vik")
+  type[nm %in% div] <- "Diverging"
 
-  cite <- "Wessel and others (2013) released under the GNU Lesser General Public License v3 or later."
+  cpt <- lapply(seq_along(destfile), function(i) {
+    .ReadCpt(destfile[i], cite=cite, type=type[i])
+  })
+  names(cpt) <- nm
 
-  cpt <- lapply(destfile, .ReadCpt, cite=cite, ...)
-  names(cpt) <- paste("GMT", x)
+  is <- !vapply(cpt, is.null, FALSE)
+  cpt <- cpt[is]
+  unlink(destfile[!is])
+
   cpt
 }
 
@@ -560,10 +562,10 @@ MakeTable <- function() {
 
     s <- schemes[[i]]
 
-    n <- ifelse(is.finite(s$nmax), s$nmax, 255)
-    pal <- inlmisc::GetColors(n, scheme=names(schemes)[i])
-
     w <- 100; h <- 10
+
+    n <- ifelse(is.finite(s$nmax), s$nmax, w - 1)
+    pal <- inlmisc::GetColors(n, scheme=names(schemes)[i])
 
     fmt <- "%s_%03d.eps"
     f1 <- sprintf(fmt, "g1", i)
@@ -628,10 +630,11 @@ MakeTable <- function() {
 
   tools::texi2pdf("table.tex", clean=TRUE)
 
-  args <- c("--without-gui",
-            "--file=table.pdf",
-            "--export-plain-svg=table.svg")
-  system2("inkscape", args=args, stdout=FALSE, stderr=FALSE, invisible=TRUE)
+  arg <- c("--without-gui", "--file=table.pdf", "--export-plain-svg=table.svg")
+  system2("inkscape", args=arg, stdout=FALSE, stderr=FALSE)
+
+  tools::compactPDF("table.pdf", gs_quality="printer")
+  system2("svgcleaner", args=c("table.svg", "table.svg"), stdout=FALSE, stderr=FALSE)
 
   if (dir.exists("../../man"))
     dir.create(path <- "../../man/figures/", showWarnings=FALSE)
@@ -655,7 +658,7 @@ MakeTable <- function() {
                          xaxs="i", yaxs="i", bty="n", xaxt="n", yaxt="n",
                          xlab="", ylab="")
   graphics::rect(0, 0, 1, 1, col=color, border=NA, lwd=0.5)
-  graphics::box(lwd=0.5, col="#D3D3D3")
+  graphics::box(lwd=0.25, col="#D3D3D3")
   dev.off()
 
   invisible()
