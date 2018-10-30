@@ -6,7 +6,25 @@ MakeSysdata <- function() {
             "Tol"    = "Paul Tol (2018) grants permission to use.",
             "Wessel" = "Wessel and others (2013) released under an open license.")
 
-  schemes <- .GetGMTCpt(cite["Wessel"])
+  exclude <- scan(what="character", quiet=TRUE, text="
+                  cool
+                  grayC
+                  polar
+                  red2green
+                  seis
+                  ")
+  diverge <- scan(what="character", quiet=TRUE, text="
+                  berlin
+                  broc
+                  cork
+                  lisbon
+                  oleron
+                  roma
+                  split
+                  tofino
+                  vik
+                  ")
+  schemes <- .GetGMTCpt(cite["Wessel"], exclude, diverge)
 
   schemes[["DEM screen"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -404,8 +422,9 @@ MakeSysdata <- function() {
     x <- tail(strsplit(line[idx], "[ \t]")[[1]], 1)
     line <<- line[-idx]
     if (opt == "COLOR_MODEL") x <- toupper(x)
-    if (opt == "RANGE") x <- as.numeric(strsplit(x, "/")[[1]])
-    if (opt == "HINGE") x <- as.numeric(x)
+    if (opt == "RANGE")       x <- as.numeric(strsplit(x, "/")[[1]])
+    if (opt == "HINGE")       x <- as.numeric(x)
+    if (opt == "CYCLIC")      x <- TRUE
     x
   })
   names(option) <- nm
@@ -482,7 +501,7 @@ MakeSysdata <- function() {
 }
 
 
-.GetGMTCpt <- function(cite) {
+.GetGMTCpt <- function(cite, exclude=NULL, diverge=NULL) {
 
   # code adapted from stackoverflow answer by lukeA, accessed October 27, 2018
   # at https://stackoverflow.com/questions/25485216
@@ -500,7 +519,6 @@ MakeSysdata <- function() {
   file <- sprintf("https://%s/%s/%s/master/%s", host, owner, repo, path)
 
   nm <- tools::file_path_sans_ext(basename(file))
-  exclude <- c("cool", "grayC", "polar", "red2green", "seis")
   file <- file[!nm %in% exclude]
 
   destdir <- file.path(getwd(), "cpt")
@@ -513,8 +531,7 @@ MakeSysdata <- function() {
 
   nm <- tools::file_path_sans_ext(basename(file))
   type <- rep("Sequential", length(nm))
-  div <- c("berlin", "broc", "cork", "lisbon", "oleron", "roma", "split", "tofino", "vik")
-  type[nm %in% div] <- "Diverging"
+  type[nm %in% diverge] <- "Diverging"
 
   cpt <- lapply(seq_along(destfile), function(i) {
     .ReadCpt(destfile[i], cite=cite, type=type[i])
