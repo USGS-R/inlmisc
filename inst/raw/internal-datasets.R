@@ -405,6 +405,7 @@ MakeSysdata <- function() {
     line <<- line[-idx]
     if (opt == "COLOR_MODEL") x <- toupper(x)
     if (opt == "RANGE") x <- as.numeric(strsplit(x, "/")[[1]])
+    if (opt == "HINGE") x <- as.numeric(x)
     x
   })
   names(option) <- nm
@@ -446,8 +447,15 @@ MakeSysdata <- function() {
   d <- as.data.frame(rbind(m[, 1:2], m[nrow(m), 3:4]), stringsAsFactors=FALSE)
   names(d) <- c("value", "color")
   d$value <- as.numeric(d$value)
-  if (is.numeric(option$RANGE))
-    d$value <- d$value * diff(option$RANGE) + option$RANGE[1]
+  if (is.numeric(option$RANGE)) {
+    if (is.numeric(option$HINGE)) {
+      x <- c(-1, 0, 1)
+      y <- c(option$RANGE[1], option$HINGE, option$RANGE[2])
+      d$value <- stats::approx(x, y, xout=d$value)
+    } else {
+      d$value <- d$value * diff(option$RANGE) + option$RANGE[1]
+    }
+  }
 
   l <- list(data = d,
             type = type,
