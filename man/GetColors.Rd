@@ -159,11 +159,9 @@ plot(GetColors(255, bias = 1.6))
 par(op)
 
 # Reverse colors (reverse)
-op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0), cex = 0.7)
+op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
 plot(GetColors(10, reverse = FALSE))
 plot(GetColors(10, reverse = TRUE))
-plot(GetColors(10, reverse = FALSE, start = 0.5))
-plot(GetColors(10, reverse = TRUE,  start = 0.5))
 par(op)
 
 # Color blindness (blind)

@@ -2,8 +2,8 @@ MakeSysdata <- function() {
 
   options(stringsAsFactors=FALSE)
 
-  cite <- c("Dewez"  = "Thomas Dewez (2004) grants permission to use.",
-            "Tol"    = "Paul Tol (2018) grants permission to use.",
+  cite <- c("Dewez"  = "Thomas Dewez (2004) grants permission to distribute with attribution.",
+            "Tol"    = "Paul Tol (2018) grants permission to distribute with attribution.",
             "Wessel" = "Wessel and others (2013) released under an open license.")
 
   exclude <- scan(what="character", quiet=TRUE, text="
@@ -693,6 +693,6 @@ MakeTable <- function() {
 .Clean <- function() {
   pattern <- "^g[1-4]_[0-9]{3}(\\.eps|-eps-converted-to\\.pdf)$"
   unlink(list.files(pattern=pattern))
-  unlink(sprintf("table.%s", c("tex", "pdf", "svg", "log", "aux")))
+  unlink(sprintf("table.%s", c("tex", "pdf", "svg", "log", "aux", "dvi")))
   invisible()
 }

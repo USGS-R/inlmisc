@@ -160,11 +160,9 @@
 #' par(op)
 #'
 #' # Reverse colors (reverse)
-#' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0), cex = 0.7)
+#' op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
 #' plot(GetColors(10, reverse = FALSE))
 #' plot(GetColors(10, reverse = TRUE))
-#' plot(GetColors(10, reverse = FALSE, start = 0.5))
-#' plot(GetColors(10, reverse = TRUE,  start = 0.5))
 #' par(op)
 #'
 #' # Color blindness (blind)
@@ -265,21 +263,17 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
                 c( 2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29),
                 c( 1,  2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29))
     pal <- color[idx[[n]]]
-    if (reverse) pal <- rev(pal)
   } else if (nmax < Inf) {
-    if (reverse) color <- rev(color)
     pal <- color[1:n]
   } else {
-    value <- s$data$value
-    if (is.null(value)) value <- seq_along(s$data$color)
+    value <- if (is.null(s$data$value)) seq_along(s$data$color) else s$data$value
     value <- scales::rescale(value)
-    if (reverse) {
-      color <- rev(color)
-      value <- rev(1 - value)
-    }
-    color <- scales::gradient_n_pal(color, values=value)(seq(start, end, length.out=255))
+    x <- seq.int(start, end, length.out=255)
+    color <- scales::gradient_n_pal(color, values=value)(x)
     pal <- grDevices::colorRampPalette(color, bias=bias, space="Lab")(n)
   }
+
+  if (reverse) pal <- rev(pal)
 
   nan <- ifelse(is.null(s$nan), as.character(NA), s$nan)
 
