@@ -338,18 +338,6 @@ plot.inlcol <- function(x, ..., label=TRUE) {
     reverse <- FALSE
   }
 
-  if (label && n < 35) {  # cutoff criterion for drawing tick labels
-    border <- "#D3D3D3"
-    labels <- gsub(" ", "\n", names(x))
-    if (length(labels) == 0) {
-      labels <- seq_along(x)
-      if (reverse) labels <- rev(labels)
-    }
-  } else {
-    border <- NA
-    labels <- FALSE
-  }
-
   # code adapted from example in
   # colorspace::rainbow_hcl function documentation,
   # authored by Achim Zeileis and accessed August 8, 2018
@@ -366,9 +354,19 @@ plot.inlcol <- function(x, ..., label=TRUE) {
   } else if (n > 1) {
     xr <- c(utils::head(xr, -1) + 1 / (2 * n), utils::tail(xr, 1))
   }
-  graphics::rect(xl, 0, xr, 1, col=x, border=border, lwd=0.25)
-  graphics::axis(1, at=0:(n - 1) / n + 1 / (2 * n), labels=labels, tick=FALSE,
-                 line=-0.5, padj=1, mgp=c(3, 0, 0), col.lab="#333333")
+  graphics::rect(xl, 0, xr, 1, col=x, border=NA)
+  if (label && n < 35) {
+    at <- 0:(n - 1) / n + 1 / (2 * n)
+    lab <- gsub(" ", "\n", names(x))
+    if (length(lab) == 0) {
+      lab <- seq_along(x)
+      if (reverse) lab <- rev(lab)
+    }
+    graphics::axis(1, at=at, labels=lab, tick=FALSE, line=-0.5, padj=1,
+                   mgp=c(3, 0, 0), col.lab="#333333")
+    v <- (0:(n - 1) / n)[-1]
+    graphics::abline(v=v, col="#D3D3D3", lwd=0.25)
+  }
   graphics::box(lwd=0.25, col="#D3D3D3")
 
   invisible()
