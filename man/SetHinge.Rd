@@ -4,13 +4,13 @@
 \alias{SetHinge}
 \title{Set Hinge Location in Color Palette}
 \usage{
-SetHinge(x, hinge, scheme = "sunset", buffer = 0, bias = TRUE,
-  alpha = NULL)
+SetHinge(x, hinge, scheme = "sunset", bias = TRUE, alpha = NULL,
+  reverse = FALSE)
 }
 \arguments{
 \item{x}{'numeric' object that can be passed to the \code{\link{range}}
 function with \code{NA}'s removed.
-User's data range}
+User's data range (such as, at sea-level).}
 
 \item{hinge}{'numeric' number.
 Hinge value in data units.}
@@ -20,31 +20,35 @@ Name of color scheme that is suitable for continuous data types and allows for c
 See \code{\link{GetColors}} function for options.
 Argument choices may be abbreviated as long as there is no ambiguity.}
 
-\item{buffer}{'numeric' number.
-Buffer around hinge value measured as a fraction of the full color range.}
-
 \item{bias}{'logical' flag.
 Whether to allow bias in the color spacing.}
 
 \item{alpha}{'numeric' number.
 Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 Specify as \code{NULL} to exclude the alpha channel value from colors.}
+
+\item{reverse}{'logical' flag.
+Whether to reverse the order of colors in the original scheme.}
 }
 \value{
 Returns a 'function' that takes an 'integer' argument (the required number of colors)
   and returns a 'character' vector of colors.
 }
 \description{
-The \emph{hinge} indicates a dramatic color change in a palette and
-is typically located at the midpoint of the color range.
-Data ranges that are asymmetrical can result in a hinge location that does not
-necessarily coincide with the desired break-point in the user's data (such as, at sea-level).
-This function is used to establish a new hinge location in the color palette.
+The \emph{hinge} indicates a dramatic color change in a palette
+that is typically located at the midpoint of the color range.
+Data ranges that are asymmetrical can result in a undesired hinge location,
+a location that does not necessarily coincide with the break-point in the user's data.
+This function can be used to set the hinge location based on your data.
 }
 \examples{
-Fun <- SetHinge(c(-3, 7), 0)
+Pal <- SetHinge(x = c(-3, 7), hinge = 0)
 Plot <- inlmisc:::plot.inlcol
-Plot(Fun(255))
+Plot(Pal(255))
+
+x <- datasets::volcano
+Pal <- SetHinge(x, hinge = 150, scheme = "oleron")
+filled.contour(x, color.palette = Pal)
 
 # Data range (x)
 hinge <- 0; n <- 20
@@ -74,16 +78,6 @@ Plot(SetHinge(x, hinge, scheme = "BuRd")(n))
 Plot(SetHinge(x, hinge, scheme = "PRGn")(n))
 Plot(SetHinge(x, hinge, scheme = "roma")(n))
 Plot(SetHinge(x, hinge, scheme = "vik")(n))
-par(op)
-
-# Buffer around hinge (buffer)
-x <- c(-5, 5); hinge <- 0; n <- 20
-op <- par(mfrow = c(5, 1), oma = c(0, 0, 0, 0))
-Plot(SetHinge(x, hinge, buffer = 0.0)(n))
-Plot(SetHinge(x, hinge, buffer = 0.2)(n))
-Plot(SetHinge(x, hinge, buffer = 0.4)(n))
-Plot(SetHinge(x, hinge, buffer = 0.6)(n))
-Plot(SetHinge(x, hinge, buffer = 0.8)(n))
 par(op)
 
 # Bias in color spacing (bias)
