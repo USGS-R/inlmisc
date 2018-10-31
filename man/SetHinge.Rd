@@ -4,8 +4,8 @@
 \alias{SetHinge}
 \title{Set Hinge Location in Color Palette}
 \usage{
-SetHinge(x, hinge, scheme = "sunset", bias = TRUE, alpha = NULL,
-  reverse = FALSE)
+SetHinge(x, hinge, scheme = "sunset", allow_bias = TRUE,
+  alpha = NULL, reverse = FALSE)
 }
 \arguments{
 \item{x}{'numeric' object that can be passed to the \code{\link{range}}
@@ -15,12 +15,12 @@ User's data range (such as, at sea-level).}
 \item{hinge}{'numeric' number.
 Hinge value in data units.}
 
-\item{scheme}{'character' string.
+\item{scheme}{'character' vector of length 1 or 2.
 Name of color scheme that is suitable for continuous data types and allows for color interpolation.
 See \code{\link{GetColors}} function for options.
 Argument choices may be abbreviated as long as there is no ambiguity.}
 
-\item{bias}{'logical' flag.
+\item{allow_bias}{'logical' flag.
 Whether to allow bias in the color spacing.}
 
 \item{alpha}{'numeric' number.
@@ -47,8 +47,8 @@ Plot <- inlmisc:::plot.inlcol
 Plot(Pal(255))
 
 x <- datasets::volcano
-Pal <- SetHinge(x, hinge = 150, scheme = "oleron")
-filled.contour(x, color.palette = Pal)
+Pal <- SetHinge(x, hinge = 140, scheme = c("abyss", "dem1"))
+filled.contour(x, color.palette = Pal, nlevels = 50)
 
 # Data range (x)
 hinge <- 0; n <- 20
@@ -80,11 +80,11 @@ Plot(SetHinge(x, hinge, scheme = "roma")(n))
 Plot(SetHinge(x, hinge, scheme = "vik")(n))
 par(op)
 
-# Bias in color spacing (bias)
+# Allow bias in color spacing (allow_bias)
 x <- c(-3, 7); hinge <- 0; n <- 20
 op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0))
-Plot(SetHinge(x, hinge, bias = TRUE)(n))
-Plot(SetHinge(x, hinge, bias = FALSE)(n))
+Plot(SetHinge(x, hinge, allow_bias = TRUE)(n))
+Plot(SetHinge(x, hinge, allow_bias = FALSE)(n))
 par(op)
 
 }

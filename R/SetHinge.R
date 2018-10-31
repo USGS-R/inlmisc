@@ -11,11 +11,11 @@
 #'   User's data range (such as, at sea-level).
 #' @param hinge 'numeric' number.
 #'   Hinge value in data units.
-#' @param scheme 'character' string.
+#' @param scheme 'character' vector of length 1 or 2.
 #'   Name of color scheme that is suitable for continuous data types and allows for color interpolation.
 #'   See \code{\link{GetColors}} function for options.
 #'   Argument choices may be abbreviated as long as there is no ambiguity.
-#' @param bias 'logical' flag.
+#' @param allow_bias 'logical' flag.
 #'   Whether to allow bias in the color spacing.
 #' @inheritParams GetColors
 #'
@@ -34,8 +34,8 @@
 #' Plot(Pal(255))
 #'
 #' x <- datasets::volcano
-#' Pal <- SetHinge(x, hinge = 150, scheme = "oleron")
-#' filled.contour(x, color.palette = Pal)
+#' Pal <- SetHinge(x, hinge = 140, scheme = c("abyss", "dem1"))
+#' filled.contour(x, color.palette = Pal, nlevels = 50)
 #'
 #' # Data range (x)
 #' hinge <- 0; n <- 20
@@ -67,25 +67,32 @@
 #' Plot(SetHinge(x, hinge, scheme = "vik")(n))
 #' par(op)
 #'
-#' # Bias in color spacing (bias)
+#' # Allow bias in color spacing (allow_bias)
 #' x <- c(-3, 7); hinge <- 0; n <- 20
 #' op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0))
-#' Plot(SetHinge(x, hinge, bias = TRUE)(n))
-#' Plot(SetHinge(x, hinge, bias = FALSE)(n))
+#' Plot(SetHinge(x, hinge, allow_bias = TRUE)(n))
+#' Plot(SetHinge(x, hinge, allow_bias = FALSE)(n))
 #' par(op)
 #'
 
-SetHinge <- function(x, hinge, scheme="sunset", bias=TRUE, alpha=NULL, reverse=FALSE) {
+SetHinge <- function(x, hinge, scheme="sunset", allow_bias=TRUE,
+                     alpha=NULL, reverse=FALSE) {
 
   x <- range(x, na.rm=TRUE)
   checkmate::assertNumeric(x, finite=TRUE, any.missing=FALSE, len=2,
                            unique=TRUE, sorted=TRUE)
   checkmate::assertNumber(hinge, finite=TRUE)
+  checkmate::assertCharacter(scheme, min.chars=1, any.missing=FALSE, min.len=1, max.len=2)
   nm <- names(schemes)[vapply(schemes, function(x) x$nmax == Inf, FALSE)]
-  scheme <- match.arg(scheme, nm)
-  checkmate::assertFlag(bias)
-  checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
-  checkmate::assertFlag(reverse)
+  scheme <- match.arg(scheme, nm, several.ok=TRUE)
+  checkmate::assertFlag(allow_bias)
+  checkmate::assertNumeric(alpha, lower=0, upper=1, finite=TRUE, any.missing=FALSE,
+                           min.len=1, max.len=2, null.ok=TRUE)
+  checkmate::assertLogical(reverse, any.missing=FALSE, min.len=1, max.len=2)
+
+  scheme <- rep(scheme, length.out=2)
+  if (!is.null(alpha)) alpha <- rep(alpha, length.out=2)
+  reverse <- rep(reverse, length.out=2)
 
   if (x[1] < hinge & x[2] > hinge) {
     ratio <- diff(c(x[1], hinge)) / diff(x)
@@ -95,25 +102,27 @@ SetHinge <- function(x, hinge, scheme="sunset", bias=TRUE, alpha=NULL, reverse=F
     ratio <- 0
   }
 
-  if (bias || ratio %in% c(0, 0.5, 1)) {
+  ran <- ifelse(identical(scheme[1], scheme[2]), 0.5, 1)
+
+  if (allow_bias || ratio %in% c(0, 0.5, 1)) {
     adj <- c(0, 0)
   } else {
     d1 <- diff(c(x[1], hinge))
     d2 <- diff(c(hinge, x[2]))
     if (d1 < d2)
-      adj <- c(0.5 * (d1 / d2), 0)
+      adj <- c(ran * (d1 / d2), 0)
     else
-      adj <- c(0, 0.5 * (d2 / d1))
+      adj <- c(0, ran * (d2 / d1))
   }
 
-  r1 <- c(adj[1], 0.5)
-  r2 <- c(0.5, 1 - adj[2])
+  r1 <- c(adj[1], ran)
+  r2 <- c(1 - ran, 1 - adj[2])
 
   FUN <- function(...) {
     n1 <- round(... * ratio)
     n2 <- ... - n1
-    c(GetColors(n1, scheme, alpha, start=r1[1], end=r1[2], reverse=reverse),
-      GetColors(n2, scheme, alpha, start=r2[1], end=r2[2], reverse=reverse))
+    c(GetColors(n1, scheme[1], alpha[1], start=r1[1], end=r1[2], reverse=reverse[1]),
+      GetColors(n2, scheme[2], alpha[2], start=r2[1], end=r2[2], reverse=reverse[2]))
   }
   FUN
 }
