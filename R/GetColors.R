@@ -13,14 +13,13 @@
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 #'   Specify as \code{NULL} to exclude the alpha channel value from colors.
 #' @param start,end 'numeric' number.
-#'   Starting and ending color levels, respectivley.
-#'   Used to subset the original color scheme.
-#'   Specified as a number in the interval from 0 to 1.
+#'   Interval endpoints (between 0 and 1) used to select a subset of the original color scheme.
+#'   Only suitable for schemes that allow for color interpolations.
 #' @param bias 'numeric' number.
 #'   Interpolation bias where larger values result in more widely spaced colors at the high end.
 #'   See \code{\link[grDevices]{colorRamp}} function for details.
 #' @param reverse 'logical' flag.
-#'   Whether to reverse order of colors in palette.
+#'   Whether to reverse the order of colors in the original scheme.
 #' @param blind 'character' string.
 #'   Type of color blindness to simulate: specify \code{"deutan"} for green-blind vision,
 #'   \code{"protan"} for red-blind vision, \code{"tritan"} for green-blue-blind vision, or
