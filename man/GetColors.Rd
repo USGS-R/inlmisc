@@ -22,16 +22,16 @@ Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 Specify as \code{NULL} to exclude the alpha channel value from colors.}
 
 \item{start, end}{'numeric' number.
-Starting and ending color level in the palette, respectively.
-Specified as a number in the interval from 0 to 1.
-Applies only to interpolated color schemes.}
+Starting and ending color levels, respectivley.
+Used to subset the original color scheme.
+Specified as a number in the interval from 0 to 1.}
 
 \item{bias}{'numeric' number.
 Interpolation bias where larger values result in more widely spaced colors at the high end.
 See \code{\link[grDevices]{colorRamp}} function for details.}
 
 \item{reverse}{'logical' flag.
-Whether to reverse the color order in the palette.}
+Whether to reverse order of colors in palette.}
 
 \item{blind}{'character' string.
 Type of color blindness to simulate: specify \code{"deutan"} for green-blind vision,

@@ -13,14 +13,14 @@
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 #'   Specify as \code{NULL} to exclude the alpha channel value from colors.
 #' @param start,end 'numeric' number.
-#'   Starting and ending color level in the palette, respectively.
+#'   Starting and ending color levels, respectivley.
+#'   Used to subset the original color scheme.
 #'   Specified as a number in the interval from 0 to 1.
-#'   Applies only to interpolated color schemes.
 #' @param bias 'numeric' number.
 #'   Interpolation bias where larger values result in more widely spaced colors at the high end.
 #'   See \code{\link[grDevices]{colorRamp}} function for details.
 #' @param reverse 'logical' flag.
-#'   Whether to reverse the color order in the palette.
+#'   Whether to reverse order of colors in palette.
 #' @param blind 'character' string.
 #'   Type of color blindness to simulate: specify \code{"deutan"} for green-blind vision,
 #'   \code{"protan"} for red-blind vision, \code{"tritan"} for green-blue-blind vision, or
@@ -263,17 +263,21 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
                 c( 2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29),
                 c( 1,  2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29))
     pal <- color[idx[[n]]]
+    if (reverse) pal <- rev(pal)
   } else if (nmax < Inf) {
+    if (reverse) color <- rev(color)
     pal <- color[1:n]
   } else {
     value <- if (is.null(s$data$value)) seq_along(s$data$color) else s$data$value
     value <- scales::rescale(value)
+    if (reverse) {
+      color <- rev(color)
+      value <- rev(1 - value)
+    }
     x <- seq.int(start, end, length.out=255)
     color <- scales::gradient_n_pal(color, values=value)(x)
     pal <- grDevices::colorRampPalette(color, bias=bias, space="Lab")(n)
   }
-
-  if (reverse) pal <- rev(pal)
 
   nan <- ifelse(is.null(s$nan), as.character(NA), s$nan)
 
