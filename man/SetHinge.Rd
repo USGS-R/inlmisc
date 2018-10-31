@@ -81,10 +81,12 @@ Plot(SetHinge(x, hinge, scheme = "vik")(n))
 par(op)
 
 # Allow bias in color spacing (allow_bias)
-x <- c(-3, 7); hinge <- 0; n <- 20
-op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0))
-Plot(SetHinge(x, hinge, allow_bias = TRUE)(n))
-Plot(SetHinge(x, hinge, allow_bias = FALSE)(n))
+x <- c(-3, 7); n <- 20
+op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
+Plot(SetHinge(x, hinge = 0, allow_bias = TRUE)(n))
+Plot(SetHinge(x, hinge = 0, allow_bias = FALSE)(n))
+Plot(SetHinge(x, hinge = 4, allow_bias = TRUE)(n))
+Plot(SetHinge(x, hinge = 4, allow_bias = FALSE)(n))
 par(op)
 
 }
