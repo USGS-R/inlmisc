@@ -10,24 +10,26 @@ SetHinge(x, hinge, scheme = "sunset", alpha = NULL, reverse = FALSE,
 \arguments{
 \item{x}{'numeric' object that can be passed to the \code{\link{range}}
 function with \code{NA}'s removed.
-User's data range (such as, at sea-level).}
+That is, the user's data range (such as, at sea-level).}
 
 \item{hinge}{'numeric' number.
 Hinge value in data units.}
 
-\item{scheme}{'character' vector of length 1 or 2.
-Name of color scheme(s) that are suitable for continuous data types
-and allow for color interpolation.
+\item{scheme}{'character' vector of length 1 or 2, value is recycled as necessary.
+Name of color scheme(s).
 The color palette is derived from one or two color schemes.
-See \code{\link{GetColors}} function for a list of scheme names.
+The scheme(s) should be suitable for continuous data types and allow for color interpolation.
+See \code{\link{GetColors}} function for a list of possible scheme names.
 Argument choices may be abbreviated as long as there is no ambiguity.}
 
-\item{alpha}{'numeric' vector of length 1 or 2.
-Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
+\item{alpha}{'numeric' vector of length 1 or 2, value is recycled as necessary.
+Alpha transparency applied separately on either side of the hinge.
+Values range from 0 (fully transparent) to 1 (fully opaque).
 Specify as \code{NULL} to exclude the alpha channel value from colors.}
 
-\item{reverse}{'logical' vector of length 1 or 2.
-Whether to reverse the order of colors in the original scheme(s).}
+\item{reverse}{'logical' vector of length 1 or 2, value is recycled as necessary.
+Whether to reverse the order of colors in the scheme(s).
+Values applied separately on either side of the hinge.}
 
 \item{allow_bias}{'logical' flag.
 Whether to allow bias in the color spacing.}
@@ -39,14 +41,14 @@ Returns a 'function' that takes an 'integer' argument
 \description{
 The \emph{hinge} indicates a dramatic color change in a palette
 that is typically located at the midpoint of the color range.
-Data ranges that are asymmetrical can result in a undesired hinge location,
-a location that does not necessarily coincide with the break-point in the user's data.
-This function can be used to set the hinge location based on your data.
+An asymmetrical data range can result in an undesired hinge location,
+where the location does not necessarily coincide with the break-point in the user's data.
+This function is used to specify a hinge location that is appropriate for your data.
 }
 \examples{
 Pal <- SetHinge(x = c(-3, 7), hinge = 0)
-Plot <- inlmisc:::plot.inlcol
-Plot(Pal(255))
+Plot <- inlmisc:::plot.inlpal
+Plot(Pal(n = 20))
 
 x <- datasets::volcano
 Pal <- SetHinge(x, hinge = 140, scheme = c("abyss", "dem1"))
@@ -100,7 +102,7 @@ Plot(SetHinge(x, hinge, c("davos", "hawaii"), reverse = c(TRUE, FALSE))(n))
 Plot(SetHinge(x, hinge, c("davos", "hawaii"), reverse = c(FALSE, TRUE))(n))
 par(op)
 
-# Allow bias in color spacing (allow_bias)
+# Allow bias (allow_bias)
 x <- c(-3, 7); n <- 20
 op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
 Plot(SetHinge(x, hinge = 0, allow_bias = TRUE)(n))

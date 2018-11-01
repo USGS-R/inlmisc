@@ -22,7 +22,7 @@ Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 Specify as \code{NULL} to exclude the alpha channel value from colors.}
 
 \item{start, end}{'numeric' number.
-Interval endpoints (between 0 and 1) used to select a subset of the original color scheme.
+Interval endpoints (between 0 and 1) used to select a subset of the color scheme.
 Only suitable for schemes that allow for color interpolations.}
 
 \item{bias}{'numeric' number.
@@ -30,7 +30,7 @@ Interpolation bias where larger values result in more widely spaced colors at th
 See \code{\link[grDevices]{colorRamp}} function for details.}
 
 \item{reverse}{'logical' flag.
-Whether to reverse the order of colors in the original scheme.}
+Whether to reverse the order of colors in the scheme.}
 
 \item{blind}{'character' string.
 Type of color blindness to simulate: specify \code{"deutan"} for green-blind vision,
@@ -46,11 +46,11 @@ and \code{"muted"} schemes to work well after conversion to gray scale.}
 }
 \value{
 When argument \code{n} is specified the function
-  returns an object of class 'inlcol' that inherits behavior from the 'character' class.
+  returns an object of class 'inlpal' that inherits behavior from the 'character' class.
   And when \code{n} is unspecified a variant of the \code{GetColors} function is
-  returned that has default (formal) argument values set equal to the values specified by the user.
+  returned that has default argument values set equal to the values specified by the user.
 
-  The inlcol-class object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
+  The inlpal-class object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
   Colors are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
@@ -62,7 +62,7 @@ When argument \code{n} is specified the function
   \code{"call"}, an object of class '\link{call}' giving the unevaluated function call (expression)
   that can be used to reproduce the color palette.
   Use the \code{\link{eval}} function to evaluate the \code{"call"} argument.
-  A simple \code{plot} method is provided for the 'inlcol' class that
+  A simple \code{plot} method is provided for the 'inlpal' class that
   shows a palette of colors using a sequence of shaded rectangles,
   see \sQuote{Examples} section for usage.
 }
@@ -73,10 +73,11 @@ Create a vector of \code{n} colors from qualitative, diverging, and sequential c
 The suggested data type for color schemes and the characteristics of generated palettes are given in the table below.
   [\bold{Type}: is the type of data being represented, either qualitative, diverging, or sequential.
   \bold{Max n}: is the maximum number of colors in a generated palette.
-  And the maximum \code{n} value when palette colors are designed for gray-scale conversion is enclosed in parentheses.
-  \bold{N}: not-a-number color.
-  \bold{B}: background color.
-  \bold{F}: foreground color.
+  And the maximum \code{n} value when scheme colors are designed for gray-scale conversion is enclosed in parentheses.
+  A value of infinity indicates that the scheme allows for color interpolations.
+  \bold{N}: is the not-a-number color.
+  \bold{B}: is the background color.
+  \bold{F}: is the foreground color.
   \bold{Abbreviations}: --, not available]
 
   \if{html}{\figure{table.svg}{alt="Table: color schemes"}}

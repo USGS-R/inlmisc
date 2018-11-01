@@ -1,5 +1,7 @@
 # inlmisc 0.4.3.9000
 
+- Add `SetHinge` function, used to specify a hinge location in a color palette.
+
 - In `PrintTable` function: `d` argument can be of class 'matrix'; and
   a default caption is no longer added when `title` and `headnotes` arguments are not specified.
 
