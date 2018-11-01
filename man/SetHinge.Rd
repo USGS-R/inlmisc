@@ -5,7 +5,7 @@
 \title{Set Hinge Location in Color Palette}
 \usage{
 SetHinge(x, hinge, scheme = "sunset", alpha = NULL, reverse = FALSE,
-  allow_bias = TRUE)
+  buffer = 0, allow_bias = TRUE)
 }
 \arguments{
 \item{x}{'numeric' object that can be passed to the \code{\link{range}}
@@ -18,7 +18,7 @@ Hinge value in data units.}
 \item{scheme}{'character' vector of length 1 or 2, value is recycled as necessary.
 Name of color scheme(s).
 The color palette is derived from one or two color schemes.
-The scheme(s) should be suitable for continuous data types and allow for color interpolation.
+The scheme(s) must be suitable for continuous data types and allow for color interpolation.
 See \code{\link{GetColors}} function for a list of possible scheme names.
 Argument choices may be abbreviated as long as there is no ambiguity.}
 
@@ -29,6 +29,10 @@ Specify as \code{NULL} to exclude the alpha channel value from colors.}
 
 \item{reverse}{'logical' vector of length 1 or 2, value is recycled as necessary.
 Whether to reverse the order of colors in the scheme(s).
+Values applied separately on either side of the hinge.}
+
+\item{buffer}{'numeric' vector of length 1 or 2, value is recycled as necessary.
+Color buffer around the hinge measured as a fraction of the color range.
 Values applied separately on either side of the hinge.}
 
 \item{allow_bias}{'logical' flag.
@@ -100,6 +104,17 @@ Plot(SetHinge(x, hinge, c("davos", "hawaii"), reverse = FALSE)(n))
 Plot(SetHinge(x, hinge, c("davos", "hawaii"), reverse = TRUE)(n))
 Plot(SetHinge(x, hinge, c("davos", "hawaii"), reverse = c(TRUE, FALSE))(n))
 Plot(SetHinge(x, hinge, c("davos", "hawaii"), reverse = c(FALSE, TRUE))(n))
+par(op)
+
+# Buffer around hinge (buffer)
+x <- c(-5, 5); hinge <- -2; n <- 20
+op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
+Plot(SetHinge(x, hinge, buffer = 0.0)(n))
+Plot(SetHinge(x, hinge, buffer = 0.2)(n))
+Plot(SetHinge(x, hinge, buffer = c(0.4, 0.2))(n))
+Plot(SetHinge(x, hinge, c("gray", "plasma"), buffer = 0.0)(n))
+Plot(SetHinge(x, hinge, c("gray", "plasma"), buffer = 0.2)(n))
+Plot(SetHinge(x, hinge, c("gray", "plasma"), buffer = c(0.2, 0.4))(n))
 par(op)
 
 # Allow bias (allow_bias)

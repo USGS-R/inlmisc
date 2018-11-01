@@ -14,7 +14,7 @@
 #' @param scheme 'character' vector of length 1 or 2, value is recycled as necessary.
 #'   Name of color scheme(s).
 #'   The color palette is derived from one or two color schemes.
-#'   The scheme(s) should be suitable for continuous data types and allow for color interpolation.
+#'   The scheme(s) must be suitable for continuous data types and allow for color interpolation.
 #'   See \code{\link{GetColors}} function for a list of possible scheme names.
 #'   Argument choices may be abbreviated as long as there is no ambiguity.
 #' @param alpha 'numeric' vector of length 1 or 2, value is recycled as necessary.
@@ -23,6 +23,9 @@
 #'   Specify as \code{NULL} to exclude the alpha channel value from colors.
 #' @param reverse 'logical' vector of length 1 or 2, value is recycled as necessary.
 #'   Whether to reverse the order of colors in the scheme(s).
+#'   Values applied separately on either side of the hinge.
+#' @param buffer 'numeric' vector of length 1 or 2, value is recycled as necessary.
+#'   Color buffer around the hinge measured as a fraction of the color range.
 #'   Values applied separately on either side of the hinge.
 #' @param allow_bias 'logical' flag.
 #'   Whether to allow bias in the color spacing.
@@ -95,6 +98,17 @@
 #' Plot(SetHinge(x, hinge, c("davos", "hawaii"), reverse = c(FALSE, TRUE))(n))
 #' par(op)
 #'
+#' # Buffer around hinge (buffer)
+#' x <- c(-5, 5); hinge <- -2; n <- 20
+#' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
+#' Plot(SetHinge(x, hinge, buffer = 0.0)(n))
+#' Plot(SetHinge(x, hinge, buffer = 0.2)(n))
+#' Plot(SetHinge(x, hinge, buffer = c(0.4, 0.2))(n))
+#' Plot(SetHinge(x, hinge, c("gray", "plasma"), buffer = 0.0)(n))
+#' Plot(SetHinge(x, hinge, c("gray", "plasma"), buffer = 0.2)(n))
+#' Plot(SetHinge(x, hinge, c("gray", "plasma"), buffer = c(0.2, 0.4))(n))
+#' par(op)
+#'
 #' # Allow bias (allow_bias)
 #' x <- c(-3, 7); n <- 20
 #' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
@@ -106,7 +120,7 @@
 #'
 
 SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL,
-                     reverse=FALSE, allow_bias=TRUE) {
+                     reverse=FALSE, buffer=0, allow_bias=TRUE) {
 
   x <- range(x, na.rm=TRUE)
   checkmate::assertNumeric(x, finite=TRUE, any.missing=FALSE, len=2,
@@ -119,10 +133,13 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL,
                            min.len=1, max.len=2, null.ok=TRUE)
   checkmate::assertLogical(reverse, any.missing=FALSE, min.len=1, max.len=2)
   checkmate::assertFlag(allow_bias)
+  checkmate::assertNumeric(buffer, lower=0, upper=1, finite=TRUE,
+                           any.missing=FALSE, min.len=1, max.len=2)
 
   scheme <- rep(scheme, length.out=2)
   if (!is.null(alpha)) alpha <- rep(alpha, length.out=2)
   reverse <- rep(reverse, length.out=2)
+  buffer <- rep(buffer, length.out=2)
 
   if (x[1] < hinge & x[2] > hinge) {
     ratio <- diff(c(x[1], hinge)) / diff(x)
@@ -133,6 +150,7 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL,
   }
 
   ran <- ifelse(identical(scheme[1], scheme[2]), 0.5, 1)
+  buf <- buffer * ran
 
   if (allow_bias || ratio %in% c(0, 0.5, 1)) {
     adj <- c(0, 0)
@@ -140,13 +158,13 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL,
     d1 <- diff(c(x[1], hinge))
     d2 <- diff(c(hinge, x[2]))
     if (d1 < d2)
-      adj <- c(ran * (1 - d1 / d2), 0)
+      adj <- c((ran - buf[1]) * (1 - d1 / d2), 0)
     else
-      adj <- c(0, ran * (1 - d2 / d1))
+      adj <- c(0, (ran - buf[2]) * (1 - d2 / d1))
   }
 
-  r1 <- c(adj[1], ran)
-  r2 <- c(1 - ran, 1 - adj[2])
+  r1 <- c(adj[1], ran - buf[1])
+  r2 <- c(1 - ran + buf[2], 1 - adj[2])
 
   FUN <- function(...) {
     n1 <- round(... * ratio)
