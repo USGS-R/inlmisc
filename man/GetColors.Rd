@@ -198,7 +198,7 @@ Dewez, Thomas, 2004, Variations on a DEM palette, accessed October 15, 2018 at
   doi:\href{https://doi.org/10.1002/2013EO450001}{10.1002/2013EO450001}
 }
 \seealso{
-\code{\link[grDevices]{col2rgb}}
+\code{\link{SetHinge}}, \code{\link[grDevices]{col2rgb}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

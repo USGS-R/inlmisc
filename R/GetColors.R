@@ -84,7 +84,7 @@
 #'   Generic Mapping Tools: Improved version released, AGU, v. 94, no. 45, p. 409--410
 #'   doi:\href{https://doi.org/10.1002/2013EO450001}{10.1002/2013EO450001}
 #'
-#' @seealso \code{\link[grDevices]{col2rgb}}
+#' @seealso \code{\link{SetHinge}}, \code{\link[grDevices]{col2rgb}}
 #'
 #' @keywords color
 #'
