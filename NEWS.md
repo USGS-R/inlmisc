@@ -21,10 +21,9 @@
   make font/line color darker for section breaks and features.
 
 - Rename `GetTolColors` function to `GetColors`.
-  In `GetColors` function: add additional color schemes;
+  Add additional color schemes;
   change `blind` argument option from `"monochromacy"` to `"monochrome"`;
-  when argument `n` is unspecified, return a variant of the `GetColors` function; and
-  add additional color schemes.
+  return a variant of the `GetColors` function when argument `n` is unspecified.
 
 - For leaflet-search plugin, change version from `2.8.0` to `2.9.6` and tidy wrapper functions.
 
