@@ -2,11 +2,29 @@ MakeSysdata <- function() {
 
   options(stringsAsFactors=FALSE)
 
-  cite <- c("Dewez"  = "Thomas Dewez (2004) grants permission to use.",
-            "Tol"    = "Paul Tol (2018) grants permission to use.",
+  cite <- c("Dewez"  = "Thomas Dewez (2004) grants permission to distribute with attribution.",
+            "Tol"    = "Paul Tol (2018) grants permission to distribute with attribution.",
             "Wessel" = "Wessel and others (2013) released under an open license.")
 
-  schemes <- .GetGMTCpt(cite["Wessel"])
+  exclude <- scan(what="character", quiet=TRUE, text="
+                  cool
+                  grayC
+                  polar
+                  red2green
+                  seis
+                  ")
+  diverge <- scan(what="character", quiet=TRUE, text="
+                  berlin
+                  broc
+                  cork
+                  lisbon
+                  oleron
+                  roma
+                  split
+                  tofino
+                  vik
+                  ")
+  schemes <- .GetGMTCpt(cite["Wessel"], exclude, diverge)
 
   schemes[["DEM screen"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -404,7 +422,9 @@ MakeSysdata <- function() {
     x <- tail(strsplit(line[idx], "[ \t]")[[1]], 1)
     line <<- line[-idx]
     if (opt == "COLOR_MODEL") x <- toupper(x)
-    if (opt == "RANGE") x <- as.numeric(strsplit(x, "/")[[1]])
+    if (opt == "RANGE")       x <- as.numeric(strsplit(x, "/")[[1]])
+    if (opt == "HINGE")       x <- as.numeric(x)
+    if (opt == "CYCLIC")      x <- TRUE
     x
   })
   names(option) <- nm
@@ -446,8 +466,15 @@ MakeSysdata <- function() {
   d <- as.data.frame(rbind(m[, 1:2], m[nrow(m), 3:4]), stringsAsFactors=FALSE)
   names(d) <- c("value", "color")
   d$value <- as.numeric(d$value)
-  if (is.numeric(option$RANGE))
-    d$value <- d$value * diff(option$RANGE) + option$RANGE[1]
+  if (is.numeric(option$RANGE)) {
+    if (is.numeric(option$HINGE)) {
+      x <- c(-1, 0, 1)
+      y <- c(option$RANGE[1], option$HINGE, option$RANGE[2])
+      d$value <- stats::approx(x, y, xout=d$value)
+    } else {
+      d$value <- d$value * diff(option$RANGE) + option$RANGE[1]
+    }
+  }
 
   l <- list(data = d,
             type = type,
@@ -474,7 +501,7 @@ MakeSysdata <- function() {
 }
 
 
-.GetGMTCpt <- function(cite) {
+.GetGMTCpt <- function(cite, exclude=NULL, diverge=NULL) {
 
   # code adapted from stackoverflow answer by lukeA, accessed October 27, 2018
   # at https://stackoverflow.com/questions/25485216
@@ -492,7 +519,6 @@ MakeSysdata <- function() {
   file <- sprintf("https://%s/%s/%s/master/%s", host, owner, repo, path)
 
   nm <- tools::file_path_sans_ext(basename(file))
-  exclude <- c("cool", "grayC", "polar", "red2green", "seis")
   file <- file[!nm %in% exclude]
 
   destdir <- file.path(getwd(), "cpt")
@@ -505,8 +531,7 @@ MakeSysdata <- function() {
 
   nm <- tools::file_path_sans_ext(basename(file))
   type <- rep("Sequential", length(nm))
-  div <- c("berlin", "broc", "cork", "lisbon", "oleron", "roma", "split", "tofino", "vik")
-  type[nm %in% div] <- "Diverging"
+  type[nm %in% diverge] <- "Diverging"
 
   cpt <- lapply(seq_along(destfile), function(i) {
     .ReadCpt(destfile[i], cite=cite, type=type[i])
@@ -584,7 +609,7 @@ MakeTable <- function() {
     grDevices::postscript(f1, onefile=FALSE,
                           width=w * px_to_in, height=h * px_to_in,
                           horizontal=FALSE, pointsize=10, paper="special")
-    inlmisc:::plot.inlcol(pal, label=FALSE)
+    inlmisc:::plot.inlpal(pal, label=FALSE)
     dev.off()
 
     if (is.null(s$nan))  g2 <- "--" else .PlotBox(f2, s$nan,  h * px_to_in)
@@ -668,6 +693,6 @@ MakeTable <- function() {
 .Clean <- function() {
   pattern <- "^g[1-4]_[0-9]{3}(\\.eps|-eps-converted-to\\.pdf)$"
   unlink(list.files(pattern=pattern))
-  unlink(sprintf("table.%s", c("tex", "pdf", "svg", "log", "aux")))
+  unlink(sprintf("table.%s", c("tex", "pdf", "svg", "log", "aux", "dvi")))
   invisible()
 }

@@ -1,5 +1,7 @@
 # inlmisc 0.4.3.9000
 
+- Add `SetHinge` function, used to specify a hinge location in a color palette.
+
 - In `PrintTable` function: `d` argument can be of class 'matrix'; and
   a default caption is no longer added when `title` and `headnotes` arguments are not specified.
 
@@ -19,10 +21,10 @@
   make font/line color darker for section breaks and features.
 
 - Rename `GetTolColors` function to `GetColors`.
-  In `GetColors` function: add additional color schemes;
+  Add additional color schemes;
+  replace `start` and `end` arguments with `stops`, a vector of length 2;
   change `blind` argument option from `"monochromacy"` to `"monochrome"`;
-  when argument `n` is unspecified, return a variant of the `GetColors` function; and
-  add additional color schemes.
+  return a variant of the `GetColors` function when argument `n` is unspecified.
 
 - For leaflet-search plugin, change version from `2.8.0` to `2.9.6` and tidy wrapper functions.
 

@@ -84,7 +84,7 @@ AddColorKey <- function(breaks, is.categorical=FALSE, col=NULL, at=NULL,
   }
 
   if (is.null(col))
-    col <- GetColors(length(breaks) - 1, start=0.3, end=0.9)
+    col <- GetColors(length(breaks) - 1, stops=c(0.3, 0.9))
 
   if (is.null(at)) at <- breaks
 

@@ -4,8 +4,8 @@
 \alias{GetColors}
 \title{Get Palette Colors}
 \usage{
-GetColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
-  end = 1, bias = 1, reverse = FALSE, blind = NULL, gray = FALSE)
+GetColors(n, scheme = "smooth rainbow", alpha = NULL, stops = c(0,
+  1), bias = 1, reverse = FALSE, blind = NULL, gray = FALSE, ...)
 }
 \arguments{
 \item{n}{'integer' count.
@@ -21,17 +21,17 @@ Argument choices may be abbreviated as long as there is no ambiguity.}
 Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 Specify as \code{NULL} to exclude the alpha channel value from colors.}
 
-\item{start, end}{'numeric' number.
-Starting and ending color level in the palette, respectively.
-Specified as a number in the interval from 0 to 1.
-Applies only to interpolated color schemes.}
+\item{stops}{'numeric' vector of length 2.
+Color stops defined by interval endpoints (between 0 and 1)
+and used to select a subset of the color palette.
+Only suitable for schemes that allow for color interpolations.}
 
 \item{bias}{'numeric' number.
 Interpolation bias where larger values result in more widely spaced colors at the high end.
 See \code{\link[grDevices]{colorRamp}} function for details.}
 
 \item{reverse}{'logical' flag.
-Whether to reverse the color order in the palette.}
+Whether to reverse the order of colors in the scheme.}
 
 \item{blind}{'character' string.
 Type of color blindness to simulate: specify \code{"deutan"} for green-blind vision,
@@ -44,26 +44,29 @@ Argument choices may be abbreviated as long as there is no ambiguity.}
 \item{gray}{'logical' flag.
 Whether to subset/reorder the \code{"bright"}, \code{"high-contrast"}, \code{"vibrant"},
 and \code{"muted"} schemes to work well after conversion to gray scale.}
+
+\item{...}{Not used}
 }
 \value{
 When argument \code{n} is specified the function
-  returns an object of class 'inlcol' that inherits behavior from the 'character' class.
+  returns an object of class 'inlpal' that inherits behavior from the 'character' class.
   And when \code{n} is unspecified a variant of the \code{GetColors} function is
-  returned that has default (formal) argument values set equal to the values specified by the user.
+  returned that has default argument values set equal to the values specified by the user.
 
-  The inlcol-class object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
+  The inlpal-class object is comprised of a 'character'
+  vector of \code{n} colors in the RGB color system.
   Colors are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
   Attributes of the returned object include:
   \code{"names"}, the informal names assigned to colors in the palette,
   where \code{NULL} indicates no color names are specified;
-  \code{"NaN"}, a 'character' string giving the color meant for missing data, in hexadecimal format,
-  where \code{NA} indicates no color is specified; and
-  \code{"call"}, an object of class '\link{call}' giving the unevaluated function call (expression)
-  that can be used to reproduce the color palette.
+  \code{"NaN"}, a 'character' string giving the color meant for missing data,
+  in hexadecimal format, where \code{NA} indicates no color is specified; and
+  \code{"call"}, an object of class '\link{call}' giving the unevaluated function
+  call (expression) that can be used to reproduce the color palette.
   Use the \code{\link{eval}} function to evaluate the \code{"call"} argument.
-  A simple \code{plot} method is provided for the 'inlcol' class that
+  A simple \code{plot} method is provided for the 'inlpal' class that
   shows a palette of colors using a sequence of shaded rectangles,
   see \sQuote{Examples} section for usage.
 }
@@ -71,13 +74,17 @@ When argument \code{n} is specified the function
 Create a vector of \code{n} colors from qualitative, diverging, and sequential color schemes.
 }
 \details{
-The suggested data type for color schemes and the characteristics of generated palettes are given in the table below.
-  [\bold{Type}: is the type of data being represented, either qualitative, diverging, or sequential.
+The suggested data type for color schemes and the
+  characteristics of generated palettes are given in the table below.
+  [\bold{Type}: is the type of data being represented,
+  either qualitative, diverging, or sequential.
   \bold{Max n}: is the maximum number of colors in a generated palette.
-  And the maximum \code{n} value when palette colors are designed for gray-scale conversion is enclosed in parentheses.
-  \bold{N}: not-a-number color.
-  \bold{B}: background color.
-  \bold{F}: foreground color.
+  And the maximum \code{n} value when scheme colors are designed for
+  gray-scale conversion is enclosed in parentheses.
+  A value of infinity indicates that the scheme allows for color interpolations.
+  \bold{N}: is the not-a-number color.
+  \bold{B}: is the background color.
+  \bold{F}: is the foreground color.
   \bold{Abbreviations}: --, not available]
 
   \if{html}{\figure{table.svg}{alt="Table: color schemes"}}
@@ -95,8 +102,8 @@ pal <- GetColors(n = 10)
 print(pal)
 plot(pal)
 
-Fun <- GetColors(scheme = "DEM screen", alpha = 0.9)
-filled.contour(datasets::volcano, color.palette = Fun)
+Pal <- GetColors(scheme = "DEM screen", alpha = 0.9)
+filled.contour(datasets::volcano, color.palette = Pal)
 
 # Diverging color schemes (scheme)
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
@@ -139,12 +146,12 @@ plot(GetColors(34, alpha = 0.4))
 plot(GetColors(34, alpha = 0.2))
 par(op)
 
-# Color levels (start, end)
+# Color stops (stops)
 op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
-plot(GetColors(255, start = 0.0, end = 1.0))
-plot(GetColors(255, start = 0.0, end = 0.5))
-plot(GetColors(255, start = 0.5, end = 1.0))
-plot(GetColors(255, start = 0.3, end = 0.9))
+plot(GetColors(255, stops = c(0.0, 1.0)))
+plot(GetColors(255, stops = c(0.0, 0.5)))
+plot(GetColors(255, stops = c(0.5, 1.0)))
+plot(GetColors(255, stops = c(0.3, 0.9)))
 par(op)
 
 # Interpolation bias (bias)
@@ -159,11 +166,9 @@ plot(GetColors(255, bias = 1.6))
 par(op)
 
 # Reverse colors (reverse)
-op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0), cex = 0.7)
+op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
 plot(GetColors(10, reverse = FALSE))
 plot(GetColors(10, reverse = TRUE))
-plot(GetColors(10, reverse = FALSE, start = 0.5))
-plot(GetColors(10, reverse = TRUE,  start = 0.5))
 par(op)
 
 # Color blindness (blind)
@@ -201,7 +206,7 @@ Dewez, Thomas, 2004, Variations on a DEM palette, accessed October 15, 2018 at
   doi:\href{https://doi.org/10.1002/2013EO450001}{10.1002/2013EO450001}
 }
 \seealso{
-\code{\link[grDevices]{col2rgb}}
+\code{\link{SetHinge}}, \code{\link[grDevices]{col2rgb}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
