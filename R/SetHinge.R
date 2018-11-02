@@ -27,10 +27,11 @@
 #' @param buffer 'numeric' vector of length 1 or 2, value is recycled as necessary.
 #'   Color buffer around the hinge measured as a fraction of the color range.
 #'   Values applied separately on either side of the hinge.
+#' @param stops 'numeric' vector of length 2.
+#'   Color stops defined by interval endpoints (between 0 and 1)
+#'   and used to select a subset of the color palette.
 #' @param allow_bias 'logical' flag.
 #'   Whether to allow bias in the color spacing.
-#'
-#' @inheritParams GetColors
 #'
 #' @return Returns a 'function' that takes an 'integer' argument
 #'   (the required number of colors) and returns a 'character' vector of colors.
@@ -109,6 +110,17 @@
 #' Plot(SetHinge(x, hinge, c("gray", "plasma"), buffer = c(0.2, 0.4))(n))
 #' par(op)
 #'
+#' # Color stops (stops)
+#' x <- c(-5, 5); hinge <- 1; n <- 20
+#' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
+#' Plot(SetHinge(x, hinge, stops = c(0.0, 1.0))(n))
+#' Plot(SetHinge(x, hinge, stops = c(0.2, 0.8))(n))
+#' Plot(SetHinge(x, hinge, stops = c(0.4, 0.6))(n))
+#' Plot(SetHinge(x, hinge, c("gray", "plasma"), stops = c(0.0, 1.0))(n))
+#' Plot(SetHinge(x, hinge, c("gray", "plasma"), stops = c(0.2, 0.8))(n))
+#' Plot(SetHinge(x, hinge, c("gray", "plasma"), stops = c(0.4, 0.6))(n))
+#' par(op)
+#'
 #' # Allow bias (allow_bias)
 #' x <- c(-3, 7); n <- 20
 #' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
@@ -119,8 +131,8 @@
 #' par(op)
 #'
 
-SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL,
-                     reverse=FALSE, buffer=0, allow_bias=TRUE) {
+SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL, reverse=FALSE,
+                     buffer=0, stops=c(0, 1), allow_bias=TRUE) {
 
   x <- range(x, na.rm=TRUE)
   checkmate::assertNumeric(x, finite=TRUE, any.missing=FALSE, len=2,
@@ -135,6 +147,8 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL,
   checkmate::assertFlag(allow_bias)
   checkmate::assertNumeric(buffer, lower=0, upper=1, finite=TRUE,
                            any.missing=FALSE, min.len=1, max.len=2)
+  checkmate::assertNumeric(stops, lower=0, upper=1, finite=TRUE, any.missing=FALSE,
+                           len=2, unique=TRUE, sorted=TRUE)
 
   scheme <- rep(scheme, length.out=2)
   if (!is.null(alpha)) alpha <- rep(alpha, length.out=2)
@@ -151,6 +165,7 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL,
 
   ran <- ifelse(identical(scheme[1], scheme[2]), 0.5, 1)
   buf <- buffer * ran
+  stp <- c(stops[1], 1 - stops[2]) * ran
 
   if (allow_bias || ratio %in% c(0, 0.5, 1)) {
     adj <- c(0, 0)
@@ -158,13 +173,16 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL,
     d1 <- diff(c(x[1], hinge))
     d2 <- diff(c(hinge, x[2]))
     if (d1 < d2)
-      adj <- c((ran - buf[1]) * (1 - d1 / d2), 0)
+      adj <- c((ran - buf[1] - stp[1]) * (1 - d1 / d2), 0)
     else
-      adj <- c(0, (ran - buf[2]) * (1 - d2 / d1))
+      adj <- c(0, (ran - buf[2] - stp[2]) * (1 - d2 / d1))
   }
 
-  s1 <- c(adj[1], ran - buf[1])
-  s2 <- c(1 - ran + buf[2], 1 - adj[2])
+  s1 <- c(stp[1] + adj[1], ran - buf[1])
+  s2 <- c(1 - ran + buf[2], 1 - stp[2] - adj[2])
+
+  if (s1[1] >= s1[2] | s2[1] >= s2[2])
+    stop("problem with color stops and (or) buffer values")
 
   FUN <- function(...) {
     n1 <- round(... * ratio)

@@ -22,8 +22,8 @@ Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 Specify as \code{NULL} to exclude the alpha channel value from colors.}
 
 \item{stops}{'numeric' vector of length 2.
-Color stops, that is, interval endpoints (between 0 and 1)
-used to select a subset of the color palette.
+Color stops defined by interval endpoints (between 0 and 1)
+and used to select a subset of the color palette.
 Only suitable for schemes that allow for color interpolations.}
 
 \item{bias}{'numeric' number.
