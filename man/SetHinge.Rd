@@ -10,10 +10,10 @@ SetHinge(x, hinge, scheme = "sunset", alpha = NULL, reverse = FALSE,
 \arguments{
 \item{x}{'numeric' object that can be passed to the \code{\link{range}}
 function with \code{NA}'s removed.
-That is, the user's data range (such as, at sea-level).}
+The user's data range.}
 
 \item{hinge}{'numeric' number.
-Hinge value in data units.}
+Hinge value (such as, at sea-level) in data units.}
 
 \item{scheme}{'character' vector of length 1 or 2, value is recycled as necessary.
 Name of color scheme(s).
@@ -37,7 +37,7 @@ Values applied separately on either side of the hinge.}
 
 \item{stops}{'numeric' vector of length 2.
 Color stops defined by interval endpoints (between 0 and 1)
-and used to select a subset of the color palette.}
+and used to select a subset of the color palette(s).}
 
 \item{allow_bias}{'logical' flag.
 Whether to allow bias in the color spacing.}
@@ -50,8 +50,8 @@ Returns a 'function' that takes an 'integer' argument
 The \emph{hinge} indicates a dramatic color change in a palette
 that is typically located at the midpoint of the data range.
 An asymmetrical data range can result in an undesired hinge location,
-where the location does not necessarily coincide with the break-point in the user's data.
-This function is used to specify a hinge location that is appropriate for your data.
+a location that does not necessarily coincide with the break-point in the user's data.
+This function can be used to specify a hinge location that is appropriate for your data.
 }
 \examples{
 Pal <- SetHinge(x = c(-3, 7), hinge = 0)
