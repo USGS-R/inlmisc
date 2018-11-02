@@ -1,7 +1,7 @@
 #' Set Hinge Location in Color Palette
 #'
 #' The \emph{hinge} indicates a dramatic color change in a palette
-#' that is typically located at the midpoint of the color range.
+#' that is typically located at the midpoint of the data range.
 #' An asymmetrical data range can result in an undesired hinge location,
 #' where the location does not necessarily coincide with the break-point in the user's data.
 #' This function is used to specify a hinge location that is appropriate for your data.
@@ -163,16 +163,16 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL,
       adj <- c(0, (ran - buf[2]) * (1 - d2 / d1))
   }
 
-  r1 <- c(adj[1], ran - buf[1])
-  r2 <- c(1 - ran + buf[2], 1 - adj[2])
+  s1 <- c(adj[1], ran - buf[1])
+  s2 <- c(1 - ran + buf[2], 1 - adj[2])
 
   FUN <- function(...) {
     n1 <- round(... * ratio)
     n2 <- ... - n1
     is <- identical(scheme[1], scheme[2]) & n1 > 0 & n2 > 0
     if (is) n2 <- n2 + 1
-    p1 <- GetColors(n1, scheme[1], alpha[1], start=r1[1], end=r1[2], reverse=reverse[1])
-    p2 <- GetColors(n2, scheme[2], alpha[2], start=r2[1], end=r2[2], reverse=reverse[2])
+    p1 <- GetColors(n1, scheme[1], alpha[1], stops=s1, reverse=reverse[1])
+    p2 <- GetColors(n2, scheme[2], alpha[2], stops=s2, reverse=reverse[2])
     if (is) p2 <- p2[-1]
     c(p1, p2)
   }

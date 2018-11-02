@@ -609,7 +609,7 @@ MakeTable <- function() {
     grDevices::postscript(f1, onefile=FALSE,
                           width=w * px_to_in, height=h * px_to_in,
                           horizontal=FALSE, pointsize=10, paper="special")
-    inlmisc:::plot.inlcol(pal, label=FALSE)
+    inlmisc:::plot.inlpal(pal, label=FALSE)
     dev.off()
 
     if (is.null(s$nan))  g2 <- "--" else .PlotBox(f2, s$nan,  h * px_to_in)

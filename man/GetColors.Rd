@@ -4,8 +4,8 @@
 \alias{GetColors}
 \title{Get Palette Colors}
 \usage{
-GetColors(n, scheme = "smooth rainbow", alpha = NULL, start = 0,
-  end = 1, bias = 1, reverse = FALSE, blind = NULL, gray = FALSE)
+GetColors(n, scheme = "smooth rainbow", alpha = NULL, stops = c(0,
+  1), bias = 1, reverse = FALSE, blind = NULL, gray = FALSE, ...)
 }
 \arguments{
 \item{n}{'integer' count.
@@ -21,8 +21,9 @@ Argument choices may be abbreviated as long as there is no ambiguity.}
 Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 Specify as \code{NULL} to exclude the alpha channel value from colors.}
 
-\item{start, end}{'numeric' number.
-Interval endpoints (between 0 and 1) used to select a subset of the color scheme.
+\item{stops}{'numeric' vector of length 2.
+Color stops, that is, interval endpoints (between 0 and 1)
+used to select a subset of the color palette.
 Only suitable for schemes that allow for color interpolations.}
 
 \item{bias}{'numeric' number.
@@ -43,6 +44,8 @@ Argument choices may be abbreviated as long as there is no ambiguity.}
 \item{gray}{'logical' flag.
 Whether to subset/reorder the \code{"bright"}, \code{"high-contrast"}, \code{"vibrant"},
 and \code{"muted"} schemes to work well after conversion to gray scale.}
+
+\item{...}{Not used}
 }
 \value{
 When argument \code{n} is specified the function
@@ -50,17 +53,18 @@ When argument \code{n} is specified the function
   And when \code{n} is unspecified a variant of the \code{GetColors} function is
   returned that has default argument values set equal to the values specified by the user.
 
-  The inlpal-class object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
+  The inlpal-class object is comprised of a 'character'
+  vector of \code{n} colors in the RGB color system.
   Colors are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
   Attributes of the returned object include:
   \code{"names"}, the informal names assigned to colors in the palette,
   where \code{NULL} indicates no color names are specified;
-  \code{"NaN"}, a 'character' string giving the color meant for missing data, in hexadecimal format,
-  where \code{NA} indicates no color is specified; and
-  \code{"call"}, an object of class '\link{call}' giving the unevaluated function call (expression)
-  that can be used to reproduce the color palette.
+  \code{"NaN"}, a 'character' string giving the color meant for missing data,
+  in hexadecimal format, where \code{NA} indicates no color is specified; and
+  \code{"call"}, an object of class '\link{call}' giving the unevaluated function
+  call (expression) that can be used to reproduce the color palette.
   Use the \code{\link{eval}} function to evaluate the \code{"call"} argument.
   A simple \code{plot} method is provided for the 'inlpal' class that
   shows a palette of colors using a sequence of shaded rectangles,
@@ -70,10 +74,13 @@ When argument \code{n} is specified the function
 Create a vector of \code{n} colors from qualitative, diverging, and sequential color schemes.
 }
 \details{
-The suggested data type for color schemes and the characteristics of generated palettes are given in the table below.
-  [\bold{Type}: is the type of data being represented, either qualitative, diverging, or sequential.
+The suggested data type for color schemes and the
+  characteristics of generated palettes are given in the table below.
+  [\bold{Type}: is the type of data being represented,
+  either qualitative, diverging, or sequential.
   \bold{Max n}: is the maximum number of colors in a generated palette.
-  And the maximum \code{n} value when scheme colors are designed for gray-scale conversion is enclosed in parentheses.
+  And the maximum \code{n} value when scheme colors are designed for
+  gray-scale conversion is enclosed in parentheses.
   A value of infinity indicates that the scheme allows for color interpolations.
   \bold{N}: is the not-a-number color.
   \bold{B}: is the background color.
@@ -139,12 +146,12 @@ plot(GetColors(34, alpha = 0.4))
 plot(GetColors(34, alpha = 0.2))
 par(op)
 
-# Color levels (start, end)
+# Color stops (stops)
 op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
-plot(GetColors(255, start = 0.0, end = 1.0))
-plot(GetColors(255, start = 0.0, end = 0.5))
-plot(GetColors(255, start = 0.5, end = 1.0))
-plot(GetColors(255, start = 0.3, end = 0.9))
+plot(GetColors(255, stops = c(0.0, 1.0)))
+plot(GetColors(255, stops = c(0.0, 0.5)))
+plot(GetColors(255, stops = c(0.5, 1.0)))
+plot(GetColors(255, stops = c(0.3, 0.9)))
 par(op)
 
 # Interpolation bias (bias)

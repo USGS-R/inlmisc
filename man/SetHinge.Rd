@@ -44,7 +44,7 @@ Returns a 'function' that takes an 'integer' argument
 }
 \description{
 The \emph{hinge} indicates a dramatic color change in a palette
-that is typically located at the midpoint of the color range.
+that is typically located at the midpoint of the data range.
 An asymmetrical data range can result in an undesired hinge location,
 where the location does not necessarily coincide with the break-point in the user's data.
 This function is used to specify a hinge location that is appropriate for your data.

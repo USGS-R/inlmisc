@@ -12,8 +12,9 @@
 #' @param alpha 'numeric' number.
 #'   Alpha transparency, values range from 0 (fully transparent) to 1 (fully opaque).
 #'   Specify as \code{NULL} to exclude the alpha channel value from colors.
-#' @param start,end 'numeric' number.
-#'   Interval endpoints (between 0 and 1) used to select a subset of the color scheme.
+#' @param stops 'numeric' vector of length 2.
+#'   Color stops, that is, interval endpoints (between 0 and 1)
+#'   used to select a subset of the color palette.
 #'   Only suitable for schemes that allow for color interpolations.
 #' @param bias 'numeric' number.
 #'   Interpolation bias where larger values result in more widely spaced colors at the high end.
@@ -30,11 +31,16 @@
 #' @param gray 'logical' flag.
 #'   Whether to subset/reorder the \code{"bright"}, \code{"high-contrast"}, \code{"vibrant"},
 #'   and \code{"muted"} schemes to work well after conversion to gray scale.
+#' @param ...
+#'   Not used
 #'
-#' @details The suggested data type for color schemes and the characteristics of generated palettes are given in the table below.
-#'   [\bold{Type}: is the type of data being represented, either qualitative, diverging, or sequential.
+#' @details The suggested data type for color schemes and the
+#'   characteristics of generated palettes are given in the table below.
+#'   [\bold{Type}: is the type of data being represented,
+#'   either qualitative, diverging, or sequential.
 #'   \bold{Max n}: is the maximum number of colors in a generated palette.
-#'   And the maximum \code{n} value when scheme colors are designed for gray-scale conversion is enclosed in parentheses.
+#'   And the maximum \code{n} value when scheme colors are designed for
+#'   gray-scale conversion is enclosed in parentheses.
 #'   A value of infinity indicates that the scheme allows for color interpolations.
 #'   \bold{N}: is the not-a-number color.
 #'   \bold{B}: is the background color.
@@ -52,17 +58,18 @@
 #'   And when \code{n} is unspecified a variant of the \code{GetColors} function is
 #'   returned that has default argument values set equal to the values specified by the user.
 #'
-#'   The inlpal-class object is comprised of a 'character' vector of \code{n} colors in the RGB color system.
+#'   The inlpal-class object is comprised of a 'character'
+#'   vector of \code{n} colors in the RGB color system.
 #'   Colors are specified with a string of the form \code{"#RRGGBB"} or \code{"#RRGGBBAA"}
 #'   where \code{RR}, \code{GG}, \code{BB}, and \code{AA} are the
 #'   red, green, blue, and alpha hexadecimal values (00 to FF), respectively.
 #'   Attributes of the returned object include:
 #'   \code{"names"}, the informal names assigned to colors in the palette,
 #'   where \code{NULL} indicates no color names are specified;
-#'   \code{"NaN"}, a 'character' string giving the color meant for missing data, in hexadecimal format,
-#'   where \code{NA} indicates no color is specified; and
-#'   \code{"call"}, an object of class '\link{call}' giving the unevaluated function call (expression)
-#'   that can be used to reproduce the color palette.
+#'   \code{"NaN"}, a 'character' string giving the color meant for missing data,
+#'   in hexadecimal format, where \code{NA} indicates no color is specified; and
+#'   \code{"call"}, an object of class '\link{call}' giving the unevaluated function
+#'   call (expression) that can be used to reproduce the color palette.
 #'   Use the \code{\link{eval}} function to evaluate the \code{"call"} argument.
 #'   A simple \code{plot} method is provided for the 'inlpal' class that
 #'   shows a palette of colors using a sequence of shaded rectangles,
@@ -140,12 +147,12 @@
 #' plot(GetColors(34, alpha = 0.2))
 #' par(op)
 #'
-#' # Color levels (start, end)
+#' # Color stops (stops)
 #' op <- par(mfrow = c(4, 1), oma = c(0, 0, 0, 0))
-#' plot(GetColors(255, start = 0.0, end = 1.0))
-#' plot(GetColors(255, start = 0.0, end = 0.5))
-#' plot(GetColors(255, start = 0.5, end = 1.0))
-#' plot(GetColors(255, start = 0.3, end = 0.9))
+#' plot(GetColors(255, stops = c(0.0, 1.0)))
+#' plot(GetColors(255, stops = c(0.0, 0.5)))
+#' plot(GetColors(255, stops = c(0.5, 1.0)))
+#' plot(GetColors(255, stops = c(0.3, 0.9)))
 #' par(op)
 #'
 #' # Interpolation bias (bias)
@@ -187,8 +194,8 @@
 #' par(op)
 #'
 
-GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
-                      bias=1, reverse=FALSE, blind=NULL, gray=FALSE) {
+GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
+                      bias=1, reverse=FALSE, blind=NULL, gray=FALSE, ...) {
 
   if (!missing(n)) {
     checkmate::assertCount(n)
@@ -207,9 +214,13 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
     stop("gray component not available for '", scheme, "' scheme.")
 
   checkmate::assertNumber(alpha, lower=0, upper=1, finite=TRUE, null.ok=TRUE)
-  checkmate::assertNumber(start, lower=0, upper=1, finite=TRUE)
-  checkmate::assertNumber(end,   lower=0, upper=1, finite=TRUE)
-  stopifnot(start < end)
+
+  # backward compatibility
+  if (methods::hasArg("start")) stops[1] <- list(...)$start
+  if (methods::hasArg("end"))   stops[2] <- list(...)$end
+
+  checkmate::assertNumeric(stops, lower=0, upper=1, finite=TRUE, any.missing=FALSE,
+                           len=2, unique=TRUE, sorted=TRUE)
   checkmate::qassert(bias, "N1(0,)")
   checkmate::assertFlag(reverse)
   checkmate::assertString(blind, min.chars=1, null.ok=TRUE)
@@ -221,16 +232,15 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
       stop("simulating partial color blindness requires the dichromat package")
   }
 
-  if (nmax < Inf && (start > 0 | end < 1))
-    warning("'start' and 'end' apply only to interpolated color schemes")
+  if (nmax < Inf && !identical(stops, c(0, 1)))
+    warning("'stops' only applies to interpolated color schemes")
 
   if (missing(n)) {
     Pal <- GetColors
     formals(Pal) <- eval(substitute(
-      alist("n"=, "scheme"=a1, "alpha"=a2, "start"=a3, "end"=a4,
-            "bias"=a5, "reverse"=a6, "blind"=a7, "gray"=a8),
-      list(a1=scheme, a2=alpha, a3=start, a4=end,
-           a5=bias, a6=reverse, a7=blind, a8=gray)
+      alist("n"=, "scheme"=a1, "alpha"=a2, "stops"=a3, "bias"=a4, "reverse"=a5,
+            "blind"=a6, "gray"=a7),
+      list(a1=scheme, a2=alpha, a3=stops, a4=bias, a5=reverse, a6=blind, a7=gray)
     ))
     return(Pal)
   }
@@ -274,7 +284,7 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
       color <- rev(color)
       value <- rev(1 - value)
     }
-    x <- seq.int(start, end, length.out=255)
+    x <- seq.int(stops[1], stops[2], length.out=255)
     color <- scales::gradient_n_pal(color, values=value)(x)
     pal <- grDevices::colorRampPalette(color, bias=bias, space="Lab")(n)
   }
@@ -300,7 +310,7 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, start=0, end=1,
   }
 
   cl <- as.call(list(quote(GetColors), "n"=n, "scheme"=scheme, "alpha"=alpha,
-                     "start"=start, "end"=end, "bias"=bias, "reverse"=reverse,
+                     "stops"=stops, "bias"=bias, "reverse"=reverse,
                      "blind"=blind, "gray"=gray))
 
   .MakeInlpalClass(pal, nan, cl)
@@ -322,12 +332,12 @@ plot.inlpal <- function(x, ..., label=TRUE) {
     txt <- c(paste0("n = ", n),
              paste0("scheme = '", arg$scheme, "'"),
              paste0("alpha = ", arg$alpha),
-             paste0("start = ", arg$start, ", end = ", arg$end),
+             paste0("stops = c(", arg$stops[1], ", ", arg$stops[2], ")"),
              paste0("bias = ", arg$bias),
              paste0("reverse = ", arg$reverse),
              paste0("blind = '", arg$blind, "'"),
              paste0("gray = ", arg$gray))
-    is <- c(TRUE, TRUE, !is.null(arg$alpha), arg$start > 0 | arg$end < 1,
+    is <- c(TRUE, TRUE, !is.null(arg$alpha), !identical(arg$stops, c(0, 1)),
             arg$bias != 1, arg$reverse, !is.null(arg$blind), arg$gray)
     main <- paste(txt[is], collapse=", ")
     reverse <- arg$reverse
@@ -394,7 +404,7 @@ plot.inlpal <- function(x, ..., label=TRUE) {
                              any.missing=FALSE, min.len=1)
   checkmate::assertString(nan, na.ok=TRUE, pattern=pattern, ignore.case=TRUE)
   stopifnot(is.call(call))
-  stopifnot(all(names(formals(GetColors)) %in% names(as.list(call))))
+  stopifnot(all(names(formals(GetColors)) %in% c(names(as.list(call)), "...")))
   structure(x, nan=nan, call=call, class=append("inlpal", class(x)))
 }
 

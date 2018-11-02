@@ -193,7 +193,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   at <- NULL
   if (!is.null(cell.values)) {
     if (is.null(pal))
-      pal <- function(n) GetColors(n, start=0.3, end=0.9)
+      pal <- function(n) GetColors(n, stops=c(0.3, 0.9))
     if (is.categorical) {
       unique.vals <- sort(unique(cell.values))
       at <- seq_along(unique.vals)

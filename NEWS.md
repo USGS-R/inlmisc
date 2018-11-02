@@ -22,6 +22,7 @@
 
 - Rename `GetTolColors` function to `GetColors`.
   Add additional color schemes;
+  replace `start` and `end` arguments with `stops`, a vector of length 2;
   change `blind` argument option from `"monochromacy"` to `"monochrome"`;
   return a variant of the `GetColors` function when argument `n` is unspecified.
 
