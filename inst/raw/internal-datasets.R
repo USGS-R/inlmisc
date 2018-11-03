@@ -1,30 +1,13 @@
 MakeSysdata <- function() {
 
   options(stringsAsFactors=FALSE)
+  dir.create(file.path(getwd(), "cpt"), showWarnings=FALSE)
 
   cite <- c("Dewez"  = "Thomas Dewez (2004) grants permission to distribute with attribution.",
             "Tol"    = "Paul Tol (2018) grants permission to distribute with attribution.",
             "Wessel" = "Wessel and others (2013) released under an open license.")
 
-  exclude <- scan(what="character", quiet=TRUE, text="
-                  cool
-                  grayC
-                  polar
-                  red2green
-                  seis
-                  ")
-  diverge <- scan(what="character", quiet=TRUE, text="
-                  berlin
-                  broc
-                  cork
-                  lisbon
-                  oleron
-                  roma
-                  split
-                  tofino
-                  vik
-                  ")
-  schemes <- .GetCptGmt(cite["Wessel"], exclude, diverge)
+  schemes <- .GetCptGmt(cite["Wessel"])
 
   schemes[["DEM screen"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -501,7 +484,8 @@ MakeSysdata <- function() {
 }
 
 
-.GetCptGmt <- function(cite, exclude=NULL, diverge=NULL) {
+.GetCptGmt <- function(cite) {
+  checkmate::assertString(cite)
 
   # code adapted from stackoverflow answer by lukeA, accessed October 27, 2018
   # at https://stackoverflow.com/questions/25485216
@@ -514,24 +498,22 @@ MakeSysdata <- function() {
   httr::stop_for_status(info)
   tree <- unlist(lapply(httr::content(info)$tree, "[", "path"), use.names=FALSE)
   path <- grep("share/cpt/", tree, value=TRUE, fixed=TRUE)
-
   host <- "raw.githubusercontent.com"
   file <- sprintf("https://%s/%s/%s/master/%s", host, owner, repo, path)
 
   nm <- tools::file_path_sans_ext(basename(file))
+  exclude <- c("cool", "grayC", "polar", "red2green", "seis")
   file <- file[!nm %in% exclude]
 
-  destdir <- file.path(getwd(), "cpt")
-  dir.create(destdir, showWarnings=FALSE)
-
-  destfile <- file.path(destdir, basename(file))
+  destfile <- file.path(getwd(), "cpt", basename(file))
   for (i in seq_along(file)) {
     utils::download.file(file[i], destfile[i], quiet=TRUE)
   }
 
   nm <- tools::file_path_sans_ext(basename(file))
   type <- rep("Sequential", length(nm))
-  type[nm %in% diverge] <- "Diverging"
+  div <- c("berlin", "broc", "cork", "lisbon", "oleron", "roma", "split", "tofino", "vik")
+  type[nm %in% div] <- "Diverging"
 
   cpt <- lapply(seq_along(destfile), function(i) {
     .ReadCpt(destfile[i], cite=cite, type=type[i])
