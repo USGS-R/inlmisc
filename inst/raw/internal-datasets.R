@@ -24,7 +24,7 @@ MakeSysdata <- function() {
                   tofino
                   vik
                   ")
-  schemes <- .GetGMTCpt(cite["Wessel"], exclude, diverge)
+  schemes <- .GetCptGmt(cite["Wessel"], exclude, diverge)
 
   schemes[["DEM screen"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -501,7 +501,7 @@ MakeSysdata <- function() {
 }
 
 
-.GetGMTCpt <- function(cite, exclude=NULL, diverge=NULL) {
+.GetCptGmt <- function(cite, exclude=NULL, diverge=NULL) {
 
   # code adapted from stackoverflow answer by lukeA, accessed October 27, 2018
   # at https://stackoverflow.com/questions/25485216
