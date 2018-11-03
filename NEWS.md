@@ -1,4 +1,4 @@
-# inlmisc 0.4.3.9000
+# inlmisc 0.4.4
 
 - Add `SetHinge` function, used to specify a hinge location in a color palette.
 

@@ -181,7 +181,7 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL, reverse=FALSE,
   s1 <- c(stp[1] + adj[1], ran - buf[1])
   s2 <- c(1 - ran + buf[2], 1 - stp[2] - adj[2])
 
-  if (s1[1] >= s1[2] | s2[1] >= s2[2])
+  if (s1[1] >= s1[2] || s2[1] >= s2[2])
     stop("problem with color stops and (or) buffer values")
 
   FUN <- function(...) {
