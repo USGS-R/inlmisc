@@ -92,7 +92,12 @@
 #'   Generic Mapping Tools: Improved version released, AGU, v. 94, no. 45, p. 409--410
 #'   doi:\href{https://doi.org/10.1002/2013EO450001}{10.1002/2013EO450001}
 #'
-#' @seealso \code{\link{SetHinge}}, \code{\link[grDevices]{col2rgb}}
+#' @seealso
+#'   \code{\link{SetHinge}} function to set the hinge location in
+#'   a color palette derived from one or two color schemes.
+#'
+#'   \code{\link[grDevices]{col2rgb}} function to express palette
+#'   colors represented in the hexadecimal format as RGB triplets (R, G, B).
 #'
 #' @keywords color
 #'
