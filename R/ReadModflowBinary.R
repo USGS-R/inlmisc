@@ -185,14 +185,13 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
         if (nval > 100) stop("more than one-hundred varaiables for each cell")
         if (nval > 1) {
           ctmp <- readBin(readBin(con, "raw", n=16L, size=1L, endian=endian),
-                          "character", n=nval - 1, endian=endian)
+                          "character", n=nval - 1L, endian=endian)
           ctmp <- .TidyDescription(ctmp)
         } else {
           ctmp <- NULL
         }
 
         if (itype %in% c(0L, 1L)) {
-          nvalues <- ncol * nrow * nlay
           d <- .Read3dArray(con, nrow, ncol, nlay, nbytes, endian)
           for (i in seq_along(d)) {
             lst[[length(lst) + 1]] <- list(d=d[[i]], kstp=kstp, kper=kper,
@@ -205,7 +204,7 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
             if (nlist > (nrow * ncol * nlay))
               stop("large number of cells for which values will be stored")
             if (nlist > 0) {
-              d <- matrix(0, nrow=nlist, ncol=nval + 4)
+              d <- matrix(0, nrow=nlist, ncol=nval + 4L)
               colnames(d) <- make.names(c("icell", "layer", "row", "column", "flow", ctmp),
                                         unique=TRUE)
               for (i in seq_len(nlist)) {
@@ -214,9 +213,11 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
                                                    size=nbytes, endian=endian)
               }
               nrc <- nrow * ncol
-              d[, "layer"] <- as.integer((d[, "icell"] - 1) / nrc + 1)
-              d[, "row"]  <- as.integer(((d[, "icell"] - (d[, "layer"] - 1) * nrc) - 1) / ncol + 1)
-              d[, "column"] <- as.integer(d[, "icell"] - (d[, "layer"] - 1) * nrc - (d[, "row"] - 1) * ncol)
+              d[, "layer"] <- as.integer((d[, "icell"] - 1L) / nrc + 1L)
+              d[, "row"]  <- as.integer(((d[, "icell"] - (d[, "layer"] - 1L) * nrc)
+                                         - 1L) / ncol + 1L)
+              d[, "column"] <- as.integer(d[, "icell"] - (d[, "layer"] - 1L)
+                                          * nrc - (d[, "row"] - 1L) * ncol)
               lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
                                              delt=delt, pertim=pertim, totim=totim)
             }
@@ -228,18 +229,21 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
             v <- values[layers == i]
             d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
             lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                           layer=i, delt=delt, pertim=pertim, totim=totim)
+                                           layer=i, delt=delt, pertim=pertim,
+                                           totim=totim)
           }
 
         } else if (itype == 4L) {
           v <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
           d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
           lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                         layer=1L, delt=delt, pertim=pertim, totim=totim)
+                                         layer=1L, delt=delt, pertim=pertim,
+                                         totim=totim)
           d[, ] <- 0
           for (i in seq_len(nlay)[-1]) {
             lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                           layer=i, delt=delt, pertim=pertim, totim=totim)
+                                           layer=i, delt=delt, pertim=pertim,
+                                           totim=totim)
           }
 
         } else {

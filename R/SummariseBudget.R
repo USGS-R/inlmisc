@@ -20,7 +20,7 @@
 #'   Data in the MODFLOW cell-by-cell budget file must be saved using the
 #'   \emph{\bold{"COMPACT BUDGET"}} output option.
 #'
-#' @return Returns a 'data.frame' with the following variables:
+#' @return Returns a 'data.table' with the following variables:
 #'   \describe{
 #'     \item{desc}{description of data type, such as "wells".}
 #'     \item{kper}{stress period}
@@ -43,6 +43,8 @@
 #' @seealso \code{\link{ReadModflowBinary}}
 #'
 #' @keywords utilities
+#'
+#' @importFrom data.table data.table
 #'
 #' @export
 #'
@@ -67,7 +69,8 @@ SummariseBudget <- function(budget, desc=NULL, id=NULL) {
     desc <- unique(budget.desc)
   } else {
     is <- desc %in% budget.desc
-    if (all(!is)) stop("data type(s) not found in budget")
+    if (all(!is))
+      stop("data type(s) not found in budget")
     if (any(!is))
       warning(sprintf("data type(s) not found in budget: %s",
                       paste(paste0("\"", desc[!is], "\""), collapse=", ")))
@@ -75,56 +78,41 @@ SummariseBudget <- function(budget, desc=NULL, id=NULL) {
   }
 
   is <- vapply(budget, function(x) !is.null(colnames(x$d)), FALSE)
-  if (all(!is)) stop("data type(s) not saved using correct form")
+  if (all(!is))
+    stop("data type(s) not saved using correct form")
   if (any(!is)) {
     x <- unique(vapply(budget[!is], function(i) i$desc, ""))
     warning(sprintf("removed data type(s): %s not saved using correct form",
-            paste(paste0("\"", x, "\""), collapse=", ")))
+                    paste(paste0("\"", x, "\""), collapse=", ")))
   }
   budget <- budget[is]
   desc <- vapply(budget, function(i) i$desc, "")
 
-  b <- budget
-  for (i in seq_along(b)) b[[i]]$d[b[[i]]$d[, "flow"] < 0, "flow"] <- 0
-  d <- dplyr::mutate(.Summarise(b, desc, id), flow.dir="in")
-
-  b <- budget
-  for (i in seq_along(b)) b[[i]]$d[b[[i]]$d[, "flow"] > 0, "flow"] <- 0
-  d <- dplyr::bind_rows(d, dplyr::mutate(.Summarise(b, desc, id), flow.dir="out"))
-
-  d$flow.dir <- as.factor(d$flow.dir)
-  d
-}
-
-
-.Summarise <- function(b, desc, id) {
-
-  checkmate::assertList(b)
-  checkmate::assertCharacter(desc)
-  checkmate::assertString(id, null.ok=TRUE)
-
-  d <- dplyr::bind_rows(lapply(desc, function(i) {
-    dplyr::bind_rows(lapply(b[desc == i], function(j) {
-      d <- data.frame(desc=j$desc, kper=j$kper, kstp=j$kstp, id=NA,
-                      flow=j$d[, "flow"], delt=j$delt,
-                      pertim=j$pertim, totim=j$totim, stringsAsFactors=FALSE)
-      if (!is.null(id) && id %in% colnames(j$d)) d$id <- j$d[, id]
+  dt <- data.table::rbindlist(lapply(desc, function(i) {
+    data.table::rbindlist(lapply(budget[desc == i], function(x) {
+      d <- data.frame(desc=x$desc, kper=x$kper, kstp=x$kstp, id=NA,
+                      flow=x$d[, "flow"], delt=x$delt,
+                      pertim=x$pertim, totim=x$totim,
+                      stringsAsFactors=FALSE)
+      d$id <- if (!is.null(id) && id %in% colnames(x$d)) x$d[, id] else NA
+      d$flow.dir <- "in"
+      d$flow.dir[d$flow < 0] <- "out"
       d
     }))
   }))
-  d$desc <- as.factor(d$desc)
-  if ("id" %in% colnames(d))
-    grps <- dplyr::group_by_(d, "desc", "kper", "kstp", "id")
-  else
-    grps <- dplyr::group_by_(d, "desc", "kper", "kstp")
-  d <- dplyr::summarise_(grps,
-                         delt        = "delt[1]",
-                         pertim      = "pertim[1]",
-                         totim       = "totim[1]",
-                         count       = "length(flow)",
-                         flow.sum    = "sum(flow)",
-                         flow.mean   = "mean(flow)",
-                         flow.median = "stats::median(flow)",
-                         flow.sd     = "sd(flow)")
-  d
+  dt$desc <- as.factor(dt$desc)
+  dt$flow.dir <- as.factor(dt$flow.dir)
+
+  # due to NSE notes in R CMD check
+  delt <- flow <- flow.dir <- kper <- kstp <- pertim <- totim <- NULL
+
+  dt[, list(delt        = utils::head(delt, 1),
+            pertim      = utils::head(pertim, 1),
+            totim       = utils::head(totim, 1),
+            count       = length(flow),
+            flow.sum    = sum(flow),
+            flow.mean   = mean(flow),
+            flow.median = stats::median(flow),
+            flow.sd     = stats::sd(flow)),
+    by=list(desc, kper, kstp, flow.dir, id)]
 }
