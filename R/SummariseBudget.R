@@ -61,13 +61,12 @@ SummariseBudget <- function(budget, desc=NULL, id=NULL) {
     checkmate::assertFileExists(budget)
     budget <- ReadModflowBinary(budget, "flow")
   }
-  checkmate::assertCharacter(desc, any.missing=FALSE, min.len=1, unique=TRUE, null.ok=TRUE)
+  checkmate::assertCharacter(desc, any.missing=FALSE, min.len=1,
+                             unique=TRUE, null.ok=TRUE)
   checkmate::assertString(id, null.ok=TRUE)
 
   budget.desc <- vapply(budget, function(i) i$desc, "")
-  if (is.null(desc)) {
-    desc <- unique(budget.desc)
-  } else {
+  if (!is.null(desc)) {
     is <- desc %in% budget.desc
     if (all(!is))
       stop("data type(s) not found in budget")
@@ -86,19 +85,14 @@ SummariseBudget <- function(budget, desc=NULL, id=NULL) {
                     paste(paste0("\"", x, "\""), collapse=", ")))
   }
   budget <- budget[is]
-  desc <- vapply(budget, function(i) i$desc, "")
 
-  dt <- data.table::rbindlist(lapply(desc, function(i) {
-    data.table::rbindlist(lapply(budget[desc == i], function(x) {
-      d <- data.frame(desc=x$desc, kper=x$kper, kstp=x$kstp, id=NA,
-                      flow=x$d[, "flow"], delt=x$delt,
-                      pertim=x$pertim, totim=x$totim,
-                      stringsAsFactors=FALSE)
-      d$id <- if (!is.null(id) && id %in% colnames(x$d)) x$d[, id] else NA
-      d$flow.dir <- "in"
-      d$flow.dir[d$flow < 0] <- "out"
-      d
-    }))
+  dt <- data.table::rbindlist(lapply(budget, function(x) {
+    d <- data.table::data.table(desc=x$desc, kper=x$kper, kstp=x$kstp, id=NA,
+                                flow=x$d[, "flow"], delt=x$delt,
+                                pertim=x$pertim, totim=x$totim, flow.dir="in")
+    if (!is.null(id) && id %in% colnames(x$d)) d$id <- x$d[, id]
+    d$flow.dir[d$flow < 0] <- "out"
+    d
   }))
   dt$desc <- as.factor(dt$desc)
   dt$flow.dir <- as.factor(dt$flow.dir)
@@ -114,5 +108,5 @@ SummariseBudget <- function(budget, desc=NULL, id=NULL) {
             flow.mean   = mean(flow),
             flow.median = stats::median(flow),
             flow.sd     = stats::sd(flow)),
-    by=list(desc, kper, kstp, flow.dir, id)]
+     by=list(desc, kper, kstp, flow.dir, id)]
 }
