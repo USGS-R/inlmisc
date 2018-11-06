@@ -1,5 +1,9 @@
 # inlmisc 0.4.4
 
+- In `SummariseBudget` function, improve memory management.
+
+- Change package imports by adding **data.table** and removing **dplyr**.
+
 - Add `SetHinge` function, used to specify a hinge location in a color palette.
 
 - In `PrintTable` function: `d` argument can be of class 'matrix'; and

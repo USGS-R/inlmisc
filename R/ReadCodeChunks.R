@@ -25,6 +25,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' file <- system.file("misc", "knitr-markdown.Rmd", package = "inlmisc")
 #' chunks <- ReadCodeChunks(file)
 #'
@@ -33,6 +34,7 @@
 #' chunks[["named-chunk-2"]]
 #'
 #' eval(parse(text = unlist(chunks[c("unnamed-chunk-3", "named-chunk-4")])))
+#' }
 #'
 
 ReadCodeChunks <- function(path) {
