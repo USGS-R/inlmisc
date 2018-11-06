@@ -89,24 +89,32 @@ SummariseBudget <- function(budget, desc=NULL, id=NULL) {
   dt <- data.table::rbindlist(lapply(budget, function(x) {
     d <- data.table::data.table(desc=x$desc, kper=x$kper, kstp=x$kstp, id=NA,
                                 flow=x$d[, "flow"], delt=x$delt,
-                                pertim=x$pertim, totim=x$totim, flow.dir="in")
+                                pertim=x$pertim, totim=x$totim)
     if (!is.null(id) && id %in% colnames(x$d)) d$id <- x$d[, id]
-    d$flow.dir[d$flow < 0] <- "out"
     d
   }))
   dt$desc <- as.factor(dt$desc)
-  dt$flow.dir <- as.factor(dt$flow.dir)
+  dt$flow.dir <- as.character(NA)
 
   # due to NSE notes in R CMD check
   delt <- flow <- flow.dir <- kper <- kstp <- pertim <- totim <- NULL
 
-  dt[, list(delt        = utils::head(delt, 1),
-            pertim      = utils::head(pertim, 1),
-            totim       = utils::head(totim, 1),
-            count       = length(flow),
-            flow.sum    = sum(flow),
-            flow.mean   = mean(flow),
-            flow.median = stats::median(flow),
-            flow.sd     = stats::sd(flow)),
-     by=list(desc, kper, kstp, flow.dir, id)]
+  dt_summary <- data.table::rbindlist(lapply(c("in", "out"), function(i) {
+    if (i == "in")
+      dt$flow[dt$flow < 0] <- 0
+    else
+      dt$flow[dt$flow > 0] <- 0
+    dt[, list(delt        = utils::head(delt, 1),
+              pertim      = utils::head(pertim, 1),
+              totim       = utils::head(totim, 1),
+              count       = length(flow),
+              flow.sum    = sum(flow),
+              flow.mean   = mean(flow),
+              flow.median = stats::median(flow),
+              flow.sd     = stats::sd(flow),
+              flow.dir    = i),
+       by=list(desc, kper, kstp, id)]
+  }))
+  dt_summary$flow.dir <- as.factor(dt_summary$flow.dir)
+  dt_summary
 }
