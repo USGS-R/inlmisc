@@ -39,3 +39,9 @@ Open the *../../R/GetColors.R* file and specify the width in inches.
 ```
 
 Note that a PDF viewer is currently used to determine the layout width.
+
+## Permissions
+
+* Thomas Dewez (SRON) granted permission to add his color schemes on October 17, 2018.
+
+* Paul Tol (SRON) granted permission to add his color schemes on October 17, 2018.

@@ -206,7 +206,11 @@ Dewez, Thomas, 2004, Variations on a DEM palette, accessed October 15, 2018 at
   doi:\href{https://doi.org/10.1002/2013EO450001}{10.1002/2013EO450001}
 }
 \seealso{
-\code{\link{SetHinge}}, \code{\link[grDevices]{col2rgb}}
+\code{\link{SetHinge}} function to set the hinge location in
+  a color palette derived from one or two color schemes.
+
+  \code{\link[grDevices]{col2rgb}} function to express palette
+  colors represented in the hexadecimal format as RGB triplets (R, G, B).
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

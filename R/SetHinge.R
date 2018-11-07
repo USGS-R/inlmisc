@@ -3,14 +3,14 @@
 #' The \emph{hinge} indicates a dramatic color change in a palette
 #' that is typically located at the midpoint of the data range.
 #' An asymmetrical data range can result in an undesired hinge location,
-#' where the location does not necessarily coincide with the break-point in the user's data.
-#' This function is used to specify a hinge location that is appropriate for your data.
+#' a location that does not necessarily coincide with the break-point in the user's data.
+#' This function can be used to specify a hinge location that is appropriate for your data.
 #'
 #' @param x 'numeric' object that can be passed to the \code{\link{range}}
 #'   function with \code{NA}'s removed.
-#'   That is, the user's data range (such as, at sea-level).
+#'   The user's data range.
 #' @param hinge 'numeric' number.
-#'   Hinge value in data units.
+#'   Hinge value (such as, at sea-level) in data units.
 #' @param scheme 'character' vector of length 1 or 2, value is recycled as necessary.
 #'   Name of color scheme(s).
 #'   The color palette is derived from one or two color schemes.
@@ -29,7 +29,7 @@
 #'   Values applied separately on either side of the hinge.
 #' @param stops 'numeric' vector of length 2.
 #'   Color stops defined by interval endpoints (between 0 and 1)
-#'   and used to select a subset of the color palette.
+#'   and used to select a subset of the color palette(s).
 #' @param allow_bias 'logical' flag.
 #'   Whether to allow bias in the color spacing.
 #'
@@ -181,7 +181,7 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL, reverse=FALSE,
   s1 <- c(stp[1] + adj[1], ran - buf[1])
   s2 <- c(1 - ran + buf[2], 1 - stp[2] - adj[2])
 
-  if (s1[1] >= s1[2] | s2[1] >= s2[2])
+  if (s1[1] >= s1[2] || s2[1] >= s2[2])
     stop("problem with color stops and (or) buffer values")
 
   FUN <- function(...) {

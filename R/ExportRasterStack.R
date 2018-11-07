@@ -60,12 +60,10 @@ ExportRasterStack <- function(rs, path, zip="", col=NULL) {
 
   # check arguments
   stopifnot(inherits(rs, c("RasterStack", "RasterBrick")))
-  checkmate::assertDirectoryExists(path)
+  checkmate::assertString(path)
   checkmate::assertString(zip)
   if (zip != "") checkmate::assertFileExists(zip)
   checkmate::assertCharacter(col, null.ok=TRUE)
-
-  if (is.null(col)) col <- GetColors(255, stops=c(0.3, 0.9))
 
   dir.create(path, showWarnings=FALSE, recursive=TRUE)
   dir.create(path.csv <- file.path(path, "csv"), showWarnings=FALSE)
@@ -73,6 +71,8 @@ ExportRasterStack <- function(rs, path, zip="", col=NULL) {
   dir.create(path.tif <- file.path(path, "tif"), showWarnings=FALSE)
   dir.create(path.rda <- file.path(path, "rda"), showWarnings=FALSE)
   dir.create(path.kml <- file.path(path, "kml"), showWarnings=FALSE)
+
+  if (is.null(col)) col <- GetColors(255, stops=c(0.3, 0.9))
 
   n <- 0L
   for (i in names(rs)) {

@@ -7,8 +7,8 @@ PKGSRC  := $(shell basename `pwd`)
 all: docs install check
 
 docs:
-	R -q -e 'devtools::document()';\
-	R -q -e 'devtools::clean_dll()';\
+	R -q -e 'Rd2roxygen::roxygen_and_build('\''.'\'', build=FALSE, reformat=FALSE)';\
+	R -q -e 'pkgbuild::clean_dll()';\
 
 build:
 	cd ..;\

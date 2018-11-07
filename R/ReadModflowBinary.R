@@ -67,9 +67,9 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
   endian <- match.arg(endian)
   checkmate::assertFlag(rm.totim.0)
 
-  ans <- try(.ReadBinary(path, data.type, endian, nbytes=4), silent=TRUE)
+  ans <- try(.ReadBinary(path, data.type, endian, nbytes=4L), silent=TRUE)
   if (inherits(ans, "try-error"))
-    ans <- .ReadBinary(path, data.type, endian, nbytes=8)
+    ans <- .ReadBinary(path, data.type, endian, nbytes=8L)
   if (rm.totim.0)
     ans <- ans[vapply(ans, function(i) i$totim, 0) != 0]
   ans
@@ -81,7 +81,7 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
   checkmate::assertFileExists(path)
   checkmate::assertString(data.type)
   checkmate::assertString(endian)
-  stopifnot(nbytes %in% c(4, 8))
+  stopifnot(nbytes %in% c(4L, 8L))
 
   con <- file(path, open="rb", encoding="bytes")
   on.exit(close(con, type="rb"))
@@ -136,33 +136,33 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
                     "wells")
   lst <- list()
   repeat {
-    kstp <- readBin(con, "integer", n=1, size=4, endian=endian)
+    kstp <- readBin(con, "integer", n=1L, size=4L, endian=endian)
     if (length(kstp) == 0) break
-    kper <- readBin(con, "integer", n=1, size=4, endian=endian)
+    kper <- readBin(con, "integer", n=1L, size=4L, endian=endian)
 
     if (data.type == "array") {
-      pertim <- readBin(con, "numeric", n=1, size=nbytes, endian=endian)
-      totim  <- readBin(con, "numeric", n=1, size=nbytes, endian=endian)
-      desc   <- readBin(readBin(con, "raw", n=16, size=1, endian=endian),
-                        "character", n=1, endian=endian)
+      pertim <- readBin(con, "numeric", n=1L, size=nbytes, endian=endian)
+      totim  <- readBin(con, "numeric", n=1L, size=nbytes, endian=endian)
+      desc   <- readBin(readBin(con, "raw", n=16L, size=1L, endian=endian),
+                        "character", n=1L, endian=endian)
       desc <- .TidyDescription(desc)
       if (!desc %in% valid.desc) break
-      ncol  <- readBin(con, "integer", n=1, size=4, endian=endian)
-      nrow  <- readBin(con, "integer", n=1, size=4, endian=endian)
-      layer <- readBin(con, "integer", n=1, size=4, endian=endian)
+      ncol  <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+      nrow  <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+      layer <- readBin(con, "integer", n=1L, size=4L, endian=endian)
       v     <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
       d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
       lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
                                      layer=layer, pertim=pertim, totim=totim)
 
     } else if (data.type == "flow") {
-      desc <- readBin(readBin(con, "raw", n=16, size=1, endian=endian),
-                      "character", n=1, endian=endian)
+      desc <- readBin(readBin(con, "raw", n=16L, size=1L, endian=endian),
+                      "character", n=1L, endian=endian)
       desc <- .TidyDescription(desc)
       if (!desc %in% valid.desc) break
-      ncol <- readBin(con, "integer", n=1, size=4, endian=endian)
-      nrow <- readBin(con, "integer", n=1, size=4, endian=endian)
-      nlay <- readBin(con, "integer", n=1, size=4, endian=endian)
+      ncol <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+      nrow <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+      nlay <- readBin(con, "integer", n=1L, size=4L, endian=endian)
 
       if (nlay > 0) {
         x <- .Read3dArray(con, nrow, ncol, nlay, nbytes, endian)
@@ -173,26 +173,25 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
 
       } else {  # compact form is used
         nlay <- abs(nlay)
-        itype  <- readBin(con, "integer", n=1, size=4, endian=endian)
-        delt   <- readBin(con, "numeric", n=1, size=nbytes, endian=endian)
-        pertim <- readBin(con, "numeric", n=1, size=nbytes, endian=endian)
-        totim  <- readBin(con, "numeric", n=1, size=nbytes, endian=endian)
+        itype  <- readBin(con, "integer", n=1L, size=4L, endian=endian)
+        delt   <- readBin(con, "numeric", n=1L, size=nbytes, endian=endian)
+        pertim <- readBin(con, "numeric", n=1L, size=nbytes, endian=endian)
+        totim  <- readBin(con, "numeric", n=1L, size=nbytes, endian=endian)
 
-        if (itype == 5)
-          nval <- readBin(con, "integer", n=1, size=4, endian=endian)
+        if (itype == 5L)
+          nval <- readBin(con, "integer", n=1L, size=4L, endian=endian)
         else
           nval <- 1L
         if (nval > 100) stop("more than one-hundred varaiables for each cell")
         if (nval > 1) {
-          ctmp <- readBin(readBin(con, "raw", n=16, size=1, endian=endian),
-                          "character", n=nval - 1, endian=endian)
+          ctmp <- readBin(readBin(con, "raw", n=16L, size=1L, endian=endian),
+                          "character", n=nval - 1L, endian=endian)
           ctmp <- .TidyDescription(ctmp)
         } else {
           ctmp <- NULL
         }
 
-        if (itype %in% c(0, 1)) {
-          nvalues <- ncol * nrow * nlay
+        if (itype %in% c(0L, 1L)) {
           d <- .Read3dArray(con, nrow, ncol, nlay, nbytes, endian)
           for (i in seq_along(d)) {
             lst[[length(lst) + 1]] <- list(d=d[[i]], kstp=kstp, kper=kper,
@@ -200,46 +199,51 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
                                            pertim=pertim, totim=totim)
           }
 
-        } else if (itype %in% c(2, 5)) {
-            nlist <- readBin(con, "integer", n=1, size=4, endian=endian)
+        } else if (itype %in% c(2L, 5L)) {
+            nlist <- readBin(con, "integer", n=1L, size=4L, endian=endian)
             if (nlist > (nrow * ncol * nlay))
               stop("large number of cells for which values will be stored")
             if (nlist > 0) {
-              d <- matrix(0, nrow=nlist, ncol=nval + 4)
+              d <- matrix(0, nrow=nlist, ncol=nval + 4L)
               colnames(d) <- make.names(c("icell", "layer", "row", "column", "flow", ctmp),
                                         unique=TRUE)
               for (i in seq_len(nlist)) {
-                d[i, 1] <- readBin(con, "integer", n=1, size=4, endian=endian)
+                d[i, 1] <- readBin(con, "integer", n=1L, size=4L, endian=endian)
                 d[i, seq_len(nval) + 4] <- readBin(con, "numeric", n=nval,
                                                    size=nbytes, endian=endian)
               }
               nrc <- nrow * ncol
-              d[, "layer"] <- as.integer((d[, "icell"] - 1) / nrc + 1)
-              d[, "row"]  <- as.integer(((d[, "icell"] - (d[, "layer"] - 1) * nrc) - 1) / ncol + 1)
-              d[, "column"] <- as.integer(d[, "icell"] - (d[, "layer"] - 1) * nrc - (d[, "row"] - 1) * ncol)
+              d[, "layer"] <- as.integer((d[, "icell"] - 1L) / nrc + 1L)
+              d[, "row"]  <- as.integer(((d[, "icell"] - (d[, "layer"] - 1L) * nrc)
+                                         - 1L) / ncol + 1L)
+              d[, "column"] <- as.integer(d[, "icell"] - (d[, "layer"] - 1L)
+                                          * nrc - (d[, "row"] - 1L) * ncol)
               lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
                                              delt=delt, pertim=pertim, totim=totim)
             }
 
-        } else if (itype == 3) {
-          layers <- readBin(con, "integer", n=nrow * ncol, size=4, endian=endian)
+        } else if (itype == 3L) {
+          layers <- readBin(con, "integer", n=nrow * ncol, size=4L, endian=endian)
           values <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
           for (i in sort(unique(layers))) {
             v <- values[layers == i]
             d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
             lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                           layer=i, delt=delt, pertim=pertim, totim=totim)
+                                           layer=i, delt=delt, pertim=pertim,
+                                           totim=totim)
           }
 
-        } else if (itype == 4) {
+        } else if (itype == 4L) {
           v <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
           d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
           lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                         layer=1, delt=delt, pertim=pertim, totim=totim)
+                                         layer=1L, delt=delt, pertim=pertim,
+                                         totim=totim)
           d[, ] <- 0
           for (i in seq_len(nlay)[-1]) {
             lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                           layer=i, delt=delt, pertim=pertim, totim=totim)
+                                           layer=i, delt=delt, pertim=pertim,
+                                           totim=totim)
           }
 
         } else {

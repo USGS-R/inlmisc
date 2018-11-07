@@ -20,7 +20,7 @@ Name of auxiliary variable, a variable of additional values associated with each
 saved using the \emph{\bold{"AUXILIARY"}} output option.}
 }
 \value{
-Returns a 'data.frame' with the following variables:
+Returns a 'data.table' with the following variables:
   \describe{
     \item{desc}{description of data type, such as "wells".}
     \item{kper}{stress period}

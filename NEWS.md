@@ -1,4 +1,10 @@
-# inlmisc 0.4.3.9000
+# inlmisc 0.4.4
+
+- Add `BuildVignettes` function, used to build package vignettes.
+
+- In `SummariseBudget` function, improve memory management.
+
+- Change package imports by adding **data.table** and removing **dplyr**.
 
 - Add `SetHinge` function, used to specify a hinge location in a color palette.
 
