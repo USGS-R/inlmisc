@@ -1,5 +1,7 @@
 # inlmisc 0.4.4
 
+- Add `BuildVignettes` function, used to build package vignettes.
+
 - In `SummariseBudget` function, improve memory management.
 
 - Change package imports by adding **data.table** and removing **dplyr**.
