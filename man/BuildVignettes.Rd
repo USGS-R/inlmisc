@@ -14,10 +14,11 @@ Package path, defaults to the working directory.}
 Whether to supress most output.}
 
 \item{gs_quality}{'character' string.
-Quailty to use when compacting PDF files, see \code{\link[tools]{compactPDF}} function for details.}
+Quailty to use when compacting PDF files,
+see \code{\link[tools]{compactPDF}} function for details.}
 }
 \description{
-Builds package vignettes using the same algorithm that \code{R CMD build} does.
+Build package vignettes from their sources.
 }
 \examples{
 \dontrun{

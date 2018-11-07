@@ -1,13 +1,14 @@
 #' Build Package Vignettes
 #'
-#' Builds package vignettes using the same algorithm that \code{R CMD build} does.
+#' Build package vignettes from their sources.
 #'
 #' @param pkg 'character' string.
 #'   Package path, defaults to the working directory.
 #' @param quiet 'logical' flag.
 #'   Whether to supress most output.
 #' @param gs_quality 'character' string.
-#'   Quailty to use when compacting PDF files, see \code{\link[tools]{compactPDF}} function for details.
+#'   Quailty to use when compacting PDF files,
+#'   see \code{\link[tools]{compactPDF}} function for details.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
