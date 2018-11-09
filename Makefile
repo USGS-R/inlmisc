@@ -7,6 +7,7 @@ PKGSRC  := $(shell basename `pwd`)
 all: docs install check
 
 docs:
+	R -q -e 'pkgload::load_all()';\
 	R -q -e 'roxygen2::roxygenize()';\
 	R -q -e 'pkgbuild::clean_dll()';\
 

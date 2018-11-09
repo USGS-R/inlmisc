@@ -1,6 +1,6 @@
 #' Build Package Vignettes
 #'
-#' Build package vignettes from their sources and place in the \code{/inst/doc} folder.
+#' Build package vignettes from their sources and place in the \code{inst/doc/} folder.
 #'
 #' @param pkg 'character' string.
 #'   Package path, by default the \link[=getwd]{working directory}.

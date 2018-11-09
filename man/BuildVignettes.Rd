@@ -22,7 +22,7 @@ Quality of compacted PDF files,
 see \code{\link[tools]{compactPDF}} function for details.}
 }
 \description{
-Build package vignettes from their sources and place in the \code{/inst/doc} folder.
+Build package vignettes from their sources and place in the \code{inst/doc/} folder.
 }
 \examples{
 \dontrun{
