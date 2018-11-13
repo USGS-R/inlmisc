@@ -22,12 +22,13 @@ and placed in the *cpt* folder.
 Rebuild the **inlmisc** package to reflect changes in the `schemes` object.
 
 Create a summary table for color schemes and save graphics in the
-*../../man/figures/table.(pdf|svg)* files
-(requires access to [inkscape](https://inkscape.org/) and
+*../../man/figures/table.(pdf|svg)* files (requires access to
+[pdfcrop](http://pdfcrop.sourceforge.net/),
+[inkscape](https://inkscape.org/), and
 [svgcleaner](https://github.com/RazrFalcon/svgcleaner) from the command line).
 
 ```r
-MakeTable()
+MakeTables()
 ```
 
 Edit the command used to insert the standalone PDF version of the table
@@ -39,9 +40,3 @@ Open the *../../R/GetColors.R* file and specify the width in inches.
 ```
 
 Note that a PDF viewer is currently used to determine the layout width.
-
-## Permissions
-
-* Thomas Dewez (SRON) granted permission to add his color schemes on October 17, 2018.
-
-* Paul Tol (SRON) granted permission to add his color schemes on October 17, 2018.

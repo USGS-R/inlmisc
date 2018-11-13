@@ -3,11 +3,9 @@ MakeSysdata <- function() {
   options(stringsAsFactors=FALSE)
   dir.create(file.path(getwd(), "cpt"), showWarnings=FALSE)
 
-  cite <- c("Dewez"  = "Thomas Dewez (2004) grants permission to distribute with attribution.",
-            "Tol"    = "Paul Tol (2018) grants permission to distribute with attribution.",
-            "Wessel" = "Wessel and others (2013) released under an open license.")
+  schemes <- .GetCptGmt()
 
-  schemes <- .GetCptGmt(cite["Wessel"])
+  # Thomas Dewez (SRON) granted permission to add his color schemes on October 17, 2018.
 
   schemes[["DEM screen"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -20,11 +18,30 @@ MakeSysdata <- function() {
                       800, #FFFFFF
                     "),
     type = "Sequential",
-    cite = cite["Dewez"],
+    cite = "Thomas Dewez (2004)",
     nmax = Inf,
     back = "#FFFFFF",
     fore = "#008435",
     nan  = "#008435"
+  )
+
+  schemes[["DEM print"]] <- list(
+    data = read.csv(strip.white=TRUE, text="
+                    value, color
+                        0, #336600
+                      100, #81C31F
+                      200, #FFFFCC
+                      400, #F4BD45
+                      500, #66330C
+                      600, #663300
+                      800, #FFFFFF
+                    "),
+    type = "Sequential",
+    cite = "Thomas Dewez (2004)",
+    nmax = Inf,
+    back = "#336600",
+    fore = "#FFFFFF",
+    nan  = "#336600"
   )
 
   schemes[["DEM poster"]] <- list(
@@ -40,12 +57,14 @@ MakeSysdata <- function() {
                      4900, #FFFFFF
                     "),
     type = "Sequential",
-    cite = cite["Dewez"],
+    cite = "Thomas Dewez (2004)",
     nmax = Inf,
     back = "#99CCFF",
     fore = "#99CCFF",
     nan  = "#99CCFF"
   )
+
+  # Paul Tol (SRON) granted permission to add his color schemes on October 17, 2018.
 
   schemes[["bright"]] <- list(
     data = read.csv(strip.white=TRUE, text="
@@ -60,7 +79,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("yellow", "red", "green"),
     type = "Qualitative",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = 7
   )
 
@@ -75,7 +94,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("white", "yellow", "red", "blue", "black"),
     type = "Qualitative",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = 5
   )
 
@@ -92,7 +111,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("grey", "orange", "magenta", "blue"),
     type = "Qualitative",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = 7
   )
 
@@ -111,7 +130,7 @@ MakeSysdata <- function() {
                     "),
     gray = c("sand", "teal", "purple", "green", "indigo"),
     type = "Qualitative",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = 9,
     nas  = "#DDDDDD"
   )
@@ -127,7 +146,7 @@ MakeSysdata <- function() {
                     pale grey,   #DDDDDD
                     "),
     type = "Qualitative",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = 6
   )
 
@@ -142,7 +161,7 @@ MakeSysdata <- function() {
                     dark grey,   #555555
                     "),
     type = "Qualitative",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = 6
   )
 
@@ -160,7 +179,7 @@ MakeSysdata <- function() {
                     pale grey,    #DDDDDD
                     "),
     type = "Qualitative",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = 9
   )
 
@@ -183,7 +202,7 @@ MakeSysdata <- function() {
                     urban and built,             #BB0011
                     "),
     type = "Qualitative",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = 14
   )
 
@@ -203,7 +222,7 @@ MakeSysdata <- function() {
                     #A50026
                     "),
     type = "Diverging",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = Inf,
     nan  = "#FFFFFF"
   )
@@ -222,7 +241,7 @@ MakeSysdata <- function() {
                     #B2182B
                     "),
     type = "Diverging",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -241,7 +260,7 @@ MakeSysdata <- function() {
                     #1B7837
                     "),
     type = "Diverging",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = Inf,
     nan  = "#FFEE99"
   )
@@ -260,7 +279,7 @@ MakeSysdata <- function() {
                     #662506
                     "),
     type = "Sequential",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = Inf,
     nan  = "#888888"
   )
@@ -293,7 +312,7 @@ MakeSysdata <- function() {
                     #46353A
                     "),
     type = "Sequential",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = Inf,
     nan  = "#999999"
   )
@@ -332,7 +351,7 @@ MakeSysdata <- function() {
                       29, #42150A
                     "),
     type = "Sequential",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = 23,
     nan  = "#777777"
   )
@@ -376,7 +395,7 @@ MakeSysdata <- function() {
                     #521A13
                     "),
     type = "Sequential",
-    cite = cite["Tol"],
+    cite = "Paul Tol (2018)",
     nmax = Inf,
     nan  = "#666666"
   )
@@ -484,8 +503,10 @@ MakeSysdata <- function() {
 }
 
 
-.GetCptGmt <- function(cite) {
-  checkmate::assertString(cite)
+.GetCptGmt <- function() {
+
+  # Generic Mapping Tools (GMT) released under an open license.
+  cite <- "Wessel and others (2013)"
 
   # code adapted from stackoverflow answer by lukeA, accessed October 27, 2018
   # at https://stackoverflow.com/questions/25485216
@@ -501,10 +522,6 @@ MakeSysdata <- function() {
   host <- "raw.githubusercontent.com"
   file <- sprintf("https://%s/%s/%s/master/%s", host, owner, repo, path)
 
-  nm <- tools::file_path_sans_ext(basename(file))
-  exclude <- c("cool", "grayC", "polar", "red2green", "seis")
-  file <- file[!nm %in% exclude]
-
   destfile <- file.path(getwd(), "cpt", basename(file))
   for (i in seq_along(file)) {
     utils::download.file(file[i], destfile[i], quiet=TRUE)
@@ -512,7 +529,8 @@ MakeSysdata <- function() {
 
   nm <- tools::file_path_sans_ext(basename(file))
   type <- rep("Sequential", length(nm))
-  div <- c("berlin", "broc", "cork", "lisbon", "oleron", "roma", "split", "tofino", "vik")
+  div <- c("berlin", "broc", "cork", "lisbon", "oleron", "polar", "red2green",
+           "roma", "split", "tofino", "vik")
   type[nm %in% div] <- "Diverging"
 
   cpt <- lapply(seq_along(destfile), function(i) {
@@ -562,92 +580,106 @@ MakeSysdata <- function() {
 ################################################################################
 
 
-MakeTable <- function() {
+MakeTables <- function() {
+
   load("../../R/sysdata.rda")
 
-  m <- do.call("rbind", lapply(seq_along(schemes), function(i) {
-
-    s <- schemes[[i]]
-
-    w <- 100; h <- 10
-
-    n <- ifelse(is.finite(s$nmax), s$nmax, w - 1)
-    pal <- inlmisc::GetColors(n, scheme=names(schemes)[i])
-
-    fmt <- "%s_%03d.eps"
-    f1 <- sprintf(fmt, "g1", i)
-    f2 <- sprintf(fmt, "g2", i)
-    f3 <- sprintf(fmt, "g3", i)
-    f4 <- sprintf(fmt, "g4", i)
-
-    fmt <- "\\adjustimage{width=%spx, height=%spx, valign=m}{%s}"
-    g1 <- sprintf(fmt, w, h, f1)
-    g2 <- sprintf(fmt, h, h, f2)
-    g3 <- sprintf(fmt, h, h, f3)
-    g4 <- sprintf(fmt, h, h, f4)
-
-    px_to_in <- 1 / 72
-
-    grDevices::postscript(f1, onefile=FALSE,
-                          width=w * px_to_in, height=h * px_to_in,
-                          horizontal=FALSE, pointsize=10, paper="special")
-    inlmisc:::plot.inlpal(pal, label=FALSE)
-    dev.off()
-
-    if (is.null(s$nan))  g2 <- "--" else .PlotBox(f2, s$nan,  h * px_to_in)
-    if (is.null(s$back)) g3 <- "--" else .PlotBox(f3, s$back, h * px_to_in)
-    if (is.null(s$fore)) g4 <- "--" else .PlotBox(f4, s$fore, h * px_to_in)
-
-    nmax <- s$nmax
-    nmax[nmax == Inf] <- "$\\infty$"
-    if (!is.null(s$gray))
-      nmax <- sprintf("%s (%s)", nmax, length(s$gray))
-
-    c("Type"    = s$type,
-      "Scheme"  = names(schemes)[i],
-      "Palette" = g1,
-      "Max n"   = nmax,
-      "N"       = g2,
-      "B"       = g3,
-      "F"       = g4)
-  }))
-  m[duplicated(m[, "Type"]), "Type"] <- ""
-
   cite <- as.factor(vapply(schemes, function(x) x$cite, ""))
-  m[, "Scheme"] <- sprintf("\\footnotemark[%d] %s", as.integer(cite), m[, "Scheme"])
-  x <- sprintf("\\footnotemark[%d] %s", seq_along(levels(cite)), levels(cite))
-  footnotes <- paste(x, collapse="\\\\")
-
-  sink("table.tex")
-  cat("\\documentclass[varwidth=\\maxdimen, border=0pt]{standalone}",
-      "\\usepackage[T1]{fontenc}",
-      "\\usepackage{mathptmx}",
-      "\\usepackage{amsfonts}",
-      "\\usepackage{textcomp}",
-      "\\renewcommand{\\sfdefault}{lmss}",
-      "\\renewcommand{\\ttdefault}{lmtt}",
-      "\\usepackage{booktabs}",
-      "\\usepackage{makecell}",
-      "\\usepackage{adjustbox}",
-      "\\begin{document}", sep="\n")
-  inlmisc::PrintTable(m, align=c("l", "l", "c", "c", "c", "c", "c"),
-                      footnotes=footnotes)
-  cat("\\end{document}\n")
-  sink()
-
-  tools::texi2pdf("table.tex", clean=TRUE)
-
-  arg <- c("--without-gui", "--file=table.pdf", "--export-plain-svg=table.svg")
-  system2("inkscape", args=arg, stdout=FALSE, stderr=FALSE)
-
-  tools::compactPDF("table.pdf", gs_quality="printer")
-  system2("svgcleaner", args=c("table.svg", "table.svg"), stdout=FALSE, stderr=FALSE)
 
   if (dir.exists("../../man"))
-    dir.create(path <- "../../man/figures/", showWarnings=FALSE)
-  stopifnot(file.copy(c("table.pdf", "table.svg"), path, overwrite=TRUE))
+    dir.create(path <- "../../man/figures", showWarnings=FALSE)
 
-  .Clean()
+  for (no in seq_along(levels(cite))) {
+
+    idxs <- which(cite == levels(cite)[no])
+
+    m <- do.call("rbind", lapply(idxs, function(i) {
+
+      s <- schemes[[i]]
+
+      w <- 100; h <- 10
+
+      n <- ifelse(is.finite(s$nmax), s$nmax, w - 1)
+      pal <- inlmisc::GetColors(n, scheme=names(schemes)[i])
+
+      fmt <- "%s_%03d.eps"
+      f1 <- sprintf(fmt, "g1", i)
+      f2 <- sprintf(fmt, "g2", i)
+      f3 <- sprintf(fmt, "g3", i)
+      f4 <- sprintf(fmt, "g4", i)
+
+      fmt <- "\\adjustimage{width=%spx, height=%spx, valign=m}{%s}"
+      g1 <- sprintf(fmt, w, h, f1)
+      g2 <- sprintf(fmt, h, h, f2)
+      g3 <- sprintf(fmt, h, h, f3)
+      g4 <- sprintf(fmt, h, h, f4)
+
+      px_to_in <- 1 / 72
+
+      grDevices::postscript(f1, onefile=FALSE,
+                            width=w * px_to_in, height=h * px_to_in,
+                            horizontal=FALSE, pointsize=10, paper="special")
+      inlmisc:::plot.inlpal(pal, label=FALSE)
+      dev.off()
+
+      if (is.null(s$nan))  g2 <- "--" else .PlotBox(f2, s$nan,  h * px_to_in)
+      if (is.null(s$back)) g3 <- "--" else .PlotBox(f3, s$back, h * px_to_in)
+      if (is.null(s$fore)) g4 <- "--" else .PlotBox(f4, s$fore, h * px_to_in)
+
+      nmax <- s$nmax
+      nmax[nmax == Inf] <- "$\\infty$"
+      if (!is.null(s$gray))
+        nmax <- sprintf("%s (%s)", nmax, length(s$gray))
+
+      c("Type"    = s$type,
+        "Scheme"  = names(schemes)[i],
+        "Palette" = g1,
+        "Max n"   = nmax,
+        "\\hspace*{0.3ex} N \\hspace{0.3ex}" = g2,
+        "\\hspace*{0.3ex} B \\hspace{0.3ex}" = g3,
+        "\\hspace*{0.3ex} F \\hspace{0.3ex}" = g4)
+    }))
+    m[duplicated(m[, "Type"]), "Type"] <- ""
+
+    title <- sprintf("Color schemes by %s.", levels(cite)[no])
+
+    sink("table.tex")
+    cat("\\documentclass[varwidth=\\maxdimen, border=0pt]{standalone}",
+        "\\usepackage[T1]{fontenc}",
+        "\\usepackage{mathptmx}",
+        "\\usepackage{amsfonts}",
+        "\\usepackage{textcomp}",
+        "\\renewcommand{\\sfdefault}{lmss}",
+        "\\renewcommand{\\ttdefault}{lmtt}",
+        "\\usepackage{booktabs}",
+        "\\usepackage{makecell}",
+        "\\usepackage{adjustbox}",
+        "\\usepackage[skip=3pt, labelsep=period, labelfont=bf]{caption}",
+        sprintf("\\setcounter{table}{%d}", no - 1L),
+        "\\begin{document}", sep="\n")
+    inlmisc::PrintTable(m, align=c("p{1.5cm}", "p{2.5cm}", "c", "c", "c", "c", "c"),
+                        title=title)
+    cat("\\end{document}\n")
+    sink()
+
+    tools::texi2pdf("table.tex", clean=TRUE)
+
+    arg <- c("--margins 1", "--clip", "table.pdf", "table.pdf")
+    system2("pdfcrop", args=arg, stdout=FALSE, stderr=FALSE)
+
+    arg <- c("--without-gui", "--file=table.pdf", "--export-plain-svg=table.svg")
+    system2("inkscape", args=arg, stdout=FALSE, stderr=FALSE)
+
+    tools::compactPDF("table.pdf", gs_quality="printer")
+    system2("svgcleaner", args=c("table.svg", "table.svg"), stdout=FALSE, stderr=FALSE)
+
+    from <- c("table.pdf", "table.svg")
+    to <- file.path(path, sprintf("table%02d.%s", no, tools::file_ext(from)))
+    stopifnot(file.copy(from, to, overwrite=TRUE))
+
+    .Clean()
+  }
+
   invisible()
 }
 
