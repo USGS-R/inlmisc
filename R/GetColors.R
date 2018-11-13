@@ -35,7 +35,7 @@
 #'   Not used
 #'
 #' @details The suggested data type for color schemes and the
-#'   characteristics of generated palettes are given in the table below.
+#'   characteristics of generated palettes are given in the tables below.
 #'   [\bold{Type}: is the type of data being represented,
 #'   either qualitative, diverging, or sequential.
 #'   \bold{Max n}: is the maximum number of colors in a generated palette.
@@ -47,8 +47,14 @@
 #'   \bold{F}: is the foreground color.
 #'   \bold{Abbreviations}: --, not available]
 #'
-#'   \if{html}{\figure{table.svg}{alt="Table: color schemes"}}
-#'   \if{latex}{\figure{table.pdf}{options: width=4.79in}}
+#'   \if{html}{\figure{table01.svg}}
+#'   \if{latex}{\figure{table01.pdf}{options: width=5.13in}}
+#'
+#'   \if{html}{\figure{table02.svg}}
+#'   \if{latex}{\figure{table02.pdf}{options: width=5.13in}}
+#'
+#'   \if{html}{\figure{table03.svg}}
+#'   \if{latex}{\figure{table03.pdf}{options: width=5.13in}}
 #'
 #'   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
 #'   intended to be accessed in their entirety and subset using vector element names.
