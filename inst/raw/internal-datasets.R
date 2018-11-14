@@ -505,8 +505,8 @@ MakeSysdata <- function() {
 
 .GetCptGmt <- function() {
 
-  # Generic Mapping Tools (GMT) released under an open license.
-  cite <- "Wessel and others (2013)"
+  # Generic Mapping Tools (GMT)
+  cite <- "Wessel and others (2013), released under an open license."
 
   # code adapted from stackoverflow answer by lukeA, accessed October 27, 2018
   # at https://stackoverflow.com/questions/25485216
@@ -654,7 +654,7 @@ MakeTables <- function() {
         "\\usepackage{booktabs}",
         "\\usepackage{makecell}",
         "\\usepackage{adjustbox}",
-        "\\usepackage[skip=1pt, labelsep=period, labelfont=bf]{caption}",
+        "\\usepackage[skip=2pt, labelsep=period, labelfont=bf]{caption}",
         sprintf("\\setcounter{table}{%d}", no - 1L),
         "\\begin{document}", sep="\n")
     inlmisc::PrintTable(m, align=c("p{1.5cm}", "p{2.5cm}", "c", "c", "c", "c", "c"),
