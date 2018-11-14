@@ -88,13 +88,13 @@ The suggested data type for color schemes and the
   \bold{Abbreviations}: --, not available]
 
   \if{html}{\figure{table01.svg}}
-  \if{latex}{\figure{table01.pdf}{options: width=5.13in}}
+  \if{latex}{\figure{table01.pdf}{options: width=5.24in}}
 
   \if{html}{\figure{table02.svg}}
-  \if{latex}{\figure{table02.pdf}{options: width=5.13in}}
+  \if{latex}{\figure{table02.pdf}{options: width=5.24in}}
 
   \if{html}{\figure{table03.svg}}
-  \if{latex}{\figure{table03.pdf}{options: width=5.13in}}
+  \if{latex}{\figure{table03.pdf}{options: width=5.24in}}
 
   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
   intended to be accessed in their entirety and subset using vector element names.

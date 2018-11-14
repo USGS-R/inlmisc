@@ -634,7 +634,7 @@ MakeTables <- function() {
       c("Type"    = s$type,
         "Scheme"  = names(schemes)[i],
         "Palette" = g1,
-        "Max n"   = nmax,
+        "\\hspace*{0.3ex} Max n \\hspace{0.3ex}" = nmax,
         "\\hspace*{0.3ex} N \\hspace{0.3ex}" = g2,
         "\\hspace*{0.3ex} B \\hspace{0.3ex}" = g3,
         "\\hspace*{0.3ex} F \\hspace{0.3ex}" = g4)
@@ -654,7 +654,7 @@ MakeTables <- function() {
         "\\usepackage{booktabs}",
         "\\usepackage{makecell}",
         "\\usepackage{adjustbox}",
-        "\\usepackage[skip=3pt, labelsep=period, labelfont=bf]{caption}",
+        "\\usepackage[skip=1pt, labelsep=period, labelfont=bf]{caption}",
         sprintf("\\setcounter{table}{%d}", no - 1L),
         "\\begin{document}", sep="\n")
     inlmisc::PrintTable(m, align=c("p{1.5cm}", "p{2.5cm}", "c", "c", "c", "c", "c"),
