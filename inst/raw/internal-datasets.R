@@ -645,7 +645,7 @@ MakeTables <- function() {
     if (grepl("Wessel", src))
       title <- sprintf("Schemes collected by %s and released under an open license.", src)
     else
-      title <- sprintf("Schemes by %s with permission granted to distribute.", src)
+      title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
 
     sink("table.tex")
     cat("\\documentclass[varwidth=\\maxdimen, border=0pt]{standalone}",
@@ -661,7 +661,7 @@ MakeTables <- function() {
         "\\usepackage[skip=2pt, labelsep=period, labelfont=bf]{caption}",
         sprintf("\\setcounter{table}{%d}", no - 1L),
         "\\begin{document}", sep="\n")
-    inlmisc::PrintTable(m, align=c("p{1.5cm}", "p{2.5cm}", "c", "c", "c", "c", "c"),
+    inlmisc::PrintTable(m, align=c("p{1.8cm}", "p{2.5cm}", "c", "c", "c", "c", "c"),
                         title=title)
     cat("\\end{document}\n")
     sink()
