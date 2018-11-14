@@ -506,7 +506,7 @@ MakeSysdata <- function() {
 .GetCptGmt <- function() {
 
   # Generic Mapping Tools (GMT)
-  cite <- "Wessel and others (2013), released under an open license."
+  cite <- "Wessel and others (2013)"
 
   # code adapted from stackoverflow answer by lukeA, accessed October 27, 2018
   # at https://stackoverflow.com/questions/25485216
@@ -641,7 +641,11 @@ MakeTables <- function() {
     }))
     m[duplicated(m[, "Type"]), "Type"] <- ""
 
-    title <- sprintf("Color schemes by %s.", levels(cite)[no])
+    src <- levels(cite)[no]
+    if (grepl("Wessel", src))
+      title <- sprintf("Schemes collected by %s and released under an open license.", src)
+    else
+      title <- sprintf("Schemes by %s with permission granted to distribute.", src)
 
     sink("table.tex")
     cat("\\documentclass[varwidth=\\maxdimen, border=0pt]{standalone}",
