@@ -505,7 +505,7 @@ MakeSysdata <- function() {
 
 .GetCptGmt <- function() {
 
-  # Generic Mapping Tools (GMT) released under an open license.
+  # Generic Mapping Tools (GMT)
   cite <- "Wessel and others (2013)"
 
   # code adapted from stackoverflow answer by lukeA, accessed October 27, 2018
@@ -634,14 +634,18 @@ MakeTables <- function() {
       c("Type"    = s$type,
         "Scheme"  = names(schemes)[i],
         "Palette" = g1,
-        "Max n"   = nmax,
+        "\\hspace*{0.3ex} Max n \\hspace{0.3ex}" = nmax,
         "\\hspace*{0.3ex} N \\hspace{0.3ex}" = g2,
         "\\hspace*{0.3ex} B \\hspace{0.3ex}" = g3,
         "\\hspace*{0.3ex} F \\hspace{0.3ex}" = g4)
     }))
     m[duplicated(m[, "Type"]), "Type"] <- ""
 
-    title <- sprintf("Color schemes by %s.", levels(cite)[no])
+    src <- levels(cite)[no]
+    if (grepl("Wessel", src))
+      title <- sprintf("Schemes collected by %s and released under an open license.", src)
+    else
+      title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
 
     sink("table.tex")
     cat("\\documentclass[varwidth=\\maxdimen, border=0pt]{standalone}",
@@ -654,10 +658,10 @@ MakeTables <- function() {
         "\\usepackage{booktabs}",
         "\\usepackage{makecell}",
         "\\usepackage{adjustbox}",
-        "\\usepackage[skip=3pt, labelsep=period, labelfont=bf]{caption}",
+        "\\usepackage[skip=2pt, labelsep=period, labelfont=bf]{caption}",
         sprintf("\\setcounter{table}{%d}", no - 1L),
         "\\begin{document}", sep="\n")
-    inlmisc::PrintTable(m, align=c("p{1.5cm}", "p{2.5cm}", "c", "c", "c", "c", "c"),
+    inlmisc::PrintTable(m, align=c("p{1.8cm}", "p{2.5cm}", "c", "c", "c", "c", "c"),
                         title=title)
     cat("\\end{document}\n")
     sink()
