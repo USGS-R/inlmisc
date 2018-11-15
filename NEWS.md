@@ -1,5 +1,9 @@
 # inlmisc 0.4.4.9000
 
+- In `GetRegionOfInterest` function, add `buffer` argument, used to expand region of interest.
+
+# inlmisc 0.4.4
+
 - Add `BuildVignettes` function, used to build package vignettes.
 
 - In `SummariseBudget` function, improve memory management.

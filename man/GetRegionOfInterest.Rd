@@ -4,11 +4,14 @@
 \alias{GetRegionOfInterest}
 \title{Get Region of Interest}
 \usage{
-GetRegionOfInterest(obj)
+GetRegionOfInterest(obj, buffer = 0)
 }
 \arguments{
 \item{obj}{'SpatialPoints*'.
 Spatial points}
+
+\item{buffer}{'numeric' number.
+Buffer distance from convex hull.}
 }
 \value{
 Returns an object of class 'SpatialPolygons'.
@@ -19,9 +22,9 @@ Create a spatial polygon describing the convex hull of a set of spatial points.
 \examples{
 set.seed(123)
 pts <- sp::SpatialPoints(cbind(x = stats::runif(50), y = stats::runif(50)))
-ply <- GetRegionOfInterest(pts)
-sp::plot(pts, col = "red")
-sp::plot(ply, add = TRUE)
+sp::plot(GetRegionOfInterest(pts, buffer = 0.05), lty = 2)
+sp::plot(GetRegionOfInterest(pts), add = TRUE)
+sp::plot(pts, col = "red", add = TRUE)
 
 }
 \seealso{
