@@ -1,6 +1,6 @@
 # inlmisc 0.4.4.9000
 
-- In `GetRegionOfInterest` function, add `buffer` argument, used to expand region of interest.
+- In `GetRegionOfInterest` function, add `width` argument, used to expand region of interest.
 
 # inlmisc 0.4.4
 
