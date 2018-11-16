@@ -7,7 +7,7 @@
 #' @param alpha 'numeric' number.
 #'   Value of alpha, used to implement a generalization of the convex hull
 #'   (Edelsbrunner and others, 1983).
-#'   Requires that the \pkg{alphahull} package is available.
+#'   Requires that the \pkg{alphahull} and \pkg{maptools} packages are available.
 #' @param width 'numeric' number.
 #'   Buffer distance from geometry of convex hull.
 #' @param ...
@@ -36,6 +36,16 @@
 #' sp::plot(GetRegionOfInterest(pts, alpha = 0.5), border = "blue", add = TRUE)
 #' sp::plot(pts, add = TRUE)
 #'
+#' n <- 300
+#' set.seed(321)
+#' theta <- stats::runif(n, 0, 2 * pi)
+#' r <- sqrt(stats::runif(n, 0.25^2, 0.5^2))
+#' x <- cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta))
+#' pts <- sp::SpatialPoints(x)
+#' sp::plot(GetRegionOfInterest(pts, alpha = 0.1, width = 0.05), col = "green")
+#' sp::plot(GetRegionOfInterest(pts, alpha = 0.1), col = "yellow", add = TRUE)
+#' sp::plot(pts, add = TRUE)
+#'
 
 GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
   checkmate::assertClass(obj, "SpatialPoints")
@@ -43,15 +53,15 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
   checkmate::assertNumber(width, finite=TRUE)
 
   coords <- sp::coordinates(obj)
-  if (is.null(alpha))
+  if (is.null(alpha)) {
     pts <- obj[grDevices::chull(coords), ]
-  else
-    pts <- .GeneralizeConvexHull(coords, alpha)
-
-  ply <- sp::Polygons(list(sp::Polygon(pts)), ID=1)
+    ply <- sp::Polygons(list(sp::Polygon(pts)), ID=1)
+  } else {
+    ply <- .GeneralizeConvexHull(coords, alpha)
+  }
   ply <- sp::SpatialPolygons(list(ply), proj4string=raster::crs(obj))
-  ply <- rgeos::gBuffer(ply, width=width, ...)
-  ply
+
+  rgeos::gBuffer(ply, width=width, ...)
 }
 
 
@@ -59,21 +69,38 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
 
 .GeneralizeConvexHull <- function(coords, alpha) {
 
-  if (!requireNamespace("alphahull", quietly=TRUE))
-    stop("alpha-shape computation requires the alphahull package")
+  checkmate::assertMatrix(coords, mode="numeric", any.missing=FALSE,
+                          min.rows=3, ncols=2)
+  checkmate::assertNumber(alpha, lower=0, finite=TRUE)
+
+  for (pkg in c("alphahull", "maptools")) {
+    if (!requireNamespace(pkg, quietly=TRUE))
+      stop(sprintf("alpha-shape computation requires the %s package", pkg))
+  }
 
   # code adapted from RPubs post by Barry Rowlingson,
   # accessed November 15, 2018 at https://rpubs.com/geospacedman/alphasimple
-
   shp <- alphahull::ashape(coords, alpha=alpha)
   el <- cbind(as.character(shp$edges[, "ind1"]), as.character(shp$edges[, "ind2"]))
   gr <- igraph::graph_from_edgelist(el, directed=FALSE)
-  if (!igraph::is.connected(gr))    stop("disconnected polygon")
-  if (any(igraph::degree(gr) != 2)) stop("non-circular polygon")
-  if (igraph::clusters(gr)$no > 1)  stop("multiple polygons")
-  grc <- gr - igraph::E(gr)[1]
-  ends <- names(which(igraph::degree(grc) == 1))
-  path <- igraph::shortest_paths(grc, ends[1], ends[2])$vpath[[1]]
-  idxs <- as.numeric(igraph::V(gr)[path]$name)
-  shp$x[c(idxs, idxs[1]), ]
+  clu <- igraph::components(gr, mode="strong")
+  ply <- lapply(seq_len(clu$no), function(i) {
+    vids <- igraph::groups(clu)[[i]]
+    g <- igraph::induced_subgraph(gr, vids)
+    if (any(igraph::degree(g) != 2)) return(NULL)
+    gcut <- g - igraph::E(g)[1]
+    ends <- names(which(igraph::degree(gcut) == 1))
+    path <- igraph::shortest_paths(gcut, ends[1], ends[2])$vpath[[1]]
+    idxs <- as.integer(igraph::V(g)[path]$name)
+    pts <- shp$x[c(idxs, idxs[1]), ]
+    sp::Polygon(pts)
+  })
+
+  ply <- ply[!(is <- vapply(ply, is.null, TRUE))]
+  if (length(ply) == 0) stop("non-circular polygons")
+  if (any(is)) warning("removed non-circular polygons")
+
+  ply <- sp::Polygons(ply, ID=1)
+  ply <- maptools::checkPolygonsHoles(ply)
+  ply
 }

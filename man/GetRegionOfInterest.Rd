@@ -13,7 +13,7 @@ Spatial points}
 \item{alpha}{'numeric' number.
 Value of alpha, used to implement a generalization of the convex hull
 (Edelsbrunner and others, 1983).
-Requires that the \pkg{alphahull} package is available.}
+Requires that the \pkg{alphahull} and \pkg{maptools} packages are available.}
 
 \item{width}{'numeric' number.
 Buffer distance from geometry of convex hull.}
@@ -32,6 +32,16 @@ pts <- sp::SpatialPoints(cbind(x = stats::runif(50), y = stats::runif(50)))
 sp::plot(GetRegionOfInterest(pts, width = 0.05), border = "red", lty = 2)
 sp::plot(GetRegionOfInterest(pts), border = "red", add = TRUE)
 sp::plot(GetRegionOfInterest(pts, alpha = 0.5), border = "blue", add = TRUE)
+sp::plot(pts, add = TRUE)
+
+n <- 300
+set.seed(321)
+theta <- stats::runif(n, 0, 2 * pi)
+r <- sqrt(stats::runif(n, 0.25^2, 0.5^2))
+x <- cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta))
+pts <- sp::SpatialPoints(x)
+sp::plot(GetRegionOfInterest(pts, alpha = 0.1, width = 0.05), col = "green")
+sp::plot(GetRegionOfInterest(pts, alpha = 0.1), col = "yellow", add = TRUE)
 sp::plot(pts, add = TRUE)
 
 }

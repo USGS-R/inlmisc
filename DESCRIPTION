@@ -39,6 +39,7 @@ Suggests:
     doRNG,
     githubinstall,
     gstat,
+    maptools,
     roxygen2,
     testthat
 License: CC0
