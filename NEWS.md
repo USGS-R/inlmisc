@@ -1,5 +1,7 @@
 # inlmisc 0.4.4.9000
 
+- Remove **httr** from suggested packages.
+
 - In `GetRegionOfInterest` function: add `alpha` and `width` arguments,
   used to compute alpha-shape and expand the region of interest, respectively.
 

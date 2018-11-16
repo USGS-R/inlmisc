@@ -59,9 +59,10 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
 
 .GeneralizeConvexHull <- function(coords, alpha) {
 
-  stopifnot(requireNamespace("alphahull", quietly=TRUE))
+  if (!requireNamespace("alphahull", quietly=TRUE))
+    stop("alpha-shape computation requires the alphahull package")
 
-  # code adapted from RPubs post by  Barry Rowlingson,
+  # code adapted from RPubs post by Barry Rowlingson,
   # accessed November 15, 2018 at https://rpubs.com/geospacedman/alphasimple
 
   shp <- alphahull::ashape(coords, alpha=alpha)

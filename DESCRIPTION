@@ -39,7 +39,6 @@ Suggests:
     doRNG,
     githubinstall,
     gstat,
-    httr,
     roxygen2,
     testthat
 License: CC0
