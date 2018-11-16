@@ -1,6 +1,7 @@
 # inlmisc 0.4.4.9000
 
-- In `GetRegionOfInterest` function, add `width` argument, used to expand region of interest.
+- In `GetRegionOfInterest` function: add `alpha` and `width` arguments,
+  used to compute alpha-shape and expand the region of interest, respectively.
 
 # inlmisc 0.4.4
 

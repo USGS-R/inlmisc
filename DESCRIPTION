@@ -32,6 +32,7 @@ Imports:
     tools,
     xtable
 Suggests:
+    alphahull,
     devtools,
     dichromat,
     doParallel,
