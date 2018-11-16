@@ -7,6 +7,7 @@
 #' @param alpha 'numeric' number.
 #'   Value of alpha, used to implement a generalization of the convex hull
 #'   (Edelsbrunner and others, 1983).
+#'   Requires that the \pkg{alphahull} package is available.
 #' @param width 'numeric' number.
 #'   Buffer distance from geometry of convex hull.
 #' @param ...
