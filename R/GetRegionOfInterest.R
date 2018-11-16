@@ -39,7 +39,7 @@
 #' n <- 300
 #' set.seed(321)
 #' theta <- stats::runif(n, 0, 2 * pi)
-#' r <- sqrt(stats::runif(n, 0.25^2, 0.5^2))
+#' r <- sqrt(stats::runif(n, 0.25^2, 0.50^2))
 #' x <- cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta))
 #' pts <- sp::SpatialPoints(x)
 #' sp::plot(GetRegionOfInterest(pts, alpha = 0.1, width = 0.05), col = "green")
@@ -68,9 +68,7 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
 # Compute alpha-shape of points in plane
 
 .GeneralizeConvexHull <- function(coords, alpha) {
-
-  checkmate::assertMatrix(coords, mode="numeric", any.missing=FALSE,
-                          min.rows=3, ncols=2)
+  checkmate::assertMatrix(coords, mode="numeric", any.missing=FALSE, min.cols=2)
   checkmate::assertNumber(alpha, lower=0, finite=TRUE)
 
   for (pkg in c("alphahull", "maptools")) {
@@ -80,14 +78,15 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
 
   # code adapted from RPubs post by Barry Rowlingson,
   # accessed November 15, 2018 at https://rpubs.com/geospacedman/alphasimple
-  shp <- alphahull::ashape(coords, alpha=alpha)
+  shp <- alphahull::ashape(coords[, 1:2], alpha=alpha)
   el <- cbind(as.character(shp$edges[, "ind1"]), as.character(shp$edges[, "ind2"]))
   gr <- igraph::graph_from_edgelist(el, directed=FALSE)
   clu <- igraph::components(gr, mode="strong")
   ply <- lapply(seq_len(clu$no), function(i) {
     vids <- igraph::groups(clu)[[i]]
     g <- igraph::induced_subgraph(gr, vids)
-    if (any(igraph::degree(g) != 2)) return(NULL)
+    if (any(igraph::degree(g) != 2))
+      stop("non-circular polygon, try increasing alpha value", call.=FALSE)
     gcut <- g - igraph::E(g)[1]
     ends <- names(which(igraph::degree(gcut) == 1))
     path <- igraph::shortest_paths(gcut, ends[1], ends[2])$vpath[[1]]
@@ -95,12 +94,8 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
     pts <- shp$x[c(idxs, idxs[1]), ]
     sp::Polygon(pts)
   })
-
-  ply <- ply[!(is <- vapply(ply, is.null, TRUE))]
-  if (length(ply) == 0) stop("non-circular polygons")
-  if (any(is)) warning("removed non-circular polygons")
-
   ply <- sp::Polygons(ply, ID=1)
+
   ply <- maptools::checkPolygonsHoles(ply)
   ply
 }
