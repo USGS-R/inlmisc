@@ -38,7 +38,6 @@
 #' sp::plot(pts, add = TRUE)
 #'
 #' n <- 300
-#' set.seed(321)
 #' theta <- stats::runif(n, 0, 2 * pi)
 #' r <- sqrt(stats::runif(n, 0.25^2, 0.50^2))
 #' x <- cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta))
