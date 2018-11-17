@@ -5,8 +5,9 @@
 #' @param obj 'SpatialPoints*'.
 #'   Spatial points
 #' @param alpha 'numeric' number.
-#'   Value of alpha, used to implement a generalization of the convex hull
+#'   Value of \eqn{\alpha}, used to implement a generalization of the convex hull
 #'   (Edelsbrunner and others, 1983).
+#'   As \eqn{\alpha} decreases, the shape shrinks.
 #'   Requires that the \pkg{alphahull} and \pkg{maptools} packages are available.
 #' @param width 'numeric' number.
 #'   Buffer distance from geometry of convex hull.

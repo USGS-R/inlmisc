@@ -11,8 +11,9 @@ GetRegionOfInterest(obj, alpha = NULL, width = 0, ...)
 Spatial points}
 
 \item{alpha}{'numeric' number.
-Value of alpha, used to implement a generalization of the convex hull
+Value of \eqn{\alpha}, used to implement a generalization of the convex hull
 (Edelsbrunner and others, 1983).
+As \eqn{\alpha} decreases, the shape shrinks.
 Requires that the \pkg{alphahull} and \pkg{maptools} packages are available.}
 
 \item{width}{'numeric' number.
