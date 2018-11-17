@@ -40,8 +40,7 @@
 #' n <- 300
 #' theta <- stats::runif(n, 0, 2 * pi)
 #' r <- sqrt(stats::runif(n, 0.25^2, 0.50^2))
-#' x <- cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta))
-#' pts <- sp::SpatialPoints(x)
+#' pts <- sp::SpatialPoints(cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta)))
 #' sp::plot(GetRegionOfInterest(pts, alpha = 0.1, width = 0.05), col = "green")
 #' sp::plot(GetRegionOfInterest(pts, alpha = 0.1), col = "yellow", add = TRUE)
 #' sp::plot(pts, add = TRUE)
@@ -76,7 +75,7 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
       stop(sprintf("alpha-shape computation requires the %s package", pkg))
   }
 
-  # code adapted from RPubs post by Barry Rowlingson,
+  # code adapted from RPubs document by Barry Rowlingson,
   # accessed November 15, 2018 at https://rpubs.com/geospacedman/alphasimple
   shp <- alphahull::ashape(coords[, 1:2], alpha=alpha)
   el <- cbind(as.character(shp$edges[, "ind1"]), as.character(shp$edges[, "ind2"]))
