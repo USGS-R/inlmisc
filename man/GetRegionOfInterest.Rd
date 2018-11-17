@@ -32,7 +32,7 @@ set.seed(123)
 pts <- sp::SpatialPoints(cbind(x = stats::runif(50), y = stats::runif(50)))
 sp::plot(GetRegionOfInterest(pts, width = 0.05), border = "red", lty = 2)
 sp::plot(GetRegionOfInterest(pts), border = "red", add = TRUE)
-sp::plot(GetRegionOfInterest(pts, alpha = 0.5), border = "blue", add = TRUE)
+sp::plot(GetRegionOfInterest(pts, alpha = 0.2), border = "blue", add = TRUE)
 sp::plot(pts, add = TRUE)
 
 n <- 300
