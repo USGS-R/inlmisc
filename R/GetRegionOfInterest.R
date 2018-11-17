@@ -81,7 +81,7 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
   el <- cbind(as.character(shp$edges[, "ind1"]), as.character(shp$edges[, "ind2"]))
   gr <- igraph::graph_from_edgelist(el, directed=FALSE)
   clu <- igraph::components(gr, mode="strong")
-  ply <- lapply(seq_len(clu$no), function(i) {
+  ply <- sp::Polygons(lapply(seq_len(clu$no), function(i) {
     vids <- igraph::groups(clu)[[i]]
     g <- igraph::induced_subgraph(gr, vids)
     if (any(igraph::degree(g) != 2))
@@ -92,8 +92,7 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
     idxs <- as.integer(igraph::V(g)[path]$name)
     pts <- shp$x[c(idxs, idxs[1]), ]
     sp::Polygon(pts)
-  })
-  ply <- sp::Polygons(ply, ID=1)
+  }), ID=1)
 
   maptools::checkPolygonsHoles(ply)
 }
