@@ -32,13 +32,14 @@ Imports:
     tools,
     xtable
 Suggests:
+    alphahull,
     devtools,
     dichromat,
     doParallel,
     doRNG,
     githubinstall,
     gstat,
-    httr,
+    maptools,
     roxygen2,
     testthat
 License: CC0
