@@ -96,6 +96,5 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
   })
   ply <- sp::Polygons(ply, ID=1)
 
-  ply <- maptools::checkPolygonsHoles(ply)
-  ply
+  maptools::checkPolygonsHoles(ply)
 }
