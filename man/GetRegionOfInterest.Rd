@@ -32,11 +32,12 @@ set.seed(123)
 
 n <- 50
 pts <- sp::SpatialPoints(cbind(x = stats::runif(n), y = stats::runif(n)))
-sp::plot(GetRegionOfInterest(pts, width = 0.05), border = "red", lty = 2)
+sp::plot(GetRegionOfInterest(pts, width = 0.05), border = "blue", lty = 2)
 sp::plot(GetRegionOfInterest(pts), border = "red", add = TRUE)
-sp::plot(GetRegionOfInterest(pts, alpha = 0.2), border = "blue", add = TRUE)
+sp::plot(GetRegionOfInterest(pts, width = -0.05), lty = 2, add = TRUE)
 sp::plot(pts, add = TRUE)
 
+\dontrun{
 n <- 300
 theta <- stats::runif(n, 0, 2 * pi)
 r <- sqrt(stats::runif(n, 0.25^2, 0.50^2))
@@ -44,6 +45,7 @@ pts <- sp::SpatialPoints(cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta)))
 sp::plot(GetRegionOfInterest(pts, alpha = 0.1, width = 0.05), col = "green")
 sp::plot(GetRegionOfInterest(pts, alpha = 0.1), col = "yellow", add = TRUE)
 sp::plot(pts, add = TRUE)
+}
 
 }
 \references{
