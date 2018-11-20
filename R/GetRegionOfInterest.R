@@ -82,9 +82,12 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
       stop(sprintf("alpha-shape computation requires the %s package", pkg))
   }
 
+  # remove duplicate points
+  coords <- unique(coords[, 1:2])
+
   # code adapted from RPubs document by Barry Rowlingson,
   # accessed November 15, 2018 at https://rpubs.com/geospacedman/alphasimple
-  shp <- alphahull::ashape(coords[, 1:2], alpha=alpha)
+  shp <- alphahull::ashape(coords, alpha=alpha)
   el <- cbind(as.character(shp$edges[, "ind1"]), as.character(shp$edges[, "ind2"]))
   gr <- igraph::graph_from_edgelist(el, directed=FALSE)
   clu <- igraph::components(gr, mode="strong")
