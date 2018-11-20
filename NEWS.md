@@ -1,7 +1,6 @@
 # inlmisc 0.4.4.9000
 
-- Add **alphahull** (released under a restrictive non-free software license)
-  and **maptools** to suggested packages.
+- Add **alphahull** and **maptools** to suggested packages.
 
 - Remove **httr** from suggested packages.
 
