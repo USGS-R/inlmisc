@@ -14,7 +14,7 @@
 #' @param width 'numeric' number.
 #'   Buffer distance from geometry of convex hull.
 #' @param ...
-#'   Additional arguments to be passed to the \code{\link[rgeos]{gBuffer}} function.
+#'   Additional arguments to be passed to the \code{\link{gBuffer}} function.
 #'
 #' @return Returns an object of class 'SpatialPolygons'.
 #'

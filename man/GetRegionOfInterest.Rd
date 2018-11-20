@@ -21,7 +21,7 @@ is released under a restrictive non-free software license.}
 \item{width}{'numeric' number.
 Buffer distance from geometry of convex hull.}
 
-\item{...}{Additional arguments to be passed to the \code{\link[rgeos]{gBuffer}} function.}
+\item{...}{Additional arguments to be passed to the \code{\link{gBuffer}} function.}
 }
 \value{
 Returns an object of class 'SpatialPolygons'.
