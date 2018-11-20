@@ -8,7 +8,7 @@ GetRegionOfInterest(obj, alpha = NULL, width = 0, ...)
 }
 \arguments{
 \item{obj}{'SpatialPoints*'.
-Spatial points}
+Sample of points}
 
 \item{alpha}{'numeric' number.
 Value of \eqn{\alpha}, used to implement a generalization of the convex hull
@@ -29,7 +29,9 @@ Create a spatial polygon describing the convex hull of a set of spatial points.
 }
 \examples{
 set.seed(123)
-pts <- sp::SpatialPoints(cbind(x = stats::runif(50), y = stats::runif(50)))
+
+n <- 50
+pts <- sp::SpatialPoints(cbind(x = stats::runif(n), y = stats::runif(n)))
 sp::plot(GetRegionOfInterest(pts, width = 0.05), border = "red", lty = 2)
 sp::plot(GetRegionOfInterest(pts), border = "red", add = TRUE)
 sp::plot(GetRegionOfInterest(pts, alpha = 0.2), border = "blue", add = TRUE)
@@ -50,7 +52,8 @@ Edelsbrunner, H., Kirkpatrick, D.G. and Seidel, R., 1983,
   IEEE Transactions on Information Theory, v. 29, no. 4, p. 551--559.
 }
 \seealso{
-\code{\link[grDevices]{chull}}, \code{\link[alphahull]{ashape}}
+\code{\link[grDevices]{chull}}, \code{\link[alphahull]{ashape}},
+  \code{\link[maptools]{checkPolygonsHoles}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
