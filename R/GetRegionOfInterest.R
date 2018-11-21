@@ -2,8 +2,9 @@
 #'
 #' Create a spatial polygon describing the convex hull of a set of spatial points.
 #'
-#' @param obj 'SpatialPoints*'.
-#'   Sample of points
+#' @param obj 'matrix', 'data.frame', or 'SpatialPoints*'.
+#'   Sample of points specified as either a 2-column numeric matrix with coordinates
+#'   or a spatial object that coordinates can be retrieved from.
 #' @param alpha 'numeric' number.
 #'   Value of \eqn{\alpha}, used to implement a generalization of the convex hull
 #'   (Edelsbrunner and others, 1983).
@@ -36,17 +37,18 @@
 #' set.seed(123)
 #'
 #' n <- 50
-#' pts <- sp::SpatialPoints(cbind(x = stats::runif(n), y = stats::runif(n)))
+#' pts <- cbind(x = stats::runif(n), y = stats::runif(n))
 #' sp::plot(GetRegionOfInterest(pts, width = 0.05), border = "blue", lty = 2)
 #' sp::plot(GetRegionOfInterest(pts), border = "red", add = TRUE)
 #' sp::plot(GetRegionOfInterest(pts, width = -0.05), lty = 2, add = TRUE)
-#' sp::plot(pts, add = TRUE)
+#' points(pts, pch = 3)
 #'
 #' \dontrun{
 #' n <- 300
 #' theta <- stats::runif(n, 0, 2 * pi)
 #' r <- sqrt(stats::runif(n, 0.25^2, 0.50^2))
-#' pts <- sp::SpatialPoints(cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta)))
+#' pts <- sp::SpatialPoints(cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta)),
+#'                          proj4string = sp::CRS("+init=epsg:32610"))
 #' sp::plot(GetRegionOfInterest(pts, alpha = 0.1, width = 0.05), col = "green")
 #' sp::plot(GetRegionOfInterest(pts, alpha = 0.1), col = "yellow", add = TRUE)
 #' sp::plot(pts, add = TRUE)
@@ -54,18 +56,25 @@
 #'
 
 GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
-  checkmate::assertClass(obj, "SpatialPoints")
+  stopifnot(inherits(obj, c("matrix", "data.frame", "SpatialPoints")))
   checkmate::assertNumber(alpha, lower=0, finite=TRUE, null.ok=TRUE)
   checkmate::assertNumber(width, finite=TRUE)
 
-  coords <- sp::coordinates(obj)
+  if (inherits(obj, "SpatialPoints")) {
+    coords <- sp::coordinates(obj)
+    crs <- raster::crs(obj)
+  } else {
+    coords <- data.matrix(obj[, 1:2])
+    crs <- sp::CRS(as.character(NA))
+  }
+
   if (is.null(alpha)) {
-    pts <- obj[grDevices::chull(coords), ]
+    pts <- coords[grDevices::chull(coords), ]
     ply <- sp::Polygons(list(sp::Polygon(pts)), ID=1)
   } else {
     ply <- .GeneralizeConvexHull(coords, alpha)
   }
-  ply <- sp::SpatialPolygons(list(ply), proj4string=raster::crs(obj))
+  ply <- sp::SpatialPolygons(list(ply), proj4string=crs)
 
   rgeos::gBuffer(ply, width=width, ...)
 }
