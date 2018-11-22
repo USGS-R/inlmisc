@@ -1,6 +1,6 @@
 # inlmisc 0.4.4.9000
 
-- Add **alphahull**, **maptools**, **remotes** to suggested packages.
+- Add **alphahull**, **maptools**, and **remotes** to suggested packages.
 
 - Remove **httr** and **devtools** from suggested packages.
 
