@@ -33,13 +33,13 @@ Imports:
     xtable
 Suggests:
     alphahull,
-    devtools,
     dichromat,
     doParallel,
     doRNG,
     githubinstall,
     gstat,
     maptools,
+    remotes,
     roxygen2,
     testthat
 License: CC0

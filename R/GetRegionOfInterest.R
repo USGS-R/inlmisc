@@ -83,7 +83,7 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
 # Compute alpha-shape of points in plane
 
 .GeneralizeConvexHull <- function(coords, alpha) {
-  checkmate::assertMatrix(coords, mode="numeric", any.missing=FALSE, min.cols=2)
+  checkmate::assertMatrix(coords, mode="numeric", any.missing=FALSE, ncols=2)
   checkmate::assertNumber(alpha, lower=0, finite=TRUE)
 
   for (pkg in c("alphahull", "maptools")) {
@@ -92,10 +92,11 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
   }
 
   # remove duplicate points
-  coords <- unique(coords[, 1:2])
+  coords <- unique(coords)
 
-  # code adapted from RPubs document by Barry Rowlingson,
-  # accessed November 15, 2018 at https://rpubs.com/geospacedman/alphasimple
+  # code adapted from RPubs document titled Alpha Shapes to Polygons
+  # by Barry Rowlingson, accessed November 15, 2018
+  # at https://rpubs.com/geospacedman/alphasimple
   shp <- alphahull::ashape(coords, alpha=alpha)
   el <- cbind(as.character(shp$edges[, "ind1"]), as.character(shp$edges[, "ind2"]))
   gr <- igraph::graph_from_edgelist(el, directed=FALSE)
