@@ -1,10 +1,11 @@
 # inlmisc 0.4.4.9000
 
-- Add **alphahull** and **maptools** to suggested packages.
+- Add **alphahull**, **maptools**, and **remotes** to suggested packages.
 
-- Remove **httr** from suggested packages.
+- Remove **httr** and **devtools** from suggested packages.
 
-- In `GetRegionOfInterest` function: add `alpha` and `width` arguments,
+- In `GetRegionOfInterest` function: replace `obj` argument with `x` and `y`;
+  add `alpha` and `width` arguments,
   used to compute alpha-shape and expand the region of interest, respectively.
 
 # inlmisc 0.4.4

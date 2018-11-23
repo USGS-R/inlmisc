@@ -278,12 +278,12 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
 
   # install packages from cran-like repositories
   if (any(is_on_repos)) {
-    if (versions && requireNamespace("devtools", quietly=TRUE)) {
+    if (versions && requireNamespace("remotes", quietly=TRUE)) {
       for (i in which(is_on_repos)) {
         if (IsPackageInstalled(pkgs$Package[i], lib)) next
         ans <- try({
-          devtools::install_version(pkgs$Package[i], pkgs$Version[i],
-                                    type=type, quiet=quiet)
+          remotes::install_version(pkgs$Package[i], pkgs$Version[i],
+                                   type=type, quiet=quiet)
         }, silent=TRUE)
         if (inherits(ans, "try-error")) {
           is_on_repos[i] <- FALSE

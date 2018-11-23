@@ -4,11 +4,13 @@
 \alias{GetRegionOfInterest}
 \title{Get Region of Interest}
 \usage{
-GetRegionOfInterest(obj, alpha = NULL, width = 0, ...)
+GetRegionOfInterest(x, y = NULL, alpha = NULL, width = 0, ...)
 }
 \arguments{
-\item{obj}{'SpatialPoints*'.
-Sample of points}
+\item{x, y}{Coordinate vectors of points.
+Coordinates can be passed as a 'list' with \code{x} and \code{y} components,
+a two-column 'matrix' or 'data.frame', or
+a 'Spatial' object that coordinates can be retrieved from.}
 
 \item{alpha}{'numeric' number.
 Value of \eqn{\alpha}, used to implement a generalization of the convex hull
@@ -21,7 +23,7 @@ is released under a restrictive non-free software license.}
 \item{width}{'numeric' number.
 Buffer distance from geometry of convex hull.}
 
-\item{...}{Additional arguments to be passed to the \code{\link[rgeos]{gBuffer}} function.}
+\item{...}{Additional arguments to be passed to the \code{\link{gBuffer}} function.}
 }
 \value{
 Returns an object of class 'SpatialPolygons'.
@@ -33,20 +35,21 @@ Create a spatial polygon describing the convex hull of a set of spatial points.
 set.seed(123)
 
 n <- 50
-pts <- sp::SpatialPoints(cbind(x = stats::runif(n), y = stats::runif(n)))
-sp::plot(GetRegionOfInterest(pts, width = 0.05), border = "blue", lty = 2)
-sp::plot(GetRegionOfInterest(pts), border = "red", add = TRUE)
-sp::plot(GetRegionOfInterest(pts, width = -0.05), lty = 2, add = TRUE)
-sp::plot(pts, add = TRUE)
+x <- list(x = stats::runif(n), y = stats::runif(n))
+sp::plot(GetRegionOfInterest(x, width = 0.05), border = "blue", lty = 2)
+sp::plot(GetRegionOfInterest(x), border = "red", add = TRUE)
+sp::plot(GetRegionOfInterest(x, width = -0.05), lty = 2, add = TRUE)
+points(x, pch = 3)
 
 \dontrun{
 n <- 300
 theta <- stats::runif(n, 0, 2 * pi)
 r <- sqrt(stats::runif(n, 0.25^2, 0.50^2))
-pts <- sp::SpatialPoints(cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta)))
-sp::plot(GetRegionOfInterest(pts, alpha = 0.1, width = 0.05), col = "green")
-sp::plot(GetRegionOfInterest(pts, alpha = 0.1), col = "yellow", add = TRUE)
-sp::plot(pts, add = TRUE)
+x <- sp::SpatialPoints(cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta)),
+                       proj4string = sp::CRS("+init=epsg:32610"))
+sp::plot(GetRegionOfInterest(x, alpha = 0.1, width = 0.05), col = "green")
+sp::plot(GetRegionOfInterest(x, alpha = 0.1), col = "yellow", add = TRUE)
+sp::plot(x, add = TRUE)
 }
 
 }

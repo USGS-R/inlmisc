@@ -23,10 +23,10 @@ using the following command:
 install.packages("inlmisc", dependencies = TRUE)
 ```
 
-Or use the **devtools** package to install the development version from GitHub.
+Or use the **remotes** package to install the development version from GitHub.
 
 ```r
-devtools::install_github("USGS-R/inlmisc", dependencies = TRUE)
+remotes::install_github("USGS-R/inlmisc", dependencies = TRUE)
 ```
 
 ## Contact
