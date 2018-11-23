@@ -2,9 +2,11 @@
 #'
 #' Create a spatial polygon describing the convex hull of a set of spatial points.
 #'
-#' @param obj 'matrix', 'data.frame', or 'SpatialPoints*'.
-#'   Sample of points specified as either a 2-column numeric matrix with coordinates
-#'   or a spatial object that coordinates can be retrieved from.
+#' @param x,y
+#'   Coordinate vectors of points.
+#'   Coordinates can be passed as a 'list' with \code{x} and \code{y} components,
+#'   a two-column 'matrix' or 'data.frame', or
+#'   a 'Spatial' object that coordinates can be retrieved from.
 #' @param alpha 'numeric' number.
 #'   Value of \eqn{\alpha}, used to implement a generalization of the convex hull
 #'   (Edelsbrunner and others, 1983).
@@ -37,42 +39,41 @@
 #' set.seed(123)
 #'
 #' n <- 50
-#' pts <- cbind(x = stats::runif(n), y = stats::runif(n))
-#' sp::plot(GetRegionOfInterest(pts, width = 0.05), border = "blue", lty = 2)
-#' sp::plot(GetRegionOfInterest(pts), border = "red", add = TRUE)
-#' sp::plot(GetRegionOfInterest(pts, width = -0.05), lty = 2, add = TRUE)
-#' points(pts, pch = 3)
+#' x <- list(x = stats::runif(n), y = stats::runif(n))
+#' sp::plot(GetRegionOfInterest(x, width = 0.05), border = "blue", lty = 2)
+#' sp::plot(GetRegionOfInterest(x), border = "red", add = TRUE)
+#' sp::plot(GetRegionOfInterest(x, width = -0.05), lty = 2, add = TRUE)
+#' points(x, pch = 3)
 #'
 #' \dontrun{
 #' n <- 300
 #' theta <- stats::runif(n, 0, 2 * pi)
 #' r <- sqrt(stats::runif(n, 0.25^2, 0.50^2))
-#' pts <- sp::SpatialPoints(cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta)),
-#'                          proj4string = sp::CRS("+init=epsg:32610"))
-#' sp::plot(GetRegionOfInterest(pts, alpha = 0.1, width = 0.05), col = "green")
-#' sp::plot(GetRegionOfInterest(pts, alpha = 0.1), col = "yellow", add = TRUE)
-#' sp::plot(pts, add = TRUE)
+#' x <- sp::SpatialPoints(cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta)),
+#'                        proj4string = sp::CRS("+init=epsg:32610"))
+#' sp::plot(GetRegionOfInterest(x, alpha = 0.1, width = 0.05), col = "green")
+#' sp::plot(GetRegionOfInterest(x, alpha = 0.1), col = "yellow", add = TRUE)
+#' sp::plot(x, add = TRUE)
 #' }
 #'
 
-GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
-  stopifnot(inherits(obj, c("matrix", "data.frame", "SpatialPoints")))
+GetRegionOfInterest <- function(x, y=NULL, alpha=NULL, width=0, ...) {
   checkmate::assertNumber(alpha, lower=0, finite=TRUE, null.ok=TRUE)
   checkmate::assertNumber(width, finite=TRUE)
 
-  if (inherits(obj, "SpatialPoints")) {
-    coords <- sp::coordinates(obj)
-    crs <- raster::crs(obj)
+  if (inherits(x, "Spatial")) {
+    xy <- sp::coordinates(x)
+    crs <- raster::crs(x)
   } else {
-    coords <- data.matrix(obj[, 1:2])
+    xy <- do.call("cbind", grDevices::xy.coords(x, y)[1:2])
     crs <- sp::CRS(as.character(NA))
   }
 
   if (is.null(alpha)) {
-    pts <- coords[grDevices::chull(coords), ]
+    pts <- xy[grDevices::chull(xy), ]
     ply <- sp::Polygons(list(sp::Polygon(pts)), ID=1)
   } else {
-    ply <- .GeneralizeConvexHull(coords, alpha)
+    ply <- .GeneralizeConvexHull(xy, alpha)
   }
   ply <- sp::SpatialPolygons(list(ply), proj4string=crs)
 
@@ -82,8 +83,8 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
 
 # Compute alpha-shape of points in plane
 
-.GeneralizeConvexHull <- function(coords, alpha) {
-  checkmate::assertMatrix(coords, mode="numeric", any.missing=FALSE, ncols=2)
+.GeneralizeConvexHull <- function(xy, alpha) {
+  checkmate::assertMatrix(xy, mode="numeric", any.missing=FALSE, ncols=2)
   checkmate::assertNumber(alpha, lower=0, finite=TRUE)
 
   for (pkg in c("alphahull", "maptools")) {
@@ -92,12 +93,12 @@ GetRegionOfInterest <- function(obj, alpha=NULL, width=0, ...) {
   }
 
   # remove duplicate points
-  coords <- unique(coords)
+  xy <- unique(xy)
 
   # code adapted from RPubs document titled Alpha Shapes to Polygons
   # by Barry Rowlingson, accessed November 15, 2018
   # at https://rpubs.com/geospacedman/alphasimple
-  shp <- alphahull::ashape(coords, alpha=alpha)
+  shp <- alphahull::ashape(xy, alpha=alpha)
   el <- cbind(as.character(shp$edges[, "ind1"]), as.character(shp$edges[, "ind2"]))
   gr <- igraph::graph_from_edgelist(el, directed=FALSE)
   clu <- igraph::components(gr, mode="strong")

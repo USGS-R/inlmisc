@@ -4,7 +4,8 @@
 
 - Remove **httr** and **devtools** from suggested packages.
 
-- In `GetRegionOfInterest` function: add `alpha` and `width` arguments,
+- In `GetRegionOfInterest` function: replace `obj` argument with `x` and `y`;
+  add `alpha` and `width` arguments,
   used to compute alpha-shape and expand the region of interest, respectively.
 
 # inlmisc 0.4.4
