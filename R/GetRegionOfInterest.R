@@ -57,9 +57,9 @@
 #' }
 #'
 
-GetRegionOfInterest <- function(x, y=NULL, alpha=NULL, width=0, ...) {
+GetRegionOfInterest <- function(x, y=NULL, alpha=NULL, width=NULL, ...) {
   checkmate::assertNumber(alpha, lower=0, finite=TRUE, null.ok=TRUE)
-  checkmate::assertNumber(width, finite=TRUE)
+  checkmate::assertNumber(width, finite=TRUE, null.ok=TRUE)
 
   if (inherits(x, "Spatial")) {
     xy <- sp::coordinates(x)
@@ -77,7 +77,10 @@ GetRegionOfInterest <- function(x, y=NULL, alpha=NULL, width=0, ...) {
   }
   ply <- sp::SpatialPolygons(list(ply), proj4string=crs)
 
-  rgeos::gBuffer(ply, width=width, ...)
+  if (is.numeric(width))
+    ply <- rgeos::gBuffer(ply, width=width, ...)
+
+  ply
 }
 
 

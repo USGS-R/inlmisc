@@ -4,7 +4,7 @@
 \alias{GetRegionOfInterest}
 \title{Get Region of Interest}
 \usage{
-GetRegionOfInterest(x, y = NULL, alpha = NULL, width = 0, ...)
+GetRegionOfInterest(x, y = NULL, alpha = NULL, width = NULL, ...)
 }
 \arguments{
 \item{x, y}{Coordinate vectors of a set of points.
