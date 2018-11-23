@@ -3,10 +3,10 @@
 #' Create a spatial polygon describing the convex hull of a set of spatial points.
 #'
 #' @param x,y
-#'   Coordinate vectors of points.
-#'   Coordinates can be passed as a 'list' with \code{x} and \code{y} components,
-#'   a two-column 'matrix' or 'data.frame', or
-#'   a 'Spatial' object that coordinates can be retrieved from.
+#'   Coordinate vectors of a set of points.
+#'   Alternatively, a single argument \code{x} can be provided.
+#'   See the functions \code{\link[grDevices]{xy.coords}} and
+#'   \code{\link[sp]{coordinates}} for details.
 #' @param alpha 'numeric' number.
 #'   Value of \eqn{\alpha}, used to implement a generalization of the convex hull
 #'   (Edelsbrunner and others, 1983).
