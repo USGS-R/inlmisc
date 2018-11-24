@@ -5,8 +5,8 @@
 #' @param x,y
 #'   Coordinate vectors of a set of points.
 #'   Alternatively, a single argument \code{x} can be provided.
-#'   See the functions \code{\link[grDevices]{xy.coords}} and
-#'   \code{\link[sp]{coordinates}} for details.
+#'   Functions \code{\link[grDevices]{xy.coords}} and \code{\link[sp]{coordinates}}
+#'   are used to extract point coordinates.
 #' @param alpha 'numeric' number.
 #'   Value of \eqn{\alpha}, used to implement a generalization of the convex hull
 #'   (Edelsbrunner and others, 1983).
