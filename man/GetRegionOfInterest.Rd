@@ -59,8 +59,10 @@ Edelsbrunner, H., Kirkpatrick, D.G. and Seidel, R., 1983,
   IEEE Transactions on Information Theory, v. 29, no. 4, p. 551--559.
 }
 \seealso{
-\code{\link[grDevices]{chull}}, \code{\link[alphahull]{ashape}},
-  \code{\link[maptools]{checkPolygonsHoles}}
+Functions \code{\link[grDevices]{chull}} and \code{\link[alphahull]{ashape}}
+  are used to calculate the convex hull and generalized convex hull, respectively.
+
+  Function \code{\link[maptools]{checkPolygonsHoles}} is used to identify polygon holes.
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

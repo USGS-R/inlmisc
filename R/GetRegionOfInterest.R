@@ -28,8 +28,11 @@
 #'   On the shape of a set of points in the plane:
 #'   IEEE Transactions on Information Theory, v. 29, no. 4, p. 551--559.
 #'
-#' @seealso \code{\link[grDevices]{chull}}, \code{\link[alphahull]{ashape}},
-#'   \code{\link[maptools]{checkPolygonsHoles}}
+#' @seealso
+#'   Functions \code{\link[grDevices]{chull}} and \code{\link[alphahull]{ashape}}
+#'   are used to calculate the convex hull and generalized convex hull, respectively.
+#'
+#'   Function \code{\link[maptools]{checkPolygonsHoles}} is used to identify polygon holes.
 #'
 #' @keywords utilities
 #'
