@@ -3,10 +3,10 @@
 #' Create a spatial polygon describing the convex hull of a set of spatial points.
 #'
 #' @param x,y
-#'   Coordinate vectors of points.
-#'   Coordinates can be passed as a 'list' with \code{x} and \code{y} components,
-#'   a two-column 'matrix' or 'data.frame', or
-#'   a 'Spatial' object that coordinates can be retrieved from.
+#'   Coordinate vectors of a set of points.
+#'   Alternatively, a single argument \code{x} can be provided.
+#'   Functions \code{\link[grDevices]{xy.coords}} and \code{\link[sp]{coordinates}}
+#'   are used to extract point coordinates.
 #' @param alpha 'numeric' number.
 #'   Value of \eqn{\alpha}, used to implement a generalization of the convex hull
 #'   (Edelsbrunner and others, 1983).
@@ -28,8 +28,11 @@
 #'   On the shape of a set of points in the plane:
 #'   IEEE Transactions on Information Theory, v. 29, no. 4, p. 551--559.
 #'
-#' @seealso \code{\link[grDevices]{chull}}, \code{\link[alphahull]{ashape}},
-#'   \code{\link[maptools]{checkPolygonsHoles}}
+#' @seealso
+#'   Functions \code{\link[grDevices]{chull}} and \code{\link[alphahull]{ashape}}
+#'   are used to calculate the convex hull and generalized convex hull, respectively.
+#'
+#'   Function \code{\link[maptools]{checkPolygonsHoles}} is used to identify polygon holes.
 #'
 #' @keywords utilities
 #'
@@ -57,9 +60,9 @@
 #' }
 #'
 
-GetRegionOfInterest <- function(x, y=NULL, alpha=NULL, width=0, ...) {
+GetRegionOfInterest <- function(x, y=NULL, alpha=NULL, width=NULL, ...) {
   checkmate::assertNumber(alpha, lower=0, finite=TRUE, null.ok=TRUE)
-  checkmate::assertNumber(width, finite=TRUE)
+  checkmate::assertNumber(width, finite=TRUE, null.ok=TRUE)
 
   if (inherits(x, "Spatial")) {
     xy <- sp::coordinates(x)
@@ -77,7 +80,10 @@ GetRegionOfInterest <- function(x, y=NULL, alpha=NULL, width=0, ...) {
   }
   ply <- sp::SpatialPolygons(list(ply), proj4string=crs)
 
-  rgeos::gBuffer(ply, width=width, ...)
+  if (is.numeric(width))
+    ply <- rgeos::gBuffer(ply, width=width, ...)
+
+  ply
 }
 
 

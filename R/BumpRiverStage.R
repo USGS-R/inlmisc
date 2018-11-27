@@ -30,9 +30,6 @@
 #'
 #' @export
 #'
-#' @examples
-#' print("notyet")
-#'
 
 BumpRiverStage <- function(r, outlets, min.drop=1e-06) {
 

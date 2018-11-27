@@ -32,10 +32,6 @@ The \href{https://en.wikipedia.org/wiki/Lee_algorithm}{Lee algorithm} (Lee, 1961
   that are obstructing downhill surface-water flow.
   Stage values for these problematic cells are then lowered to an acceptable elevation.
 }
-\examples{
-print("notyet")
-
-}
 \references{
 Lee, C.Y., 1961, An algorithm for path connections and its applications:
   IRE Transactions on Electronic Computers, v. EC-10, no. 2, p. 346--365.

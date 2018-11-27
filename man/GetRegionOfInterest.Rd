@@ -4,13 +4,13 @@
 \alias{GetRegionOfInterest}
 \title{Get Region of Interest}
 \usage{
-GetRegionOfInterest(x, y = NULL, alpha = NULL, width = 0, ...)
+GetRegionOfInterest(x, y = NULL, alpha = NULL, width = NULL, ...)
 }
 \arguments{
-\item{x, y}{Coordinate vectors of points.
-Coordinates can be passed as a 'list' with \code{x} and \code{y} components,
-a two-column 'matrix' or 'data.frame', or
-a 'Spatial' object that coordinates can be retrieved from.}
+\item{x, y}{Coordinate vectors of a set of points.
+Alternatively, a single argument \code{x} can be provided.
+Functions \code{\link[grDevices]{xy.coords}} and \code{\link[sp]{coordinates}}
+are used to extract point coordinates.}
 
 \item{alpha}{'numeric' number.
 Value of \eqn{\alpha}, used to implement a generalization of the convex hull
@@ -59,8 +59,10 @@ Edelsbrunner, H., Kirkpatrick, D.G. and Seidel, R., 1983,
   IEEE Transactions on Information Theory, v. 29, no. 4, p. 551--559.
 }
 \seealso{
-\code{\link[grDevices]{chull}}, \code{\link[alphahull]{ashape}},
-  \code{\link[maptools]{checkPolygonsHoles}}
+Functions \code{\link[grDevices]{chull}} and \code{\link[alphahull]{ashape}}
+  are used to calculate the convex hull and generalized convex hull, respectively.
+
+  Function \code{\link[maptools]{checkPolygonsHoles}} is used to identify polygon holes.
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
