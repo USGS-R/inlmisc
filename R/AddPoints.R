@@ -239,7 +239,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     }
     if (is.null(break.labels)) break.labels <- ss
 
-    # https://stackoverflow.com/questions/33930689/how-to-get-next-number-in-sequence-in-r
+    # https://stackoverflow.com/questions/33930689
     SeqNext <- function(x, npred=1) {
       n <- length(x)
       d <- data.frame(x=seq_along(x), y=x)

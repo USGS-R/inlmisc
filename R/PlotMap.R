@@ -120,7 +120,7 @@
 #'   If \code{simplify > 0} the geometry of the spatial polygons is generalized using the
 #'   Douglas-Peucker algorithm (Douglas and Peucker, 1961);
 #'   and \code{simplify} is the numerical tolerance value to be used by the algorithm.
-#'   See \code{gSimplify} function for additional information.
+#'   See \code{\link[rgeos:topo-unary-gSimplify]{gSimplify}} function for additional information.
 #'
 #' @return Used for the side-effect of a new plot generated.
 #'   Returns a 'list' with the following graphical parameters:
