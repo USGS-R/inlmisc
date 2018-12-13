@@ -13,8 +13,13 @@ PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
 \item{d}{'data.frame' or 'matrix'.
 Data table to print.}
 
-\item{colheadings}{'character' vector.
+\item{colheadings}{'character' vector or 'list'.
 Column headings.
+A 'list' can be used to make a column header span multiple columns.
+List components inlcude:
+\code{"text"}, a 'character' vector that specifies the text that makes up each header; and
+\code{"cols"}, a 'integer' vector that specifies the number of columns to span for each header.
+Vector components should be of equal length.
 Use \code{\\\\\\\\} to code a line break.}
 
 \item{align}{'character' vector.
@@ -77,9 +82,8 @@ Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
 }
 \examples{
 d <- datasets::iris[, c(5, 1:4)]
-colheadings <- c("Species of Iris",
-                 "Sepal length \\\\\\\\ (cm)", "Sepal width \\\\\\\\ (cm)",
-                 "Petal length \\\\\\\\ (cm)", "Petal width \\\\\\\\ (cm)")
+colheadings <- list("text" = c("Species", "Sepal \\\\\\\\ (cm)", "Petal \\\\\\\\ (cm)"),
+                    "cols" = c(1, 2, 2))
 align <- c("l", "c", "c", "c", "c")
 digits <- c(0, 1, 1, 1, 1)
 title <- "Measurements of sepal length and width and petal length and width,
