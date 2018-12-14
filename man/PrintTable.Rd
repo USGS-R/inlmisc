@@ -7,7 +7,7 @@
 PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
   label = NULL, title = NULL, headnotes = NULL, footnotes = NULL,
   nrec = nrow(d), hline = NULL, na = "--", rm_dup = NULL,
-  landscape = FALSE, ...)
+  landscape = FALSE, subheadings = NULL, ...)
 }
 \arguments{
 \item{d}{'data.frame' or 'matrix'.
@@ -65,6 +65,10 @@ combining its content with the content from all previous columns in the table.}
 If true, conforming PDF viewers will display the table in landscape orientation.
 This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.}
 
+\item{subheadings}{'character' vector.
+Column subheadings.
+Length equal to the number of columns in data table.}
+
 \item{...}{Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.
 The arguments \code{type}, \code{hline.after} and \code{add.to.row} should not be included.}
 }
@@ -77,17 +81,18 @@ The applied output format attempts to adhere to the design recommendations
 for tables in United States Geological Survey (USGS) publications.
 }
 \details{
-Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
-  \code{\\usepackage{makecell}} in the LaTeX preamble.
+Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
+  \code{\\usepackage{makecell}}, and \code{\\usepackage{multirow}} in the LaTeX preamble.
 }
 \examples{
 d <- datasets::iris[, c(5, 1:4)]
-colheadings <- list("text" = c("Species", "Sepal \\\\\\\\ (cm)", "Petal \\\\\\\\ (cm)"),
+colheadings <- list("text" = c("Species", "Sepal", "Petal"),
                     "cols" = c(1, 2, 2))
+subheadings <- c("", "Length", "Width", "Length", "Width")
 align <- c("l", "c", "c", "c", "c")
 digits <- c(0, 1, 1, 1, 1)
-title <- "Measurements of sepal length and width and petal length and width,
-          for three species of Iris flower."
+title <- "Measurements of sepal length and width and petal length and width
+          in centimeters, for three species of Iris flower."
 headnotes <- "\\\\textbf{Species of Iris}: includes setosa, versicolor, and virginica.
               \\\\textbf{Abbreviations}: cm, centimeters"
 levels(d[[1]]) <- sprintf("\%s\\\\footnotemark[\%d]", levels(d[[1]]), 1:3)
@@ -95,7 +100,8 @@ footnotes <- paste(sprintf("\\\\footnotemark[\%d] Common name is \%s iris.", 1:3
                            c("Wild Flag", "Blue Flag", "Virginia")), collapse = "\\\\\\\\")
 hline <- utils::tail(which(!duplicated(d[[1]])), -1) - 1L
 PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
-           footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
+           footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1,
+           subheadings = subheadings)
 
 \dontrun{
 sink("table-example.tex")
@@ -103,13 +109,15 @@ cat("\\\\documentclass{article}",
     "\\\\usepackage[labelsep=period,labelfont=bf]{caption}",
     "\\\\usepackage{booktabs}",
     "\\\\usepackage{makecell}",
+    "\\\\usepackage{multirow}",
     "\\\\usepackage[pdftex]{lscape}",
     "\\\\makeatletter",
     "\\\\setlength{\\\\@fptop}{0pt}",
     "\\\\makeatother",
     "\\\\begin{document}", sep = "\\n")
 PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
-           footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
+           footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1,
+           subheadings = subheadings)
 cat("\\\\clearpage\\n")
 PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)

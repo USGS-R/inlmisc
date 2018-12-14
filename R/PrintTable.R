@@ -8,7 +8,7 @@
 #'   Data table to print.
 #' @param colheadings 'character' vector or 'list'.
 #'   Column headings.
-#'   Where a 'list' can be used to make a column header span multiple columns.
+#'   A 'list' can be used to make a column header span multiple columns.
 #'   List components inlcude:
 #'   \code{"text"}, a 'character' vector that specifies the text that makes up each header; and
 #'   \code{"cols"}, a 'integer' vector that specifies the number of columns to span for each header.
@@ -46,13 +46,16 @@
 #' @param landscape 'logical' flag.
 #'   If true, conforming PDF viewers will display the table in landscape orientation.
 #'   This option requires \code{\\usepackage[pdftex]{lscape}} in the LaTeX preamble.
+#' @param subheadings 'character' vector.
+#'   Column subheadings.
+#'   Length equal to the number of columns in data table.
 #' @param ...
 #'   Additional arguments to be passed to the \code{\link[xtable]{print.xtable}} function.
 #'   The arguments \code{type}, \code{hline.after} and \code{add.to.row} should not be included.
 #'
 #' @details
-#'   Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
-#'   \code{\\usepackage{makecell}} in the LaTeX preamble.
+#'   Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
+#'   \code{\\usepackage{makecell}}, and \code{\\usepackage{multirow}} in the LaTeX preamble.
 #'
 #' @return Invisible \code{NULL}
 #'
@@ -66,12 +69,13 @@
 #'
 #' @examples
 #' d <- datasets::iris[, c(5, 1:4)]
-#' colheadings <- list("text" = c("Species", "Sepal \\\\ (cm)", "Petal \\\\ (cm)"),
+#' colheadings <- list("text" = c("Species", "Sepal", "Petal"),
 #'                     "cols" = c(1, 2, 2))
+#' subheadings <- c("", "Length", "Width", "Length", "Width")
 #' align <- c("l", "c", "c", "c", "c")
 #' digits <- c(0, 1, 1, 1, 1)
-#' title <- "Measurements of sepal length and width and petal length and width,
-#'           for three species of Iris flower."
+#' title <- "Measurements of sepal length and width and petal length and width
+#'           in centimeters, for three species of Iris flower."
 #' headnotes <- "\\textbf{Species of Iris}: includes setosa, versicolor, and virginica.
 #'               \\textbf{Abbreviations}: cm, centimeters"
 #' levels(d[[1]]) <- sprintf("%s\\footnotemark[%d]", levels(d[[1]]), 1:3)
@@ -79,7 +83,8 @@
 #'                            c("Wild Flag", "Blue Flag", "Virginia")), collapse = "\\\\")
 #' hline <- utils::tail(which(!duplicated(d[[1]])), -1) - 1L
 #' PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
-#'            footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
+#'            footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1,
+#'            subheadings = subheadings)
 #'
 #' \dontrun{
 #' sink("table-example.tex")
@@ -87,13 +92,15 @@
 #'     "\\usepackage[labelsep=period,labelfont=bf]{caption}",
 #'     "\\usepackage{booktabs}",
 #'     "\\usepackage{makecell}",
+#'     "\\usepackage{multirow}",
 #'     "\\usepackage[pdftex]{lscape}",
 #'     "\\makeatletter",
 #'     "\\setlength{\\@fptop}{0pt}",
 #'     "\\makeatother",
 #'     "\\begin{document}", sep = "\n")
 #' PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
-#'            footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
+#'            footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1,
+#'            subheadings = subheadings)
 #' cat("\\clearpage\n")
 #' PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
 #'            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
@@ -111,13 +118,15 @@
 
 PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
                        title=NULL, headnotes=NULL, footnotes=NULL, nrec=nrow(d),
-                       hline=NULL, na="--", rm_dup=NULL, landscape=FALSE, ...) {
+                       hline=NULL, na="--", rm_dup=NULL, landscape=FALSE,
+                       subheadings=NULL, ...) {
 
   stopifnot(inherits(d, c("matrix", "data.frame")))
   if (is.list(colheadings))
     checkmate::assertList(colheadings, types=c("character", "integerish", "factor"))
   else
-    checkmate::assertCharacter(colheadings, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
+    checkmate::assertCharacter(colheadings, len=ncol(d), null.ok=TRUE)
+  checkmate::assertCharacter(subheadings, len=ncol(d), null.ok=TRUE)
   checkmate::assertCharacter(align, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
   checkmate::assertIntegerish(digits, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
   checkmate::assertString(label, null.ok=TRUE)
@@ -132,25 +141,61 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
 
   d <- as.data.frame(d, stringsAsFactors=FALSE)
 
+  font <- "\\normalfont\\bfseries\\sffamily"
+
   if (is.list(colheadings)) {
-    text <- colheadings$text
+    h1 <- colheadings$text
     cols <- colheadings$cols
   } else {
-    text <- colheadings
-    cols <- NULL
+    h1 <- colheadings
+    cols <- rep(1L, ncol(d))
   }
-  if (is.null(text)) text <- colnames(d)
-  text <- sprintf("{\\normalfont\\bfseries\\sffamily \\makecell{%s}}", text)
-  if (!is.null(cols)) {
-    stopifnot(sum(cols) == ncol(d))
-    text <- vapply(seq_along(text), function(i) {
-      if (cols[i] == 1) return(text[i])
-      sprintf("\\multicolumn{%d}{c}%s", cols[i], text[i])
-    }, "")
+  if (is.null(h1)) h1 <- colnames(d)
+  stopifnot(sum(cols) == ncol(d))
+
+  h2 <- subheadings
+
+  h1[is.na(h1)] <- ""
+  is <- h1 != ""
+  h1[is] <- sprintf("{%s \\makecell{%s}}", font, h1[is])
+
+  line <- NULL
+  if (!is.null(h2)) {
+    h2[is.na(h2)] <- ""
+    is <- h2 != ""
+    h2[is] <- sprintf("{%s \\makecell{%s}}", font, h2[is])
+    s <- character()
+    cnt <- 0L
+    for (i in seq_along(h1)) {
+      idx <- cnt + 1L
+      cnt <- cnt + cols[i]
+      is <- all(h2[idx:cnt] == "")
+      if (is)
+        h1[i] <- sprintf("\\multirow{2}{*}{%s}", h1[i])
+      else
+        line <- paste0(line, sprintf("\\cmidrule(lr){%d-%d}", idx, cnt))
+      if (is & cols[i] > 1)
+        x <- sprintf("\\multicolumn{%d}{c}{}", cols[i])
+      else
+        x <- h2[idx:cnt]
+      s <- c(s, x)
+    }
+    h2 <- s
   }
+
+  h1 <- vapply(seq_along(h1), function(i) {
+    if (cols[i] == 1) return(h1[i])
+    sprintf("\\multicolumn{%d}{c}{%s}", cols[i], h1[i])
+  }, "")
+
   add.to.row <- list()
   add.to.row$pos <- list(0)
-  add.to.row$command <- paste(paste(text, collapse=" & "), "\\\\\n")
+  cmd <- paste0(paste(h1, collapse=" & "), " \\\\ ", line, "\n")
+  if (!is.null(h2))
+    cmd[2] <- paste(paste(h2, collapse=" & "), "\\\\\n")
+  if (methods::hasArg("include.rownames") && list(...)$include.rownames)
+    cmd <- paste("&", cmd)
+  add.to.row$command <- paste(cmd, collapse="")
 
   cap1 <- strwrap(title, width=.Machine$integer.max)
   cap2 <- strwrap(headnotes, width=.Machine$integer.max)
