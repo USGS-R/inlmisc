@@ -8,7 +8,7 @@
 #'   Data table to print.
 #' @param colheadings 'character' vector, 'matrix', or 'data.frame'.
 #'   Column headings and spanners.
-#'   Span columns and (or) rows by repeating adjacent element values.
+#'   Combine columns and (or) rows by repeating adjacent element values.
 #'   Use \code{\\\\\\\\} to code a line break.
 #' @param align 'character' vector.
 #'   Column alignment.

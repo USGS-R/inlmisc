@@ -15,7 +15,7 @@ Data table to print.}
 
 \item{colheadings}{'character' vector, 'matrix', or 'data.frame'.
 Column headings and spanners.
-Span columns and (or) rows by repeating adjacent element values.
+Combine columns and (or) rows by repeating adjacent element values.
 Use \code{\\\\\\\\} to code a line break.}
 
 \item{align}{'character' vector.
