@@ -7,8 +7,10 @@
 #' @param d 'data.frame' or 'matrix'.
 #'   Data table to print.
 #' @param colheadings 'character' vector, 'matrix', or 'data.frame'.
-#'   Column headings and spanners.
-#'   Combine columns and (or) rows by repeating adjacent element values.
+#'   Column headings.
+#'   For table objects, rows represent layers of headings (stacked headings).
+#'   The number of columns (or vector length) must equal the number of columns in argument \code{d}.
+#'   A column heading can span multiple columns by repeating adjacent headings.
 #'   Use \code{\\\\\\\\} to code a line break.
 #' @param align 'character' vector.
 #'   Column alignment.
@@ -63,7 +65,7 @@
 #' @examples
 #' d <- datasets::iris[, c(5, 1:4)]
 #' colheadings <- rbind(c("Species", rep("Sepal", 2), rep("Petal", 2)),
-#'                      c("Species", rep(c("Length \\\\ (cm)", "Width \\\\ (cm)"), 2)))
+#'                      c("", rep(c("Length", "Width"), 2)))
 #' align <- c("l", "c", "c", "c", "c")
 #' digits <- c(0, 1, 1, 1, 1)
 #' title <- "Measurements of sepal length and width and petal length and width
@@ -180,7 +182,8 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     x[is] <- sprintf("{%s \\makecell{%s}}", font, x[is])
 
     is <- rows > 1
-    x[is] <- sprintf("\\multirow{%d}{*}{%s}", rows[is], x[is])
+    fmt <- "\\multirow{%d}{*}[-0.5\\dimexpr \\aboverulesep + \\belowrulesep + \\cmidrulewidth]{%s}"
+    x[is] <- sprintf(fmt, rows[is], x[is])
 
     is <- cols > 1
     x[is] <- sprintf("\\multicolumn{%d}{c}{%s}", cols[is], x[is])

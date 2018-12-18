@@ -14,8 +14,10 @@ PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
 Data table to print.}
 
 \item{colheadings}{'character' vector, 'matrix', or 'data.frame'.
-Column headings and spanners.
-Combine columns and (or) rows by repeating adjacent element values.
+Column headings.
+For table objects, rows represent layers of headings (stacked headings).
+The number of columns (or vector length) must equal the number of columns in argument \code{d}.
+A column heading can span multiple columns by repeating adjacent headings.
 Use \code{\\\\\\\\} to code a line break.}
 
 \item{align}{'character' vector.
@@ -79,7 +81,7 @@ Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
 \examples{
 d <- datasets::iris[, c(5, 1:4)]
 colheadings <- rbind(c("Species", rep("Sepal", 2), rep("Petal", 2)),
-                     c("Species", rep(c("Length \\\\\\\\ (cm)", "Width \\\\\\\\ (cm)"), 2)))
+                     c("", rep(c("Length", "Width"), 2)))
 align <- c("l", "c", "c", "c", "c")
 digits <- c(0, 1, 1, 1, 1)
 title <- "Measurements of sepal length and width and petal length and width
