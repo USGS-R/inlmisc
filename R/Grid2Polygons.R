@@ -10,7 +10,8 @@
 #' @param zcol 'character' string or 'integer' count.
 #'    Layer to extract from a multi-layer spatial grid.
 #' @param level 'logical' flag.
-#'    If true, a set of levels is used to partition the range of attribute values, its default is false.
+#'    If true, a set of levels is used to partition the range of attribute values,
+#'    its default is false.
 #' @param at 'numeric' vector.
 #'    Breakpoints along the range of attribute values.
 #' @param cuts 'integer' count.
@@ -23,7 +24,8 @@
 #'    Lower and upper limits of the spatial grid,
 #'    data outside these limits is excluded.
 #' @param zlim 'numeric' vector of length 2.
-#'    Minimum and maximum limits of the attribute variable, data outside these limits is excluded.
+#'    Minimum and maximum limits of the attribute variable,
+#'    data outside these limits is excluded.
 #' @param ply 'SpatialPolygons', or 'SpatialGridDataFrame'.
 #'    Cropping polygon
 #'
@@ -35,20 +37,19 @@
 #'   with clockwise meaning island, and counter-clockwise meaning hole.
 #'
 #' @note The traditional R graphics model does not draw polygon holes correctly,
-#'   holes overpaint their containing 'Polygon' object using a user defined background color (white by default).
+#'   holes overpaint their containing 'Polygon' object using
+#'   a user defined background color (white by default).
 #'   Polygon holes are now rendered correctly using the \code{plot} method for
-#'   spatial polygons (\code{\link{SpatialPolygons-class}}), see \code{\link{polypath}} for more details.
+#'   spatial polygons (\code{\link{SpatialPolygons-class}}),
+#'   see \code{\link{polypath}} for more details.
 #'   The Trellis graphics model appears to rely on the traditional method so
 #'   use caution when plotting with \code{\link[sp]{spplot}}.
 #'
-#' @note As an alternative, consider using the \code{\link[raster]{rasterToPolygons}} function
-#'   in the \pkg{raster} package, setting \code{dissolve = TRUE}.
-#'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @references A general explanation of the algorithm provided
-#'   \href{https://stackoverflow.com/questions/643995/algorithm-to-merge-adjacent-rectangles-into-polygon}{here};
-#'   inspiration provided \href{https://menugget.blogspot.com/2012/04/create-polygons-from-matrix.html}{here}.
+#' @seealso As an alternative, consider using the
+#'   \code{\link[raster]{rasterToPolygons}} function
+#'   in the \pkg{raster} package, setting \code{dissolve = TRUE}.
 #'
 #' @keywords manip
 #'
@@ -133,7 +134,9 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
                           ply=NULL) {
 
   # check arguments
-  stopifnot(inherits(grd, c("BasicRaster", "SpatialPixelsDataFrame", "SpatialGridDataFrame")))
+  stopifnot(inherits(grd, c("BasicRaster",
+                            "SpatialPixelsDataFrame",
+                            "SpatialGridDataFrame")))
   checkmate::qassert(zcol, c("S1", "X1[0,)"))
   checkmate::assertFlag(level)
   checkmate::assertNumeric(at, any.missing=FALSE, min.len=2, null.ok=TRUE)
@@ -151,8 +154,10 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   # crop grid data using polygon argument
   if (!is.null(ply)) {
     crs <- raster::crs(grd)
-    if (is.na(sp::proj4string(ply))) sp::proj4string(ply) <- crs
-    if (!sp::identicalCRS(grd, ply)) ply <- sp::spTransform(ply, crs)
+    if (is.na(sp::proj4string(ply)))
+      sp::proj4string(ply) <- crs
+    if (!sp::identicalCRS(grd, ply))
+      ply <- sp::spTransform(ply, crs)
     grd <- raster::crop(grd, ply, snap="out")
   }
 
@@ -181,7 +186,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
       else
         at <- seq(zlim[1], zlim[2], length.out=cuts)
     }
-    zc <- at[1:(length(at) - 1)] + diff(at) / 2
+    zc <- at[seq_len(length(at) - 1L)] + diff(at) / 2
     z <- zc[findInterval(grd[], at, rightmost.closed=TRUE)]
   } else {
     z <- as.numeric(grd[])
@@ -198,15 +203,15 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   ymax <- raster::ymax(grd)
   x <- seq(xmin, xmax, by=dx)
   y <- seq(ymin, ymax, by=dy)
-  nnodes <- (m + 1) * (n + 1)
+  nnodes <- (m + 1L) * (n + 1L)
   nelems <- m * n
-  nodes <- 1:nnodes
-  elems <- 1:nelems
-  coords <- cbind(x=rep(x, m + 1), y=rep(rev(y), each=n + 1))
-  n1 <- unlist(lapply(1:m, function(i) seq(1, n) + (i - 1) * (n + 1)))
-  n2 <- n1 + 1
-  n4 <- unlist(lapply(1:m, function(i) seq(1, n) + i * (n + 1)))
-  n3 <- n4 + 1
+  nodes <- seq_len(nnodes)
+  elems <- seq_len(nelems)
+  coords <- cbind(x=rep(x, m + 1L), y=rep(rev(y), each=n + 1L))
+  n1 <- unlist(lapply(seq_len(m), function(i) seq(1, n) + (i - 1L) * (n + 1L)))
+  n2 <- n1 + 1L
+  n4 <- unlist(lapply(seq_len(m), function(i) seq(1, n) + i * (n + 1L)))
+  n3 <- n4 + 1L
   elem.nodes <- cbind(n1, n2, n3, n4)
 
   # define segments in each element
@@ -224,7 +229,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
 
   # find polygon nodes for each level
   poly.nodes <- lapply(levs, function(i) {
-    .FindPolyNodes(segs[segs[, "z"] == i, c("a", "b")])
+    FindPolyNodes(segs[segs[, "z"] == i, c("a", "b")])
   })
 
   # build lists of 'Polygon' objects
@@ -252,21 +257,26 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
 }
 
 
-# Find polygon nodes
-#
-#  input:  s          - 'matrix'.
-#                       A 2-column table giving start- and end-node
-#                       indexes for each segment in a level.
-#  output: poly.nodes - 'list'.
-#                       Vector components giving node indexes for each
-#                       polygon ring. The status of the polygon as a hole or
-#                       an island is taken from the ring direction, with
-#                       clockwise meaning island, and counter-clockwise
-#                       meaning hole.
+#' Find Polygon Nodes
+#'
+#' @param s 'matrix'.
+#'    A 2-column table giving start- and end-node indexes for each segment in a level.
+#'
+#' @return Returns an object of class 'list'.
+#'   Vector components giving node indexes for each polygon ring.
+#'   The status of the polygon as a hole or an island is taken from the ring direction,
+#'   with clockwise meaning island, and counter-clockwise meaning hole.
+#'
+#' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+#'
+#' @keywords internal
+#'
 
-.FindPolyNodes <- function(s) {
+FindPolyNodes <- function(s) {
 
   checkmate::assertMatrix(s, mode="integerish", any.missing=FALSE, ncols=2)
+
+  # https://stackoverflow.com/questions/643995
 
   # remove duplicate segments
   id <- paste(apply(s, 1, min), apply(s, 1, max))

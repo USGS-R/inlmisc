@@ -13,8 +13,11 @@ PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
 \item{d}{'data.frame' or 'matrix'.
 Data table to print.}
 
-\item{colheadings}{'character' vector.
+\item{colheadings}{'character' vector, 'matrix', or 'data.frame'.
 Column headings.
+For table objects, rows represent layers of headings (stacked headings).
+The number of columns (or vector length) must equal the number of columns in argument \code{d}.
+A column heading can span multiple columns by repeating adjacent headings.
 Use \code{\\\\\\\\} to code a line break.}
 
 \item{align}{'character' vector.
@@ -72,17 +75,16 @@ The applied output format attempts to adhere to the design recommendations
 for tables in United States Geological Survey (USGS) publications.
 }
 \details{
-Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}}, and
-  \code{\\usepackage{makecell}} in the LaTeX preamble.
+Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
+  \code{\\usepackage{makecell}}, and \code{\\usepackage{multirow}} in the LaTeX preamble.
 }
 \examples{
 d <- datasets::iris[, c(5, 1:4)]
-colheadings <- c("Species of Iris",
-                 "Sepal length \\\\\\\\ (cm)", "Sepal width \\\\\\\\ (cm)",
-                 "Petal length \\\\\\\\ (cm)", "Petal width \\\\\\\\ (cm)")
+colheadings <- rbind(c("Species", rep("Sepal", 2), rep("Petal", 2)),
+                     c("", rep(c("Length", "Width"), 2)))
 align <- c("l", "c", "c", "c", "c")
 digits <- c(0, 1, 1, 1, 1)
-title <- "Measurements of sepal length and width and petal length and width,
+title <- "Measurements of sepal length and width and petal length and width
           for three species of Iris flower."
 headnotes <- "\\\\textbf{Species of Iris}: includes setosa, versicolor, and virginica.
               \\\\textbf{Abbreviations}: cm, centimeters"
@@ -99,6 +101,7 @@ cat("\\\\documentclass{article}",
     "\\\\usepackage[labelsep=period,labelfont=bf]{caption}",
     "\\\\usepackage{booktabs}",
     "\\\\usepackage{makecell}",
+    "\\\\usepackage{multirow}",
     "\\\\usepackage[pdftex]{lscape}",
     "\\\\makeatletter",
     "\\\\setlength{\\\\@fptop}{0pt}",

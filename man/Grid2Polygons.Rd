@@ -16,7 +16,8 @@ Spatial grid}
 Layer to extract from a multi-layer spatial grid.}
 
 \item{level}{'logical' flag.
-If true, a set of levels is used to partition the range of attribute values, its default is false.}
+If true, a set of levels is used to partition the range of attribute values,
+its default is false.}
 
 \item{at}{'numeric' vector.
 Breakpoints along the range of attribute values.}
@@ -35,7 +36,8 @@ Lower and upper limits of the spatial grid,
 data outside these limits is excluded.}
 
 \item{zlim}{'numeric' vector of length 2.
-Minimum and maximum limits of the attribute variable, data outside these limits is excluded.}
+Minimum and maximum limits of the attribute variable,
+data outside these limits is excluded.}
 
 \item{ply}{'SpatialPolygons', or 'SpatialGridDataFrame'.
 Cropping polygon}
@@ -56,14 +58,13 @@ and result in much "cleaner" images when plotted.
 }
 \note{
 The traditional R graphics model does not draw polygon holes correctly,
-  holes overpaint their containing 'Polygon' object using a user defined background color (white by default).
+  holes overpaint their containing 'Polygon' object using
+  a user defined background color (white by default).
   Polygon holes are now rendered correctly using the \code{plot} method for
-  spatial polygons (\code{\link{SpatialPolygons-class}}), see \code{\link{polypath}} for more details.
+  spatial polygons (\code{\link{SpatialPolygons-class}}),
+  see \code{\link{polypath}} for more details.
   The Trellis graphics model appears to rely on the traditional method so
   use caution when plotting with \code{\link[sp]{spplot}}.
-
-As an alternative, consider using the \code{\link[raster]{rasterToPolygons}} function
-  in the \pkg{raster} package, setting \code{dissolve = TRUE}.
 }
 \examples{
 # Example 1
@@ -135,10 +136,10 @@ cols <- GetColors(length(plys), scheme = "DEM screen")
 sp::plot(plys, col = cols, border = "#515151")
 
 }
-\references{
-A general explanation of the algorithm provided
-  \href{https://stackoverflow.com/questions/643995/algorithm-to-merge-adjacent-rectangles-into-polygon}{here};
-  inspiration provided \href{https://menugget.blogspot.com/2012/04/create-polygons-from-matrix.html}{here}.
+\seealso{
+As an alternative, consider using the
+  \code{\link[raster]{rasterToPolygons}} function
+  in the \pkg{raster} package, setting \code{dissolve = TRUE}.
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

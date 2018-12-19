@@ -18,11 +18,6 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @references A detailed explanation of the problem is provided
-#' \href{https://stackoverflow.com/questions/7726034/how-r-formats-posixct-with-fractional-seconds}{here};
-#' solution provided
-#' \href{https://stackoverflow.com/questions/15383057/accurately-converting-from-character-posixct-character-with-sub-millisecond-da}{here}.
-#'
 #' @seealso \code{\link{strptime}}
 #'
 #' @keywords manip
@@ -49,6 +44,9 @@ POSIXct2Character <- function(x, fmt="%Y-%m-%d %H:%M:%OS3") {
 
   checkmate::assertClass(x, "POSIXt")
   checkmate::assertString(fmt)
+
+  # https://stackoverflow.com/questions/7726034
+  # https://stackoverflow.com/questions/15383057
 
   pos <- gregexpr("%OS[[:digit:]]+", fmt)[[1]]
   if (pos > 0) {

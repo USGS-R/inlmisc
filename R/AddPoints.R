@@ -229,7 +229,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     is_lt <- any(z < utils::head(breaks, 1))
     is_gt <- any(z > utils::tail(breaks, 1))
     interval <- findInterval(z, breaks, rightmost.closed=TRUE)
-    s <- formatC(breaks, format=NULL, big.mark=",")
+    s <- formatC(breaks, format=format, big.mark=",")
     ss <- sprintf(">%s to %s", utils::head(s, -1), utils::tail(s, -1))
     if (is_gt) ss <- c(ss, sprintf(">%s", s[length(s)]))
     if (is_lt) {
@@ -239,7 +239,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     }
     if (is.null(break.labels)) break.labels <- ss
 
-    # https://stackoverflow.com/questions/33930689/how-to-get-next-number-in-sequence-in-r
+    # https://stackoverflow.com/questions/33930689
     SeqNext <- function(x, npred=1) {
       n <- length(x)
       d <- data.frame(x=seq_along(x), y=x)

@@ -82,6 +82,7 @@
 \usepackage{makecell}  % tabular column heads and multilined cells
 \usepackage{verbatimbox}  % deposit verbatim text in a box
 \usepackage{dcolumn}  % align on the decimal point of numbers in tabular columns
+\usepackage{multirow}  % tabular cells spanning multiple rows
 
 
 % Captions
@@ -175,6 +176,8 @@
 \newcommand{\R}{{\normalfont\textsf{R}}{}}  % set format for R-programming character
 
 \renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}  % remove blank lines around code blocks
+
+\extrafloats{1000}  % allocate more floats
 
 
 % Links

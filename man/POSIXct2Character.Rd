@@ -43,12 +43,6 @@ POSIXct2Character(date.time, fmt = "\%d/\%m/\%Y \%H:\%M:\%OS2")
 POSIXct2Character(date.time, fmt = "\%H:\%M:\%OS3 \%Y-\%m-\%d")
 
 }
-\references{
-A detailed explanation of the problem is provided
-\href{https://stackoverflow.com/questions/7726034/how-r-formats-posixct-with-fractional-seconds}{here};
-solution provided
-\href{https://stackoverflow.com/questions/15383057/accurately-converting-from-character-posixct-character-with-sub-millisecond-da}{here}.
-}
 \seealso{
 \code{\link{strptime}}
 }
