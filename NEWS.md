@@ -1,5 +1,7 @@
 # inlmisc 0.4.4.9000
 
+- In `ToScientific` function, add `zero` argument, used to substitute a string for values of zero.
+
 - In `PrintTable` function: allow `colheadings` argument to be a data table,
   used to make column headings with spanners.
 

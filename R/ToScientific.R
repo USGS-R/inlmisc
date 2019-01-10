@@ -12,6 +12,9 @@
 #' @param na 'character' string.
 #'   Value to use for missing values (\code{NA}).
 #'   By default, no string substitution is made for missing values.
+#' @param zero 'character' string.
+#'   Value to use for zero values.
+#'   Specify as \code{NULL} to prevent string substitution.
 #' @param delimiter 'character' string.
 #'   Delimiter for LaTeX mathematical mode, inline (\code{$...$}) by default.
 #'   Does not apply to missing value strings.
@@ -53,8 +56,8 @@
 #'
 
 ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
-                         na=as.character(NA), delimiter="$", scipen=NULL,
-                         big.mark=",", ...) {
+                         na=as.character(NA), zero="0", delimiter="$",
+                         scipen=NULL, big.mark=",", ...) {
 
   # check arguments
   checkmate::assertNumeric(x)
@@ -64,13 +67,14 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   else
     type <- match.arg(type)
   checkmate::assertString(na, na.ok=TRUE)
+  checkmate::assertString(zero, null.ok=TRUE)
   checkmate::assertString(delimiter)
   checkmate::assertInt(scipen, na.ok=TRUE, null.ok=TRUE)
   checkmate::assertString(big.mark)
 
   x <- as.numeric(x)
 
-  is_zero <- x %in% 0
+  is_zero <- if (is.null(zero)) rep(FALSE, length(x)) else x %in% 0
   x[is_zero] <- NA
 
   is_finite <- is.finite(x)
@@ -84,10 +88,11 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
 
   # scientific notation
   if (any(is_sci)) {
-    m <- rep(as.numeric(NA), length(x))
+    m <- rep(0, length(x))
     n <- m
-    n[is_sci] <- floor(log(abs(x[is_sci]), 10))
-    m[is_sci] <- x[is_sci] / 10^n[is_sci]
+    is <- is_sci & !x %in% 0
+    n[is] <- floor(log(abs(x[is]), 10))
+    m[is] <- x[is] / 10^n[is]
   }
 
   # decimal places
@@ -97,7 +102,7 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   # latex markup
   if (type == "latex") {
     s <- rep(na, length(x))
-    s[is_zero] <- "0"
+    s[is_zero] <- zero
     if (any(is_fix))
       s[is_fix] <- formatC(x[is_fix], digits_fix, width=1, format="f", big.mark=big.mark)
     if (any(is_sci)) {
@@ -111,7 +116,7 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
   } else {
     s <- do.call("expression", lapply(seq_along(x), function(i) {
       if (is_zero[i]) {
-        return("0")
+        return(zero)
       } else if (is.na(x[i])) {
         return(substitute(X, list(X=na)))
       } else if (is_fix[i]) {
