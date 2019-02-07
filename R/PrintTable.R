@@ -29,7 +29,8 @@
 #'   Label placed below the table caption to provide information pertaining to the caption,
 #'   to the table as a whole, or to the column headings.
 #' @param footnotes 'character' string.
-#'   Label placed at the end of the table to provide explanations of individual entries in the table.
+#'   Label placed at the end of the table to provide explanations
+#'   of individual entries in the table.
 #' @param nrec 'integer' vector of length 1 or 2, value is recycled as necessary.
 #'   Maximum number of records to show on the first page, and every subsequent page, respectively.
 #' @param hline 'integer' vector.
@@ -84,8 +85,10 @@
 #' \dontrun{
 #' sink("table-example.tex")
 #' cat("\\documentclass{article}",
-#'     "\\usepackage[labelsep=period,labelfont=bf]{caption}",
+#'     "\\usepackage[labelsep = period, labelfont = bf]{caption}",
 #'     "\\usepackage{siunitx}",
+#'     "\\sisetup{input-ignore = {,}, input-decimal-markers = {.},",
+#'     "          group-separator = {,}, group-minimum-digits = 4}",
 #'     "\\usepackage{booktabs}",
 #'     "\\usepackage{makecell}",
 #'     "\\usepackage{multirow}",
@@ -94,19 +97,28 @@
 #'     "\\setlength{\\@fptop}{0pt}",
 #'     "\\makeatother",
 #'     "\\begin{document}", sep = "\n")
+#'
 #' PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
 #'            footnotes = footnotes, hline = hline, nrec = c(41, 42), rm_dup = 1)
+#'
 #' cat("\\clearpage\n")
 #' PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
 #'            title = "Carbon dioxide uptake in grass plants.", nrec = 45, rm_dup = 3)
+#'
 #' cat("\\clearpage\n")
-#' PrintTable(datasets::mtcars, title = "Motor trend car road tests.",
+#' digits <- c(1, 0, 1, 0, 2, 3, 2, 0, 0, 0, 0)
+#' PrintTable(datasets::mtcars, digits = digits, title = "Motor trend car road tests.",
 #'            landscape = TRUE, include.rownames = TRUE)
+#'
 #' cat("\\clearpage\n")
-#' m <- matrix(rep(prettyNum(c(1.2, 1.23, 1121.2, 184, NA, 0.4)), 2), ncol = 2)
-#' colheadings <- paste("Wide heading", 1:ncol(m))
-#' align <- c("S", "S")
-#' PrintTable(m, colheadings, align)
+#' d <- data.frame(matrix(rep(c(1.2, 1.23, 1121.2, 184, NA, pi, 0.4), 4), ncol = 4))
+#' d[, 1] <- prettyNum(d[, 1])
+#' d[, 4] <- formatC(d[, 4], digits = 2, format = "e")
+#' colheadings <- paste("Wide heading", 1:ncol(d))
+#' align <- c("S", "S", "S[round-mode = places, round-precision = 2]",
+#'            "S[scientific-notation = true, table-format = 1.2e+1]")
+#' PrintTable(d, colheadings, align)
+#'
 #' cat("\\end{document}\n")
 #' sink()
 #' tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation
@@ -135,14 +147,19 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
   }
   checkmate::assertMatrix(colheadings, ncols=ncol(d), min.rows=1)
 
-  checkmate::assertCharacter(align, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
-  checkmate::assertIntegerish(digits, any.missing=FALSE, len=ncol(d), null.ok=TRUE)
+  checkmate::assertCharacter(align, any.missing=FALSE, min.len=1, max.len=ncol(d), null.ok=TRUE)
+  if (!is.null(align)) align <- rep(align, length.out=ncol(d))
+
+  checkmate::assertIntegerish(digits, any.missing=FALSE, min.len=1, max.len=ncol(d), null.ok=TRUE)
+  if (!is.null(digits)) digits <- rep(digits, length.out=ncol(d))
+
   checkmate::assertString(label, null.ok=TRUE)
   checkmate::assertString(title, null.ok=TRUE)
   checkmate::assertString(headnotes, null.ok=TRUE)
   checkmate::assertString(footnotes, null.ok=TRUE)
   checkmate::assertIntegerish(nrec, lower=1, any.missing=FALSE, min.len=1, max.len=2)
-  checkmate::assertIntegerish(hline, lower=1, upper=nrow(d) - 1, any.missing=FALSE, null.ok=TRUE)
+  checkmate::assertIntegerish(hline, lower=1, upper=nrow(d) - 1,
+                              any.missing=FALSE, null.ok=TRUE)
   checkmate::assertString(na, null.ok=TRUE)
   checkmate::assertInt(rm_dup, lower=1, upper=ncol(d), null.ok=TRUE)
   checkmate::assertFlag(landscape)
@@ -264,7 +281,9 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     row_align <- ifelse(is.numeric(row_names), "r", "l")
     row_digits <- ifelse(is.double(row_names), format.info(row_names)[2], 0)
     if (!is.null(align)) xtable::align(tbl) <- c(row_align, align)
-    if (!is.null(digits)) xtable::digits(tbl) <- c(row_digits, digits)
+
+    x <- switch(1 + is.null(digits), digits, rep(getOption("digits"), ncol(d)))
+    xtable::digits(tbl) <- c(row_digits, x)
 
     hline.after <- sort(unique(stats::na.omit(c(-1, 0, match(c(hline, nrow(d)), idxs)))))
 
