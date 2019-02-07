@@ -6,8 +6,8 @@
 \usage{
 PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
   label = NULL, title = NULL, headnotes = NULL, footnotes = NULL,
-  nrec = nrow(d), hline = NULL, na = "--", rm_dup = NULL,
-  landscape = FALSE, ...)
+  nrec = nrow(d), hline = NULL, na = "\\\\textemdash",
+  rm_dup = NULL, landscape = FALSE, ...)
 }
 \arguments{
 \item{d}{'data.frame' or 'matrix'.
@@ -22,7 +22,8 @@ Use \code{\\\\\\\\} to code a line break.}
 
 \item{align}{'character' vector.
 Column alignment.
-Specify \code{"l"} to left align, \code{"r"} to right align, and \code{"c"} to center align.}
+Specify \code{"l"} to left align, \code{"r"} to right align, \code{"c"} to center align,
+and \code{"S"} to align on the decimal point.}
 
 \item{digits}{'integer' vector.
 Number of digits to display in the corresponding columns.}
@@ -76,7 +77,8 @@ for tables in United States Geological Survey (USGS) publications.
 }
 \details{
 Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
-  \code{\\usepackage{makecell}}, and \code{\\usepackage{multirow}} in the LaTeX preamble.
+  \code{\\usepackage{makecell}}, \code{\\usepackage{multirow}}, and
+  \code{\\usepackage{siunitx}} in the LaTeX preamble.
 }
 \examples{
 d <- datasets::iris[, c(5, 1:4)]
@@ -99,6 +101,7 @@ PrintTable(d, colheadings, align, digits, title = title, headnotes = headnotes,
 sink("table-example.tex")
 cat("\\\\documentclass{article}",
     "\\\\usepackage[labelsep=period,labelfont=bf]{caption}",
+    "\\\\usepackage{siunitx}",
     "\\\\usepackage{booktabs}",
     "\\\\usepackage{makecell}",
     "\\\\usepackage{multirow}",
@@ -115,6 +118,11 @@ PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)], digits = c(0, 0, 0, 0, 1),
 cat("\\\\clearpage\\n")
 PrintTable(datasets::mtcars, title = "Motor trend car road tests.",
            landscape = TRUE, include.rownames = TRUE)
+cat("\\\\clearpage\\n")
+m <- matrix(rep(prettyNum(c(1.2, 1.23, 1121.2, 184, NA, 0.4)), 2), ncol = 2)
+colheadings <- paste("Wide heading", 1:ncol(m))
+align <- c("S", "S")
+PrintTable(m, colheadings, align)
 cat("\\\\end{document}\\n")
 sink()
 tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation

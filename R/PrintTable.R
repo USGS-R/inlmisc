@@ -14,7 +14,8 @@
 #'   Use \code{\\\\\\\\} to code a line break.
 #' @param align 'character' vector.
 #'   Column alignment.
-#'   Specify \code{"l"} to left align, \code{"r"} to right align, and \code{"c"} to center align.
+#'   Specify \code{"l"} to left align, \code{"r"} to right align, \code{"c"} to center align,
+#'   and \code{"S"} to align on the decimal point.
 #' @param digits 'integer' vector.
 #'   Number of digits to display in the corresponding columns.
 #' @param label 'character' string.
@@ -50,7 +51,8 @@
 #'
 #' @details
 #'   Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
-#'   \code{\\usepackage{makecell}}, and \code{\\usepackage{multirow}} in the LaTeX preamble.
+#'   \code{\\usepackage{makecell}}, \code{\\usepackage{multirow}}, and
+#'   \code{\\usepackage{siunitx}} in the LaTeX preamble.
 #'
 #' @return Invisible \code{NULL}
 #'
@@ -83,6 +85,7 @@
 #' sink("table-example.tex")
 #' cat("\\documentclass{article}",
 #'     "\\usepackage[labelsep=period,labelfont=bf]{caption}",
+#'     "\\usepackage{siunitx}",
 #'     "\\usepackage{booktabs}",
 #'     "\\usepackage{makecell}",
 #'     "\\usepackage{multirow}",
@@ -99,6 +102,11 @@
 #' cat("\\clearpage\n")
 #' PrintTable(datasets::mtcars, title = "Motor trend car road tests.",
 #'            landscape = TRUE, include.rownames = TRUE)
+#' cat("\\clearpage\n")
+#' m <- matrix(rep(prettyNum(c(1.2, 1.23, 1121.2, 184, NA, 0.4)), 2), ncol = 2)
+#' colheadings <- paste("Wide heading", 1:ncol(m))
+#' align <- c("S", "S")
+#' PrintTable(m, colheadings, align)
 #' cat("\\end{document}\n")
 #' sink()
 #' tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX installation
@@ -110,7 +118,8 @@
 
 PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
                        title=NULL, headnotes=NULL, footnotes=NULL, nrec=nrow(d),
-                       hline=NULL, na="--", rm_dup=NULL, landscape=FALSE, ...) {
+                       hline=NULL, na="\\textemdash", rm_dup=NULL, landscape=FALSE,
+                       ...) {
 
   stopifnot(inherits(d, c("matrix", "data.frame")))
   d <- as.data.frame(d, stringsAsFactors=FALSE)
@@ -185,8 +194,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     fmt <- "\\multirow{%d}{*}[-0.5\\dimexpr \\aboverulesep + \\belowrulesep + \\cmidrulewidth]{%s}"
     x[is] <- sprintf(fmt, rows[is], x[is])
 
-    is <- cols > 1
-    x[is] <- sprintf("\\multicolumn{%d}{c}{%s}", cols[is], x[is])
+    x <- sprintf("\\multicolumn{%d}{c}{%s}", cols, x)
 
     cmd[i] <- paste0(paste(x, collapse=" & "), " \\\\ ", line, "\n")
   }
