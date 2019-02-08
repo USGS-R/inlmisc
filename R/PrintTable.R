@@ -282,7 +282,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     row_digits <- ifelse(is.double(row_names), format.info(row_names)[2], 0)
     if (!is.null(align)) xtable::align(tbl) <- c(row_align, align)
 
-    x <- switch(1 + is.null(digits), digits, rep(getOption("digits"), ncol(d)))
+    x <- switch(1 + is.null(digits), digits, rep(3, ncol(d)))
     xtable::digits(tbl) <- c(row_digits, x)
 
     hline.after <- sort(unique(stats::na.omit(c(-1, 0, match(c(hline, nrow(d)), idxs)))))
