@@ -235,11 +235,6 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
     n <- unique(c(cumsum(c(nrec[1], rep(nrec[2], (n - nrec[1]) %/% nrec[2]))), n))
   }
 
-  if (landscape) {
-    cat("\\begin{landscape}\n")
-    on.exit(cat("\\end{landscape}\n"))
-  }
-
   Print <- xtable::print.xtable
   formals(Print)$type <- "latex"
   formals(Print)$caption.placement <- "top"
@@ -255,7 +250,10 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
   formals(Print)$comment <- FALSE
 
   for (i in seq_along(n)) {
+    if (i > 1) cat("\n\\clearpage\n")
     if (i == 2) cat("\\captionsetup[table]{list=no}\n")
+    if (landscape) cat("\\begin{landscape}\n")
+
     if (i == 1) {
       idxs <- 1:n[i]
       caption <- c(sprintf("%s\\par \\medskip [\\footnotesize{%s}]", cap1, cap2), cap1)
@@ -296,6 +294,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
 
     Print(x=tbl, hline.after=hline.after, add.to.row=add.to.row, ...)
 
+    if (landscape) cat("\\end{landscape}\n")
     if (i > 1 && i == length(n)) cat("\\captionsetup[table]{list=yes}\n")
   }
 
