@@ -83,7 +83,7 @@ Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
 }
 \examples{
 d <- datasets::iris[, c(5, 1:4)]
-colheadings <- rbind(c("Species", rep("Sepal", 2), rep("Petal", 2)),
+colheadings <- rbind(c("Species \\\\\\\\ type", rep("Sepal", 2), rep("Petal", 2)),
                      c("", rep(c("Length", "Width"), 2)))
 align <- c("l", "c", "c", "c", "c")
 digits <- c(0, 1, 1, 1, 1)
