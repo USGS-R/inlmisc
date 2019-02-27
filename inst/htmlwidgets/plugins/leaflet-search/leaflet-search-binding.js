@@ -8,7 +8,7 @@ LeafletWidget.methods.addSearchControl = function(group, options) {
     this.search = new L.Control.Search(options);
     this.search.addTo(this);
     this.search.on('search:locationfound', function(e) {
-      if(openPopup && e.layer._popup) {
+      if(options.openPopup && e.layer._popup) {
         e.layer.openPopup();
       }
     });
