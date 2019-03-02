@@ -62,14 +62,14 @@
 #'     "\\captionsetup[figure]{skip=5pt}",
 #'     "\\captionsetup[subfigure]{skip=-5pt, labelfont={bf, it}}",
 #'     "\\renewcommand{\\thesubfigure}{\\Alph{subfigure}}",
-#'     "\\begin{document}\n",
+#'     "\\begin{document}",
 #'     "<<id, echo=FALSE, fig.width=3, fig.height=2, results='asis'>>=",
 #'     "par(mar=c(2.1, 2.1, 1.1, 1.1))",
 #'     "n <- 9",
 #'     "fig <- sprintf('plot(runif(%s))', seq_len(n))",
 #'     "headings <- sprintf('Subfigure caption, n=%s', seq_len(n))",
 #'     "PrintFigure(fig, 3, 2, 'id', title='Figure caption', headings=headings)",
-#'     "@\n",
+#'     "@",
 #'     "\\end{document}",
 #'     file = "figure-example.Rnw", sep = "\n")
 #' knitr::knit2pdf("figure-example.Rnw", clean = TRUE)  # requires TeX installation
@@ -119,7 +119,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
     if (i == n + 1) cat("\\captionsetup[figure]{list=no}\n\n")
 
     if ((i - 1) %% n == 0) {
-      if (nchar(pos) > 1)
+      if (nchar(pos) > 0)
         cat(sprintf("\\begin{figure}[%s]\n", pos))
       else
         cat("\\begin{figure}\n")
@@ -131,13 +131,14 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
     }
 
     cat(sprintf("  \\begin{subfigure}{%.2f\\textwidth}\n", 1 / nc))
-    cat("  \\centering\n")
+    cat("    \\centering\n")
 
     if (!is.na(headings[i])) {
-      if (np > 1)
+      if (np > 1) {
         cat(sprintf("    \\caption{{%s \\label{fig:%s}}}\n", headings[i], label[i]))
-      else
+      } else if (nchar(headings[i]) > 0) {
         cat(sprintf("    \\caption*{{%s}}\n", headings[i]))
+      }
     }
 
     eval(parse(text=fig[i]))
@@ -154,7 +155,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
 
     if (i %% n == 0 || i == np) cat("\\end{figure}\n\n")
 
-    if (i > n && i == np) cat("\\captionsetup[figure]{list=yes}\n\n")
+    if (i > n && i == np) cat("\\captionsetup[figure]{list=yes}\n")
   }
 
   invisible()
