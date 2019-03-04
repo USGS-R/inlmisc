@@ -62,13 +62,14 @@
 #'     "\\captionsetup[figure]{skip=5pt}",
 #'     "\\captionsetup[subfigure]{skip=-5pt, labelfont={bf, it}}",
 #'     "\\renewcommand{\\thesubfigure}{\\Alph{subfigure}}",
-#'     "\\begin{document}\n",
+#'     "\\begin{document}",
 #'     "<<id, echo=FALSE, fig.width=3, fig.height=2, results='asis'>>=",
 #'     "par(mar=c(2.1, 2.1, 1.1, 1.1))",
-#'     "fig <- sprintf('plot(runif(%s))', 1:9)",
-#'     "headings <- sprintf('Subfigure caption, n=%s', 1:9)",
+#'     "n <- 9",
+#'     "fig <- sprintf('plot(runif(%s))', seq_len(n))",
+#'     "headings <- sprintf('Subfigure caption, n=%s', seq_len(n))",
 #'     "PrintFigure(fig, 3, 2, 'id', title='Figure caption', headings=headings)",
-#'     "@\n",
+#'     "@",
 #'     "\\end{document}",
 #'     file = "figure-example.Rnw", sep = "\n")
 #' knitr::knit2pdf("figure-example.Rnw", clean = TRUE)  # requires TeX installation
@@ -118,7 +119,10 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
     if (i == n + 1) cat("\\captionsetup[figure]{list=no}\n\n")
 
     if ((i - 1) %% n == 0) {
-      cat(sprintf("\\begin{figure}[%s]\n", pos))
+      if (nchar(pos) > 0)
+        cat(sprintf("\\begin{figure}[%s]\n", pos))
+      else
+        cat("\\begin{figure}\n")
       if (i > 1) cat("  \\ContinuedFloat\n")
     } else if ((i - 1) %% nc == 0) {
       cat("  \\par\\bigskip\n")
@@ -126,17 +130,20 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
       cat("  \\qquad\n")
     }
 
-    if (np > 1) {
-      cat(sprintf("  \\begin{subfigure}{%.2f\\textwidth}\n", 1 / nc))
-      if (!is.na(headings[i]))
+    cat(sprintf("  \\begin{subfigure}{%.2f\\textwidth}\n", 1 / nc))
+    cat("    \\centering\n")
+
+    if (!is.na(headings[i])) {
+      if (np > 1) {
         cat(sprintf("    \\caption{{%s \\label{fig:%s}}}\n", headings[i], label[i]))
+      } else if (nchar(headings[i]) > 0) {
+        cat(sprintf("    \\caption*{{%s}}\n", headings[i]))
+      }
     }
 
-    # evaluate plotting commands
     eval(parse(text=fig[i]))
 
-    cat("\n")
-    if (np > 1) cat("  \\end{subfigure}\n")
+    cat("\n  \\end{subfigure}\n")
 
     if (!is.na(caption)) {
       caption_lof <- strwrap(title_lof, width=.Machine$integer.max)
@@ -148,7 +155,7 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
 
     if (i %% n == 0 || i == np) cat("\\end{figure}\n\n")
 
-    if (i > n && i == np) cat("\\captionsetup[figure]{list=yes}\n\n")
+    if (i > n && i == np) cat("\\captionsetup[figure]{list=yes}\n")
   }
 
   invisible()
