@@ -172,19 +172,21 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
     }
   }
 
-  if (is.numeric(ylim)) {
+  if (is.null(ylim) || abs(diff(ylim)) < .Machine$double.eps^0.5) {
+    yran <- range(y, na.rm=TRUE)
+    if (abs(diff(yran)) < .Machine$double.eps^0.5) yran[2] <- yran[1]
+    if (ylog && abs(diff(yran)) > 0)
+      yat <- grDevices::axisTicks(log10(yran), TRUE, nint=yn)
+    else
+      yat <- pretty(yran, n=yn, min.n=2)
+    ylim <- range(yat)
+  } else {
     usr <- if (ylog) log10(ylim) else ylim
     if (usr[1] == -Inf) usr[1] <- 0
     for (i in c(0, -1, 1, 0)) {
       yat <- grDevices::axisTicks(usr, ylog, nint=yn + i)
       if (yat[1] == ylim[1] & yat[length(yat)] == ylim[2]) break
     }
-  } else {
-    if (ylog)
-      yat <- grDevices::axisTicks(log10(range(y)), TRUE, nint=yn)
-    else
-      yat <- pretty(range(y, na.rm=TRUE), n=yn, min.n=2)
-    ylim <- range(yat)
   }
 
   n <- ifelse(type == "i", 1, ncol(y))
