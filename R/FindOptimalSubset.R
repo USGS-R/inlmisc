@@ -144,7 +144,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
 
   # set number of islands
   if (is.logical(parallel))
-    numIslands <- if (parallel) parallel::detectCores() else 4L
+    numIslands <- if (parallel) parallel::detectCores(logical=FALSE) else 4L
   else
     numIslands <- parallel
 
