@@ -94,6 +94,9 @@
 
 % References
 \usepackage[backend=bibtex, style=authoryear-comp, maxbibnames=99, maxcitenames=3, natbib=true, dashed=false]{biblatex}
+\setcounter{biburlnumpenalty}{100}
+\setcounter{biburlucpenalty}{100}
+\setcounter{biburllcpenalty}{100}
 \renewcommand\refname{References Cited}
 \DefineBibliographyStrings{english}{andothers={and~others}}
 \setlength{\bibitemsep}{\baselineskip}
@@ -176,13 +179,11 @@
 
 \usepackage[multiple]{footmisc}  % typesetting of footnotes
 
-
-% Links
-\usepackage{url}  % verbatim with url-sensitive line breaks
-
 \usepackage{xcolor}  % control colors
 \definecolor{Red}{rgb}{0.7,0,0}
 \definecolor{Blue}{rgb}{0,0,0.8}
 
+
+% Links
 \usepackage[pdfa, hidelinks, pdflang={en-US}]{hyperref}  % support for hyperlinks
-\hypersetup{colorlinks, urlcolor={Red}, linkcolor={Blue}, citecolor={Blue}, linktoc=page}  % set font color for hyperlinks
+\hypersetup{colorlinks, urlcolor=Red, linkcolor=Blue, citecolor=Blue, linktoc=page}  % set font color for hyperlinks
