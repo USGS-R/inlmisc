@@ -26,11 +26,14 @@ Imports:
     raster,
     rgdal,
     rgeos,
+    rmarkdown,
     scales,
     sp,
     stats,
+    tinytex,
     tools,
-    xtable
+    xtable,
+    yaml
 Suggests:
     alphahull,
     dichromat,

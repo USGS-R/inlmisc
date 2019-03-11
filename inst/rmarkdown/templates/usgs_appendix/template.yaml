@@ -1,0 +1,4 @@
+name: USGS Appendix
+description: >
+ Template for creating an appendix for a U.S. Geological Survey (USGS) publication.
+create_dir: true
