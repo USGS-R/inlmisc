@@ -1,6 +1,6 @@
-#' USGS Appendix Format
+#' USGS Article Format
 #'
-#' Format for creating a U.S. Geological Survey appendix.
+#' Format for creating a U.S. Geological Survey article.
 #'
 #' @inheritParams rmarkdown::pdf_document
 #' @param ... Arguments to \code{rmarkdown::pdf_document}
@@ -11,15 +11,15 @@
 #'
 #' @examples
 #' \dontrun{
-#' rmarkdown::draft("Appendix.Rmd", template = "usgs_appendix", package = "inlmisc")
+#' rmarkdown::draft("MyArticle.Rmd", template = "usgs_article", package = "inlmisc")
 #' }
 #'
 
-usgs_appendix <- function(...) {
+usgs_article <- function(...) {
 
   rmarkdown::pandoc_available(version="2.2", error=TRUE)
 
-  f <- "rmarkdown/templates/usgs_appendix/resources/template.tex"
+  f <- "rmarkdown/templates/usgs_article/resources/template.tex"
   template <- system.file(f, package="inlmisc")
   if (template == "")
     stop("Couldn't find template file resources/template.tex", call.=FALSE)
@@ -49,7 +49,7 @@ usgs_appendix <- function(...) {
     wrapper_metadata <- list("preamble" = metadata$preamble,
                              "filename" = tools::file_path_sans_ext(filename))
 
-    f <- "rmarkdown/templates/usgs_appendix/resources/wrapper.tex"
+    f <- "rmarkdown/templates/usgs_article/resources/wrapper.tex"
     wrapper_template <- system.file(f, package="inlmisc")
     if (wrapper_template == "")
       stop("Couldn't find template file resources/wrapper.tex", call.=FALSE)

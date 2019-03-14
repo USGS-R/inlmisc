@@ -1,0 +1,4 @@
+name: USGS Article
+description: >
+ Template for creating an article for a U.S. Geological Survey (USGS) publication.
+create_dir: true

@@ -1,7 +1,7 @@
 ---
 title: Capitalized Title Here
 output:
-  inlmisc::usgs_appendix:
+  inlmisc::usgs_article:
     includes:
       in_header: preamble.tex
 ---

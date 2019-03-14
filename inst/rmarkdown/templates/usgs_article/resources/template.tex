@@ -19,13 +19,3 @@ $body$
 $if(bibliography)$
 \bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
 $endif$
-
-$for(author)$
-\address{%
-$author.name$\\
-$author.affiliation$\\
-$for(author.address)$$author.address$$sep$\\ $endfor$\\
-}
-$if(author.email)$$author.email$$endif$
-
-$endfor$
