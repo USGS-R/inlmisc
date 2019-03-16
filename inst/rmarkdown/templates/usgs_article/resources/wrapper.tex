@@ -1,24 +1,20 @@
 \documentclass[twoside]{article}
 \usepackage{usgs}
 
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
 $for(header-includes)$
 $header-includes$
 $endfor$
 
+$if(bibliography)$
+\addbibresource{$bibliography$}
+$endif$
+
+\fancyhead[LE]{\normalfont\bfseries\sffamily \thepage \quad $title$}
+
+\setcounter{page}{1}
+
 \begin{document}
 
-%% do not edit, for illustration only
-\sectionhead{Contributed research article}
-\volume{XX}
-\volnumber{YY}
-\year{20ZZ}
-\month{AAAA}
-
-\begin{article}
-  \input{$filename$}
-\end{article}
+\input{$filename$}
 
 \end{document}

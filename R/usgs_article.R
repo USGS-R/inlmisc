@@ -1,17 +1,18 @@
 #' USGS Article Format
 #'
-#' Format for creating a U.S. Geological Survey article.
+#' Format for creating a U.S. Geological Survey (USGS) article.
 #'
 #' @inheritParams rmarkdown::pdf_document
-#' @param ... Arguments to \code{rmarkdown::pdf_document}
+#' @param ... Arguments to \code{\link[rmarkdown]{pdf_document}} function.
 #'
-#' @return R Markdown output format to pass to \code{\link[rmarkdown:render]{render}}
+#' @return R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' rmarkdown::draft("MyArticle.Rmd", template = "usgs_article", package = "inlmisc")
+#' rmarkdown::draft("myarticle.Rmd", template = "usgs_article", package = "inlmisc")
+#' rmarkdown::render("myarticle/myarticle.Rmd")
 #' }
 #'
 
@@ -46,8 +47,10 @@ usgs_article <- function(...) {
       filename <- filename2
     }
 
-    wrapper_metadata <- list("preamble" = metadata$preamble,
-                             "filename" = tools::file_path_sans_ext(filename))
+    wrapper_metadata <- list("preamble"     = metadata$preamble,
+                             "bibliography" = metadata$bibliography,
+                             "title"        = metadata$title,
+                             "filename"     = tools::file_path_sans_ext(filename))
 
     f <- "rmarkdown/templates/usgs_article/resources/wrapper.tex"
     wrapper_template <- system.file(f, package="inlmisc")

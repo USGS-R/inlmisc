@@ -99,53 +99,8 @@
 
 % References -------------------------------------------------------------------
 
-\RequirePackage[backend=bibtex, style=authoryear-comp, maxbibnames=99, maxcitenames=3, natbib=true, dashed=false]{biblatex}
-\setcounter{biburlnumpenalty}{100}
-\setcounter{biburlucpenalty}{100}
-\setcounter{biburllcpenalty}{100}
-\renewcommand\refname{References Cited}
-\DefineBibliographyStrings{english}{andothers={and~others}}
-\setlength{\bibitemsep}{\baselineskip}
-\DeclareFieldFormat{title}{#1}
-\DeclareFieldFormat[article,thesis,report,incollection,inproceedings,misc]{title}{#1}
-\DeclareFieldFormat[incollection,inproceedings]{booktitle}{#1}
-\DeclareNameAlias{sortname}{last-first}
-\DeclareNameAlias{default}{last-first}
-\DefineBibliographyStrings{english}{page={p\adddot}, pages={p\adddot}}
-\DefineBibliographyStrings{english}{references={References Cited}}
-\renewcommand*{\newunitpunct}{\addcomma\space}
-\renewcommand*{\intitlepunct}{\space}
-\DeclareFieldFormat[article]{volume}{v.\addnbspace #1}
-\DeclareFieldFormat[article]{number}{no.\addnbspace #1}
-\DeclareFieldFormat[article]{journaltitle}{#1}
-\renewbibmacro*{volume+number+eid}{%
-  \printfield{volume}%
-  \setunit{\addcomma\space}%
-  \printfield{number}%
-  \setunit{\addcomma\space}%
-  \printfield{eid}}
-\renewbibmacro*{journal+issuetitle}{%
-  \usebibmacro{journal}%
-  \setunit*{\addcomma\space}%
-  \iffieldundef{series}
-    {}
-    {\newunit
-     \printfield{series}%
-     \setunit{\addcomma\space}}%
-  \usebibmacro{volume+number+eid}%
-  \setunit{\addspace}%
-  \usebibmacro{issue+date}%
-  \setunit{\addcolon\space}%
-  \usebibmacro{issue}%
-  \newunit}
-
-\RequirePackage{xpatch}  % macro patching commands
-\xpatchbibmacro{date+extrayear}{%
-  \printtext[parens]%
-}{%
-  \setunit*{\addcomma\space}%
-  \printtext%
-}{}{}
+\RequirePackage[style=authoryear-comp, maxbibnames=99, maxcitenames=3, natbib=true, dashed=false, backend=bibtex]{biblatex}
+\InputIfFileExists{usgsbib.cfg}
 
 % Sectioning -------------------------------------------------------------------
 
@@ -179,8 +134,6 @@
 
 \newcommand{\R}{{\normalfont\textsf{R}}{}}  % set format for R-programming character
 
-\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}  % remove blank lines around code blocks
-
 \extrafloats{1000}  % allocate more floats
 
 \RequirePackage[multiple]{footmisc}  % typesetting of footnotes
@@ -188,6 +141,21 @@
 \RequirePackage{xcolor}  % control colors
 \definecolor{Red}{rgb}{0.7,0,0}
 \definecolor{Blue}{rgb}{0,0,0.8}
+
+% Example environments --------------------------------------------------------
+
+\RequirePackage{fancyvrb}
+\RequirePackage{alltt}
+
+\DefineVerbatimEnvironment{example}{Verbatim}{}
+\renewenvironment{example*}{\begin{alltt}}{\end{alltt}}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{Sin}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{Sout}{Verbatim}{fontsize=\small}
+\newenvironment{Schunk}{}{}
 
 % Links ------------------------------------------------------------------------
 

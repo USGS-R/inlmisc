@@ -1,21 +1,39 @@
 % !TeX root = wrapper.tex
 \title{$title$}
-\author{by $for(author)$$author.name$$sep$, $endfor$}
+
+$if(author)$
+\author{By $for(author)$$author.name$$sep$, $endfor$}
+$else$
+\author{}
+$endif$
 
 \maketitle
 
-$if(abstract)$
-\abstract{%
-$abstract$
-}
+$if(toc)$
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+\clearpage
 $endif$
 
-$for(header-includes)$
-$header-includes$
-$endfor$
+$if(lof)$
+\renewcommand*\listfigurename{Figures}
+\listoffigures
+\clearpage
+$endif$
+
+$if(lot)$
+\renewcommand*\listtablename{Tables}
+\listoftables
+\clearpage
+$endif$
+
+\RaggedRight
 
 $body$
 
 $if(bibliography)$
-\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References Cited}
+\printbibliography
 $endif$

@@ -105,7 +105,7 @@
 \DeclareFieldFormat[incollection,inproceedings]{booktitle}{#1}
 \DeclareNameAlias{sortname}{last-first}
 \DeclareNameAlias{default}{last-first}
-\DefineBibliographyStrings{english}{page={p\adddot}, pages={p\adddot}}
+\DefineBibliographyStrings{english}{pagetotal={p\adddot}, pagetotals={p\adddot}}
 \DefineBibliographyStrings{english}{references={References Cited}}
 \renewcommand*{\newunitpunct}{\addcomma\space}
 \renewcommand*{\intitlepunct}{\space}
@@ -134,7 +134,7 @@
   \newunit}
 
 \usepackage{xpatch}  % macro patching commands
-\xpatchbibmacro{date+extrayear}{%
+\xpatchbibmacro{date+extradate}{%
   \printtext[parens]%
 }{%
   \setunit*{\addcomma\space}%
