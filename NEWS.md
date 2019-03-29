@@ -1,5 +1,7 @@
 # inlmisc 0.4.5.9000
 
+- In *misc/preamble.tex* file: reduce hyphenation and prevent writing into margin.
+
 - In `PlotGraph` function, improve handling of cases where range of `y` values is zero.
 
 - In `PrintFigure` function, allow heading on single figure.
