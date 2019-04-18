@@ -245,7 +245,7 @@ PrintTable <- function(d, colheadings=NULL, align=NULL, digits=NULL, label=NULL,
   formals(Print)$sanitize.colnames.function <- function(x) {x}
   formals(Print)$include.rownames <- FALSE
   formals(Print)$math.style.exponents <- TRUE
-  formals(Print)$format.args <- list(big.mark=",")
+  formals(Print)$format.args <- list("big.mark"=",")
   formals(Print)$booktabs <- TRUE
   formals(Print)$comment <- FALSE
 

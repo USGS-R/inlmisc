@@ -152,8 +152,13 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
       layer <- readBin(con, "integer", n=1L, size=4L, endian=endian)
       v     <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
       d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
-      lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                     layer=layer, pertim=pertim, totim=totim)
+      lst[[length(lst) + 1]] <- list("d"      = d,
+                                     "kstp"   = kstp,
+                                     "kper"   = kper,
+                                     "desc"   = desc,
+                                     "layer"  = layer,
+                                     "pertim" = pertim,
+                                     "totim"  = totim)
 
     } else if (data.type == "flow") {
       desc <- readBin(readBin(con, "raw", n=16L, size=1L, endian=endian),
@@ -167,8 +172,11 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
       if (nlay > 0) {
         x <- .Read3dArray(con, nrow, ncol, nlay, nbytes, endian)
         for (i in seq_len(nlay)) {
-          lst[[length(lst) + 1]] <- list(d=x[[i]], kstp=kstp, kper=kper,
-                                         desc=desc, layer=i)
+          lst[[length(lst) + 1]] <- list("d"     = x[[i]],
+                                         "kstp"  = kstp,
+                                         "kper"  = kper,
+                                         "desc"  = desc,
+                                         "layer" = i)
         }
 
       } else {  # compact form is used
@@ -194,9 +202,14 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
         if (itype %in% c(0L, 1L)) {
           d <- .Read3dArray(con, nrow, ncol, nlay, nbytes, endian)
           for (i in seq_along(d)) {
-            lst[[length(lst) + 1]] <- list(d=d[[i]], kstp=kstp, kper=kper,
-                                           desc=desc, layer=i, delt=delt,
-                                           pertim=pertim, totim=totim)
+            lst[[length(lst) + 1]] <- list("d"      = d[[i]],
+                                           "kstp"   = kstp,
+                                           "kper"   = kper,
+                                           "desc"   = desc,
+                                           "layer"  = i,
+                                           "delt"   = delt,
+                                           "pertim" = pertim,
+                                           "totim"  = totim)
           }
 
         } else if (itype %in% c(2L, 5L)) {
@@ -218,8 +231,13 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
                                          - 1L) / ncol + 1L)
               d[, "column"] <- as.integer(d[, "icell"] - (d[, "layer"] - 1L)
                                           * nrc - (d[, "row"] - 1L) * ncol)
-              lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                             delt=delt, pertim=pertim, totim=totim)
+              lst[[length(lst) + 1]] <- list("d"      = d,
+                                             "kstp"   = kstp,
+                                             "kper"   = kper,
+                                             "desc"   = desc,
+                                             "delt"   = delt,
+                                             "pertim" = pertim,
+                                             "totim"  = totim)
             }
 
         } else if (itype == 3L) {
@@ -228,22 +246,37 @@ ReadModflowBinary <- function(path, data.type=c("array", "flow"),
           for (i in sort(unique(layers))) {
             v <- values[layers == i]
             d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
-            lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                           layer=i, delt=delt, pertim=pertim,
-                                           totim=totim)
+            lst[[length(lst) + 1]] <- list("d"      = d,
+                                           "kstp"   = kstp,
+                                           "kper"   = kper,
+                                           "desc"   = desc,
+                                           "layer"  = i,
+                                           "delt"   = delt,
+                                           "pertim" = pertim,
+                                           "totim"  = totim)
           }
 
         } else if (itype == 4L) {
           v <- readBin(con, "numeric", n=nrow * ncol, size=nbytes, endian=endian)
           d <- matrix(v, nrow=nrow, ncol=ncol, byrow=TRUE)
-          lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                         layer=1L, delt=delt, pertim=pertim,
-                                         totim=totim)
+          lst[[length(lst) + 1]] <- list("d"      = d,
+                                         "kstp"   = kstp,
+                                         "kper"   = kper,
+                                         "desc"   = desc,
+                                         "layer"  = 1L,
+                                         "delt"   = delt,
+                                         "pertim" = pertim,
+                                         "totim"  = totim)
           d[, ] <- 0
           for (i in seq_len(nlay)[-1]) {
-            lst[[length(lst) + 1]] <- list(d=d, kstp=kstp, kper=kper, desc=desc,
-                                           layer=i, delt=delt, pertim=pertim,
-                                           totim=totim)
+            lst[[length(lst) + 1]] <- list("d"      = d,
+                                           "kstp"   = kstp,
+                                           "kper"   = kper,
+                                           "desc"   = desc,
+                                           "layer"  = i,
+                                           "delt"   = delt,
+                                           "pertim" = pertim,
+                                           "totim"  = totim)
           }
 
         } else {

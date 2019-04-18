@@ -170,7 +170,7 @@
 #'                 "\nand iterpolated on a grid with 40-meter by 40-meter spacing",
 #'                 "using inverse distance weighting.")
 #' PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
-#'         contour.lines = list(col = "#1F1F1F"), credit = credit,
+#'         contour.lines = list("col" = "#1F1F1F"), credit = credit,
 #'         draw.key = FALSE, simplify = 0)
 #' AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371),
 #'             loc = "bottomright", inset = c(0.1, 0.05))
@@ -189,8 +189,8 @@
 #' explanation <- "Elevation on Auckland's Maunga Whau volcano, in meters."
 #' PlotMap(r, extend.z = TRUE, pal = GetColors(scheme = "DEM screen"),
 #'         scale.loc = "bottomright", arrow.loc = "topright",
-#'         explanation = explanation, credit = credit, shade = list(alpha = 0.3),
-#'         contour.lines = list(col = "#1F1F1FA6"), useRaster = TRUE)
+#'         explanation = explanation, credit = credit, shade = list("alpha" = 0.3),
+#'         contour.lines = list("col" = "#1F1F1FA6"), "useRaster" = TRUE)
 #'
 #' out <- PlotMap(r, file = "Rplots1.pdf")
 #' print(out)
@@ -248,7 +248,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     rr <- r
     rr[] <- NA
     new.ids <- seq(along=ids)
-    new.att.tbl <- as.data.frame(list(ID=new.ids, att=r.levels))
+    new.att.tbl <- as.data.frame(list("ID"=new.ids, "att"=r.levels))
     suppressWarnings(levels(rr) <- list(new.att.tbl))
     for (i in new.ids) {
       rr[r == ids[i]] <- i
@@ -599,7 +599,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (!is.null(arrow.loc)) AddNorthArrow(r@crs, loc=arrow.loc, inset=0.1)
 
-  invisible(list(din=graphics::par("din"), usr=usr, heights=c(h2, h1) / h))
+  invisible(list("din"=graphics::par("din"), "usr"=usr, "heights"=c(h2, h1) / h))
 }
 
 

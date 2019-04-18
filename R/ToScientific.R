@@ -118,14 +118,14 @@ ToScientific <- function(x, digits=NULL, type=c("latex", "plotmath"),
       if (is_zero[i]) {
         return(zero)
       } else if (is.na(x[i])) {
-        return(substitute(X, list(X=na)))
+        return(substitute(X, list("X"=na)))
       } else if (is_fix[i]) {
         v <- formatC(x[i], digits_fix, width=1, format="f", big.mark=big.mark,
                      drop0trailing=TRUE)
-        return(substitute(X, list(X=v)))
+        return(substitute(X, list("X"=v)))
       } else {
         v <- round(m[i], digits_sci)
-        return(substitute(M%*%10^N, list(M=v, N=n[i])))
+        return(substitute(M%*%10^N, list("M"=v, "N"=n[i])))
       }
     }))
   }

@@ -203,7 +203,10 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   solution <- m[!duplicated(m), , drop=FALSE]
 
   # bundle output
-  list(call=match.call(), solution=solution, ga_output=ga_output, ga_time=ga_time)
+  list("call"      = match.call(),
+       "solution"  = solution,
+       "ga_output" = ga_output,
+       "ga_time"   = ga_time)
 }
 
 .Population <- function(object, n) {
@@ -254,7 +257,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
     object@fitness[which(apply(m, 1, function(i) identical(i, child)))[1]]
   }
   fitness_children <- c(FindFitness(sort(c1)), FindFitness(sort(c2)))
-  list(children=encoded_children, fitness=fitness_children)
+  list("children"=encoded_children, "fitness"=fitness_children)
 }
 
 

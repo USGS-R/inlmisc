@@ -251,7 +251,8 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
     formals(Pal) <- eval(substitute(
       alist("n"=, "scheme"=a1, "alpha"=a2, "stops"=a3, "bias"=a4, "reverse"=a5,
             "blind"=a6, "gray"=a7),
-      list(a1=scheme, a2=alpha, a3=stops, a4=bias, a5=reverse, a6=blind, a7=gray)
+      list("a1"=scheme, "a2"=alpha, "a3"=stops, "a4"=bias, "a5"=reverse,
+           "a6"=blind, "a7"=gray)
     ))
     return(Pal)
   }

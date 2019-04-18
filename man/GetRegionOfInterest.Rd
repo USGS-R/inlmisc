@@ -35,7 +35,7 @@ Create a spatial polygon describing the convex hull of a set of spatial points.
 set.seed(123)
 
 n <- 50
-x <- list(x = stats::runif(n), y = stats::runif(n))
+x <- list("x" = stats::runif(n), "y" = stats::runif(n))
 sp::plot(GetRegionOfInterest(x, width = 0.05), border = "blue", lty = 2)
 sp::plot(GetRegionOfInterest(x), border = "red", add = TRUE)
 sp::plot(GetRegionOfInterest(x, width = -0.05), lty = 2, add = TRUE)

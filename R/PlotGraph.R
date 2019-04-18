@@ -317,7 +317,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
                 graphics::par("mgp")[2]
     graphics::title(ylab=ylab[1], cex.lab=cex, line=mar.line)
   }
-  if (!is.null(main)) graphics::title(main=list(main, cex=cex, font=1), line=0.5, adj=0)
+  if (!is.null(main)) graphics::title(main=list(main, "cex"=cex, "font"=1), line=0.5, adj=0)
 
   if (is.null(conversion.factor)) {
     graphics::axis(4, at=yat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
@@ -365,27 +365,27 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
 
   # interval censored plot
   } else if (type == "i") {
-    arg <- list(length=0.015, angle=90, lwd=lwd, col=col)
+    arg <- list("length"=0.015, "angle"=90, "lwd"=lwd, "col"=col)
     is <- is.na(y[, 1]) & !is.na(y[, 2])  # left censored
     if (any(is)) {
       x0 <- x[is]
       y0 <- y[is, 2]
       y1 <- rep(graphics::par("usr")[3], sum(is))
-      do.call(graphics::arrows, c(list(x0=x0, y0=y0, x1=x0, y1=y1, code=1), arg))
+      do.call(graphics::arrows, c(list("x0"=x0, "y0"=y0, "x1"=x0, "y1"=y1, "code"=1), arg))
     }
     is <- !is.na(y[, 1]) & is.na(y[, 2])  # right censored
     if (any(is)) {
       x0 <- x[is]
       y0 <- y[is, 1]
       y1 <- rep(graphics::par("usr")[4], sum(is))
-      do.call(graphics::arrows, c(list(x0=x0, y0=y0, x1=x0, y1=y1, code=1), arg))
+      do.call(graphics::arrows, c(list("x0"=x0, "y0"=y0, "x1"=x0, "y1"=y1, "code"=1), arg))
     }
     is <- !is.na(y[, 1]) & !is.na(y[, 2]) & y[, 1] != y[, 2] # interval
     if (any(is)) {
       x0 <- x[is]
       y0 <- y[is, 1]
       y1 <- y[is, 2]
-      do.call(graphics::arrows, c(list(x0=x0, y0=y0, x1=x0, y1=y1, code=3), arg))
+      do.call(graphics::arrows, c(list("x0"=x0, "y0"=y0, "x1"=x0, "y1"=y1, "code"=3), arg))
     }
     is <- !is.na(y[, 1]) & !is.na(y[, 2]) & y[, 1] == y[, 2] # exact
     if (any(is)) {

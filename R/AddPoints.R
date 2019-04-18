@@ -244,7 +244,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       n <- length(x)
       d <- data.frame(x=seq_along(x), y=x)
       unname(stats::predict(stats::lm(y ~ poly(x, 2), data=d),
-                            newdata=list(x=seq(n + 1, n + npred))))
+                            newdata=list("x"=seq(n + 1, n + npred))))
     }
     if (is_lt) {
       interval <- interval + 1L
