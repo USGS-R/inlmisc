@@ -154,7 +154,7 @@ legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
 d <- data.frame(x = as.Date("2008-07-12") + 1:8 * 1000,
                 y0 = c(NA, NA, 1, 3, 1, 4, 2, pi),
                 y1 = c(1, 2, NA, NA, 4, 3, 2, pi))
-PlotGraph(d, type = "i", ylim = c(0, 5))
+PlotGraph(d, type = "i", ylim = c(0, 5), xpd = TRUE)
 
 }
 \seealso{

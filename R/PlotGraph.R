@@ -118,7 +118,7 @@
 #' d <- data.frame(x = as.Date("2008-07-12") + 1:8 * 1000,
 #'                 y0 = c(NA, NA, 1, 3, 1, 4, 2, pi),
 #'                 y1 = c(1, 2, NA, NA, 4, 3, 2, pi))
-#' PlotGraph(d, type = "i", ylim = c(0, 5))
+#' PlotGraph(d, type = "i", ylim = c(0, 5), xpd = TRUE)
 #'
 
 PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
@@ -173,7 +173,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   }
 
   if (is.null(ylim) || abs(diff(ylim)) < .Machine$double.eps^0.5) {
-    yran <- range(y, na.rm=TRUE)
+    yran <- range(y, na.rm=TRUE, finite=TRUE)
     if (abs(diff(yran)) < .Machine$double.eps^0.5) yran[2] <- yran[1]
     if (ylog && abs(diff(yran)) > 0)
       yat <- grDevices::axisTicks(log10(yran), TRUE, nint=yn)
@@ -365,27 +365,26 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
 
   # interval censored plot
   } else if (type == "i") {
-    arg <- list("length"=0.015, "angle"=90, "lwd"=lwd, "col"=col)
     is <- is.na(y[, 1]) & !is.na(y[, 2])  # left censored
     if (any(is)) {
       x0 <- x[is]
       y0 <- y[is, 2]
       y1 <- rep(graphics::par("usr")[3], sum(is))
-      do.call(graphics::arrows, c(list("x0"=x0, "y0"=y0, "x1"=x0, "y1"=y1, "code"=1), arg))
+      AddIntervals(x0, y0, y1, code=1, col=col, lty=1, lwd=lwd)
     }
     is <- !is.na(y[, 1]) & is.na(y[, 2])  # right censored
     if (any(is)) {
       x0 <- x[is]
       y0 <- y[is, 1]
       y1 <- rep(graphics::par("usr")[4], sum(is))
-      do.call(graphics::arrows, c(list("x0"=x0, "y0"=y0, "x1"=x0, "y1"=y1, "code"=1), arg))
+      AddIntervals(x0, y0, y1, code=1, col=col, lty=1, lwd=lwd)
     }
     is <- !is.na(y[, 1]) & !is.na(y[, 2]) & y[, 1] != y[, 2] # interval
     if (any(is)) {
       x0 <- x[is]
       y0 <- y[is, 1]
       y1 <- y[is, 2]
-      do.call(graphics::arrows, c(list("x0"=x0, "y0"=y0, "x1"=x0, "y1"=y1, "code"=3), arg))
+      AddIntervals(x0, y0, y1, code=3, col=col, lty=1, lwd=lwd)
     }
     is <- !is.na(y[, 1]) & !is.na(y[, 2]) & y[, 1] == y[, 2] # exact
     if (any(is)) {

@@ -1,5 +1,9 @@
 # inlmisc 0.4.5.9000
 
+- Add `AddIntervals` function, used to add vertical interval symbols to plots.
+  Replaces use of `graphics::arrows` in `PlotGraph` function, and
+  avoids the warning message resulting from an arrow length less than 1/1000 inch.
+
 - In *misc/preamble.tex* file: reduce hyphenation and prevent writing into margin.
 
 - In `PlotGraph` function, improve handling of cases where range of `y` values is zero.
