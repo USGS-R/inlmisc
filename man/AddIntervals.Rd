@@ -22,9 +22,9 @@ AddIntervals(x, y0, y1, length = 0.03, code = 3,
 Horizontal length of the interval head, in inches.}
 
 \item{code}{'integer' number.
-Determines the type of interval to be drawn.}
+Determines the type of interval to be drawn, see \sQuote{Details} section for code descriptions.}
 
-\item{col, lty, lwd, xpd}{graphical parameters; see \code{\link{par}}.
+\item{col, lty, lwd, xpd}{graphical parameters; see \code{\link{par}} for details.
 \code{NA} values in \code{col} cause the interval to be omitted.}
 }
 \value{
@@ -36,10 +36,11 @@ Add vertical interval symbols (also known as error bars) to plots.
 \details{
 For each \code{i}, an interval is drawn between the
   point \code{(x[i], y0[i])} and the point \code{(x[i], y1[i])}.
+
   Code descriptions are as follows:
   \code{code = 0}, no interval head is drawn;
-  \code{code = 1}, an interval head is drawn at \code{(x[i], y0[i])};
-  \code{code = 2}, an interval head is drawn at \code{(x[i], y1[i])}; and
+  \code{code = 1}, a head is drawn at \code{(x[i], y0[i])};
+  \code{code = 2}, a head is drawn at \code{(x[i], y1[i])}; and
   \code{code = 3}, a head is drawn at both ends of the interval.
 }
 \examples{
