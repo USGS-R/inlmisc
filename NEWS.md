@@ -6,7 +6,8 @@
 
 - In *misc/preamble.tex* file: reduce hyphenation and prevent writing into margin.
 
-- In `PlotGraph` function, improve handling of cases where range of `y` values is zero.
+- In `PlotGraph` function: improve handling of cases where range of `y` values is zero;
+  extend y-axis limits to prevent symbols from being drawn on an axis limit.
 
 - In `PrintFigure` function, allow heading on single figure.
 

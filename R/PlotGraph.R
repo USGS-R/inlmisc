@@ -173,7 +173,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   }
 
   if (is.null(ylim) || abs(diff(ylim)) < .Machine$double.eps^0.5) {
-    yran <- range(y, na.rm=TRUE, finite=TRUE)
+    yran <- grDevices::extendrange(y, f=0.001)
     if (abs(diff(yran)) < .Machine$double.eps^0.5) yran[2] <- yran[1]
     if (ylog && abs(diff(yran)) > 0)
       yat <- grDevices::axisTicks(log10(yran), TRUE, nint=yn)
