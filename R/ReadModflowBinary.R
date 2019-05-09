@@ -1,6 +1,6 @@
 #' Read MODFLOW Binary File
 #'
-#' Read binary files output from \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}-based models,
+#' Read binary files output from \href{https://www.usgs.gov/mission-areas/water-resources/science/modflow-and-related-programs}{MODFLOW}-based models,
 #' the U.S. Geological Survey's three-dimensional finite-difference groundwater model.
 #'
 #' @param path 'character' string.

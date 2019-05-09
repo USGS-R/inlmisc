@@ -370,7 +370,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   }
 
   y <- unlist(lapply(eat, function(i) i@data[[geo.lays[1]]]))
-  GetGeoTop <- stats::approxfun(x, y)
+  GetGeoTop <- stats::approxfun(x, y, ties=mean)
   pady <- graphics::strheight("M", cex=1) * 2
   d <- as.matrix(stats::dist(sp::coordinates(methods::as(transect, "SpatialPoints"))))[, 1]
   dist.to.bend <- d[-c(1, length(d))]

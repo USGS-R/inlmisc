@@ -9,7 +9,7 @@
 ## Overview
 
 The [R](https://www.r-project.org/) package **inlmisc** is a collection of functions for creating high-level graphics,
-performing raster-based analysis, processing [MODFLOW](https://water.usgs.gov/ogw/modflow/ "USGS's modular hydrologic model")-based models,
+performing raster-based analysis, processing [MODFLOW](https://www.usgs.gov/mission-areas/water-resources/science/modflow-and-related-programs "USGS's modular hydrologic model")-based models,
 selecting subsets using a genetic algorithm, creating interactive web maps, accessing color palettes, etc.
 Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
 Idaho National Laboratory (INL) [Project Office](https://www.usgs.gov/centers/id-water/science/idaho-national-laboratory-project-office "USGS INL Project Office").
