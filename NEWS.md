@@ -1,5 +1,8 @@
 # inlmisc 0.4.5.9000
 
+- In `AddPoints` function, change interval to reflect labels, that is,
+  open at the left and closed at right.
+
 - Add `AddIntervals` function, used to add vertical interval symbols to plots.
   Replaces use of `graphics::arrows` in `PlotGraph` function, and
   avoids the warning message resulting from an arrow length less than 1/1000 inch.
