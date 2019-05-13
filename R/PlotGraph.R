@@ -29,7 +29,6 @@
 #'     \item "i" for \bold{i}nterval-censored data, see "Details" section below, and
 #'     \item "n" for \bold{n}o plotting.
 #'   }
-#'   Characters in \code{type} are cycled through; such as, "pl" alternately plots points and lines.
 #' @param lty 'integer' vector.
 #'   Line type, see \code{\link{par}} function for all possible types.
 #'   Line types are used cyclically.
@@ -79,17 +78,17 @@
 #' @details Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 columns.
 #'   The first column contains the starting values, the second the ending values.
 #'   Observations are represented using
-#'     \code{(-Inf, t)} for left censored,
-#'     \code{(t, Inf)} for right censored,
-#'     \code{(t, t)} for exact, and
-#'     \code{(t1, t2)} for an interval.
-#'   Where infinity is represented as \code{Inf} or \code{NA}, and \code{t} is a numeric value.
+#'     \code{(y0, Inf)} for right-censored value,
+#'     \code{(y0, y0)} for exact value, and
+#'     \code{(-Inf, y1)} for left-censored value, and
+#'     \code{(y0, y1)} for an interval censored value.
+#'   Where infinity is represented as \code{Inf} or \code{NA}, and \code{y} is a numeric value.
 #'
 #' @return Used for the side-effect of a new plot generated.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link[graphics]{matplot}}, \code{\link[graphics]{boxplot}}
+#' @seealso \code{\link[graphics]{matplot}}, \code{\link[graphics]{boxplot}}, \code{\link{AddIntervals}}
 #'
 #' @keywords hplot
 #'
@@ -190,15 +189,15 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   }
 
   n <- ifelse(type == "i", 1, ncol(y))
-  if (!is.character(col) && !is.logical(col)) {
-    if (is.function(col)) {
-      col <- col(n)
-    } else {
-      scheme <- if (n > 7) "smooth rainbow" else "bright"
-      col <- GetColors(n, scheme=scheme)
-    }
+  if (is.null(col)) {
+    scheme <- ifelse(n > 7, "smooth rainbow", "bright")
+    col <- GetColors(n, scheme=scheme)
+  } else if (is.function(col)) {
+    col <- col(n)
   }
 
+  n <- ifelse(type == "i", nrow(y), ncol(y))
+  col <- rep_len(col, length.out=n)
   lty <- rep_len(lty, length.out=n)
   lwd <- rep_len(lwd, length.out=n)
 
@@ -365,33 +364,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
 
   # interval censored plot
   } else if (type == "i") {
-    is <- is.na(y[, 1]) & !is.na(y[, 2])  # left censored
-    if (any(is)) {
-      x0 <- x[is]
-      y0 <- y[is, 2]
-      y1 <- rep(graphics::par("usr")[3], sum(is))
-      AddIntervals(x0, y0, y1, code=1, col=col, lty=1, lwd=lwd)
-    }
-    is <- !is.na(y[, 1]) & is.na(y[, 2])  # right censored
-    if (any(is)) {
-      x0 <- x[is]
-      y0 <- y[is, 1]
-      y1 <- rep(graphics::par("usr")[4], sum(is))
-      AddIntervals(x0, y0, y1, code=1, col=col, lty=1, lwd=lwd)
-    }
-    is <- !is.na(y[, 1]) & !is.na(y[, 2]) & y[, 1] != y[, 2] # interval
-    if (any(is)) {
-      x0 <- x[is]
-      y0 <- y[is, 1]
-      y1 <- y[is, 2]
-      AddIntervals(x0, y0, y1, code=3, col=col, lty=1, lwd=lwd)
-    }
-    is <- !is.na(y[, 1]) & !is.na(y[, 2]) & y[, 1] == y[, 2] # exact
-    if (any(is)) {
-      x0 <- x[is]
-      y0 <- y[is, 1]
-      graphics::points(x0, y0, pch=pch, col=col, bg=bg, cex=pt.cex)
-    }
+    AddIntervals(x, y[, 1], y[, 2], col=col, lty=1, lwd=lwd, cex=pt.cex, pch=pch, bg=bg)
 
   # stair steps plot
   } else if (type == "s") {

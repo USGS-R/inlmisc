@@ -53,8 +53,7 @@ Plot type, possible types are
   \item "w" for box-and-\bold{w}hisker,
   \item "i" for \bold{i}nterval-censored data, see "Details" section below, and
   \item "n" for \bold{n}o plotting.
-}
-Characters in \code{type} are cycled through; such as, "pl" alternately plots points and lines.}
+}}
 
 \item{lty}{'integer' vector.
 Line type, see \code{\link{par}} function for all possible types.
@@ -125,11 +124,11 @@ Draw a sequence of points, lines, or box-and-whiskers.
 Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 columns.
   The first column contains the starting values, the second the ending values.
   Observations are represented using
-    \code{(-Inf, t)} for left censored,
-    \code{(t, Inf)} for right censored,
-    \code{(t, t)} for exact, and
-    \code{(t1, t2)} for an interval.
-  Where infinity is represented as \code{Inf} or \code{NA}, and \code{t} is a numeric value.
+    \code{(y0, Inf)} for right-censored value,
+    \code{(y0, y0)} for exact value, and
+    \code{(-Inf, y1)} for left-censored value, and
+    \code{(y0, y1)} for an interval censored value.
+  Where infinity is represented as \code{Inf} or \code{NA}, and \code{y} is a numeric value.
 }
 \examples{
 n <- 50L
@@ -158,7 +157,7 @@ PlotGraph(d, type = "i", ylim = c(0, 5), xpd = TRUE)
 
 }
 \seealso{
-\code{\link[graphics]{matplot}}, \code{\link[graphics]{boxplot}}
+\code{\link[graphics]{matplot}}, \code{\link[graphics]{boxplot}}, \code{\link{AddIntervals}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

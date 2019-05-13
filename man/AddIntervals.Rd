@@ -2,11 +2,10 @@
 % Please edit documentation in R/AddIntervals.R
 \name{AddIntervals}
 \alias{AddIntervals}
-\title{Add Vertical Intervals to Plot}
+\title{Add Interval Symbols to Plot}
 \usage{
-AddIntervals(x, y0, y1, length = 0.03, code = 3,
-  col = graphics::par("fg"), lty = graphics::par("lty"),
-  lwd = graphics::par("lwd"), xpd = graphics::par("xpd"))
+AddIntervals(x, y0, y1, hin = NULL, col = "black", lty = 1,
+  lwd = 0.7, cex = 1, xpd = FALSE, ...)
 }
 \arguments{
 \item{x}{'numeric' or 'Date' vector.
@@ -18,39 +17,44 @@ AddIntervals(x, y0, y1, length = 0.03, code = 3,
 \item{y1}{'numeric' vector.
 \emph{y} coordinate of points to which to draw.}
 
-\item{length}{'numeric' number.
-Horizontal length of the interval head, in inches.}
+\item{hin}{'numeric' number.
+Horizontal length of an interval head, in inches.}
 
-\item{code}{'integer' number.
-Determines the type of interval to be drawn, see \sQuote{Details} section for code descriptions.}
-
-\item{col, lty, lwd, xpd}{graphical parameters; see \code{\link{par}} for details.
+\item{col, lty, lwd, cex, xpd}{graphical parameters; see \code{\link[graphics]{par}} for details.
 \code{NA} values in \code{col} cause the interval to be omitted.}
+
+\item{...}{Additional graphical parameters to the \code{\link[graphics]{points}} function.}
 }
 \value{
 Used for the side-effect of interval symbols drawn on the current graphics device.
 }
 \description{
-Add vertical interval symbols (also known as error bars) to plots.
+Add interval symbols (also known as error bars) to plots.
 }
 \details{
-For each \code{i}, an interval is drawn between the
-  point \code{(x[i], y0[i])} and the point \code{(x[i], y1[i])}.
-
-  Code descriptions are as follows:
-  \code{code = 0}, no interval head is drawn;
-  \code{code = 1}, a head is drawn at \code{(x[i], y0[i])};
-  \code{code = 2}, a head is drawn at \code{(x[i], y1[i])}; and
-  \code{code = 3}, a head is drawn at both ends of the interval.
+For each observation \code{i}, the data type is identified using
+    \code{(y0[i], Inf)} for right-censored,
+    \code{y0[i] = y1[i]} for exact, and
+    \code{(-Inf, y1[i])} for left-censored, and
+    \code{(y0[i], y1[i])} for interval censored.
+  Where infinity may be represented with either \code{Inf} or \code{NA}.
 }
 \examples{
 set.seed(2)
 x <- stats::runif(12)
 y <- stats::rnorm(12)
 plot(x, y)
-
 dy <- sort(y) / 5
 AddIntervals(x, y - dy, y + dy, col = "red", xpd = TRUE)
+
+x <- sort(stats::runif(12, max = 100))
+y0 <- stats::runif(12, max = 100)
+y1 <- y0
+plot(NA, xlim = range(x), ylim = range(c(y0, y1)), xlab = "x", ylab = "y")
+y0[1:4] <- -Inf
+y1[5:8] <-  Inf
+AddIntervals(x, y0, y1, col = "blue", xpd = TRUE)
+print(cbind(x, y0, y1))
 
 }
 \author{
