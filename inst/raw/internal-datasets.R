@@ -400,6 +400,28 @@ MakeSysdata <- function() {
     nan  = "#666666"
   )
 
+
+  # Unknown; R implementation by Edzer Pebesma
+
+  schemes[["bpy"]] <- list(
+    data = read.csv(strip.white=TRUE, text="
+                    color
+                    #000000
+                    #000071
+                    #0000E3
+                    #4200FF
+                    #9B0CF3
+                    #F345BA
+                    #FF7E81
+                    #FFB649
+                    #FFEF10
+                    #FFFFFF
+                    "),
+    type = "Sequential",
+    cite = "Unknown",
+    nmax = Inf
+  )
+
   schemes <- schemes[order(vapply(schemes, function(x) x$type, ""), names(schemes))]
   invisible(lapply(schemes, .CheckScheme))
   if (dir.exists("../../R")) save(schemes, file="../../R/sysdata.rda")
@@ -642,10 +664,13 @@ MakeTables <- function() {
     m[duplicated(m[, "Type"]), "Type"] <- ""
 
     src <- levels(cite)[no]
-    if (grepl("Wessel", src))
+    if (src == "Wessel and others (2013)") {
       title <- sprintf("Schemes collected by %s and released under an open license.", src)
-    else
+    } else if (src == "Unknown") {
+      title <- "Scheme by unknown source; discovered on gnuplot-info by Edzer Pebesma."
+    } else {
       title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
+    }
 
     sink("table.tex")
     cat("\\documentclass[varwidth=\\maxdimen, border=0pt]{standalone}",
@@ -674,7 +699,8 @@ MakeTables <- function() {
     arg <- c("--without-gui", "--file=table.pdf", "--export-plain-svg=table.svg")
     system2("inkscape", args=arg, stdout=FALSE, stderr=FALSE)
 
-    tools::compactPDF("table.pdf", gs_quality="printer")
+    gs_cmd <- Sys.getenv("R_GSCMD", tools::find_gs_cmd())
+    tools::compactPDF("table.pdf", qpdf="", gs_cmd=gs_cmd, gs_quality="printer")
     system2("svgcleaner", args=c("table.svg", "table.svg"), stdout=FALSE, stderr=FALSE)
 
     from <- c("table.pdf", "table.svg")

@@ -96,6 +96,9 @@ The suggested data type for color schemes and the
   \if{html}{\figure{table03.svg}}
   \if{latex}{\figure{table03.pdf}{options: width=5.36in}}
 
+  \if{html}{\figure{table04.svg}}
+  \if{latex}{\figure{table04.pdf}{options: width=5.36in}}
+
   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
   intended to be accessed in their entirety and subset using vector element names.
 }
