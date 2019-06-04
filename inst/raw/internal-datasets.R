@@ -401,22 +401,9 @@ MakeSysdata <- function() {
   )
 
 
-  # Unknown; R implementation by Edzer Pebesma
+  # unknown source on gnuplot-info
 
   schemes[["bpy"]] <- list(
-    data = read.csv(strip.white=TRUE, text="
-                    color
-                    #000000
-                    #000071
-                    #0000E3
-                    #4200FF
-                    #9B0CF3
-                    #F345BA
-                    #FF7E81
-                    #FFB649
-                    #FFEF10
-                    #FFFFFF
-                    "),
     type = "Sequential",
     cite = "Unknown",
     nmax = Inf
@@ -551,8 +538,17 @@ MakeSysdata <- function() {
 
   nm <- tools::file_path_sans_ext(basename(file))
   type <- rep("Sequential", length(nm))
-  div <- c("berlin", "broc", "cork", "lisbon", "oleron", "polar", "red2green",
-           "roma", "split", "tofino", "vik")
+  div <- c("berlin",
+           "broc",
+           "cork",
+           "lisbon",
+           "oleron",
+           "polar",
+           "red2green",
+           "roma",
+           "split",
+           "tofino",
+           "vik")
   type[nm %in% div] <- "Diverging"
 
   cpt <- lapply(seq_along(destfile), function(i) {
@@ -569,10 +565,11 @@ MakeSysdata <- function() {
 
 
 .CheckScheme <- function(x) {
-  checkmate::assertDataFrame(x$data, any.missing=FALSE, min.rows=2, min.cols=1)
-
+  checkmate::assertDataFrame(x$data, any.missing=FALSE,
+                             min.rows=2, min.cols=1, null.ok=TRUE)
   pattern <- "^#(\\d|[a-f]){6}$"
-  checkmate::assertCharacter(x$data$color, pattern=pattern, ignore.case=TRUE)
+  checkmate::assertCharacter(x$data$color, pattern=pattern,
+                             ignore.case=TRUE, null.ok=TRUE)
   stopifnot(all(inlmisc:::.IsColor(x$data$color)))
 
   checkmate::qassert(x$data$name, c("0", "S", "X(0,)"))
@@ -666,7 +663,7 @@ MakeTables <- function() {
     src <- levels(cite)[no]
     if (src == "Wessel and others (2013)") {
       title <- sprintf("Schemes collected by %s and released under an open license.", src)
-    } else if (src == "Unknown") {
+    } else if (src == "unknown") {
       title <- "Scheme by unknown source; discovered on gnuplot-info by Edzer Pebesma."
     } else {
       title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
