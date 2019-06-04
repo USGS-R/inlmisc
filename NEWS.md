@@ -1,5 +1,7 @@
 # inlmisc 0.4.5.9000
 
+- In `GetColors` function, add `"bpy"` (blue-pink-yellow) color scheme.
+
 - In `AddPoints` function, change interval to reflect labels, that is,
   open at the left and closed at right.
 
