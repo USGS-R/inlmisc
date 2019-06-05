@@ -400,8 +400,7 @@ MakeSysdata <- function() {
     nan  = "#666666"
   )
 
-
-  # unknown source on gnuplot-info
+  # unknown author on gnuplot-info
 
   schemes[["bpy"]] <- list(
     type = "Sequential",
@@ -487,14 +486,14 @@ MakeSysdata <- function() {
     }
   }
 
-  l <- list(data = d,
-            type = type,
-            cite = cite,
-            nmax = Inf,
-            nan  = color$N,
-            back = color$B,
-            fore = color$F,
-            note = note)
+  l <- list("data" = d,
+            "type" = type,
+            "cite" = cite,
+            "nmax" = Inf,
+            "nan"  = color$N,
+            "back" = color$B,
+            "fore" = color$F,
+            "note" = note)
    l[vapply(l, is.null, FALSE)] <- NULL
    l
 }
@@ -661,12 +660,16 @@ MakeTables <- function() {
     m[duplicated(m[, "Type"]), "Type"] <- ""
 
     src <- levels(cite)[no]
-    if (src == "Wessel and others (2013)") {
+    if (src == "Paul Tol (2018)") {
+      title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
+    } else if (src == "Thomas Dewez (2004)") {
+      title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
+    } else if (src == "Wessel and others (2013)") {
       title <- sprintf("Schemes collected by %s and released under an open license.", src)
     } else if (src == "unknown") {
       title <- "Scheme by unknown author; discovered on gnuplot-info by Edzer Pebesma."
     } else {
-      title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
+      title <- "ADD ATTRIBUTION"
     }
 
     sink("table.tex")
