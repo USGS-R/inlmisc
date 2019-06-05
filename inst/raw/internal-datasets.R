@@ -405,7 +405,7 @@ MakeSysdata <- function() {
 
   schemes[["bpy"]] <- list(
     type = "Sequential",
-    cite = "Unknown",
+    cite = "unknown",
     nmax = Inf
   )
 
@@ -664,7 +664,7 @@ MakeTables <- function() {
     if (src == "Wessel and others (2013)") {
       title <- sprintf("Schemes collected by %s and released under an open license.", src)
     } else if (src == "unknown") {
-      title <- "Scheme by unknown source; discovered on gnuplot-info by Edzer Pebesma."
+      title <- "Scheme by unknown author; discovered on gnuplot-info by Edzer Pebesma."
     } else {
       title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
     }
