@@ -73,6 +73,8 @@
 #'   If specified, a background polygon is drawn.
 #'   The polygon is described using a list of arguments supplied to the \code{\link{polygon}} function.
 #'   Passed arguments include \code{"x"} and \code{"col"}.
+#' @param add.grid 'logical' flag.
+#'   Whether to draw a rectangular grid.
 #' @inheritParams PlotMap
 #'
 #' @details Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 columns.
@@ -112,7 +114,7 @@
 #' PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b", pch = 15:17,
 #'           col = col, pt.cex = 0.9)
 #' legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
-#'        pt.cex = 0.9, cex = 0.8, bg = "white")
+#'        pt.cex = 0.9, cex = 0.7, bg = "white")
 #'
 #' d <- data.frame(x = as.Date("2008-07-12") + 1:8 * 1000,
 #'                 y0 = c(NA, NA, 1, 3, 1, 4, 2, pi),
@@ -125,7 +127,8 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
                       pch=NULL, col=NULL, bg=NA, fill="none", fillcolor=NULL,
                       pt.cex=1, xpd=FALSE, seq.date.by=NULL, scientific=NA,
                       conversion.factor=NULL, boxwex=0.8,
-                      center.date.labels=FALSE, bg.polygon=NULL) {
+                      center.date.labels=FALSE, bg.polygon=NULL,
+                      add.grid=TRUE) {
 
   fill <- match.arg(fill, c("none", "tozeroy", "tominy", "tomaxy"))
   checkmate::assertCharacter(fillcolor, null.ok=TRUE)
@@ -201,11 +204,13 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   lty <- rep_len(lty, length.out=n)
   lwd <- rep_len(lwd, length.out=n)
 
-  mar <- c(2.3, 4.1, 1.5, 4.1)
+  mar <- c(2.3, 4.1, 1.3, 4.1)
+  if (missing(xlab)) mar[1] <- mar[1] - 1
   if (is.null(main)) mar[3] <- mar[3] - 1
   if (is.null(conversion.factor)) mar[4] <- mar[4] - 2
-  mgp <- c(3.2, 0.2, 0)  # cumulative axis margin line: title, labels, and line
-  graphics::par(mar=mar, mgp=mgp, xpd=xpd)
+  xmgp <- c(1, 0, 0)
+  ymgp <- c(0, 0.2, 0)
+  graphics::par(mar=mar, xpd=xpd)
   line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]
 
   graphics::plot.new()
@@ -213,7 +218,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
                         xaxs="i", yaxs="i", log=ifelse(ylog, "y", ""))
 
   cex <- 0.7
-  tcl <- 0.1 / graphics::par("csi")  # length for major ticks is 0.1 inches
+  tcl <- 0.08 / graphics::par("csi")  # length for major ticks is 0.08 inches
 
   is.decreasing <- diff(graphics::par("usr")[1:2]) < 0
 
@@ -222,8 +227,10 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
     graphics::polygon(bg.polygon$x, col=bg.col, border=NA)
   }
 
-  graphics::abline(v=xat, col="lightgrey", lwd=0.5, xpd=FALSE)
-  graphics::abline(h=yat, col="lightgrey", lwd=0.5, xpd=FALSE)
+  if (add.grid) {
+    graphics::abline(v=xat, col="lightgrey", lwd=0.5, xpd=FALSE)
+    graphics::abline(h=yat, col="lightgrey", lwd=0.5, xpd=FALSE)
+  }
 
   if (type %in% c("l", "b", "s") && fill != "none") {
     if (is.null(fillcolor))
@@ -267,9 +274,9 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
       else
         at <- utils::head(xat, -1) + diff(xat) / 2
       graphics::axis.Date(1, at=xat, tcl=tcl, labels=FALSE, lwd=-1, lwd.ticks=0.5)
-      graphics::axis.Date(1, at=at, tcl=0, cex.axis=cex, lwd=-1)
+      graphics::axis.Date(1, at=at, tcl=0, cex.axis=cex, lwd=-1, mgp=xmgp)
     } else {
-      graphics::axis.Date(1, at=xat, tcl=tcl, cex.axis=cex, lwd=-1, lwd.ticks=0.5)
+      graphics::axis.Date(1, at=xat, tcl=tcl, cex.axis=cex, lwd=-1, lwd.ticks=0.5, mgp=xmgp)
     }
     graphics::axis.Date(3, at=xat, tcl=tcl, labels=FALSE, lwd=-1, lwd.ticks=0.5)
   } else {
@@ -287,7 +294,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
       xlabels <- sub("^\\s+", "", s)
     }
     graphics::axis(1, at=xat, labels=xlabels, tcl=tcl, las=1, cex.axis=cex,
-                   lwd=-1, lwd.ticks=0.5)
+                   lwd=-1, lwd.ticks=0.5, mgp=xmgp)
     graphics::axis(3, at=xat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
   }
   if (is.na(scientific[2])) {
@@ -304,19 +311,17 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
     ylabels <- sub("^\\s+", "", s)
   }
   graphics::axis(2, at=yat, labels=ylabels, tcl=tcl, las=1, cex.axis=cex,
-                 lwd=-1, lwd.ticks=0.5)
+                 lwd=-1, lwd.ticks=0.5, mgp=ymgp)
 
-  if (!missing(xlab)) {
-    mar.line <- sum(graphics::par("mgp")[2:3]) + graphics::par("mgp")[2] + cex
-    graphics::title(xlab=xlab, cex.lab=cex, line=mar.line)
-  }
+  if (!missing(xlab))
+    graphics::title(xlab=xlab, cex.lab=0.7, line=xmgp[1])
   if (!missing(ylab)) {
     max.sw <- max(graphics::strwidth(ylabels, units="inches")) * cex
-    mar.line <- max.sw / line.in.inches + sum(graphics::par("mgp")[2:3]) +
-                graphics::par("mgp")[2]
-    graphics::title(ylab=ylab[1], cex.lab=cex, line=mar.line)
+    mar.line <- max.sw / line.in.inches + sum(ymgp[2:3]) + ymgp[2] + 0.1
+    graphics::title(ylab=ylab[1], cex.lab=0.7, line=mar.line)
   }
-  if (!is.null(main)) graphics::title(main=list(main, "cex"=cex, "font"=1), line=0.5, adj=0)
+  if (!is.null(main))
+    graphics::title(main=list(main, "cex"=0.8, "font"=2), line=0.3, adj=0)
 
   if (is.null(conversion.factor)) {
     graphics::axis(4, at=yat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
@@ -341,11 +346,11 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
       ylabels <- sub("^\\s+", "", s)
     }
     graphics::axis(4, at=(yat / conversion.factor), labels=ylabels, tcl=tcl,
-                   las=1, cex.axis=cex, lwd=-1, lwd.ticks=0.5)
+                   las=1, cex.axis=cex, lwd=-1, lwd.ticks=0.5, mgp=ymgp)
     if (!missing(ylab) && length(ylab) > 1) {
       max.sw <- max(graphics::strwidth(ylabels, units="inches")) * cex
-      mar.line <- max.sw / line.in.inches + sum(graphics::par("mgp")[2:3])
-      graphics::mtext(ylab[2], side=4, cex=cex, line=mar.line)
+      mar.line <- max.sw / line.in.inches + sum(ymgp[2:3]) + 0.1
+      graphics::mtext(ylab[2], side=4, cex=0.7, line=mar.line)
     }
   }
 
@@ -364,7 +369,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
 
   # interval censored plot
   } else if (type == "i") {
-    AddIntervals(x, y[, 1], y[, 2], col=col, lty=1, lwd=lwd, cex=pt.cex, pch=pch, bg=bg)
+    AddIntervals(x, y[, 1], y[, 2], col=col, cex=pt.cex)
 
   # stair steps plot
   } else if (type == "s") {

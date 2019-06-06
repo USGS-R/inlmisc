@@ -59,8 +59,8 @@
 #' cat("\\documentclass{article}",
 #'     "\\usepackage[labelsep=period, labelfont=bf]{caption}",
 #'     "\\usepackage{subcaption}",
-#'     "\\captionsetup[figure]{skip=5pt}",
-#'     "\\captionsetup[subfigure]{skip=-5pt, labelfont={bf, it}}",
+#'     "\\captionsetup[figure]{skip=10pt}",
+#'     "\\captionsetup[subfigure]{skip=-10pt, labelfont={bf, it}}",
 #'     "\\renewcommand{\\thesubfigure}{\\Alph{subfigure}}",
 #'     "\\begin{document}",
 #'     "<<id, echo=FALSE, fig.width=3, fig.height=2, results='asis'>>=",
@@ -142,8 +142,9 @@ PrintFigure <- function(fig, nr=1, nc=1, label="", title="", title_lof=title,
     }
 
     eval(parse(text=fig[i]))
+    cat("\n")
 
-    cat("\n  \\end{subfigure}\n")
+    cat("  \\end{subfigure}\n")
 
     if (!is.na(caption)) {
       caption_lof <- strwrap(title_lof, width=.Machine$integer.max)

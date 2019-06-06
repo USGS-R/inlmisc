@@ -48,7 +48,7 @@
 #' print(cbind(x, y0, y1))
 #'
 
-AddIntervals <- function(x, y0, y1, hin=NULL, col="black", lty=1, lwd=0.7,
+AddIntervals <- function(x, y0, y1, hin=NULL, col="black", lty=1, lwd=0.5,
                          cex=1, xpd=FALSE, ...) {
 
   x <- as.numeric(x)
@@ -83,7 +83,7 @@ AddIntervals <- function(x, y0, y1, hin=NULL, col="black", lty=1, lwd=0.7,
   x_to_inches <- with(units, pin[1] / diff(usr[1:2]))
   y_to_inches <- with(units, pin[2] / diff(usr[3:4]))
 
-  if (is.null(hin)) hin <- graphics::par("cin")[2] * 0.75 / 2 * cex
+  if (is.null(hin)) hin <- graphics::par("cin")[2] * 0.75 / 4 * cex
   dx <- hin / x_to_inches
   m <- cbind(x - dx / 2, x + dx / 2)
 

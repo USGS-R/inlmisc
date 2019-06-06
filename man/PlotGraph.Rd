@@ -9,7 +9,8 @@ PlotGraph(x, y, xlab, ylab, main = NULL, asp = NA, xlim = NULL,
   lty = 1, lwd = 1, pch = NULL, col = NULL, bg = NA,
   fill = "none", fillcolor = NULL, pt.cex = 1, xpd = FALSE,
   seq.date.by = NULL, scientific = NA, conversion.factor = NULL,
-  boxwex = 0.8, center.date.labels = FALSE, bg.polygon = NULL)
+  boxwex = 0.8, center.date.labels = FALSE, bg.polygon = NULL,
+  add.grid = TRUE)
 }
 \arguments{
 \item{x, y}{'Date' vector, 'numeric' vector, 'matrix', or 'data.frame'.
@@ -113,6 +114,9 @@ If true, date labels are horizontally centered between \emph{x}-axis tickmarks.}
 If specified, a background polygon is drawn.
 The polygon is described using a list of arguments supplied to the \code{\link{polygon}} function.
 Passed arguments include \code{"x"} and \code{"col"}.}
+
+\item{add.grid}{'logical' flag.
+Whether to draw a rectangular grid.}
 }
 \value{
 Used for the side-effect of a new plot generated.
@@ -148,7 +152,7 @@ col <- GetColors(3, scheme = "bright")
 PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b", pch = 15:17,
           col = col, pt.cex = 0.9)
 legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
-       pt.cex = 0.9, cex = 0.8, bg = "white")
+       pt.cex = 0.9, cex = 0.7, bg = "white")
 
 d <- data.frame(x = as.Date("2008-07-12") + 1:8 * 1000,
                 y0 = c(NA, NA, 1, 3, 1, 4, 2, pi),
