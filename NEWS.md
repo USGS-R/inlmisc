@@ -14,7 +14,8 @@
 - In `PlotGraph` function: improve handling of cases where range of `y` values is zero;
   extend y-axis limits to prevent symbols from being drawn on an axis limit;
   change margin line for the main title, axis title, and axis labels;
-  decrease size of upper margin by 0.2 lines.
+  decrease size of upper margin by 0.2 lines;
+  add `add.grid` argument, determines whether to draw a rectangular grid.
 
 - In `PrintFigure` function, allow heading on single figure.
 
