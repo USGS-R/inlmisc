@@ -61,7 +61,7 @@ See returned \code{solution} component for a suggested value for this arugment.}
 Whether to use parallel computing.
 This argument can also be used to specify the number of cores
 (and number of islands) to employ; by default,
-this is taken from \code{\link[parallel]{detectCores}}.
+this is the number of physical CPUs/cores.
 The \pkg{parallel} and \pkg{doParallel} packages must be
 installed for parallel computing to work.}
 

@@ -39,7 +39,7 @@ Returns a 'data.table' with the following variables:
   }
 }
 \description{
-Summarize \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}
+Summarize \href{https://www.usgs.gov/mission-areas/water-resources/science/modflow-and-related-programs}{MODFLOW}
 volumetric flow rates by boundary condition types.
 Cell-by-cell flow data is split into subsets,
 summary statistics computed for each subset, and a summary table returned.

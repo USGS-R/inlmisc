@@ -43,7 +43,7 @@
 #'   Whether to use parallel computing.
 #'   This argument can also be used to specify the number of cores
 #'   (and number of islands) to employ; by default,
-#'   this is taken from \code{\link[parallel]{detectCores}}.
+#'   this is the number of physical CPUs/cores.
 #'   The \pkg{parallel} and \pkg{doParallel} packages must be
 #'   installed for parallel computing to work.
 #' @param monitor 'function'.
@@ -144,7 +144,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
 
   # set number of islands
   if (is.logical(parallel))
-    numIslands <- if (parallel) parallel::detectCores() else 4L
+    numIslands <- if (parallel) parallel::detectCores(logical=FALSE) else 4L
   else
     numIslands <- parallel
 
@@ -203,7 +203,10 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   solution <- m[!duplicated(m), , drop=FALSE]
 
   # bundle output
-  list(call=match.call(), solution=solution, ga_output=ga_output, ga_time=ga_time)
+  list("call"      = match.call(),
+       "solution"  = solution,
+       "ga_output" = ga_output,
+       "ga_time"   = ga_time)
 }
 
 .Population <- function(object, n) {
@@ -254,7 +257,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
     object@fitness[which(apply(m, 1, function(i) identical(i, child)))[1]]
   }
   fitness_children <- c(FindFitness(sort(c1)), FindFitness(sort(c2)))
-  list(children=encoded_children, fitness=fitness_children)
+  list("children"=encoded_children, "fitness"=fitness_children)
 }
 
 

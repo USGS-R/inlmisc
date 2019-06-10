@@ -46,8 +46,10 @@ BuildVignettes <- function(pkg=".", quiet=TRUE, clean=TRUE, gs_quality=NULL) {
   file.copy(c(v$docs, out), doc, overwrite=TRUE)
   file.remove(out)
 
-  if (!is.null(gs_quality))
-    tools::compactPDF(paths=doc, gs_quality=gs_quality)
+  if (!is.null(gs_quality)) {
+    gs_cmd <- Sys.getenv("R_GSCMD", tools::find_gs_cmd())
+    tools::compactPDF(paths=doc, gs_cmd=gs_cmd, gs_quality=gs_quality)
+  }
 
   invisible(TRUE)
 }

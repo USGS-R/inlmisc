@@ -1,0 +1,167 @@
+% Package `usgs' to use with LaTeX2e
+
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{usgs}[2019/03/09 v0.1]
+
+% Fonts ------------------------------------------------------------------------
+
+\RequirePackage{ifxetex}  % provides conditional for checking if XeTeX is running
+\ifxetex
+  \RequirePackage{fontspec}  % adds interface for advanced font selection
+  \defaultfontfeatures{Ligatures=TeX}  % improves font behavior
+\else
+  \RequirePackage[T1]{fontenc}  % use Type 1 (PostScript) font encoding
+\fi
+
+\RequirePackage{mathptmx}  % define Times as default text font, and provide maths support
+\RequirePackage{amsfonts}  % load American Mathematical Society fonts
+\RequirePackage{textcomp}  % load Text Companion fonts
+
+\renewcommand{\sfdefault}{lmss}  % use 'Latin Modern Sans Serif' for san-serif (sans) font family
+\renewcommand{\ttdefault}{lmtt}  % use 'Latin Modern Sans Typewriter' for typewriter (mono) font family
+
+% Layout -----------------------------------------------------------------------
+
+\RequirePackage[tmargin=1.00in, bmargin=0.67in, lmargin=0.58in, rmargin=0.75in]{geometry}  % define margins
+\RequirePackage[pdftex]{lscape}  % place selected parts of a document in landscape
+
+% Headers ----------------------------------------------------------------------
+
+\RequirePackage{fancyhdr}  % control page headers and footers
+\pagestyle{fancy}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhf{}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyhead[RO]{\normalfont\bfseries\sffamily \thepage}
+}
+\fancyhead[LE]{\normalfont\bfseries\sffamily \thepage \quad Report Title}
+\fancyhead[RO]{\normalfont\bfseries\sffamily \nouppercase{\leftmark} \quad \thepage}
+
+% Maths ------------------------------------------------------------------------
+
+\RequirePackage{amsmath}  % American Mathematical Society mathematical facilities
+\RequirePackage{bm}  % access bold symbols in math mode
+\RequirePackage{xfrac}  % typset fractions
+\RequirePackage{siunitx}  % a comprehensive (SI) units package
+\sisetup{input-ignore={,}, input-decimal-markers={.}, group-separator={,}, group-minimum-digits=4}
+
+% Contents ---------------------------------------------------------------------
+
+\RequirePackage{titling}  % control over the typesetting of the \maketitle command
+\pretitle{\begin{flushleft}\LARGE\bfseries\sffamily}
+\posttitle{\end{flushleft}\vspace{2ex}}
+\preauthor{\begin{flushleft}\large\sffamily}
+\postauthor{\par\end{flushleft}}
+\predate{}
+\date{}
+\postdate{}
+
+\RequirePackage{tocloft}  % control 'Table of Contents', 'List of Figures', and 'List of Tables'
+\renewcommand\cftsecfont{\sffamily}
+\renewcommand\cftsubsecfont{\sffamily}
+\renewcommand\cftsubsubsecfont{\sffamily}
+\renewcommand\cfttoctitlefont{\Large\bfseries\sffamily}
+\renewcommand\cftloftitlefont{\Large\bfseries\sffamily}
+\renewcommand\cftlottitlefont{\Large\bfseries\sffamily}
+\renewcommand{\cftdotsep}{0.5}
+\renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
+\renewcommand\cftsecpagefont{\normalfont}
+\setlength{\cftfignumwidth}{2.55em}
+\renewcommand\cftfigaftersnum{. }
+\renewcommand\cfttabaftersnum{. }
+\setlength{\cftbeforesecskip}{0.1cm}
+\setlength{\cftbeforesubsecskip}{0.1cm}
+\setlength{\cftbeforesubsubsecskip}{0.1cm}
+\setlength{\cftbeforefigskip}{0.1cm}
+\setlength{\cftbeforetabskip}{0.1cm}
+
+% Tables -----------------------------------------------------------------------
+
+\RequirePackage{array}  % extend the array and tabular environments
+\RequirePackage{booktabs}  % enhance tables
+\RequirePackage{makecell}  % tabular column heads and multilined cells
+\RequirePackage{verbatimbox}  % deposit verbatim text in a box
+\RequirePackage{multirow}  % tabular cells spanning multiple rows
+
+% Captions ---------------------------------------------------------------------
+
+\RequirePackage{caption}  % customise captions in floating environments
+\captionsetup{labelsep=period, labelfont=bf, justification=raggedright}
+\captionsetup[figure]{skip=5pt}
+\captionsetup[subfigure]{skip=-5pt, labelfont={bf,it}}
+
+\RequirePackage{subcaption}  % add support for sub-captions
+\renewcommand{\thesubfigure}{\Alph{subfigure}}  % identify sub-figures with letter in sub-caption
+
+\setcounter{secnumdepth}{0}  % allow only \section in Table of Contents
+
+% References -------------------------------------------------------------------
+
+\RequirePackage[style=authoryear-comp, maxbibnames=99, maxcitenames=3, natbib=true, dashed=false, backend=bibtex]{biblatex}
+\InputIfFileExists{usgsbib.cfg}
+
+% Sectioning -------------------------------------------------------------------
+
+\RequirePackage{sectsty}  % control sectional headers
+\sectionfont{\Large\bfseries\sffamily}
+\subsectionfont{\large\bfseries\sffamily}
+\subsubsectionfont{\large\mdseries\sffamily}
+
+\widowpenalties 1 10000 % penalties that control line or page breaks
+
+\makeatletter  % align floating objects (e.g. figures) along the top of a page
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt plus 1fil}
+\makeatother
+
+\RequirePackage{indentfirst}  % indent first paragraph after section header
+
+\RequirePackage{ragged2e}  % control ragged text
+\setlength\RaggedRightParindent{15pt}  % set paragraph indentation
+
+\raggedbottom  % make all pages the height of the text on that page
+
+\RequirePackage{float}  % provides the H float modifier option
+
+% Lists ------------------------------------------------------------------------
+
+\RequirePackage{enumitem}  % control layout of itemize, enumerate, description
+\renewcommand*\descriptionlabel[1]{\hspace\leftmargin$#1$}  % make descriptions appear on left-hand side with an indent
+
+% Miscellaneous ----------------------------------------------------------------
+
+\newcommand{\R}{{\normalfont\textsf{R}}{}}  % set format for R-programming character
+
+\extrafloats{1000}  % allocate more floats
+
+\RequirePackage[multiple]{footmisc}  % typesetting of footnotes
+
+\RequirePackage{xcolor}  % control colors
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\pretolerance=5000  % reduce hyphenation
+\tolerance=9000  % influences paragraph breaking
+\emergencystretch=0pt  % prevent writing into margin
+
+% Example environments --------------------------------------------------------
+
+\RequirePackage{fancyvrb}
+\RequirePackage{alltt}
+
+\DefineVerbatimEnvironment{example}{Verbatim}{}
+\renewenvironment{example*}{\begin{alltt}}{\end{alltt}}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{Sin}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{Sout}{Verbatim}{fontsize=\small}
+\newenvironment{Schunk}{}{}
+
+% Links ------------------------------------------------------------------------
+
+\RequirePackage[pdfa, hidelinks, pdflang={en-US}]{hyperref}  % support for hyperlinks
+\hypersetup{colorlinks, urlcolor=Red, linkcolor=Blue, citecolor=Blue, linktoc=page}  % set font color for hyperlinks

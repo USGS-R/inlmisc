@@ -228,7 +228,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     breaks <- sort(breaks)
     is_lt <- any(z < utils::head(breaks, 1))
     is_gt <- any(z > utils::tail(breaks, 1))
-    interval <- findInterval(z, breaks, rightmost.closed=TRUE)
+    interval <- findInterval(z, breaks, rightmost.closed=TRUE, left.open=TRUE)
     s <- formatC(breaks, format=format, big.mark=",")
     ss <- sprintf(">%s to %s", utils::head(s, -1), utils::tail(s, -1))
     if (is_gt) ss <- c(ss, sprintf(">%s", s[length(s)]))
@@ -244,7 +244,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
       n <- length(x)
       d <- data.frame(x=seq_along(x), y=x)
       unname(stats::predict(stats::lm(y ~ poly(x, 2), data=d),
-                            newdata=list(x=seq(n + 1, n + npred))))
+                            newdata=list("x"=seq(n + 1, n + npred))))
     }
     if (is_lt) {
       interval <- interval + 1L

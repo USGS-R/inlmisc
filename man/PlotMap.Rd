@@ -207,7 +207,7 @@ credit <- paste("Data collected in a flood plain of the river Meuse,",
                 "\\nand iterpolated on a grid with 40-meter by 40-meter spacing",
                 "using inverse distance weighting.")
 PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
-        contour.lines = list(col = "#1F1F1F"), credit = credit,
+        contour.lines = list("col" = "#1F1F1F"), credit = credit,
         draw.key = FALSE, simplify = 0)
 AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371),
             loc = "bottomright", inset = c(0.1, 0.05))
@@ -226,8 +226,8 @@ credit <- paste("Digitized from a topographic map by Ross Ihaka",
 explanation <- "Elevation on Auckland's Maunga Whau volcano, in meters."
 PlotMap(r, extend.z = TRUE, pal = GetColors(scheme = "DEM screen"),
         scale.loc = "bottomright", arrow.loc = "topright",
-        explanation = explanation, credit = credit, shade = list(alpha = 0.3),
-        contour.lines = list(col = "#1F1F1FA6"), useRaster = TRUE)
+        explanation = explanation, credit = credit, shade = list("alpha" = 0.3),
+        contour.lines = list("col" = "#1F1F1FA6"), "useRaster" = TRUE)
 
 out <- PlotMap(r, file = "Rplots1.pdf")
 print(out)

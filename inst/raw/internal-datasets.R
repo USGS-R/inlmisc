@@ -400,6 +400,14 @@ MakeSysdata <- function() {
     nan  = "#666666"
   )
 
+  # unknown author on gnuplot-info
+
+  schemes[["bpy"]] <- list(
+    type = "Sequential",
+    cite = "unknown",
+    nmax = Inf
+  )
+
   schemes <- schemes[order(vapply(schemes, function(x) x$type, ""), names(schemes))]
   invisible(lapply(schemes, .CheckScheme))
   if (dir.exists("../../R")) save(schemes, file="../../R/sysdata.rda")
@@ -478,14 +486,14 @@ MakeSysdata <- function() {
     }
   }
 
-  l <- list(data = d,
-            type = type,
-            cite = cite,
-            nmax = Inf,
-            nan  = color$N,
-            back = color$B,
-            fore = color$F,
-            note = note)
+  l <- list("data" = d,
+            "type" = type,
+            "cite" = cite,
+            "nmax" = Inf,
+            "nan"  = color$N,
+            "back" = color$B,
+            "fore" = color$F,
+            "note" = note)
    l[vapply(l, is.null, FALSE)] <- NULL
    l
 }
@@ -529,8 +537,17 @@ MakeSysdata <- function() {
 
   nm <- tools::file_path_sans_ext(basename(file))
   type <- rep("Sequential", length(nm))
-  div <- c("berlin", "broc", "cork", "lisbon", "oleron", "polar", "red2green",
-           "roma", "split", "tofino", "vik")
+  div <- c("berlin",
+           "broc",
+           "cork",
+           "lisbon",
+           "oleron",
+           "polar",
+           "red2green",
+           "roma",
+           "split",
+           "tofino",
+           "vik")
   type[nm %in% div] <- "Diverging"
 
   cpt <- lapply(seq_along(destfile), function(i) {
@@ -547,10 +564,11 @@ MakeSysdata <- function() {
 
 
 .CheckScheme <- function(x) {
-  checkmate::assertDataFrame(x$data, any.missing=FALSE, min.rows=2, min.cols=1)
-
+  checkmate::assertDataFrame(x$data, any.missing=FALSE,
+                             min.rows=2, min.cols=1, null.ok=TRUE)
   pattern <- "^#(\\d|[a-f]){6}$"
-  checkmate::assertCharacter(x$data$color, pattern=pattern, ignore.case=TRUE)
+  checkmate::assertCharacter(x$data$color, pattern=pattern,
+                             ignore.case=TRUE, null.ok=TRUE)
   stopifnot(all(inlmisc:::.IsColor(x$data$color)))
 
   checkmate::qassert(x$data$name, c("0", "S", "X(0,)"))
@@ -642,10 +660,17 @@ MakeTables <- function() {
     m[duplicated(m[, "Type"]), "Type"] <- ""
 
     src <- levels(cite)[no]
-    if (grepl("Wessel", src))
-      title <- sprintf("Schemes collected by %s and released under an open license.", src)
-    else
+    if (src == "Paul Tol (2018)") {
       title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
+    } else if (src == "Thomas Dewez (2004)") {
+      title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
+    } else if (src == "Wessel and others (2013)") {
+      title <- sprintf("Schemes collected by %s and released under an open license.", src)
+    } else if (src == "unknown") {
+      title <- "Scheme by unknown author; discovered on gnuplot-info by Edzer Pebesma."
+    } else {
+      title <- "ADD ATTRIBUTION"
+    }
 
     sink("table.tex")
     cat("\\documentclass[varwidth=\\maxdimen, border=0pt]{standalone}",
@@ -674,7 +699,8 @@ MakeTables <- function() {
     arg <- c("--without-gui", "--file=table.pdf", "--export-plain-svg=table.svg")
     system2("inkscape", args=arg, stdout=FALSE, stderr=FALSE)
 
-    tools::compactPDF("table.pdf", gs_quality="printer")
+    gs_cmd <- Sys.getenv("R_GSCMD", tools::find_gs_cmd())
+    tools::compactPDF("table.pdf", qpdf="", gs_cmd=gs_cmd, gs_quality="printer")
     system2("svgcleaner", args=c("table.svg", "table.svg"), stdout=FALSE, stderr=FALSE)
 
     from <- c("table.pdf", "table.svg")

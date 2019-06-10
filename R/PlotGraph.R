@@ -29,7 +29,6 @@
 #'     \item "i" for \bold{i}nterval-censored data, see "Details" section below, and
 #'     \item "n" for \bold{n}o plotting.
 #'   }
-#'   Characters in \code{type} are cycled through; such as, "pl" alternately plots points and lines.
 #' @param lty 'integer' vector.
 #'   Line type, see \code{\link{par}} function for all possible types.
 #'   Line types are used cyclically.
@@ -74,22 +73,24 @@
 #'   If specified, a background polygon is drawn.
 #'   The polygon is described using a list of arguments supplied to the \code{\link{polygon}} function.
 #'   Passed arguments include \code{"x"} and \code{"col"}.
+#' @param add.grid 'logical' flag.
+#'   Whether to draw a rectangular grid.
 #' @inheritParams PlotMap
 #'
 #' @details Interval censored data (\code{type = "i"}) requires \code{y} be matrix of 2 columns.
 #'   The first column contains the starting values, the second the ending values.
 #'   Observations are represented using
-#'     \code{(-Inf, t)} for left censored,
-#'     \code{(t, Inf)} for right censored,
-#'     \code{(t, t)} for exact, and
-#'     \code{(t1, t2)} for an interval.
-#'   Where infinity is represented as \code{Inf} or \code{NA}, and \code{t} is a numeric value.
+#'     \code{(y0, Inf)} for right-censored value,
+#'     \code{(y0, y0)} for exact value, and
+#'     \code{(-Inf, y1)} for left-censored value, and
+#'     \code{(y0, y1)} for an interval censored value.
+#'   Where infinity is represented as \code{Inf} or \code{NA}, and \code{y} is a numeric value.
 #'
 #' @return Used for the side-effect of a new plot generated.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link[graphics]{matplot}}, \code{\link[graphics]{boxplot}}
+#' @seealso \code{\link[graphics]{matplot}}, \code{\link[graphics]{boxplot}}, \code{\link{AddIntervals}}
 #'
 #' @keywords hplot
 #'
@@ -113,12 +114,12 @@
 #' PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b", pch = 15:17,
 #'           col = col, pt.cex = 0.9)
 #' legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
-#'        pt.cex = 0.9, cex = 0.8, bg = "white")
+#'        pt.cex = 0.9, cex = 0.7, bg = "white")
 #'
 #' d <- data.frame(x = as.Date("2008-07-12") + 1:8 * 1000,
 #'                 y0 = c(NA, NA, 1, 3, 1, 4, 2, pi),
 #'                 y1 = c(1, 2, NA, NA, 4, 3, 2, pi))
-#' PlotGraph(d, type = "i", ylim = c(0, 5))
+#' PlotGraph(d, type = "i", ylim = c(0, 5), xpd = TRUE)
 #'
 
 PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
@@ -126,7 +127,8 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
                       pch=NULL, col=NULL, bg=NA, fill="none", fillcolor=NULL,
                       pt.cex=1, xpd=FALSE, seq.date.by=NULL, scientific=NA,
                       conversion.factor=NULL, boxwex=0.8,
-                      center.date.labels=FALSE, bg.polygon=NULL) {
+                      center.date.labels=FALSE, bg.polygon=NULL,
+                      add.grid=TRUE) {
 
   fill <- match.arg(fill, c("none", "tozeroy", "tominy", "tomaxy"))
   checkmate::assertCharacter(fillcolor, null.ok=TRUE)
@@ -172,39 +174,43 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
     }
   }
 
-  if (is.numeric(ylim)) {
+  if (is.null(ylim) || abs(diff(ylim)) < .Machine$double.eps^0.5) {
+    yran <- grDevices::extendrange(y, f=0.001)
+    if (abs(diff(yran)) < .Machine$double.eps^0.5) yran[2] <- yran[1]
+    if (ylog && abs(diff(yran)) > 0)
+      yat <- grDevices::axisTicks(log10(yran), TRUE, nint=yn)
+    else
+      yat <- pretty(yran, n=yn, min.n=2)
+    ylim <- range(yat)
+  } else {
     usr <- if (ylog) log10(ylim) else ylim
     if (usr[1] == -Inf) usr[1] <- 0
     for (i in c(0, -1, 1, 0)) {
       yat <- grDevices::axisTicks(usr, ylog, nint=yn + i)
       if (yat[1] == ylim[1] & yat[length(yat)] == ylim[2]) break
     }
-  } else {
-    if (ylog)
-      yat <- grDevices::axisTicks(log10(range(y)), TRUE, nint=yn)
-    else
-      yat <- pretty(range(y, na.rm=TRUE), n=yn, min.n=2)
-    ylim <- range(yat)
   }
 
   n <- ifelse(type == "i", 1, ncol(y))
-  if (!is.character(col) && !is.logical(col)) {
-    if (is.function(col)) {
-      col <- col(n)
-    } else {
-      scheme <- if (n > 7) "smooth rainbow" else "bright"
-      col <- GetColors(n, scheme=scheme)
-    }
+  if (is.null(col)) {
+    scheme <- ifelse(n > 7, "smooth rainbow", "bright")
+    col <- GetColors(n, scheme=scheme)
+  } else if (is.function(col)) {
+    col <- col(n)
   }
 
+  n <- ifelse(type == "i", nrow(y), ncol(y))
+  col <- rep_len(col, length.out=n)
   lty <- rep_len(lty, length.out=n)
   lwd <- rep_len(lwd, length.out=n)
 
-  mar <- c(2.3, 4.1, 1.5, 4.1)
+  mar <- c(2.3, 4.1, 1.3, 4.1)
+  if (missing(xlab)) mar[1] <- mar[1] - 1
   if (is.null(main)) mar[3] <- mar[3] - 1
   if (is.null(conversion.factor)) mar[4] <- mar[4] - 2
-  mgp <- c(3.2, 0.2, 0)  # cumulative axis margin line: title, labels, and line
-  graphics::par(mar=mar, mgp=mgp, xpd=xpd)
+  xmgp <- c(1, 0, 0)
+  ymgp <- c(0, 0.2, 0)
+  graphics::par(mar=mar, xpd=xpd)
   line.in.inches <- (graphics::par("mai") / graphics::par("mar"))[2]
 
   graphics::plot.new()
@@ -212,7 +218,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
                         xaxs="i", yaxs="i", log=ifelse(ylog, "y", ""))
 
   cex <- 0.7
-  tcl <- 0.1 / graphics::par("csi")  # length for major ticks is 0.1 inches
+  tcl <- 0.08 / graphics::par("csi")  # length for major ticks is 0.08 inches
 
   is.decreasing <- diff(graphics::par("usr")[1:2]) < 0
 
@@ -221,8 +227,10 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
     graphics::polygon(bg.polygon$x, col=bg.col, border=NA)
   }
 
-  graphics::abline(v=xat, col="lightgrey", lwd=0.5, xpd=FALSE)
-  graphics::abline(h=yat, col="lightgrey", lwd=0.5, xpd=FALSE)
+  if (add.grid) {
+    graphics::abline(v=xat, col="lightgrey", lwd=0.5, xpd=FALSE)
+    graphics::abline(h=yat, col="lightgrey", lwd=0.5, xpd=FALSE)
+  }
 
   if (type %in% c("l", "b", "s") && fill != "none") {
     if (is.null(fillcolor))
@@ -266,9 +274,9 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
       else
         at <- utils::head(xat, -1) + diff(xat) / 2
       graphics::axis.Date(1, at=xat, tcl=tcl, labels=FALSE, lwd=-1, lwd.ticks=0.5)
-      graphics::axis.Date(1, at=at, tcl=0, cex.axis=cex, lwd=-1)
+      graphics::axis.Date(1, at=at, tcl=0, cex.axis=cex, lwd=-1, mgp=xmgp)
     } else {
-      graphics::axis.Date(1, at=xat, tcl=tcl, cex.axis=cex, lwd=-1, lwd.ticks=0.5)
+      graphics::axis.Date(1, at=xat, tcl=tcl, cex.axis=cex, lwd=-1, lwd.ticks=0.5, mgp=xmgp)
     }
     graphics::axis.Date(3, at=xat, tcl=tcl, labels=FALSE, lwd=-1, lwd.ticks=0.5)
   } else {
@@ -286,7 +294,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
       xlabels <- sub("^\\s+", "", s)
     }
     graphics::axis(1, at=xat, labels=xlabels, tcl=tcl, las=1, cex.axis=cex,
-                   lwd=-1, lwd.ticks=0.5)
+                   lwd=-1, lwd.ticks=0.5, mgp=xmgp)
     graphics::axis(3, at=xat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
   }
   if (is.na(scientific[2])) {
@@ -303,19 +311,17 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
     ylabels <- sub("^\\s+", "", s)
   }
   graphics::axis(2, at=yat, labels=ylabels, tcl=tcl, las=1, cex.axis=cex,
-                 lwd=-1, lwd.ticks=0.5)
+                 lwd=-1, lwd.ticks=0.5, mgp=ymgp)
 
-  if (!missing(xlab)) {
-    mar.line <- sum(graphics::par("mgp")[2:3]) + graphics::par("mgp")[2] + cex
-    graphics::title(xlab=xlab, cex.lab=cex, line=mar.line)
-  }
+  if (!missing(xlab))
+    graphics::title(xlab=xlab, cex.lab=0.7, line=xmgp[1])
   if (!missing(ylab)) {
     max.sw <- max(graphics::strwidth(ylabels, units="inches")) * cex
-    mar.line <- max.sw / line.in.inches + sum(graphics::par("mgp")[2:3]) +
-                graphics::par("mgp")[2]
-    graphics::title(ylab=ylab[1], cex.lab=cex, line=mar.line)
+    mar.line <- max.sw / line.in.inches + sum(ymgp[2:3]) + ymgp[2] + 0.1
+    graphics::title(ylab=ylab[1], cex.lab=0.7, line=mar.line)
   }
-  if (!is.null(main)) graphics::title(main=list(main, cex=cex, font=1), line=0.5, adj=0)
+  if (!is.null(main))
+    graphics::title(main=list(main, "cex"=0.8, "font"=2), line=0.3, adj=0)
 
   if (is.null(conversion.factor)) {
     graphics::axis(4, at=yat, tcl=tcl, lwd=-1, lwd.ticks=0.5, labels=FALSE)
@@ -340,11 +346,11 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
       ylabels <- sub("^\\s+", "", s)
     }
     graphics::axis(4, at=(yat / conversion.factor), labels=ylabels, tcl=tcl,
-                   las=1, cex.axis=cex, lwd=-1, lwd.ticks=0.5)
+                   las=1, cex.axis=cex, lwd=-1, lwd.ticks=0.5, mgp=ymgp)
     if (!missing(ylab) && length(ylab) > 1) {
       max.sw <- max(graphics::strwidth(ylabels, units="inches")) * cex
-      mar.line <- max.sw / line.in.inches + sum(graphics::par("mgp")[2:3])
-      graphics::mtext(ylab[2], side=4, cex=cex, line=mar.line)
+      mar.line <- max.sw / line.in.inches + sum(ymgp[2:3]) + 0.1
+      graphics::mtext(ylab[2], side=4, cex=0.7, line=mar.line)
     }
   }
 
@@ -363,34 +369,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
 
   # interval censored plot
   } else if (type == "i") {
-    arg <- list(length=0.015, angle=90, lwd=lwd, col=col)
-    is <- is.na(y[, 1]) & !is.na(y[, 2])  # left censored
-    if (any(is)) {
-      x0 <- x[is]
-      y0 <- y[is, 2]
-      y1 <- rep(graphics::par("usr")[3], sum(is))
-      do.call(graphics::arrows, c(list(x0=x0, y0=y0, x1=x0, y1=y1, code=1), arg))
-    }
-    is <- !is.na(y[, 1]) & is.na(y[, 2])  # right censored
-    if (any(is)) {
-      x0 <- x[is]
-      y0 <- y[is, 1]
-      y1 <- rep(graphics::par("usr")[4], sum(is))
-      do.call(graphics::arrows, c(list(x0=x0, y0=y0, x1=x0, y1=y1, code=1), arg))
-    }
-    is <- !is.na(y[, 1]) & !is.na(y[, 2]) & y[, 1] != y[, 2] # interval
-    if (any(is)) {
-      x0 <- x[is]
-      y0 <- y[is, 1]
-      y1 <- y[is, 2]
-      do.call(graphics::arrows, c(list(x0=x0, y0=y0, x1=x0, y1=y1, code=3), arg))
-    }
-    is <- !is.na(y[, 1]) & !is.na(y[, 2]) & y[, 1] == y[, 2] # exact
-    if (any(is)) {
-      x0 <- x[is]
-      y0 <- y[is, 1]
-      graphics::points(x0, y0, pch=pch, col=col, bg=bg, cex=pt.cex)
-    }
+    AddIntervals(x, y[, 1], y[, 2], col=col, cex=pt.cex)
 
   # stair steps plot
   } else if (type == "s") {

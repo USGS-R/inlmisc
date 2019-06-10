@@ -1,6 +1,6 @@
 #' Summarize MODFLOW Water Budget
 #'
-#' Summarize \href{https://water.usgs.gov/ogw/modflow/}{MODFLOW}
+#' Summarize \href{https://www.usgs.gov/mission-areas/water-resources/science/modflow-and-related-programs}{MODFLOW}
 #' volumetric flow rates by boundary condition types.
 #' Cell-by-cell flow data is split into subsets,
 #' summary statistics computed for each subset, and a summary table returned.
@@ -104,15 +104,15 @@ SummariseBudget <- function(budget, desc=NULL, id=NULL) {
       dt$flow[dt$flow < 0] <- 0
     else
       dt$flow[dt$flow > 0] <- 0
-    dt[, list(delt        = utils::head(delt, 1),
-              pertim      = utils::head(pertim, 1),
-              totim       = utils::head(totim, 1),
-              count       = length(flow),
-              flow.sum    = sum(flow),
-              flow.mean   = mean(flow),
-              flow.median = stats::median(flow),
-              flow.sd     = stats::sd(flow),
-              flow.dir    = i),
+    dt[, list("delt"        = utils::head(delt, 1),
+              "pertim"      = utils::head(pertim, 1),
+              "totim"       = utils::head(totim, 1),
+              "count"       = length(flow),
+              "flow.sum"    = sum(flow),
+              "flow.mean"   = mean(flow),
+              "flow.median" = stats::median(flow),
+              "flow.sd"     = stats::sd(flow),
+              "flow.dir"    = i),
        by=list(desc, kper, kstp, id)]
   }))
   dt_summary$flow.dir <- as.factor(dt_summary$flow.dir)

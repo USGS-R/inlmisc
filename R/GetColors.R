@@ -56,6 +56,9 @@
 #'   \if{html}{\figure{table03.svg}}
 #'   \if{latex}{\figure{table03.pdf}{options: width=5.36in}}
 #'
+#'   \if{html}{\figure{table04.svg}}
+#'   \if{latex}{\figure{table04.pdf}{options: width=5.36in}}
+#'
 #'   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
 #'   intended to be accessed in their entirety and subset using vector element names.
 #'
@@ -249,9 +252,21 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
   if (missing(n)) {
     Pal <- GetColors
     formals(Pal) <- eval(substitute(
-      alist("n"=, "scheme"=a1, "alpha"=a2, "stops"=a3, "bias"=a4, "reverse"=a5,
-            "blind"=a6, "gray"=a7),
-      list(a1=scheme, a2=alpha, a3=stops, a4=bias, a5=reverse, a6=blind, a7=gray)
+      alist("n" =,
+            "scheme"  = a1,
+            "alpha"   = a2,
+            "stops"   = a3,
+            "bias"    = a4,
+            "reverse" = a5,
+            "blind"   = a6,
+            "gray"    = a7),
+      list("a1" = scheme,
+           "a2" = alpha,
+           "a3" = stops,
+           "a4" = bias,
+           "a5" = reverse,
+           "a6" = blind,
+           "a7" = gray)
     ))
     return(Pal)
   }
@@ -284,6 +299,19 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
                 c( 2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29),
                 c( 1,  2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29))
     pal <- color[idx[[n]]]
+    if (reverse) pal <- rev(pal)
+  } else if (scheme == "bpy") {
+
+    # code adapted from sp::bpy.colors function,
+    # authored by Edzer Pebesma and accessed June 4, 2019
+    # at https://CRAN.R-project.org/package=sp
+    x <- seq.int(stops[1], stops[2], length.out=n)^bias
+    r <- ifelse(x < 0.25, 0, ifelse(x < 0.57, x / 0.32 - 0.78125, 1))
+    g <- ifelse(x < 0.42, 0, ifelse(x < 0.92, 2 * x - 0.84, 1))
+    b <- ifelse(x < 0.25, 4 * x,
+                ifelse(x < 0.42, 1, ifelse(x < 0.92, -2 * x + 1.84, x / 0.08 - 11.5)))
+    pal <- grDevices::rgb(r, g, b)
+
     if (reverse) pal <- rev(pal)
   } else if (nmax < Inf) {
     if (reverse) color <- rev(color)
@@ -320,9 +348,15 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
     names(pal) <- pal_names
   }
 
-  cl <- as.call(list(quote(GetColors), "n"=n, "scheme"=scheme, "alpha"=alpha,
-                     "stops"=stops, "bias"=bias, "reverse"=reverse,
-                     "blind"=blind, "gray"=gray))
+  cl <- as.call(list(quote(GetColors),
+                     "n"       = n,
+                     "scheme"  = scheme,
+                     "alpha"   = alpha,
+                     "stops"   = stops,
+                     "bias"    = bias,
+                     "reverse" = reverse,
+                     "blind"   = blind,
+                     "gray"    = gray))
 
   .MakeInlpalClass(pal, nan, cl)
 }

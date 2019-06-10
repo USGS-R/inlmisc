@@ -1,0 +1,20 @@
+\documentclass[twoside]{article}
+\usepackage{usgs}
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+$if(bibliography)$
+\addbibresource{$bibliography$}
+$endif$
+
+\fancyhead[LE]{\normalfont\bfseries\sffamily \thepage \quad $title$}
+
+\setcounter{page}{1}
+
+\begin{document}
+
+\input{$filename$}
+
+\end{document}

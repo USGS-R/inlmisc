@@ -1,9 +1,26 @@
 # inlmisc 0.4.5.9000
 
+- In `GetColors` function, add `"bpy"` (blue-pink-yellow) color scheme.
+
+- In `AddPoints` function, change interval to reflect labels, that is,
+  open at the left and closed at right.
+
+- Add `AddIntervals` function, used to add vertical interval symbols to plots.
+  Replaces use of `graphics::arrows` in `PlotGraph` function, and
+  avoids the warning message resulting from an arrow length less than 1/1000 inch.
+
+- In *misc/preamble.tex* file: reduce hyphenation and prevent writing into margin.
+
+- In `PlotGraph` function: improve handling of cases where range of `y` values is zero;
+  extend y-axis limits to prevent symbols from being drawn on an axis limit;
+  change margin line for the main title, axis title, and axis labels;
+  decrease size of upper margin by 0.2 lines;
+  add `add.grid` argument, determines whether to draw a rectangular grid.
+
 - In `PrintFigure` function, allow heading on single figure.
 
-- In `AddSearchButton` function, fix bug that prevented popup from opening,
-  occurred when `openPopup` argument is true.
+- In `AddSearchButton` function, fix bug that prevented popup from opening
+  when `openPopup` argument is true.
 
 # inlmisc 0.4.5
 

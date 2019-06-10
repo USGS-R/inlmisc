@@ -1,0 +1,39 @@
+% !TeX root = wrapper.tex
+\title{$title$}
+
+$if(author)$
+\author{By $for(author)$$author.name$$sep$, $endfor$}
+$else$
+\author{}
+$endif$
+
+\maketitle
+
+$if(toc)$
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+\clearpage
+$endif$
+
+$if(lof)$
+\renewcommand*\listfigurename{Figures}
+\listoffigures
+\clearpage
+$endif$
+
+$if(lot)$
+\renewcommand*\listtablename{Tables}
+\listoftables
+\clearpage
+$endif$
+
+\RaggedRight
+
+$body$
+
+$if(bibliography)$
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References Cited}
+\printbibliography
+$endif$

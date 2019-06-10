@@ -95,8 +95,8 @@
 #' d <-  data.frame("label" = c("Peak", "Random"))
 #' features <- sp::SpatialPointsDataFrame(p, d, match.ID = TRUE)
 #' PlotMap(r1, pal = GetColors(scheme = "DEM screen"), scale.loc = "top",
-#'         arrow.loc = "topright", shade = list(alpha = 0.3),
-#'         contour.lines = list(col = "#1F1F1FA6"))
+#'         arrow.loc = "topright", shade = list("alpha" = 0.3),
+#'         contour.lines = list("col" = "#1F1F1FA6"))
 #' lines(transect)
 #' raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
 #'              halo = TRUE, cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
@@ -370,7 +370,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   }
 
   y <- unlist(lapply(eat, function(i) i@data[[geo.lays[1]]]))
-  GetGeoTop <- stats::approxfun(x, y)
+  GetGeoTop <- stats::approxfun(x, y, ties=mean)
   pady <- graphics::strheight("M", cex=1) * 2
   d <- as.matrix(stats::dist(sp::coordinates(methods::as(transect, "SpatialPoints"))))[, 1]
   dist.to.bend <- d[-c(1, length(d))]
@@ -408,5 +408,5 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
     AddScaleBar(unit=unit, vert.exag=ifelse(asp == 1, NULL, asp),
                 loc=scale.loc, inset=c(0.1, 0.05))
 
-  invisible(list(din=graphics::par("din"), usr=usr, heights=c(h2, h1) / h))
+  invisible(list("din"=graphics::par("din"), "usr"=usr, "heights"=c(h2, h1) / h))
 }
