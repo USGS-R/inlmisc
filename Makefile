@@ -1,4 +1,5 @@
 # Prepare package for release
+# requires pdfcrop, inkscape, and svgcleaner
 
 PKGNAME := $(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
 PKGVERS := $(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
@@ -23,8 +24,21 @@ check:
 	cd ..;\
 	R CMD check --no-build-vignettes --as-cran $(PKGNAME)_$(PKGVERS).tar.gz;\
 
+datasets:
+	cd inst/raw;\
+	Rscript build-datasets.R;\
+	mv -f sysdata.rda ../../R/sysdata.rda;\
+
+tables: install
+	cd inst/raw;\
+	Rscript render-tables.R;\
+	rm -r ../../man/figures;\
+	mv -f figures ../../man/;\
+
 clean:
 	cd ..;\
-	$(RM) -r $(PKGNAME).Rcheck/;\
+	rm -f -r $(PKGNAME).Rcheck/;\
+	rm -f sysdata.rda;\
+	rm -f -r figures;\
 
-.PHONY: all docs build install check clean
+.PHONY: all docs build install check datasets tables clean
