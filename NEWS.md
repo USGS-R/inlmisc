@@ -1,5 +1,8 @@
 # inlmisc 0.4.5.9000
 
+- In `BuildVignettes` function, rearrange order of arguments and add `doc` argument,
+  used to specify the directory to write vignette output files.
+
 - In `GetColors` function, add `"bpy"` (blue-pink-yellow) color scheme.
 
 - In `AddPoints` function, change interval to reflect labels, that is,
