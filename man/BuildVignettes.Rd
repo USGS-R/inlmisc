@@ -14,11 +14,11 @@ Path to a package's root source directory, by default the \link[=getwd]{working 
 Its subdirectory \sQuote{vignettes} is searched for vignette source files.}
 
 \item{doc}{'character' string.
-Path to write the vignette output files, by default the \sQuote{inst/doc} directory.}
+Path to write the vignette output files, by default \sQuote{inst/doc} under the working directory.}
 
 \item{gs_quality}{'character' string.
 Quality of compacted PDF files, the options are
-\code{"printer"} (300 dpi), \code{"ebook"} (150 dpi, default),
+\code{"ebook"} (150 dpi, default), \code{"printer"} (300 dpi),
 \code{"screen"} (72 dpi), and \code{"none"} (no compression).}
 
 \item{clean}{'logical' flag.
@@ -29,7 +29,7 @@ Whether to suppress most output.}
 }
 \value{
 Used for the side-effect of creating the PDF and (or) HTML documents
-  of all vignettes, and their executable code files.
+  of the package vignettes, and their executable code files.
 }
 \description{
 Build package vignettes from their source files.
