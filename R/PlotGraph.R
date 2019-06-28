@@ -123,7 +123,7 @@
 #'
 
 PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
-                      xn=5, yn=5, ylog=FALSE, type="s", lty=1, lwd=1,
+                      xn=5, yn=5, ylog=FALSE, type="s", lty=1, lwd=0.7,
                       pch=NULL, col=NULL, bg=NA, fill="none", fillcolor=NULL,
                       pt.cex=1, xpd=FALSE, seq.date.by=NULL, scientific=NA,
                       conversion.factor=NULL, boxwex=0.8,
