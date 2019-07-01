@@ -227,7 +227,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
 
   if (is.list(bg.polygon)) {
     bg.col <- if (is.null(bg.polygon$col)) NA else bg.polygon$col
-    graphics::polygon(bg.polygon$x, col=bg.col, border=NA)
+    graphics::polygon(bg.polygon[[1]], col=bg.col, border=NA)
   }
 
   if (add.grid) {
