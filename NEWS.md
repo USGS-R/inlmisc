@@ -1,5 +1,7 @@
 # inlmisc 0.4.5.9000
 
+- Add `PrintHelpPages` function, used to print the HTML code associated with help pages of a loaded R package.
+
 - In `BuildVignettes` function, rearrange order of arguments and add `doc` argument,
   used to specify the directory to write vignette output files.
 
