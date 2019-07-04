@@ -4,11 +4,14 @@
 #'
 #' @param pkg 'character' string.
 #'   Package name
+#' @param file 'character' string.
+#'   A connection, or a character string naming the file to print to.
+#'   Prints to the standard output connection by default.
 #' @param toc 'logical' flag.
 #'   Whether to format the initial HTML header of each help page in Markdown.
 #'   The table of contents (toc) option in R Markdown requires Markdown headers.
 #' @param hr 'logical' flag.
-#'   Whether to add a horizontal rule (hr) or line to separate help pages.
+#'   Whether to add a horizontal rule or line to separate help pages.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -20,7 +23,7 @@
 #' PrintHelpPages("inlmisc")
 #'
 
-PrintHelpPages <- function(pkg, toc=FALSE, hr=TRUE) {
+PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE) {
 
   checkmate::assertString(pkg)
   checkmate::assertFlag(toc)
@@ -35,7 +38,8 @@ PrintHelpPages <- function(pkg, toc=FALSE, hr=TRUE) {
 
     # edit first header
     idx <- pmatch("<h2>", x)
-    if (toc) cat(sprintf("## %s (%s)\n\n", gsub("<.*?>", "", x[idx]), nm))
+    txt <- sprintf("## %s (%s)\n\n", gsub("<.*?>", "", x[idx]), nm)
+    if (toc) cat(txt, file=file, append=TRUE)
 
     # remove extraneous lines
     x <- x[-c(seq_len(idx - !toc), length(x))]
@@ -43,8 +47,7 @@ PrintHelpPages <- function(pkg, toc=FALSE, hr=TRUE) {
     # edit code chunk tags
     x[x == "</pre>"] <- "</code></pre>"
     idx <- which(x == "<pre>")
-    x[idx + 1L] <- sprintf("<pre class=\"lang-r\"><code class=\"lang-r\">%s",
-                           x[idx + 1L])
+    x[idx + 1L] <- sprintf("<pre class=\"lang-r\"><code class=\"lang-r\">%s", x[idx + 1L])
     x[idx] <- ""
 
     # remove empty lines
@@ -53,7 +56,8 @@ PrintHelpPages <- function(pkg, toc=FALSE, hr=TRUE) {
     # add horizontal rule
     if (hr) x <- c(x, "<hr />")
 
-    cat(htmltools::htmlPreserve(x), "\n", sep="\n", fill=TRUE)
+    txt <- htmltools::htmlPreserve(x)
+    cat(txt, "\n", file=file, sep="\n", fill=TRUE, append=TRUE)
   }
 
   invisible()
