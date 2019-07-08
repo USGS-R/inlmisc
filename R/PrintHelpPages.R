@@ -32,13 +32,14 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE) {
   if (!paste0("package:", pkg) %in% search())
     stop("package needs to be loaded")
 
-  for (nm in ls(paste0("package:", pkg))) {
-    x <- .GetHelpFile(utils::help(nm, package=eval(pkg)))
+  nm <- ls(paste0("package:", pkg))
+  for (i in seq_along(nm)) {
+    x <- .GetHelpFile(utils::help(nm[i], package=eval(pkg)))
     x <- utils::capture.output(tools::Rd2HTML(x))
 
     # edit first header
     idx <- pmatch("<h2>", x)
-    txt <- sprintf("## %s (%s)\n\n", gsub("<.*?>", "", x[idx]), nm)
+    txt <- sprintf("## %s (%s)\n\n", gsub("<.*?>", "", x[idx]), nm[i])
     if (toc) cat(txt, file=file, append=TRUE)
 
     # remove extraneous lines
@@ -53,8 +54,9 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE) {
     # remove empty lines
     x <- x[nzchar(x)]
 
-    # add horizontal rule
-    if (hr) x <- c(x, "<hr />")
+    # add separator
+    sep <- if (hr & i < length(nm)) "<hr />" else ""
+    x <- c(x, sep)
 
     txt <- htmltools::htmlPreserve(x)
     cat(txt, "\n", file=file, sep="\n", fill=TRUE, append=TRUE)
