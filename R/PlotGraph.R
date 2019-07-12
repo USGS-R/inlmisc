@@ -123,7 +123,7 @@
 #'
 
 PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
-                      xn=5, yn=5, ylog=FALSE, type="s", lty=1, lwd=1,
+                      xn=5, yn=5, ylog=FALSE, type="s", lty=1, lwd=0.7,
                       pch=NULL, col=NULL, bg=NA, fill="none", fillcolor=NULL,
                       pt.cex=1, xpd=FALSE, seq.date.by=NULL, scientific=NA,
                       conversion.factor=NULL, boxwex=0.8,
@@ -176,11 +176,14 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
 
   if (is.null(ylim) || abs(diff(ylim)) < .Machine$double.eps^0.5) {
     yran <- grDevices::extendrange(y, f=0.001)
+    if (yran[1] < 0 && range(y, na.rm=TRUE, finite=TRUE)[1] >= 0) yran[1] <- 0
     if (abs(diff(yran)) < .Machine$double.eps^0.5) yran[2] <- yran[1]
-    if (ylog && abs(diff(yran)) > 0)
+    if (ylog && abs(diff(yran)) > 0) {
       yat <- grDevices::axisTicks(log10(yran), TRUE, nint=yn)
-    else
-      yat <- pretty(yran, n=yn, min.n=2)
+    } else {
+      yat <- pretty(yran, n=yn, min.n=3)
+      if (yran[1] >= 0) yat <- yat[yat >= 0]
+    }
     ylim <- range(yat)
   } else {
     usr <- if (ylog) log10(ylim) else ylim
@@ -224,7 +227,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
 
   if (is.list(bg.polygon)) {
     bg.col <- if (is.null(bg.polygon$col)) NA else bg.polygon$col
-    graphics::polygon(bg.polygon$x, col=bg.col, border=NA)
+    graphics::polygon(bg.polygon[[1]], col=bg.col, border=NA)
   }
 
   if (add.grid) {

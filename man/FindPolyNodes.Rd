@@ -19,6 +19,9 @@ Returns an object of class 'list'.
 \description{
 Find Polygon Nodes
 }
+\references{
+\url{https://stackoverflow.com/questions/643995}
+}
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 }

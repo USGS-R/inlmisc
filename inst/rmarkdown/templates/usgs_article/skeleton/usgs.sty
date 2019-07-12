@@ -45,7 +45,9 @@
 \RequirePackage{bm}  % access bold symbols in math mode
 \RequirePackage{xfrac}  % typset fractions
 \RequirePackage{siunitx}  % a comprehensive (SI) units package
-\sisetup{input-ignore={,}, input-decimal-markers={.}, group-separator={,}, group-minimum-digits=4}
+\sisetup{input-ignore={,}, input-decimal-markers={.}, group-separator={,}, group-minimum-digits=4, per-mode=symbol}
+\DeclareSIUnit\curie{Ci}
+\DeclareSIUnit\pCi{\pico\curie}
 
 % Contents ---------------------------------------------------------------------
 

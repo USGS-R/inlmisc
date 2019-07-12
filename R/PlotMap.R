@@ -520,7 +520,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (is.list(rivers)) {
-    river <- sp::spTransform(rivers[["x"]], r@crs)
+    river <- sp::spTransform(rivers[[1]], r@crs)
     river <- raster::crop(river, raster::extent(graphics::par("usr")))
     if (!is.null(river)) {
       color <- as.character(rivers[["col"]])
@@ -532,7 +532,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (is.list(lakes)) {
-    lake <- sp::spTransform(lakes[["x"]], r@crs)
+    lake <- sp::spTransform(lakes[[1]], r@crs)
     lake <- raster::crop(lake, raster::extent(graphics::par("usr")))
     if (!is.null(lake)) {
       color <- as.character(lakes[["col"]])
@@ -546,7 +546,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (is.list(roads)) {
-    road <- sp::spTransform(roads[["x"]], r@crs)
+    road <- sp::spTransform(roads[[1]], r@crs)
     road <- raster::crop(road, raster::extent(graphics::par("usr")))
     if (!is.null(roads)) {
       color <- as.character(roads[["col"]])

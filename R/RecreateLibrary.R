@@ -4,7 +4,7 @@
 #' The \code{SavePackageDetails} function writes the details of installed packages to a text file.
 #' And the \code{RecreateLibrary} function reads this file and downloads and installs any
 #' \sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),
-#' CRAN-like repositories, local package-installation files, and GitHub.
+#' CRAN-like repositories, and local package-installation files.
 #'
 #' @param file 'character' string.
 #'   Name of the file for reading (or writing) the list of package details.
@@ -35,16 +35,6 @@
 #'   If true, installed package versions will be identical to version numbers stored in the package-details \code{file}.
 #'   Only applies to packages from CRAN-like repositories and local package-installation files.
 #'   Requires that the \pkg{devtools} package is available.
-#' @param github 'logical' flag.
-#'   If true, an attempt is made to install a subset of packages from \href{https://github.com/}{GitHub}.
-#'   Only applies to packages missing from the CRAN-like repositories (see \code{repos} argument).
-#'   Requires that the \pkg{githubinstall} package is available,
-#'   see \code{\link[githubinstall]{gh_install_packages}} function.
-#'   Note that locating \R packages hosted on GitHub using nothing but the package name can be difficult.
-#'   Therefore, the user may be prompted with suggested repository names to identify the correct package to install.
-#'   Package vignettes are not built using this option.
-#'   An example of an \R package that is only available on GitHub is \pkg{AnomalyDetection},
-#'   located at \href{https://github.com/twitter/AnomalyDetection}{twitter/AnomalyDetection}.
 #' @param quiet 'logical' flag.
 #'   Whether to reduce the amount of output.
 #' @param parallel 'logical' flag or 'integer' count.
@@ -65,7 +55,7 @@
 #'
 #'   The type of package to download and install from CRAN-like repositories is
 #'   \emph{binary} on Windows and some macOS builds, and \emph{source} on all others.
-#'   Package installation from GitHub or a local \file{.tar.gz} file is always a source installation.
+#'   Package installation from a local \file{.tar.gz} file is always a source installation.
 #'   If a package is installed from source, and it contains code that needs compiling,
 #'   you must have a working development environment.
 #'   On Windows, install the \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} collection
@@ -127,7 +117,7 @@
 #' repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
 #' if (system.file(package = "inlmisc") == "")
 #'   utils::install.packages("inlmisc", repos = repos["CRAN"], dependencies = TRUE)
-#' inlmisc::RecreateLibrary(repos = repos, github = TRUE)
+#' inlmisc::RecreateLibrary(repos = repos)
 #' }
 #'
 #' # Clean up example
@@ -138,8 +128,8 @@
 
 RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
                             repos=getOption("repos"), snapshot=FALSE,
-                            local=NULL, versions=FALSE, github=FALSE,
-                            parallel=TRUE, quiet=FALSE) {
+                            local=NULL, versions=FALSE, parallel=TRUE,
+                            quiet=FALSE) {
 
   # check arguments
   checkmate::assertFileExists(file)
@@ -148,7 +138,6 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
   checkmate::assertFlag(snapshot)
   if (!is.null(local)) checkmate::assertDirectoryExists(local)
   checkmate::assertFlag(versions)
-  checkmate::assertFlag(github)
   checkmate::qassert(parallel, c("B1", "X1[0,)"))
   checkmate::assertFlag(quiet)
 
@@ -295,11 +284,6 @@ RecreateLibrary <- function(file="R-packages.tsv", lib=.libPaths()[1],
                               type=type, Ncpus=parallel, quiet=quiet)
     }
   }
-
-  # install packages from github
-  if (any(!is_on_repos) && github && requireNamespace("githubinstall", quietly=TRUE))
-    githubinstall::gh_install_packages(pkgs$Package[!is_on_repos],
-                                       quiet=quiet, lib=lib[1], threads=parallel)
 
   # warn about packages that could not be installed
   if (any(is <- !IsPackageInstalled(pkgs$Package, lib))) {

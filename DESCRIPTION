@@ -39,7 +39,6 @@ Suggests:
     dichromat,
     doParallel,
     doRNG,
-    githubinstall,
     gstat,
     maptools,
     remotes,
