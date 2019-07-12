@@ -7,7 +7,7 @@
 \usage{
 RecreateLibrary(file = "R-packages.tsv", lib = .libPaths()[1],
   repos = getOption("repos"), snapshot = FALSE, local = NULL,
-  versions = FALSE, github = FALSE, parallel = TRUE, quiet = FALSE)
+  versions = FALSE, parallel = TRUE, quiet = FALSE)
 
 SavePackageDetails(file = "R-packages.tsv", lib = .libPaths(),
   pkg = NULL)
@@ -48,17 +48,6 @@ If true, installed package versions will be identical to version numbers stored 
 Only applies to packages from CRAN-like repositories and local package-installation files.
 Requires that the \pkg{devtools} package is available.}
 
-\item{github}{'logical' flag.
-If true, an attempt is made to install a subset of packages from \href{https://github.com/}{GitHub}.
-Only applies to packages missing from the CRAN-like repositories (see \code{repos} argument).
-Requires that the \pkg{githubinstall} package is available,
-see \code{\link[githubinstall]{gh_install_packages}} function.
-Note that locating \R packages hosted on GitHub using nothing but the package name can be difficult.
-Therefore, the user may be prompted with suggested repository names to identify the correct package to install.
-Package vignettes are not built using this option.
-An example of an \R package that is only available on GitHub is \pkg{AnomalyDetection},
-located at \href{https://github.com/twitter/AnomalyDetection}{twitter/AnomalyDetection}.}
-
 \item{parallel}{'logical' flag or 'integer' count.
 Whether to use parallel processes for a parallel install of more than one source package.
 This argument can also be used to specify the number of cores to employ.}
@@ -82,7 +71,7 @@ Recreate an existing library on a new installation of \R.
 The \code{SavePackageDetails} function writes the details of installed packages to a text file.
 And the \code{RecreateLibrary} function reads this file and downloads and installs any
 \sQuote{missing} packages from the Comprehensive R Archive Network (CRAN),
-CRAN-like repositories, local package-installation files, and GitHub.
+CRAN-like repositories, and local package-installation files.
 }
 \details{
 A typical workflow is as follows:
@@ -95,7 +84,7 @@ A typical workflow is as follows:
 
   The type of package to download and install from CRAN-like repositories is
   \emph{binary} on Windows and some macOS builds, and \emph{source} on all others.
-  Package installation from GitHub or a local \file{.tar.gz} file is always a source installation.
+  Package installation from a local \file{.tar.gz} file is always a source installation.
   If a package is installed from source, and it contains code that needs compiling,
   you must have a working development environment.
   On Windows, install the \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} collection
@@ -147,7 +136,7 @@ SavePackageDetails()
 repos <- c(CRAN = "https://cloud.r-project.org/", GRAN = "https://owi.usgs.gov/R")
 if (system.file(package = "inlmisc") == "")
   utils::install.packages("inlmisc", repos = repos["CRAN"], dependencies = TRUE)
-inlmisc::RecreateLibrary(repos = repos, github = TRUE)
+inlmisc::RecreateLibrary(repos = repos)
 }
 
 # Clean up example

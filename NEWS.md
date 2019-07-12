@@ -1,5 +1,9 @@
 # inlmisc 0.4.5.9000
 
+- In `Grid2Polygons`, improved performance.
+
+- In `RecreateLibrary`, remove `github` option that allowed package installation from GitHub repositories.
+
 - Add `PrintHelpPages` function, used to print the HTML code associated with
   help pages of a loaded R package.
 

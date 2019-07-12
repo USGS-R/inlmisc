@@ -269,28 +269,26 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
+#' @references \url{https://stackoverflow.com/questions/643995}
+#'
 #' @keywords internal
 #'
 
 FindPolyNodes <- function(s) {
-
-  checkmate::assertMatrix(s, mode="integerish", any.missing=FALSE, ncols=2)
-
-  # https://stackoverflow.com/questions/643995
+  mode(s) <- "integer"
 
   # remove duplicate segments
-  id <- paste(apply(s, 1, min), apply(s, 1, max))
-  s <- s[!id %in% unique(id[duplicated(id)]), ]
+  id <- paste(pmin.int(s[, 1], s[, 2]), pmax.int(s[, 1], s[, 2]))
+  s <- s[!id %in% id[duplicated(id)], , drop=FALSE]
 
   # call c program to define polygon rings
-  out <- matrix(.Call(C_DefinePolygons, as.integer(s[, 1]), as.integer(s[, 2])),
-                nrow=nrow(s), ncol=2)
+  out <- matrix(.Call(C_DefinePolygons, s[, 1], s[, 2]), nrow=nrow(s), ncol=2)
 
   # place returned array into list object
-  poly.nodes <- lapply(unique(out[, 2]), function(i) out[out[, 2] == i, 1])
+  poly.nodes <- lapply(unique(out[, 2]), function(x) out[out[, 2] == x, 1])
 
   # close polygon by joining the first point to the last point
-  poly.nodes <- lapply(poly.nodes, function(i) c(i, i[1]))
+  poly.nodes <- lapply(poly.nodes, function(x) c(x, x[1]))
 
   poly.nodes
 }
