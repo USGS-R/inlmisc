@@ -44,10 +44,10 @@ set.seed(2)
 x <- stats::runif(12)
 y <- stats::rnorm(12)
 plot(x, y)
-dy <- sort(y) / 5
+dy <- sort.int(y) / 5
 AddIntervals(x, y - dy, y + dy, col = "red", xpd = TRUE)
 
-x <- sort(stats::runif(12, max = 100))
+x <- sort.int(stats::runif(12, max = 100))
 y0 <- stats::runif(12, max = 100)
 y1 <- y0
 plot(NA, xlim = range(x), ylim = range(c(y0, y1)), xlab = "x", ylab = "y")

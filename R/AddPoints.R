@@ -225,7 +225,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     }
     make.intervals <- FALSE
   } else if (make.intervals) {
-    breaks <- sort(breaks)
+    breaks <- sort.int(breaks)
     is_lt <- any(z < utils::head(breaks, 1))
     is_gt <- any(z > utils::tail(breaks, 1))
     interval <- findInterval(z, breaks, rightmost.closed=TRUE, left.open=TRUE)

@@ -35,10 +35,10 @@
 #' x <- stats::runif(12)
 #' y <- stats::rnorm(12)
 #' plot(x, y)
-#' dy <- sort(y) / 5
+#' dy <- sort.int(y) / 5
 #' AddIntervals(x, y - dy, y + dy, col = "red", xpd = TRUE)
 #'
-#' x <- sort(stats::runif(12, max = 100))
+#' x <- sort.int(stats::runif(12, max = 100))
 #' y0 <- stats::runif(12, max = 100)
 #' y1 <- y0
 #' plot(NA, xlim = range(x), ylim = range(c(y0, y1)), xlab = "x", ylab = "y")
@@ -72,7 +72,7 @@ AddIntervals <- function(x, y0, y1, hin=NULL, col="black", lty=1, lwd=0.5,
   event[is1] <- 1L
   event[is2] <- 2L
   event[is3] <- 3L
-  if (any(is.na(event))) stop("problem identifying data type")
+  if (anyNA(event)) stop("problem identifying data type")
 
   col   <- rep_len(col,   length(x))
   lty   <- rep_len(lty,   length(x))
