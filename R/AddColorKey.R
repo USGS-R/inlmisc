@@ -112,11 +112,13 @@ AddColorKey <- function(breaks, is.categorical=FALSE, col=NULL, at=NULL,
     }
     dx <- (diff(xlim) / pin[1]) * bw / 2
     x <- seq_along(col)
-    graphics::rect(xleft=x - dx, ybottom=0, xright=x + dx, ytop=1, col=col, border=NA)
+    graphics::rect(xleft=x - dx, ybottom=0, xright=x + dx, ytop=1, col=col, lty=0)
 
   } else {
+    graphics::rect(xleft=0, ybottom=0, xright=max(breaks), ytop=1,
+                   col="lightgray", lty=0)
     graphics::rect(xleft=utils::head(breaks, -1), ybottom=0, xright=utils::tail(breaks, -1),
-                   ytop=1, col=col, border=col, lwd=lwd)
+                   ytop=1, col=col, lty=0)
     if (length(at) >= length(breaks) - 1) {
       graphics::abline(v=breaks, lwd=lwd)
     } else {
