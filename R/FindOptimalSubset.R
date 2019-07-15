@@ -106,7 +106,7 @@
 #' set.seed(seed); numbers <- sort.int(runif(n))
 #' Fitness <- function(string, n, numbers) {
 #'   idxs <- DecodeChromosome(string, n)
-#'   -sum(numbers[idxs])
+#'   -1 * sum(numbers[idxs])
 #' }
 #' \dontrun{
 #' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10,
