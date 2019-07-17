@@ -372,7 +372,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
 
   # interval censored plot
   } else if (type == "i") {
-    AddIntervals(x, y[, 1], y[, 2], col=col, cex=pt.cex)
+    AddIntervals(x, y[, 1], y[, 2], col=col, cex=pt.cex, xpd=xpd)
 
   # stair steps plot
   } else if (type == "s") {

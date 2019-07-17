@@ -48,7 +48,7 @@
 #' print(cbind(x, y0, y1))
 #'
 
-AddIntervals <- function(x, y0, y1, hin=NULL, col="black", lty=1, lwd=0.5,
+AddIntervals <- function(x, y0, y1, hin=NULL, col="black", lty=1, lwd=0.7,
                          cex=1, xpd=FALSE, ...) {
 
   x <- as.numeric(x)

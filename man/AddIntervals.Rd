@@ -5,7 +5,7 @@
 \title{Add Interval Symbols to Plot}
 \usage{
 AddIntervals(x, y0, y1, hin = NULL, col = "black", lty = 1,
-  lwd = 0.5, cex = 1, xpd = FALSE, ...)
+  lwd = 0.7, cex = 1, xpd = FALSE, ...)
 }
 \arguments{
 \item{x}{'numeric' or 'Date' vector.
