@@ -15,7 +15,7 @@
 #' @param ...
 #'   Additional graphical parameters to the \code{\link[graphics]{points}} function.
 #' @param nondetects 'list'.
-#'   If specified, graphical parameters used for left- and right-censored data.
+#'   Overrides graphical parameters used for left- and right-censored data.
 #'   Passed arguments include \code{col}, \code{lty}, and \code{lwd}.
 #'
 #' @details For each observation \code{i}, the data type is identified using
@@ -34,20 +34,23 @@
 #' @export
 #'
 #' @examples
-#' set.seed(2)
+#' set.seed(1)
 #' x <- stats::runif(12)
 #' y <- stats::rnorm(12)
 #' plot(x, y)
 #' dy <- sort.int(y) / 5
 #' AddIntervals(x, y - dy, y + dy, col = "red", xpd = TRUE)
 #'
-#' x <- sort.int(stats::runif(12, max = 100))
-#' y0 <- stats::runif(12, max = 100)
-#' y1 <- y0
-#' plot(NA, xlim = range(x), ylim = range(c(y0, y1)), xlab = "x", ylab = "y")
-#' y0[1:4] <- -Inf
-#' y1[5:8] <-  Inf
-#' AddIntervals(x, y0, y1, col = "blue", xpd = TRUE)
+#' n <- 50
+#' x <- sort.int(stats::runif(n, max = 100))
+#' y1 <- y0 <- stats::runif(n, max = 100)
+#' y1[sample.int(n, 5)] <- stats::runif(5, max = 100)
+#' y0[sample.int(n, 5)] <- -Inf
+#' y1[sample.int(n, 5)] <-  Inf
+#' ylim <- range(pretty(c(y0, y1)))
+#' plot(NA, xlim = range(x), ylim = ylim, xlab = "x", ylab = "y")
+#' AddIntervals(x, y0, y1, col = "blue", xpd = TRUE,
+#'              nondetects = list("col" = "red", "lty" = 2))
 #' print(cbind(x, y0, y1))
 #'
 
@@ -63,25 +66,24 @@ AddIntervals <- function(x, y0, y1, hin=NULL, col="black", lty=1, lwd=0.7,
 
   is_y0 <- is.finite(y0)
   is_y1 <- is.finite(y1)
-  if (all(!is_y0 & !is_y1)) return(invisible(NULL))
 
   event <- rep(as.integer(NA), length(x))
   is0 <-  is_y0 & !is_y1
   is1 <-  is_y0 &  is_y1 & y0 == y1
   is2 <- !is_y0 &  is_y1
   is3 <-  is_y0 &  is_y1 & y0 != y1
-  y1[is0] <- graphics::par("usr")[4]
+  is4 <- !is_y0 & !is_y1
   y0[is2] <- graphics::par("usr")[3]
+  y1[is0] <- graphics::par("usr")[4]
   event[is0] <- 0L  # right censored
   event[is1] <- 1L  # exact
   event[is2] <- 2L  # left censored
   event[is3] <- 3L  # interval censored
-  if (anyNA(event)) stop("problem identifying data type")
+  event[is4] <- 4L  # left and right censored
 
-  col   <- rep_len(col,   length(x))
-  lty   <- rep_len(lty,   length(x))
-  lwd   <- rep_len(lwd,   length(x))
-  event <- rep_len(event, length(x))
+  col <- rep_len(col, length(x))
+  lty <- rep_len(lty, length(x))
+  lwd <- rep_len(lwd, length(x))
 
   if (is.list(nondetects)) {
     is <- is0 | is2
