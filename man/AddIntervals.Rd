@@ -5,7 +5,7 @@
 \title{Add Interval Symbols to Plot}
 \usage{
 AddIntervals(x, y0, y1, hin = NULL, col = "black", lty = 1,
-  lwd = 0.7, cex = 1, xpd = FALSE, ...)
+  lwd = 0.7, cex = 1, xpd = FALSE, ..., nondetects = NULL)
 }
 \arguments{
 \item{x}{'numeric' or 'Date' vector.
@@ -24,6 +24,10 @@ Horizontal length of an interval head, in inches.}
 \code{NA} values in \code{col} cause the interval to be omitted.}
 
 \item{...}{Additional graphical parameters to the \code{\link[graphics]{points}} function.}
+
+\item{nondetects}{'list'.
+If specified, graphical parameters used for left- and right-censored data.
+Passed arguments include \code{col}, \code{lty}, and \code{lwd}.}
 }
 \value{
 Used for the side-effect of interval symbols drawn on the current graphics device.
@@ -36,7 +40,7 @@ For each observation \code{i}, the data type is identified using
     \code{(y0[i], Inf)} for right-censored,
     \code{y0[i] = y1[i]} for exact, and
     \code{(-Inf, y1[i])} for left-censored, and
-    \code{(y0[i], y1[i])} for interval censored.
+    \code{(y0[i], y1[i])} for interval-censored.
   Where infinity may be represented with either \code{Inf} or \code{NA}.
 }
 \examples{

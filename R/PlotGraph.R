@@ -51,7 +51,7 @@
 #'   Colors for basic filled area plots.
 #'   Defaults to a half-transparent variant of the line color (\code{col}).
 #' @param pt.cex 'numeric' number.
-#'   Expansion factor for the points.
+#'   Expansion factor for the point symbols.
 #' @param xpd 'logical' flag.
 #'   Whether to prevent point and (or) line symbols from being clipped to the plot region.
 #' @param seq.date.by 'character' string, 'numeric' number, or 'difftime'.
@@ -153,7 +153,8 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   }
 
   if (inherits(x, "Date")) {
-    if (!inherits(xlim, "Date")) xlim <- range(x, na.rm=TRUE)
+    if (!inherits(xlim, "Date"))
+      xlim <- range(x, na.rm=TRUE)
     if (is.null(seq.date.by))
       xat <- seq(xlim[1], xlim[2], length.out=xn)
     else
@@ -175,7 +176,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   }
 
   if (is.null(ylim) || abs(diff(ylim)) < .Machine$double.eps^0.5) {
-    yran <- grDevices::extendrange(y, f=0.001)
+    yran <- grDevices::extendrange(r=range(y, na.rm=TRUE, finite=TRUE), f=0.001)
     if (yran[1] < 0 && range(y, na.rm=TRUE, finite=TRUE)[1] >= 0) yran[1] <- 0
     if (abs(diff(yran)) < .Machine$double.eps^0.5) yran[2] <- yran[1]
     if (ylog && abs(diff(yran)) > 0) {

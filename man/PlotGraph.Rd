@@ -85,7 +85,7 @@ Colors for basic filled area plots.
 Defaults to a half-transparent variant of the line color (\code{col}).}
 
 \item{pt.cex}{'numeric' number.
-Expansion factor for the points.}
+Expansion factor for the point symbols.}
 
 \item{xpd}{'logical' flag.
 Whether to prevent point and (or) line symbols from being clipped to the plot region.}
