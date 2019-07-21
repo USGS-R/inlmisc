@@ -142,6 +142,7 @@
 #' @keywords hplot
 #'
 #' @import rgdal
+#' @importClassesFrom raster BasicRaster
 #'
 #' @export
 #'
