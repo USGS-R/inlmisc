@@ -12,6 +12,8 @@
 #'   The table of contents (toc) option in R Markdown requires Markdown headers.
 #' @param hr 'logical' flag.
 #'   Whether to add a horizontal rule or line to separate help pages.
+#' @param links 'character' vector (experimental).
+#'   Names of packages searched when creating internal hyperlinks to help topics.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -23,23 +25,30 @@
 #' PrintHelpPages("inlmisc")
 #'
 
-PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE) {
+PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
 
   checkmate::assertString(pkg)
   checkmate::assertFlag(toc)
   checkmate::assertFlag(hr)
+  checkmate::assertCharacter(links, unique=TRUE, null.ok=TRUE)
 
   if (!paste0("package:", pkg) %in% search())
     stop("package needs to be loaded")
 
+  if (!is.null(links)) {
+    nm <- do.call("c", lapply(links, function(x) ls(paste0("package:", x))))
+    links <- paste0("#", nm)
+    names(links) <- nm
+  }
+
   nm <- ls(paste0("package:", pkg))
   for (i in seq_along(nm)) {
     x <- .GetHelpFile(utils::help(nm[i], package=eval(pkg)))
-    x <- utils::capture.output(tools::Rd2HTML(x))
+    x <- utils::capture.output(tools::Rd2HTML(x, Links=links, Links2=links))
 
     # edit first header
     idx <- pmatch("<h2>", x)
-    txt <- sprintf("## %s (%s)\n\n", gsub("<.*?>", "", x[idx]), nm[i])
+    txt <- sprintf("## %s (%s) {#%s}\n\n", gsub("<.*?>", "", x[idx]), nm[i], nm[i])
     if (toc) cat(txt, file=file, append=TRUE)
 
     # remove extraneous lines
