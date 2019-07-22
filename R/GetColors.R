@@ -367,7 +367,7 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
 
 plot.inlpal <- function(x, ..., label=TRUE) {
   checkmate::assertCharacter(x, any.missing=FALSE, min.len=1)
-  stopifnot(all(.IsColor(x)))
+  stopifnot(all(IsColor(x)))
   checkmate::assertFlag(label)
 
   n <- length(x)
@@ -455,8 +455,27 @@ plot.inlpal <- function(x, ..., label=TRUE) {
 
 
 # Check for valid color names
+#'
+#' Check whether a character string is a valid color specification.
+#'
+#' @param x 'character' vector.
+#'   color specification
+#' @param null.ok 'logical' flag.
+#'   If set to \code{TRUE}, \code{x} may also be \code{NULL}.
+#'
+#' @return Returns a 'logical' vector of the same length as argument \code{x}.
+#'
+#' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+#'
+#' @keywords internal
+#'
+#' @export
+#'
+#' @examples
+#' IsColor(c("red", "zzz", "#FFFFFF", "#7FAF1B111"))
+#'
 
-.IsColor <- function(x, null.ok=FALSE) {
+IsColor <- function(x, null.ok=FALSE) {
   if (is.null(x) && null.ok) return(TRUE)
   vapply(x, function(i) tryCatch({
     is.matrix(grDevices::col2rgb(i))

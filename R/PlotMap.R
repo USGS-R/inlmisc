@@ -396,7 +396,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
       cols <- GetColors(n, stops=c(0.3, 0.9))
     }
   }
-  if (!all(.IsColor(cols))) stop("colors are not valid")
+  if (!all(IsColor(cols))) stop("colors are not valid")
 
   # plot color key
   if (draw.key & n > 0) {
@@ -526,7 +526,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     if (!is.null(river)) {
       color <- as.character(rivers[["col"]])
       width <- as.numeric(rivers[["lwd"]])
-      color <- ifelse(length(color) == 1 && .IsColor(color), color, "#3399CC")
+      color <- ifelse(length(color) == 1 && IsColor(color), color, "#3399CC")
       width <- ifelse(length(width) == 1 && !is.na(width), width, 0.5)
       sp::plot(river, col=color, lwd=width, add=TRUE)
     }
@@ -539,8 +539,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
       color <- as.character(lakes[["col"]])
       bordr <- as.character(lakes[["border"]])
       width <- as.numeric(lakes[["lwd"]])
-      color <- ifelse(length(color) == 1 && .IsColor(color), color, "#CCFFFF")
-      bordr <- ifelse(length(bordr) == 1 && .IsColor(bordr), bordr, "#3399CC")
+      color <- ifelse(length(color) == 1 && IsColor(color), color, "#CCFFFF")
+      bordr <- ifelse(length(bordr) == 1 && IsColor(bordr), bordr, "#3399CC")
       width <- ifelse(length(width) == 1 && !is.na(width), width, 0.5)
       sp::plot(lake, col=color, border=bordr, lwd=width, add=TRUE)
     }
@@ -552,7 +552,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     if (!is.null(roads)) {
       color <- as.character(roads[["col"]])
       width <- as.numeric(roads[["lwd"]])
-      color <- ifelse(length(color) == 1 && .IsColor(color), color, "#666666")
+      color <- ifelse(length(color) == 1 && IsColor(color), color, "#666666")
       width <- ifelse(length(width) == 1 && !is.na(width), width, 0.25)
       sp::plot(road, col=color, lwd=width, add=TRUE)
     }
