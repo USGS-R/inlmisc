@@ -58,7 +58,7 @@ coords <- sp::coordinates(transect)
 n <- length(transect)
 d <- cumsum(c(0, as.matrix(dist((coords)))[cbind(1:(n - 1), 2:n)]))
 abline(v = d, col = "green", lty = 2)
-mtext(sprintf("(\%d, \%d)", coords[1, 1], coords[1, 2]), line = -1, adj = 0,cex = 0.7)
+mtext(sprintf("(\%d, \%d)", coords[1, 1], coords[1, 2]), line = -1, adj = 0, cex = 0.7)
 mtext(sprintf("(\%d, \%d)", coords[n, 1], coords[n, 2]), line = -1, adj = 1, cex = 0.7)
 
 graphics.off()
