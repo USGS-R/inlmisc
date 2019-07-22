@@ -1,5 +1,7 @@
 # inlmisc 0.4.5.9000
 
+- In `AddColorKey`, remove border line around color blocks.
+
 - In `Grid2Polygons`, improved performance.
 
 - In `RecreateLibrary`, remove `github` option that allowed package installation from GitHub repositories.

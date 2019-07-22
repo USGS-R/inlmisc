@@ -40,6 +40,8 @@
 #'
 #' @keywords IO
 #'
+#' @importClassesFrom raster BasicRaster
+#'
 #' @export
 #'
 #' @examples

@@ -51,7 +51,7 @@
 #'   Colors for basic filled area plots.
 #'   Defaults to a half-transparent variant of the line color (\code{col}).
 #' @param pt.cex 'numeric' number.
-#'   Expansion factor for the points.
+#'   Expansion factor for the point symbols.
 #' @param xpd 'logical' flag.
 #'   Whether to prevent point and (or) line symbols from being clipped to the plot region.
 #' @param seq.date.by 'character' string, 'numeric' number, or 'difftime'.
@@ -113,7 +113,7 @@
 #' col <- GetColors(3, scheme = "bright")
 #' PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b", pch = 15:17,
 #'           col = col, pt.cex = 0.9)
-#' legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
+#' legend("topright", LETTERS[1:3], inset = 0.02, col = col, lty = 1, pch = 15:17,
 #'        pt.cex = 0.9, cex = 0.7, bg = "white")
 #'
 #' d <- data.frame(x = as.Date("2008-07-12") + 1:8 * 1000,
@@ -153,7 +153,8 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   }
 
   if (inherits(x, "Date")) {
-    if (!inherits(xlim, "Date")) xlim <- range(x, na.rm=TRUE)
+    if (!inherits(xlim, "Date"))
+      xlim <- range(x, na.rm=TRUE)
     if (is.null(seq.date.by))
       xat <- seq(xlim[1], xlim[2], length.out=xn)
     else
@@ -175,7 +176,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
   }
 
   if (is.null(ylim) || abs(diff(ylim)) < .Machine$double.eps^0.5) {
-    yran <- grDevices::extendrange(y, f=0.001)
+    yran <- grDevices::extendrange(r=range(y, na.rm=TRUE, finite=TRUE), f=0.001)
     if (yran[1] < 0 && range(y, na.rm=TRUE, finite=TRUE)[1] >= 0) yran[1] <- 0
     if (abs(diff(yran)) < .Machine$double.eps^0.5) yran[2] <- yran[1]
     if (ylog && abs(diff(yran)) > 0) {
@@ -372,7 +373,7 @@ PlotGraph <- function(x, y, xlab, ylab, main=NULL, asp=NA, xlim=NULL, ylim=NULL,
 
   # interval censored plot
   } else if (type == "i") {
-    AddIntervals(x, y[, 1], y[, 2], col=col, cex=pt.cex)
+    AddIntervals(x, y[, 1], y[, 2], col=col, cex=pt.cex, xpd=xpd)
 
   # stair steps plot
   } else if (type == "s") {

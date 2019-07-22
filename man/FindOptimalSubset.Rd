@@ -108,10 +108,10 @@ The fitness function (see \code{Fitness} argument) is solved using
 k <- 4
 n <- 100
 seed <- 123
-set.seed(seed); numbers <- sort(runif(n))
+set.seed(seed); numbers <- sort.int(runif(n))
 Fitness <- function(string, n, numbers) {
   idxs <- DecodeChromosome(string, n)
-  -sum(numbers[idxs])
+  -1 * sum(numbers[idxs])
 }
 \dontrun{
 out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10,

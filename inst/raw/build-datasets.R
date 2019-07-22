@@ -590,3 +590,5 @@ schemes[["bpy"]] <- list(
 schemes <- schemes[order(vapply(schemes, function(x) x$type, ""), names(schemes))]
 invisible(lapply(schemes, .CheckScheme))
 save(schemes, file="sysdata.rda")
+
+tools::resaveRdaFiles(getwd(), compress="auto")

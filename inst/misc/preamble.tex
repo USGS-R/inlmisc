@@ -39,7 +39,15 @@
 \usepackage{bm}  % access bold symbols in math mode
 \usepackage{xfrac}  % typset fractions
 \usepackage{siunitx}  % a comprehensive (SI) units package
-\sisetup{input-ignore={,}, input-decimal-markers={.}, group-separator={,}, group-minimum-digits=4, per-mode=symbol}
+\sisetup{
+  input-ignore={,},
+  input-decimal-markers={.},
+  group-separator={,},
+  group-minimum-digits=4,
+  per-mode=symbol,
+  separate-uncertainty=true,
+  table-align-uncertainty=false
+}
 \DeclareSIUnit\curie{Ci}
 \DeclareSIUnit\pCi{\pico\curie}
 
@@ -192,4 +200,10 @@
 
 % Links
 \usepackage[pdfa, hidelinks, pdflang={en-US}]{hyperref}  % support for hyperlinks
-\hypersetup{colorlinks, urlcolor=Red, linkcolor=Blue, citecolor=Blue, linktoc=page}  % set font color for hyperlinks
+\hypersetup{
+  colorlinks,
+  urlcolor=Red,
+  linkcolor=Blue,
+  citecolor=Blue,
+  linktoc=page
+}

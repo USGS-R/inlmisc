@@ -103,10 +103,10 @@
 #' k <- 4
 #' n <- 100
 #' seed <- 123
-#' set.seed(seed); numbers <- sort(runif(n))
+#' set.seed(seed); numbers <- sort.int(runif(n))
 #' Fitness <- function(string, n, numbers) {
 #'   idxs <- DecodeChromosome(string, n)
-#'   -sum(numbers[idxs])
+#'   -1 * sum(numbers[idxs])
 #' }
 #' \dontrun{
 #' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10,
@@ -198,7 +198,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
 
   # decode solution
   m <- t(apply(ga_output@solution, 1, function(i) {
-    sort(DecodeChromosome(i, n))
+    sort.int(DecodeChromosome(i, n))
   }))
   solution <- m[!duplicated(m), , drop=FALSE]
 
@@ -220,14 +220,14 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   encoded_parent <- object@population[parent, ]
   decoded_parent <- DecodeChromosome(encoded_parent, n)
   idxs <- seq_len(n)[-decoded_parent]
-  m <- t(apply(object@population, 1, function(i) sort(DecodeChromosome(i, n))))
+  m <- t(apply(object@population, 1, function(i) sort.int(DecodeChromosome(i, n))))
   j <- sample(seq_along(decoded_parent), size=1)
   i <- 0L
   repeat {
     if ((i <- i + 1) > 100) stop("Runnaway loop during mutation")
     x <- decoded_parent
     x[j] <- sample(idxs, size=1)
-    x_sorted <- sort(x)
+    x_sorted <- sort.int(x)
     if (!any(apply(m, 1, function(y) identical(y, x_sorted)))) break
   }
   EncodeChromosome(x, n)
@@ -252,11 +252,11 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   encoded_children <- t(apply(decoded_children, 1, function(i) {
     EncodeChromosome(i, n)
   }))
-  m <- t(apply(object@population, 1, function(i) sort(DecodeChromosome(i, n))))
+  m <- t(apply(object@population, 1, function(i) sort.int(DecodeChromosome(i, n))))
   FindFitness <- function(child) {
     object@fitness[which(apply(m, 1, function(i) identical(i, child)))[1]]
   }
-  fitness_children <- c(FindFitness(sort(c1)), FindFitness(sort(c2)))
+  fitness_children <- c(FindFitness(sort.int(c1)), FindFitness(sort.int(c2)))
   list("children"=encoded_children, "fitness"=fitness_children)
 }
 

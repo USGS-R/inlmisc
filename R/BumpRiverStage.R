@@ -28,6 +28,8 @@
 #'
 #' @keywords utilities
 #'
+#' @importClassesFrom raster BasicRaster
+#'
 #' @export
 #'
 

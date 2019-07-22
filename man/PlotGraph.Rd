@@ -85,7 +85,7 @@ Colors for basic filled area plots.
 Defaults to a half-transparent variant of the line color (\code{col}).}
 
 \item{pt.cex}{'numeric' number.
-Expansion factor for the points.}
+Expansion factor for the point symbols.}
 
 \item{xpd}{'logical' flag.
 Whether to prevent point and (or) line symbols from being clipped to the plot region.}
@@ -151,7 +151,7 @@ m <- cbind(as.numeric(x), y)
 col <- GetColors(3, scheme = "bright")
 PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b", pch = 15:17,
           col = col, pt.cex = 0.9)
-legend("topright", LETTERS[1:3], inset = 0.05, col = col, lty = 1, pch = 15:17,
+legend("topright", LETTERS[1:3], inset = 0.02, col = col, lty = 1, pch = 15:17,
        pt.cex = 0.9, cex = 0.7, bg = "white")
 
 d <- data.frame(x = as.Date("2008-07-12") + 1:8 * 1000,
