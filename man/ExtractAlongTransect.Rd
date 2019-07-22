@@ -50,16 +50,16 @@ xlab <- "Distance along transect"
 ylab <- "Raster value"
 xlim <- range(vapply(segs, function(i) range(i@data[, "dist"]), c(0, 0)))
 ylim <- range(vapply(segs, function(i) range(i@data[, "value"], na.rm = TRUE), c(0, 0)))
-plot(NA, type = "n", xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim)
+PlotGraph(NA, xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim, type = "n")
 cols <- GetColors(length(segs), scheme = "bright")
 for (i in seq_along(segs))
   lines(segs[[i]]@data[, c("dist", "value")], col = cols[i])
 coords <- sp::coordinates(transect)
 n <- length(transect)
 d <- cumsum(c(0, as.matrix(dist((coords)))[cbind(1:(n - 1), 2:n)]))
-abline(v = d, col = "grey", lty = 2)
-mtext(paste0("(", paste(head(coords, 1), collapse = ", "), ")"), adj = 0)
-mtext(paste0("(", paste(tail(coords, 1), collapse = ", "), ")"), adj = 1)
+abline(v = d, col = "green", lty = 2)
+mtext(sprintf("(\%d, \%d)", coords[1, 1], coords[1, 2]), line = -1, adj = 0,cex = 0.7)
+mtext(sprintf("(\%d, \%d)", coords[n, 1], coords[n, 2]), line = -1, adj = 1, cex = 0.7)
 
 graphics.off()
 

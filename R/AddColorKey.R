@@ -63,11 +63,10 @@ AddColorKey <- function(breaks, is.categorical=FALSE, col=NULL, at=NULL,
 
   # check arguments
   if (!missing(breaks))
-    checkmate::assertNumeric(breaks, finite=TRUE, any.missing=FALSE, unique=TRUE, sorted=TRUE)
+    checkmate::assertNumeric(breaks, finite=TRUE, any.missing=FALSE, sorted=TRUE)
   checkmate::assertFlag(is.categorical)
   checkmate::assertCharacter(col, null.ok=TRUE)
   checkmate::assertNumeric(at, null.ok=TRUE)
-  stopifnot(inherits(labels, c("logical", "character", "expression", "numeric", "factor")))
   checkmate::assertInt(scipen, na.ok=TRUE, null.ok=TRUE)
   checkmate::assertString(explanation, null.ok=TRUE)
   checkmate::assertNumber(padx, finite=TRUE)
