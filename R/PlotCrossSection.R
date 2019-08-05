@@ -213,7 +213,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
 
     p <- lapply(seq_along(cols), function(i) {
       p <- sp::Polygons(cell.polys[which(cell.cols == cols[i])], i)
-      p <- rgeos::gUnaryUnion(sp::SpatialPolygons(list(p), i))
+      p <- rgeos::gUnaryUnion(sp::SpatialPolygons(list(p), i), checkValidity=2L)
       p <- methods::slot(p, "polygons")[[1]]
       p@ID <- cols[i]
       p

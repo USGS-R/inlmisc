@@ -1,8 +1,12 @@
 # inlmisc 0.4.5.9000
 
+- Set `checkValidity` argument to 2 (check and try to buffer by zero distance to repair)
+  in many of the **rgeos** function calls.
+
 - In `AddColorKey`, remove border line around color blocks.
 
-- In `Grid2Polygons`, improved performance.
+- In `Grid2Polygons`, improved performance;
+  change polygon cropping function from `raster::crop` to `SetPolygons`.
 
 - In `RecreateLibrary`, remove `github` option that allowed package installation from GitHub repositories.
 
