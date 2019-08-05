@@ -251,7 +251,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   sp.polys.df <- sp::SpatialPolygonsDataFrame(sp.polys, data=d, match.ID=TRUE)
 
   # crop 'SpatialPolygonsDataFrame' object using polygon argument
-  if (!is.null(ply)) sp.polys.df <- raster::crop(sp.polys.df, ply)
+  if (!is.null(ply)) sp.polys.df <- SetPolygons(sp.polys.df, ply, "gIntersection")
 
   sp.polys.df
 }

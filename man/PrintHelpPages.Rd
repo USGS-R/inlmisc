@@ -4,7 +4,8 @@
 \alias{PrintHelpPages}
 \title{Print Package Help Pages in HTML Format}
 \usage{
-PrintHelpPages(pkg, file = "", toc = FALSE, hr = TRUE)
+PrintHelpPages(pkg, file = "", toc = FALSE, hr = TRUE,
+  links = NULL)
 }
 \arguments{
 \item{pkg}{'character' string.
@@ -20,6 +21,9 @@ The table of contents (toc) option in R Markdown requires Markdown headers.}
 
 \item{hr}{'logical' flag.
 Whether to add a horizontal rule or line to separate help pages.}
+
+\item{links}{'character' vector (experimental).
+Names of packages searched when creating internal hyperlinks to help topics.}
 }
 \description{
 Print the HTML code associated with help pages of a loaded R package.

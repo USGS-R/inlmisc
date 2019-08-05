@@ -68,9 +68,9 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
   if (is.null(e)) e <- usr
   crds <- cbind(c(e[1:2], e[2:1], e[1]), c(rep(e[3], 2), rep(e[4], 2), e[3]))
   b <- sp::SpatialPolygons(list(sp::Polygons(list(sp::Polygon(crds)), "bbox")), proj4string=raster::crs(p))
-  if (length(rgeos::gIntersection(p, b)) == 0)
+  if (length(rgeos::gIntersection(p, b, checkValidity=2L)) == 0)
     stop("user coordinates of the plotting region do not intersect polygon")
-  ext <- raster::extent(rgeos::gUnion(p, b))
+  ext <- raster::extent(rgeos::gUnion(p, b, checkValidity=2L))
 
   if (is.null(width)) {
     dx  <- 0.2 * diff(usr[1:2])
@@ -94,11 +94,11 @@ AddInsetMap <- function(p, col=c("#D8D8D8", "#BFA76F"),
   sp::plot(p, col=NA,     border="#090909", lwd=0.25, add=TRUE)
 
   if (!is.na(main.label[[1]])) {
-    x <- sp::coordinates(rgeos::gUnaryUnion(p))[1, ]
+    x <- sp::coordinates(rgeos::gUnaryUnion(p, checkValidity=2L))[1, ]
     graphics::text(x[1], x[2], labels=main.label[[1]], adj=main.label$adj, cex=0.7, font=2)
   }
   if (!is.na(sub.label[[1]])) {
-    x <- sp::coordinates(rgeos::gUnaryUnion(b))[1, ]
+    x <- sp::coordinates(rgeos::gUnaryUnion(b, checkValidity=2L))[1, ]
     graphics::text(x[1], x[2], labels=sub.label[[1]], adj=sub.label$adj, cex=0.6)
   }
 

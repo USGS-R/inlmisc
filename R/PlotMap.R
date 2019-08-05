@@ -440,7 +440,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     n.dd <- pretty(range(sp::bbox(sl.dd)[2, ]))
     grd.dd <- sp::gridlines(sl.dd, easts=e.dd, norths=n.dd, ndiscr=1000)
 
-    pts.dd <- rgeos::gIntersection(sl.dd, grd.dd, byid=TRUE)
+    pts.dd <- rgeos::gIntersection(sl.dd, grd.dd, byid=TRUE, checkValidity=2L)
     ids <- row.names(pts.dd)
 
     row.names(pts.dd) <- make.names(ids, unique=TRUE)
