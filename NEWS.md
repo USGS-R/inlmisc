@@ -1,4 +1,7 @@
-# inlmisc 0.4.5.9000
+# inlmisc 0.4.6
+
+- Add `"usgs_article"` template for R Markdown documents.
+  This template is experimental and subject to change in the future.
 
 - Set `checkValidity` argument to 2 (check and try to buffer by zero distance to repair)
   in many of the **rgeos** function calls.
