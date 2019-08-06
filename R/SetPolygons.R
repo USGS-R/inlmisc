@@ -74,44 +74,41 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
   y <- methods::as(y, "SpatialPolygons")
   y <- y[which(apply(rgeos::gIntersects(y, x, byid=TRUE), 2, any)), ]
 
-  are.intersecting <- rgeos::gIntersects(x, y, byid=TRUE)
+  is_intersecting <- rgeos::gIntersects(x, y, byid=TRUE)
 
-  z <- lapply(seq_along(x), function (i) {
-    if (any(are.intersecting[, i])) {
-      y.intersect <- y[are.intersecting[, i]]
+  z <- suppressMessages(suppressWarnings(lapply(seq_along(x), function (i) {
+
+    if (any(is_intersecting[, i])) {
+      y_intersect <- y[is_intersecting[, i]]
       if (is.numeric(buffer.width))
-        y.intersect <- rgeos::gBuffer(y.intersect, width=buffer.width)
+        y_intersect <- rgeos::gBuffer(y_intersect, width=buffer.width)
 
-      spgeom2 <- rgeos::gUnaryUnion(y.intersect)
+      spgeom2 <- rgeos::gUnaryUnion(y_intersect, checkValidity=2L)
+
       if (cmd == "gIntersection")
-        x.geo <- rgeos::gIntersection(x[i], spgeom2, byid=TRUE)
+        x_geo <- rgeos::gIntersection(x[i], spgeom2, byid=TRUE, checkValidity=2L)
       else
-        x.geo <- rgeos::gDifference(x[i], spgeom2, byid=TRUE)
+        x_geo <- rgeos::gDifference(x[i], spgeom2, byid=TRUE, checkValidity=2L)
 
-      if (inherits(x.geo, "SpatialCollections"))
-        x.geo <- rgeos::gUnaryUnion(x.geo@polyobj)
+      if (inherits(x_geo, "SpatialCollections"))
+        x_geo <- rgeos::gUnaryUnion(x_geo@polyobj, checkValidity=2L)
 
-      is.valid <- suppressWarnings(rgeos::gIsValid(x.geo, byid=TRUE))
-      if (length(is.valid) == 0) return(NULL)
-      if (!is.valid) {
-        x.geo <- rgeos::gBuffer(x.geo, width=0)
-        ans <- rgeos::gIsValid(x.geo, byid=TRUE, reason=TRUE)
-        if (ans != "Valid Geometry") stop(paste("non-valid polygons:", ans))
-      }
-
-      p <- x.geo@polygons[[1]]
+      p <- x_geo@polygons[[1]]
       methods::slot(p, "ID") <- methods::slot(x[i]@polygons[[1]], "ID")
+
     } else {
       p <- if (cmd == "gIntersection") NULL else x[i]@polygons[[1]]
     }
-    p
-  })
 
-  is.retained <- !vapply(z, is.null, TRUE)
-  z <- sp::SpatialPolygons(z[is.retained], proj4string=raster::crs(x))
+    p
+  })))
+
+  is_retained <- !vapply(z, is.null, TRUE)
+  z <- sp::SpatialPolygons(z[is_retained], proj4string=raster::crs(x))
   if (inherits(d, "data.frame")) {
-    d <- d[is.retained, , drop=FALSE]
+    d <- d[is_retained, , drop=FALSE]
     z <- sp::SpatialPolygonsDataFrame(z, d, match.ID=TRUE)
   }
+
   z
 }
