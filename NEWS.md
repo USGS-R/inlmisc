@@ -1,3 +1,7 @@
+# inlmisc 0.4.7
+
+- In `SetPolygons`, set `checkValidity` argument to 2 and suppress warnings.
+
 # inlmisc 0.4.6
 
 - Add `"usgs_article"` template for R Markdown documents.
