@@ -1,6 +1,10 @@
 # inlmisc 0.4.7.9000
 
-- ...
+- Fix bugs in *raw/build-datasets.R* and *raw/render-tables.R* files
+  that incorrectly called `IsColor` function.
+
+- Changed package dependency from R >= 3.4.0 to R >= 3.5.0 because serialized objects
+  in serialize/load version 3 cannot be read in older versions of R.
 
 # inlmisc 0.4.7
 

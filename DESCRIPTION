@@ -9,7 +9,7 @@ Description: A collection of functions for creating high-level graphics,
     by researchers at the United States Geological Survey (USGS)
     Idaho National Laboratory (INL) Project Office.
 Depends:
-    R (>= 3.4.0)
+    R (>= 3.5.0)
 Imports:
     checkmate,
     data.table,

@@ -153,7 +153,7 @@
   pattern <- "^#(\\d|[a-f]){6}$"
   checkmate::assertCharacter(x$data$color, pattern=pattern,
                              ignore.case=TRUE, null.ok=TRUE)
-  stopifnot(all(inlmisc:::.IsColor(x$data$color)))
+  stopifnot(all(inlmisc::IsColor(x$data$color)))
 
   checkmate::qassert(x$data$name, c("0", "S", "X(0,)"))
   checkmate::qassert(x$gray, c("0", "S", "X(0,)"))
@@ -169,9 +169,9 @@
   checkmate::assertCharacter(x$back, pattern=pattern, ignore.case=TRUE, null.ok=TRUE)
   checkmate::assertCharacter(x$fore, pattern=pattern, ignore.case=TRUE, null.ok=TRUE)
   checkmate::assertCharacter(x$nan,  pattern=pattern, ignore.case=TRUE, null.ok=TRUE)
-  stopifnot(inlmisc:::.IsColor(x$back, null.ok=TRUE))
-  stopifnot(inlmisc:::.IsColor(x$fore, null.ok=TRUE))
-  stopifnot(inlmisc:::.IsColor(x$nan,  null.ok=TRUE))
+  stopifnot(inlmisc::IsColor(x$back, null.ok=TRUE))
+  stopifnot(inlmisc::IsColor(x$fore, null.ok=TRUE))
+  stopifnot(inlmisc::IsColor(x$nan,  null.ok=TRUE))
 
   checkmate::assertCharacter(x$note, null.ok=TRUE)
 
