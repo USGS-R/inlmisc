@@ -1,5 +1,7 @@
 # inlmisc 0.4.7.9000
 
+- In `Grid2Polygons`, add `check_validity` argument, used to check the validity of polygons.
+
 - Fix bugs in *raw/build-datasets.R* and *raw/render-tables.R* files
   that incorrectly called `IsColor` function.
 
