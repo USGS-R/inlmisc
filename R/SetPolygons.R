@@ -16,7 +16,8 @@
 #'   the specified width, see \code{gBuffer}.
 #'   Specifying \code{NA}, the default, indicates no buffer.
 #'
-#' @details This function tests if the resulting geometry is valid, see \code{\link{gIsValid}}.
+#' @details This function tests if the resulting geometry is valid.
+#' If invalid, an attempt is made to make the geometry valid by zero-width buffering.
 #'
 #' @return Returns an object of class 'SpatialPolygons*'.
 #'
@@ -76,22 +77,24 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
 
   is_intersecting <- rgeos::gIntersects(x, y, byid=TRUE)
 
-  z <- suppressMessages(suppressWarnings(lapply(seq_along(x), function (i) {
+  z <- lapply(seq_along(x), function (i) {
 
     if (any(is_intersecting[, i])) {
       y_intersect <- y[is_intersecting[, i]]
       if (is.numeric(buffer.width))
         y_intersect <- rgeos::gBuffer(y_intersect, width=buffer.width)
 
-      spgeom2 <- rgeos::gUnaryUnion(y_intersect, checkValidity=2L)
+      suppressMessages(suppressWarnings({
+        spgeom2 <- rgeos::gUnaryUnion(y_intersect, checkValidity=2L)
 
-      if (cmd == "gIntersection")
-        x_geo <- rgeos::gIntersection(x[i], spgeom2, byid=TRUE, checkValidity=2L)
-      else
-        x_geo <- rgeos::gDifference(x[i], spgeom2, byid=TRUE, checkValidity=2L)
+        if (cmd == "gIntersection")
+          x_geo <- rgeos::gIntersection(x[i], spgeom2, byid=TRUE, checkValidity=2L)
+        else
+          x_geo <- rgeos::gDifference(x[i], spgeom2, byid=TRUE, checkValidity=2L)
 
-      if (inherits(x_geo, "SpatialCollections"))
-        x_geo <- rgeos::gUnaryUnion(x_geo@polyobj, checkValidity=2L)
+        if (inherits(x_geo, "SpatialCollections"))
+          x_geo <- rgeos::gUnaryUnion(x_geo@polyobj, checkValidity=2L)
+      }))
 
       p <- x_geo@polygons[[1]]
       methods::slot(p, "ID") <- methods::slot(x[i]@polygons[[1]], "ID")
@@ -101,7 +104,7 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
     }
 
     p
-  })))
+  })
 
   is_retained <- !vapply(z, is.null, TRUE)
   z <- sp::SpatialPolygons(z[is_retained], proj4string=raster::crs(x))

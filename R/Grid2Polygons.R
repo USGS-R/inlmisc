@@ -229,11 +229,14 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   # identify levels (or unique values)
   levs <- sort(unique(stats::na.omit(z)))
 
+  # find polygon nodes for each level
+  poly_nodes <- lapply(levs, function(i) {
+    FindPolyNodes(segs[segs[, "z"] == i, c("a", "b")])
+  })
+
   # build lists of 'Polygon' objects
-  poly <- lapply(levs, function(i) {
-    x <- FindPolyNodes(segs[segs[, "z"] == i, c("a", "b")])
-    for (j in seq_along(x)) x[[j]] <- sp::Polygon(coords[x[[j]], ])
-    x
+  poly <- lapply(poly_nodes, function(i) {
+    lapply(i, function(j) sp::Polygon(coords[j, ]))
   })
 
   # build list of 'Polygons' objects
@@ -248,10 +251,6 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   # assign ownership of holes to parent polygons
   sp_polys <- rgeos::createSPComment(sp_polys)
 
-  # convert to 'SpatialPolygonsDataFrame' object, add data frame of levels
-  d <- data.frame(z=levs, row.names=row.names(sp_polys))
-  sp_polys_df <- sp::SpatialPolygonsDataFrame(sp_polys, data=d, match.ID=TRUE)
-
   # check validity of polygons, if invalid, try making valid by zero-width buffering
   if (check_validity) {
     if (isFALSE(all(suppressWarnings(rgeos::gIsValid(sp_polys, byid=TRUE)))))
@@ -259,6 +258,10 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
     if (isFALSE(all(rgeos::gIsValid(sp_polys, byid=TRUE))))
       warning("invalid polygons found")
   }
+
+  # convert to 'SpatialPolygonsDataFrame' object, add data frame of levels
+  d <- data.frame(z=levs, row.names=row.names(sp_polys))
+  sp_polys_df <- sp::SpatialPolygonsDataFrame(sp_polys, data=d, match.ID=TRUE)
 
   # crop 'SpatialPolygonsDataFrame' object using polygon argument
   if (!is.null(ply)) sp_polys_df <- SetPolygons(sp_polys_df, ply, "gIntersection")

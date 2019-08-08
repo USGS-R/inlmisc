@@ -32,7 +32,8 @@ Returns an object of class 'SpatialPolygons*'.
 Calculate the intersection or difference between two multi-polygon objects.
 }
 \details{
-This function tests if the resulting geometry is valid, see \code{\link{gIsValid}}.
+This function tests if the resulting geometry is valid.
+If invalid, an attempt is made to make the geometry valid by zero-width buffering.
 }
 \examples{
 m1a <- rbind(c(17.5, 55.1), c(24.7, 55.0), c(22.6, 61.1),
