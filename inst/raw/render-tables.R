@@ -2,7 +2,7 @@
 
 .PlotBox <- function(file, color, width, height=width) {
   checkmate::assertPathForOutput(file, overwrite=TRUE)
-  stopifnot(inlmisc:::.IsColor(color))
+  stopifnot(inlmisc::IsColor(color))
   checkmate::assertNumber(width,  lower=0, finite=TRUE)
   checkmate::assertNumber(height, lower=0, finite=TRUE)
 

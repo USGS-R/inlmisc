@@ -6,7 +6,7 @@
 \usage{
 Grid2Polygons(grd, zcol = 1, level = FALSE, at = NULL, cuts = 20,
   pretty = FALSE, xlim = NULL, ylim = NULL, zlim = NULL,
-  ply = NULL)
+  ply = NULL, check_validity = TRUE)
 }
 \arguments{
 \item{grd}{'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.
@@ -41,6 +41,10 @@ data outside these limits is excluded.}
 
 \item{ply}{'SpatialPolygons', or 'SpatialGridDataFrame'.
 Cropping polygon}
+
+\item{check_validity}{'logical' flag.
+If true (default), check the validity of polygons.
+If any of the polygons are invalid, try making them valid by zero-width buffering.}
 }
 \value{
 Returns an object of class 'SpatialPolygonsDataFrame'.

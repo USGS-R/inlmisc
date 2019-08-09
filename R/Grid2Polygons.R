@@ -28,6 +28,9 @@
 #'    data outside these limits is excluded.
 #' @param ply 'SpatialPolygons', or 'SpatialGridDataFrame'.
 #'    Cropping polygon
+#' @param check_validity 'logical' flag.
+#'    If true (default), check the validity of polygons.
+#'    If any of the polygons are invalid, try making them valid by zero-width buffering.
 #'
 #' @return Returns an object of class 'SpatialPolygonsDataFrame'.
 #'   The objects \code{data} slot is a data frame, number of rows equal to
@@ -54,8 +57,6 @@
 #' @keywords manip
 #'
 #' @import rgdal
-#'
-#' @useDynLib inlmisc, .registration=TRUE, .fixes="C_"
 #'
 #' @export
 #'
@@ -131,7 +132,7 @@
 
 Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
                           pretty=FALSE, xlim=NULL, ylim=NULL, zlim=NULL,
-                          ply=NULL) {
+                          ply=NULL, check_validity=TRUE) {
 
   # check arguments
   stopifnot(inherits(grd, c("BasicRaster",
@@ -146,6 +147,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   checkmate::assertNumeric(ylim, len=2, sorted=TRUE, null.ok=TRUE)
   checkmate::assertNumeric(zlim, len=2, sorted=TRUE, null.ok=TRUE)
   checkmate::assertClass(ply, "SpatialPolygons", null.ok=TRUE)
+  checkmate::assertFlag(check_validity)
 
   # convert grid to 'RasterLayer' class
   if (!inherits(grd, "RasterLayer"))
@@ -212,15 +214,15 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   n2 <- n1 + 1L
   n4 <- unlist(lapply(seq_len(m), function(i) seq(1, n) + i * (n + 1L)))
   n3 <- n4 + 1L
-  elem.nodes <- cbind(n1, n2, n3, n4)
+  elem_nodes <- cbind(n1, n2, n3, n4)
 
   # define segments in each element
   nsegs <- nelems * 4L
   segs <- matrix(data=NA, nrow=nsegs, ncol=4,
                  dimnames=list(1:nsegs, c("elem", "a", "b", "z")))
   segs[, 1] <- rep(1:nelems, each=4)
-  segs[, 2] <- c(t(elem.nodes))
-  segs[, 3] <- c(t(elem.nodes[, c(2, 3, 4, 1)]))
+  segs[, 2] <- c(t(elem_nodes))
+  segs[, 3] <- c(t(elem_nodes[, c(2, 3, 4, 1)]))
   segs[, 4] <- rep(z, each=4)
   segs <- stats::na.omit(segs)
 
@@ -228,32 +230,43 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   levs <- sort(unique(stats::na.omit(z)))
 
   # find polygon nodes for each level
-  poly.nodes <- lapply(levs, function(i) {
+  poly_nodes <- lapply(levs, function(i) {
     FindPolyNodes(segs[segs[, "z"] == i, c("a", "b")])
   })
 
   # build lists of 'Polygon' objects
-  poly <- lapply(poly.nodes, function(i) {
+  poly <- lapply(poly_nodes, function(i) {
     lapply(i, function(j) sp::Polygon(coords[j, ]))
   })
 
   # build list of 'Polygons' objects
-  ids <- make.names(1:length(poly), unique=TRUE)
-  polys <- lapply(1:length(poly), function(i) {
+  ids <- make.names(seq_len(length(poly)), unique=TRUE)
+  polys <- lapply(seq_along(ids), function(i) {
     sp::Polygons(poly[[i]], ID=ids[i])
   })
 
   # convert to 'SpatialPolygons' object, add datum and projection
-  sp.polys <- sp::SpatialPolygons(polys, proj4string=raster::crs(grd))
+  sp_polys <- sp::SpatialPolygons(polys, proj4string=raster::crs(grd))
+
+  # assign ownership of holes to parent polygons
+  sp_polys <- rgeos::createSPComment(sp_polys)
+
+  # check validity of polygons, if invalid, try making valid by zero-width buffering
+  if (check_validity) {
+    if (isFALSE(all(suppressWarnings(rgeos::gIsValid(sp_polys, byid=TRUE)))))
+      sp_polys <- rgeos::gBuffer(sp_polys, byid=TRUE, width=0)
+    if (isFALSE(all(rgeos::gIsValid(sp_polys, byid=TRUE))))
+      stop("invalid polygons found")
+  }
 
   # convert to 'SpatialPolygonsDataFrame' object, add data frame of levels
-  d <- data.frame(z=levs, row.names=row.names(sp.polys))
-  sp.polys.df <- sp::SpatialPolygonsDataFrame(sp.polys, data=d, match.ID=TRUE)
+  d <- data.frame(z=levs, row.names=row.names(sp_polys))
+  sp_polys_df <- sp::SpatialPolygonsDataFrame(sp_polys, data=d, match.ID=TRUE)
 
   # crop 'SpatialPolygonsDataFrame' object using polygon argument
-  if (!is.null(ply)) sp.polys.df <- SetPolygons(sp.polys.df, ply, "gIntersection")
+  if (!is.null(ply)) sp_polys_df <- SetPolygons(sp_polys_df, ply, "gIntersection")
 
-  sp.polys.df
+  sp_polys_df
 }
 
 
@@ -273,6 +286,10 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
 #'
 #' @keywords internal
 #'
+#' @useDynLib inlmisc, .registration=TRUE, .fixes="C_"
+#'
+#' @export
+#'
 
 FindPolyNodes <- function(s) {
   mode(s) <- "integer"
@@ -285,10 +302,10 @@ FindPolyNodes <- function(s) {
   out <- matrix(.Call(C_DefinePolygons, s[, 1], s[, 2]), nrow=nrow(s), ncol=2)
 
   # place returned array into list object
-  poly.nodes <- lapply(unique(out[, 2]), function(x) out[out[, 2] == x, 1])
+  poly_nodes <- lapply(unique(out[, 2]), function(x) out[out[, 2] == x, 1])
 
   # close polygon by joining the first point to the last point
-  poly.nodes <- lapply(poly.nodes, function(x) c(x, x[1]))
+  poly_nodes <- lapply(poly_nodes, function(x) c(x, x[1]))
 
-  poly.nodes
+  poly_nodes
 }
