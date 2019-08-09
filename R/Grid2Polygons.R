@@ -256,7 +256,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
     if (isFALSE(all(suppressWarnings(rgeos::gIsValid(sp_polys, byid=TRUE)))))
       sp_polys <- rgeos::gBuffer(sp_polys, byid=TRUE, width=0)
     if (isFALSE(all(rgeos::gIsValid(sp_polys, byid=TRUE))))
-      warning("invalid polygons found")
+      stop("invalid polygons found")
   }
 
   # convert to 'SpatialPolygonsDataFrame' object, add data frame of levels
