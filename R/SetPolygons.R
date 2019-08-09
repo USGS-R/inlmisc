@@ -7,8 +7,8 @@
 #' @param y 'SpatialPolygons*' or 'Extent'.
 #'   Multi-polygon object
 #' @param cmd 'character' string.
-#'   Specifying "gIntersection", the default, cuts out portions of the \code{x} polygons
-#'   that overlay the \code{y} polygons.
+#'   Specifying "gIntersection", the default, cuts out portions of the
+#'   \code{x} polygons that overlay the \code{y} polygons.
 #'   If "gDifference" is specified, only those portions of the \code{x} polygons
 #'   falling outside the \code{y} polygons are copied to the output polygons.
 #' @param buffer.width 'numeric' number.
@@ -86,12 +86,10 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
 
       suppressMessages(suppressWarnings({
         spgeom2 <- rgeos::gUnaryUnion(y_intersect, checkValidity=2L)
-
         if (cmd == "gIntersection")
           x_geo <- rgeos::gIntersection(x[i], spgeom2, byid=TRUE, checkValidity=2L)
         else
           x_geo <- rgeos::gDifference(x[i], spgeom2, byid=TRUE, checkValidity=2L)
-
         if (inherits(x_geo, "SpatialCollections"))
           x_geo <- rgeos::gUnaryUnion(x_geo@polyobj, checkValidity=2L)
       }))
