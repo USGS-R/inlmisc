@@ -156,10 +156,8 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   # crop grid data using polygon argument
   if (!is.null(ply)) {
     crs <- raster::crs(grd)
-    if (is.na(sp::proj4string(ply)))
-      sp::proj4string(ply) <- crs
-    if (!sp::identicalCRS(grd, ply))
-      ply <- sp::spTransform(ply, crs)
+    if (is.na(sp::proj4string(ply))) sp::proj4string(ply) <- crs
+    if (!sp::identicalCRS(grd, ply)) ply <- sp::spTransform(ply, crs)
     grd <- raster::crop(grd, ply, snap="out")
   }
 
@@ -230,23 +228,16 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   levs <- sort(unique(stats::na.omit(z)))
 
   # find polygon nodes for each level
-  poly_nodes <- lapply(levs, function(i) {
-    FindPolyNodes(segs[segs[, "z"] == i, c("a", "b")])
+  poly_nodes <- lapply(levs, function(x) {
+    FindPolyNodes(segs[segs[, "z"] == x, c("a", "b")])
   })
 
-  # build lists of 'Polygon' objects
-  poly <- lapply(poly_nodes, function(i) {
-    lapply(i, function(j) sp::Polygon(coords[j, ]))
-  })
-
-  # build list of 'Polygons' objects
-  ids <- make.names(seq_len(length(poly)))
-  polys <- lapply(seq_along(ids), function(i) {
-    sp::Polygons(poly[[i]], ID=ids[i])
-  })
-
-  # convert to 'SpatialPolygons' object, add datum and projection
-  sp_polys <- sp::SpatialPolygons(polys, proj4string=raster::crs(grd))
+  # build 'SpatialPolygons' object
+  sp_polys <- sp::SpatialPolygons(lapply(seq_along(poly_nodes), function(i) {
+    sp::Polygons(lapply(poly_nodes[[i]], function(x) {
+      sp::Polygon(coords[x, ])
+    }), ID=paste0("X", i))
+  }), proj4string=raster::crs(grd))
 
   # assign ownership of holes to parent polygons
   sp_polys <- rgeos::createSPComment(sp_polys)
