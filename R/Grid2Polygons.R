@@ -240,7 +240,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   })
 
   # build list of 'Polygons' objects
-  ids <- make.names(seq_len(length(poly)), unique=TRUE)
+  ids <- make.names(seq_len(length(poly)))
   polys <- lapply(seq_along(ids), function(i) {
     sp::Polygons(poly[[i]], ID=ids[i])
   })
