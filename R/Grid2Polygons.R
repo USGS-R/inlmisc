@@ -218,7 +218,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   nsegs <- nelems * 4L
   segs <- matrix(data=NA, nrow=nsegs, ncol=4,
                  dimnames=list(1:nsegs, c("elem", "a", "b", "z")))
-  segs[, 1] <- rep(1:nelems, each=4)
+  segs[, 1] <- rep(seq_len(nelems), each=4)
   segs[, 2] <- c(t(elem_nodes))
   segs[, 3] <- c(t(elem_nodes[, c(2, 3, 4, 1)]))
   segs[, 4] <- rep(z, each=4)
@@ -252,12 +252,12 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
 
   # convert to 'SpatialPolygonsDataFrame' object, add data frame of levels
   d <- data.frame(z=levs, row.names=row.names(sp_polys))
-  sp_polys_df <- sp::SpatialPolygonsDataFrame(sp_polys, data=d, match.ID=TRUE)
+  sp_polys <- sp::SpatialPolygonsDataFrame(sp_polys, data=d, match.ID=TRUE)
 
   # crop 'SpatialPolygonsDataFrame' object using polygon argument
-  if (!is.null(ply)) sp_polys_df <- SetPolygons(sp_polys_df, ply, "gIntersection")
+  if (!is.null(ply)) sp_polys <- SetPolygons(sp_polys, ply, "gIntersection")
 
-  sp_polys_df
+  sp_polys
 }
 
 
