@@ -15,8 +15,8 @@ Multi-polygon object}
 Multi-polygon object}
 
 \item{cmd}{'character' string.
-Specifying "gIntersection", the default, cuts out portions of the \code{x} polygons
-that overlay the \code{y} polygons.
+Specifying "gIntersection", the default, cuts out portions of the
+\code{x} polygons that overlay the \code{y} polygons.
 If "gDifference" is specified, only those portions of the \code{x} polygons
 falling outside the \code{y} polygons are copied to the output polygons.}
 
