@@ -118,7 +118,7 @@
 #' plot(pal)
 #'
 #' Pal <- GetColors(scheme = "DEM screen", alpha = 0.9)
-#' filled.contour(datasets::volcano, color.palette = Pal)
+#' filled.contour(datasets::volcano, color.palette = Pal, plot.axes = FALSE)
 #'
 #' # Diverging color schemes (scheme)
 #' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))

@@ -49,7 +49,7 @@
 #'
 #' x <- datasets::volcano
 #' Pal <- SetHinge(x, hinge = 140, scheme = c("abyss", "dem1"))
-#' filled.contour(x, color.palette = Pal, nlevels = 50)
+#' filled.contour(x, color.palette = Pal, nlevels = 50, plot.axes = FALSE)
 #'
 #' # Data range (x)
 #' hinge <- 0; n <- 20
