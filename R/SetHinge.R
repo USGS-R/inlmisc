@@ -44,8 +44,8 @@
 #'
 #' @examples
 #' Plot <- inlmisc:::plot.inlpal
-#' Pal <- SetHinge(scheme = "BuRd", x = c(0, 10), hinge = 5)
-#' Plot(Pal(n = 9))
+#' Pal <- SetHinge(x = c(-3, 7), hinge = 0)
+#' Plot(Pal(n = 19))
 #'
 #' x <- datasets::volcano
 #' Pal <- SetHinge(x, hinge = 140, scheme = c("abyss", "dem1"))
