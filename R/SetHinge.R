@@ -192,7 +192,7 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL, reverse=FALSE,
              identical(s1[2], s2[1]) &&
              identical(reverse[1], reverse[2])
 
-  FUN <- function(...) {
+  function(...) {
     n1 <- round(... * ratio)
     n2 <- ... - n1
     if (dup_fix) n1 <- n1 + 1L
@@ -201,5 +201,4 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL, reverse=FALSE,
     if (dup_fix) p1 <- utils::head(p1, -1)
     c(p1, p2)
   }
-  FUN
 }
