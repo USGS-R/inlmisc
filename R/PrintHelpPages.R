@@ -22,7 +22,12 @@
 #' @export
 #'
 #' @examples
-#' PrintHelpPages("inlmisc")
+#' x <- utils::capture.output(PrintHelpPages("inlmisc", toc = TRUE))
+#' cat(x, file = "help-example.Rmd", sep = "\n")
+#' rmarkdown::render("help-example.Rmd")
+#' \donttest{utils::browseURL(sprintf("file://%s", file.path(getwd(), "help-example.html")))}
+#'
+#' file.remove("help-example.Rmd", "help-example.html")
 #'
 
 PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
@@ -52,30 +57,31 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
                    gsub("<.*?>", "", x[idx]), nm[i], nm[i])
     if (toc) cat(txt, file=file, append=TRUE)
 
-    # remove extraneous lines
+    # remove extraneous lines at beginning and end
     x <- x[-c(seq_len(idx - !toc), length(x))]
 
     # edit code chunk tags
-    x[x == "</pre>"] <- "</code></pre>"
-    idx <- which(x == "<pre>")
-    x[idx + 1L] <- sprintf("<pre class=\"lang-r\"><code class=\"lang-r\">%s",
-                           x[idx + 1L])
+    xtrim <- trimws(x)
+    x[xtrim == "</pre>"] <- "</code></pre>"
+    idx <- which(xtrim == "<pre>")
+    x[idx + 1L] <- sprintf("<pre class=\"lang-r\"><code class=\"lang-r\">%s", x[idx + 1L])
     x[idx] <- ""
 
-    # remove empty lines
+    # remove empty lines everywhere but the examples section
     is <- nzchar(x)
     if (!all(is)) {
-      idx <- grep("^<h3>Examples</h3>", x)
-      if (length(idx) > 0) {
-        ex <- (idx + 1L):(utils::tail(grep("</code>" , x), 1) - 1L)
-        lim <- range(which(nzchar(x[ex])))
-        ex <- ex[lim[1]:lim[2]]
-        is[ex] <- TRUE
+      from <- grep("^<h3>Examples</h3>", x)
+      if (length(from) > 0) {
+        to <- utils::tail(grep("</code></pre>" , x), 1)
+        idxs <- seq(from + 1L, to - 1L, by=1)
+        lim <- range(which(nzchar(x[idxs])))
+        idxs <- idxs[lim[1]:lim[2]]
+        is[idxs] <- TRUE
       }
       x <- x[is]
     }
 
-    # add separator
+    # add separator between help topics
     sep <- if (hr & i < length(nm)) "<hr />" else ""
     x <- c(x, sep)
 

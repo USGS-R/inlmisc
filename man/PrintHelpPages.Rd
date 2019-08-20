@@ -29,7 +29,12 @@ Names of packages searched when creating internal hyperlinks to help topics.}
 Print the HTML code associated with help pages of a loaded R package.
 }
 \examples{
-PrintHelpPages("inlmisc")
+x <- utils::capture.output(PrintHelpPages("inlmisc", toc = TRUE))
+cat(x, file = "help-example.Rmd", sep = "\\n")
+rmarkdown::render("help-example.Rmd")
+\donttest{utils::browseURL(sprintf("file://\%s", file.path(getwd(), "help-example.html")))}
+
+file.remove("help-example.Rmd", "help-example.html")
 
 }
 \author{
