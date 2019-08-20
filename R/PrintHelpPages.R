@@ -12,8 +12,9 @@
 #'   The table of contents (toc) option in R Markdown requires Markdown headers.
 #' @param hr 'logical' flag.
 #'   Whether to add a horizontal rule or line to separate help pages.
-#' @param links 'character' vector (experimental).
-#'   Names of packages searched when creating internal hyperlinks to help topics.
+#' @param links 'character' vector.
+#'   Names of packages searched when creating internal hyperlinks to help topics
+#'   (an experimental feature).
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -22,8 +23,7 @@
 #' @export
 #'
 #' @examples
-#' x <- utils::capture.output(PrintHelpPages("inlmisc", toc = TRUE))
-#' cat(x, file = "help-example.Rmd", sep = "\n")
+#' PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
 #' rmarkdown::render("help-example.Rmd")
 #' \donttest{utils::browseURL(sprintf("file://%s", file.path(getwd(), "help-example.html")))}
 #'
