@@ -54,13 +54,13 @@ a location that does not necessarily coincide with the break-point in the user's
 This function can be used to specify a hinge location that is appropriate for your data.
 }
 \examples{
-Pal <- SetHinge(x = c(-3, 7), hinge = 0)
 Plot <- inlmisc:::plot.inlpal
-Plot(Pal(n = 20))
+Pal <- SetHinge(x = c(-3, 7), hinge = 0)
+Plot(Pal(n = 19))
 
 x <- datasets::volcano
 Pal <- SetHinge(x, hinge = 140, scheme = c("abyss", "dem1"))
-filled.contour(x, color.palette = Pal, nlevels = 50)
+filled.contour(x, color.palette = Pal, nlevels = 50, plot.axes = FALSE)
 
 # Data range (x)
 hinge <- 0; n <- 20

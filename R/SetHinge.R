@@ -43,13 +43,13 @@
 #' @export
 #'
 #' @examples
-#' Pal <- SetHinge(x = c(-3, 7), hinge = 0)
 #' Plot <- inlmisc:::plot.inlpal
-#' Plot(Pal(n = 20))
+#' Pal <- SetHinge(x = c(-3, 7), hinge = 0)
+#' Plot(Pal(n = 19))
 #'
 #' x <- datasets::volcano
 #' Pal <- SetHinge(x, hinge = 140, scheme = c("abyss", "dem1"))
-#' filled.contour(x, color.palette = Pal, nlevels = 50)
+#' filled.contour(x, color.palette = Pal, nlevels = 50, plot.axes = FALSE)
 #'
 #' # Data range (x)
 #' hinge <- 0; n <- 20
@@ -184,15 +184,21 @@ SetHinge <- function(x, hinge, scheme="sunset", alpha=NULL, reverse=FALSE,
   if (s1[1] >= s1[2] || s2[1] >= s2[2])
     stop("problem with color stops and (or) buffer values")
 
-  FUN <- function(...) {
+  # avoid duplicate colors at interface between schemes
+  dup_fix <- ratio > 0 &&
+             ratio < 1 &&
+             identical(scheme[1], scheme[2]) &&
+             identical(alpha[1], alpha[2]) &&
+             identical(s1[2], s2[1]) &&
+             identical(reverse[1], reverse[2])
+
+  function(...) {
     n1 <- round(... * ratio)
     n2 <- ... - n1
-    is <- identical(scheme[1], scheme[2]) & n1 > 0 & n2 > 0
-    if (is) n2 <- n2 + 1
+    if (dup_fix) n1 <- n1 + 1L
     p1 <- GetColors(n1, scheme[1], alpha[1], stops=s1, reverse=reverse[1])
     p2 <- GetColors(n2, scheme[2], alpha[2], stops=s2, reverse=reverse[2])
-    if (is) p2 <- p2[-1]
+    if (dup_fix) p1 <- utils::head(p1, -1)
     c(p1, p2)
   }
-  FUN
 }

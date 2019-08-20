@@ -12,8 +12,9 @@
 #'   The table of contents (toc) option in R Markdown requires Markdown headers.
 #' @param hr 'logical' flag.
 #'   Whether to add a horizontal rule or line to separate help pages.
-#' @param links 'character' vector (experimental).
-#'   Names of packages searched when creating internal hyperlinks to help topics.
+#' @param links 'character' vector.
+#'   Names of packages searched when creating internal hyperlinks to help topics
+#'   (an experimental feature).
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -22,7 +23,13 @@
 #' @export
 #'
 #' @examples
-#' PrintHelpPages("inlmisc")
+#' \dontrun{
+#' PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
+#' rmarkdown::render("help-example.Rmd")
+#' utils::browseURL(sprintf("file://%s", file.path(getwd(), "help-example.html")))
+#'
+#' file.remove("help-example.Rmd", "help-example.html")
+#' }
 #'
 
 PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
@@ -48,22 +55,35 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
 
     # edit first header
     idx <- pmatch("<h2>", x)
-    txt <- sprintf("## %s (%s) {#%s}\n\n", gsub("<.*?>", "", x[idx]), nm[i], nm[i])
+    txt <- sprintf("## %s (%s) {#%s}\n\n",
+                   gsub("<.*?>", "", x[idx]), nm[i], nm[i])
     if (toc) cat(txt, file=file, append=TRUE)
 
-    # remove extraneous lines
+    # remove extraneous lines at beginning and end
     x <- x[-c(seq_len(idx - !toc), length(x))]
 
     # edit code chunk tags
-    x[x == "</pre>"] <- "</code></pre>"
-    idx <- which(x == "<pre>")
+    xtrim <- trimws(x)
+    x[xtrim == "</pre>"] <- "</code></pre>"
+    idx <- which(xtrim == "<pre>")
     x[idx + 1L] <- sprintf("<pre class=\"lang-r\"><code class=\"lang-r\">%s", x[idx + 1L])
     x[idx] <- ""
 
-    # remove empty lines
-    x <- x[nzchar(x)]
+    # remove empty lines everywhere but the examples section
+    is <- nzchar(x)
+    if (!all(is)) {
+      from <- grep("^<h3>Examples</h3>", x)
+      if (length(from) > 0) {
+        to <- utils::tail(grep("</code></pre>" , x), 1)
+        idxs <- seq(from + 1L, to - 1L, by=1)
+        lim <- range(which(nzchar(x[idxs])))
+        idxs <- idxs[lim[1]:lim[2]]
+        is[idxs] <- TRUE
+      }
+      x <- x[is]
+    }
 
-    # add separator
+    # add separator between help topics
     sep <- if (hr & i < length(nm)) "<hr />" else ""
     x <- c(x, sep)
 
@@ -96,7 +116,9 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
     datafile   <- db$datafile
     compressed <- db$compressed
     envhook    <- db$envhook
-    Fetch <- function(key) lazyLoadDBfetch(vals[key][[1]], datafile, compressed, envhook)
+    Fetch <- function(key) {
+      lazyLoadDBfetch(vals[key][[1]], datafile, compressed, envhook)
+    }
     if (length(key)) {
       if (!key %in% vars)
         stop(gettextf("No help on %s found in RdDB %s",
@@ -110,8 +132,5 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
     }
   }
   res <- lazyLoadDBexec(filebase, FUN)
-  if (length(key))
-    res
-  else
-    invisible(res)
+  if (length(key)) res else invisible(res)
 }
