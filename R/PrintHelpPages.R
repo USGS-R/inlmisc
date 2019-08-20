@@ -23,11 +23,13 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
 #' rmarkdown::render("help-example.Rmd")
-#' \donttest{utils::browseURL(sprintf("file://%s", file.path(getwd(), "help-example.html")))}
+#' utils::browseURL(sprintf("file://%s", file.path(getwd(), "help-example.html")))
 #'
 #' file.remove("help-example.Rmd", "help-example.html")
+#' }
 #'
 
 PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {

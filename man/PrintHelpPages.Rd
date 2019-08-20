@@ -30,11 +30,13 @@ Names of packages searched when creating internal hyperlinks to help topics
 Print the HTML code associated with help pages of a loaded R package.
 }
 \examples{
+\dontrun{
 PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
 rmarkdown::render("help-example.Rmd")
-\donttest{utils::browseURL(sprintf("file://\%s", file.path(getwd(), "help-example.html")))}
+utils::browseURL(sprintf("file://\%s", file.path(getwd(), "help-example.html")))
 
 file.remove("help-example.Rmd", "help-example.html")
+}
 
 }
 \author{
