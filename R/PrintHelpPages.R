@@ -48,7 +48,8 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
 
     # edit first header
     idx <- pmatch("<h2>", x)
-    txt <- sprintf("## %s (%s) {#%s}\n\n", gsub("<.*?>", "", x[idx]), nm[i], nm[i])
+    txt <- sprintf("## %s (%s) {#%s}\n\n",
+                   gsub("<.*?>", "", x[idx]), nm[i], nm[i])
     if (toc) cat(txt, file=file, append=TRUE)
 
     # remove extraneous lines
@@ -57,11 +58,22 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
     # edit code chunk tags
     x[x == "</pre>"] <- "</code></pre>"
     idx <- which(x == "<pre>")
-    x[idx + 1L] <- sprintf("<pre class=\"lang-r\"><code class=\"lang-r\">%s", x[idx + 1L])
+    x[idx + 1L] <- sprintf("<pre class=\"lang-r\"><code class=\"lang-r\">%s",
+                           x[idx + 1L])
     x[idx] <- ""
 
     # remove empty lines
-    x <- x[nzchar(x)]
+    is <- nzchar(x)
+    if (!all(is)) {
+      idx <- grep("^<h3>Examples</h3>", x)
+      if (length(idx) > 0) {
+        ex <- (idx + 1L):(utils::tail(grep("</code>" , x), 1) - 1L)
+        lim <- range(which(nzchar(x[ex])))
+        ex <- ex[lim[1]:lim[2]]
+        is[ex] <- TRUE
+      }
+      x <- x[is]
+    }
 
     # add separator
     sep <- if (hr & i < length(nm)) "<hr />" else ""
@@ -96,7 +108,9 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
     datafile   <- db$datafile
     compressed <- db$compressed
     envhook    <- db$envhook
-    Fetch <- function(key) lazyLoadDBfetch(vals[key][[1]], datafile, compressed, envhook)
+    Fetch <- function(key) {
+      lazyLoadDBfetch(vals[key][[1]], datafile, compressed, envhook)
+    }
     if (length(key)) {
       if (!key %in% vars)
         stop(gettextf("No help on %s found in RdDB %s",
@@ -110,8 +124,5 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
     }
   }
   res <- lazyLoadDBexec(filebase, FUN)
-  if (length(key))
-    res
-  else
-    invisible(res)
+  if (length(key)) res else invisible(res)
 }
