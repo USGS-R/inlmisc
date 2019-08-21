@@ -93,6 +93,8 @@ for (no in seq_along(levels(cite))) {
     title <- sprintf("Schemes collected by %s and released under an open license.", src)
   } else if (src == "unknown") {
     title <- "Scheme by unknown author; discovered on gnuplot-info by Edzer Pebesma."
+  } else if (src == "Anton Mikhailov (2019)") {
+    title <- sprintf("Scheme by %s; released under an Apache-2.0 license.", src)
   } else {
     title <- "ADD ATTRIBUTION"
   }

@@ -59,6 +59,9 @@
 #'   \if{html}{\figure{table04.svg}}
 #'   \if{latex}{\figure{table04.pdf}{options: width=5.36in}}
 #'
+#'   \if{html}{\figure{table05.svg}}
+#'   \if{latex}{\figure{table05.pdf}{options: width=5.36in}}
+#'
 #'   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
 #'   intended to be accessed in their entirety and subset using vector element names.
 #'
@@ -92,6 +95,10 @@
 #' @references
 #'   Dewez, Thomas, 2004, Variations on a DEM palette, accessed October 15, 2018 at
 #'   \url{http://soliton.vm.bytemark.co.uk/pub/cpt-city/td/index.html}
+#'
+#'   Mikhailov, Anton, 2019, Turbo, an improved rainbow colormap for visualization:
+#'   Google AI Blog, accessed August 21, 2019 at
+#'   \url{https://ai.googleblog.com/2019/08/turbo-improved-rainbow-colormap-for.html}.
 #'
 #'   Tol, Paul, 2018, Colour Schemes:
 #'   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.1, 20 p.,
@@ -280,7 +287,32 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
   color <- s$data$color; names(color) <- s$data$name
   if (gray) color <- color[s$gray]
 
-  if (scheme == "discrete rainbow") {
+  if (scheme == "turbo") {
+
+    # code adapted from turbo colormap look-up table,
+    # copyright 2019 Google LLC,
+    # SPDX-license-identifier: Apache-2.0,
+    # authored by Anton Mikhailov and accessed August 21, 2019
+    # at https://gist.github.com/mikhailov-work/ee72ba4191942acecc03fe6da94fc73f
+    xs <- seq.int(stops[1], stops[2], length.out=n)^bias
+    Interpolate <- function(x) {
+      x <- max(0, min(1, x))
+      a <- floor(x * 255)
+      b <- min(255, a + 1)
+      f <- x * 255 - a
+      a <- a + 1
+      b <- b + 1
+      c(turbo_rgb[a, 1] + (turbo_rgb[b, 1] - turbo_rgb[a, 1]) * f,
+        turbo_rgb[a, 2] + (turbo_rgb[b, 2] - turbo_rgb[a, 2]) * f,
+        turbo_rgb[a, 3] + (turbo_rgb[b, 3] - turbo_rgb[a, 3]) * f)
+    }
+    pal <- vapply(xs, function(x) {
+      do.call(grDevices::rgb, as.list(Interpolate(x)))
+    }, "")
+
+    if (reverse) pal <- rev(pal)
+
+  } else if (scheme == "discrete rainbow") {
     idx <- list(c(10),
                 c(10, 26),
                 c(10, 18, 26),
@@ -306,6 +338,7 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
                 c( 1,  2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29))
     pal <- color[idx[[n]]]
     if (reverse) pal <- rev(pal)
+
   } else if (scheme == "bpy") {
 
     # code adapted from sp::bpy.colors function,
@@ -319,9 +352,11 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
     pal <- grDevices::rgb(r, g, b)
 
     if (reverse) pal <- rev(pal)
+
   } else if (nmax < Inf) {
     if (reverse) color <- rev(color)
     pal <- color[1:n]
+
   } else {
     value <- if (is.null(s$data$value)) seq_along(s$data$color) else s$data$value
     value <- scales::rescale(value)

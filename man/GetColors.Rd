@@ -99,6 +99,9 @@ The suggested data type for color schemes and the
   \if{html}{\figure{table04.svg}}
   \if{latex}{\figure{table04.pdf}{options: width=5.36in}}
 
+  \if{html}{\figure{table05.svg}}
+  \if{latex}{\figure{table05.pdf}{options: width=5.36in}}
+
   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
   intended to be accessed in their entirety and subset using vector element names.
 }
@@ -211,6 +214,10 @@ par(op)
 \references{
 Dewez, Thomas, 2004, Variations on a DEM palette, accessed October 15, 2018 at
   \url{http://soliton.vm.bytemark.co.uk/pub/cpt-city/td/index.html}
+
+  Mikhailov, Anton, 2019, Turbo, an improved rainbow colormap for visualization:
+  Google AI Blog, accessed August 21, 2019 at
+  \url{https://ai.googleblog.com/2019/08/turbo-improved-rainbow-colormap-for.html}.
 
   Tol, Paul, 2018, Colour Schemes:
   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.1, 20 p.,

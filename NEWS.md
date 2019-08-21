@@ -1,5 +1,7 @@
 # inlmisc 0.4.7.9000
 
+- In `GetColors` function, add `"turbo"` color scheme.
+
 - In `SetHinge` function, non-backward compatible change to allocating colors on each side of hinge.
   The effect of this change is only perceivable when the number of colors is small (`n < 10`).
 
