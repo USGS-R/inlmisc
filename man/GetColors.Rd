@@ -112,7 +112,8 @@ print(pal)
 plot(pal)
 
 Pal <- GetColors(scheme = "DEM screen", alpha = 0.9)
-filled.contour(datasets::volcano, color.palette = Pal, plot.axes = FALSE)
+filled.contour(datasets::volcano, color.palette = Pal,
+               plot.axes = FALSE)
 
 # Diverging color schemes (scheme)
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
@@ -175,7 +176,8 @@ plot(GetColors(255, bias = 1.6))
 par(op)
 
 # Reverse colors (reverse)
-op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
+op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0),
+          cex = 0.7)
 plot(GetColors(10, reverse = FALSE))
 plot(GetColors(10, reverse = TRUE))
 par(op)
@@ -191,14 +193,18 @@ par(op)
 
 # Gray-scale preparation (gray)
 op <- par(mfrow = c(8, 1), oma = c(0, 0, 0, 0))
-plot(GetColors(3, "bright",        gray = TRUE))
-plot(GetColors(3, "bright",        gray = TRUE, blind = "monochrome"))
+plot(GetColors(3, "bright", gray = TRUE))
+plot(GetColors(3, "bright", gray = TRUE,
+               blind = "monochrome"))
 plot(GetColors(5, "high-contrast", gray = TRUE))
-plot(GetColors(5, "high-contrast", gray = TRUE, blind = "monochrome"))
-plot(GetColors(4, "vibrant",       gray = TRUE))
-plot(GetColors(4, "vibrant",       gray = TRUE, blind = "monochrome"))
-plot(GetColors(5, "muted",         gray = TRUE))
-plot(GetColors(5, "muted",         gray = TRUE, blind = "monochrome"))
+plot(GetColors(5, "high-contrast", gray = TRUE,
+               blind = "monochrome"))
+plot(GetColors(4, "vibrant", gray = TRUE))
+plot(GetColors(4, "vibrant", gray = TRUE,
+               blind = "monochrome"))
+plot(GetColors(5, "muted", gray = TRUE))
+plot(GetColors(5, "muted", gray = TRUE,
+               blind = "monochrome"))
 par(op)
 
 }

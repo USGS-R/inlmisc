@@ -114,8 +114,9 @@ Fitness <- function(string, n, numbers) {
   -1 * sum(numbers[idxs])
 }
 \dontrun{
-out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1, run = 10,
-                         monitor = GA::gaislMonitor, seed = seed)
+out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1,
+                         run = 10, monitor = GA::gaislMonitor,
+                         seed = seed)
 plot(out[["ga_output"]])
 summary(out[["ga_output"]])
 print(out[["solution"]])

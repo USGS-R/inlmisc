@@ -60,7 +60,8 @@ Plot(Pal(n = 19))
 
 x <- datasets::volcano
 Pal <- SetHinge(x, hinge = 140, scheme = c("abyss", "dem1"))
-filled.contour(x, color.palette = Pal, nlevels = 50, plot.axes = FALSE)
+filled.contour(x, color.palette = Pal, nlevels = 50,
+               plot.axes = FALSE)
 
 # Data range (x)
 hinge <- 0; n <- 20
@@ -104,10 +105,14 @@ x <- c(-10, 10); hinge <- -3; n <- 255
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
 Plot(SetHinge(x, hinge, "roma", reverse = FALSE)(n))
 Plot(SetHinge(x, hinge, "roma", reverse = TRUE)(n))
-Plot(SetHinge(x, hinge, c("davos", "hawaii"), reverse = FALSE)(n))
-Plot(SetHinge(x, hinge, c("davos", "hawaii"), reverse = TRUE)(n))
-Plot(SetHinge(x, hinge, c("davos", "hawaii"), reverse = c(TRUE, FALSE))(n))
-Plot(SetHinge(x, hinge, c("davos", "hawaii"), reverse = c(FALSE, TRUE))(n))
+Plot(SetHinge(x, hinge, c("davos", "hawaii"),
+              reverse = FALSE)(n))
+Plot(SetHinge(x, hinge, c("davos", "hawaii"),
+              reverse = TRUE)(n))
+Plot(SetHinge(x, hinge, c("davos", "hawaii"),
+              reverse = c(TRUE, FALSE))(n))
+Plot(SetHinge(x, hinge, c("davos", "hawaii"),
+              reverse = c(FALSE, TRUE))(n))
 par(op)
 
 # Buffer around hinge (buffer)
@@ -116,9 +121,12 @@ op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
 Plot(SetHinge(x, hinge, buffer = 0.0)(n))
 Plot(SetHinge(x, hinge, buffer = 0.2)(n))
 Plot(SetHinge(x, hinge, buffer = c(0.4, 0.2))(n))
-Plot(SetHinge(x, hinge, c("gray", "plasma"), buffer = 0.0)(n))
-Plot(SetHinge(x, hinge, c("gray", "plasma"), buffer = 0.2)(n))
-Plot(SetHinge(x, hinge, c("gray", "plasma"), buffer = c(0.2, 0.4))(n))
+Plot(SetHinge(x, hinge, c("gray", "plasma"),
+              buffer = 0.0)(n))
+Plot(SetHinge(x, hinge, c("gray", "plasma"),
+              buffer = 0.2)(n))
+Plot(SetHinge(x, hinge, c("gray", "plasma"),
+              buffer = c(0.2, 0.4))(n))
 par(op)
 
 # Color stops (stops)
@@ -127,9 +135,12 @@ op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
 Plot(SetHinge(x, hinge, stops = c(0.0, 1.0))(n))
 Plot(SetHinge(x, hinge, stops = c(0.2, 0.8))(n))
 Plot(SetHinge(x, hinge, stops = c(0.4, 0.6))(n))
-Plot(SetHinge(x, hinge, c("gray", "plasma"), stops = c(0.0, 1.0))(n))
-Plot(SetHinge(x, hinge, c("gray", "plasma"), stops = c(0.2, 0.8))(n))
-Plot(SetHinge(x, hinge, c("gray", "plasma"), stops = c(0.4, 0.6))(n))
+Plot(SetHinge(x, hinge, c("gray", "plasma"),
+              stops = c(0.0, 1.0))(n))
+Plot(SetHinge(x, hinge, c("gray", "plasma"),
+              stops = c(0.2, 0.8))(n))
+Plot(SetHinge(x, hinge, c("gray", "plasma"),
+              stops = c(0.4, 0.6))(n))
 par(op)
 
 # Allow bias (allow_bias)
