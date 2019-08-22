@@ -124,7 +124,7 @@
 #' print(pal)
 #' plot(pal)
 #'
-#' Pal <- GetColors(scheme = "DEM screen", alpha = 0.9)
+#' Pal <- GetColors(scheme = "turbo")
 #' filled.contour(datasets::volcano, color.palette = Pal,
 #'                plot.axes = FALSE)
 #'
