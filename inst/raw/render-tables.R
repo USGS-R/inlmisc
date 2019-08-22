@@ -86,15 +86,20 @@ for (no in seq_along(levels(cite))) {
 
   src <- levels(cite)[no]
   if (src == "Paul Tol (2018)") {
-    title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
+    fmt <- "Schemes by %s with permission granted to distribute in Oct 2018."
+    title <- sprintf(fmt, src)
   } else if (src == "Thomas Dewez (2004)") {
-    title <- sprintf("Schemes by %s with permission granted to distribute in Oct 2018.", src)
+    fmt <- "Schemes by %s with permission granted to distribute in Oct 2018."
+    title <- sprintf(fmt, src)
   } else if (src == "Wessel and others (2013)") {
-    title <- sprintf("Schemes collected by %s and released under an open license.", src)
+    fmt <- "Schemes collected by %s and released under an open license."
+    title <- sprintf(fmt, src)
   } else if (src == "unknown") {
-    title <- "Scheme by unknown author; discovered on gnuplot-info by Edzer Pebesma."
+    fmt <- "Scheme by %s author; discovered on gnuplot-info by Edzer Pebesma."
+    title <- sprintf(fmt, src)
   } else if (src == "Anton Mikhailov (2019)") {
-    title <- sprintf("Scheme by %s; released under an Apache-2.0 license.", src)
+    fmt <- "Scheme by %s; released under an open license."
+    title <- sprintf(fmt, src)
   } else {
     title <- "ADD ATTRIBUTION"
   }
