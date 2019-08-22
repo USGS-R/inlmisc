@@ -27,8 +27,7 @@ and used to select a subset of the color palette.
 Only suitable for schemes that allow for color interpolations.}
 
 \item{bias}{'numeric' number.
-Interpolation bias where larger values result in more widely spaced colors at the high end.
-See \code{\link[grDevices]{colorRamp}} function for details.}
+Interpolation bias where larger values result in more widely spaced colors at the high end.}
 
 \item{reverse}{'logical' flag.
 Whether to reverse the order of colors in the scheme.}

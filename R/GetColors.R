@@ -18,7 +18,6 @@
 #'   Only suitable for schemes that allow for color interpolations.
 #' @param bias 'numeric' number.
 #'   Interpolation bias where larger values result in more widely spaced colors at the high end.
-#'   See \code{\link[grDevices]{colorRamp}} function for details.
 #' @param reverse 'logical' flag.
 #'   Whether to reverse the order of colors in the scheme.
 #' @param blind 'character' string.
@@ -290,25 +289,19 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
   if (scheme == "turbo") {
 
     # code adapted from turbo colormap look-up table,
-    # copyright 2019 Google LLC,
-    # SPDX-license-identifier: Apache-2.0,
+    # copyright 2019 Google LLC, Apache-2.0 license,
     # authored by Anton Mikhailov and accessed August 21, 2019
     # at https://gist.github.com/mikhailov-work/ee72ba4191942acecc03fe6da94fc73f
-    xs <- seq.int(stops[1], stops[2], length.out=n)^bias
-    Interpolate <- function(x) {
-      x <- max(0, min(1, x))
-      a <- floor(x * 255)
-      b <- min(255, a + 1)
-      f <- x * 255 - a
-      a <- a + 1
-      b <- b + 1
-      c(turbo_rgb[a, 1] + (turbo_rgb[b, 1] - turbo_rgb[a, 1]) * f,
-        turbo_rgb[a, 2] + (turbo_rgb[b, 2] - turbo_rgb[a, 2]) * f,
-        turbo_rgb[a, 3] + (turbo_rgb[b, 3] - turbo_rgb[a, 3]) * f)
-    }
-    pal <- vapply(xs, function(x) {
-      do.call(grDevices::rgb, as.list(Interpolate(x)))
-    }, "")
+    x <- seq.int(stops[1], stops[2], length.out=n)^bias
+    x <- vapply(x, function(y) max(0, min(1, y)), 0)
+    a <- floor(x * 255)
+    b <- vapply(a, function(y) min(255, y + 1), 0)
+    f <- x * 255 - a
+    a <- a + 1
+    b <- b + 1
+    pal <- grDevices::rgb(turbo_colormap_data[a, 1] + (turbo_colormap_data[b, 1] - turbo_colormap_data[a, 1]) * f,
+                          turbo_colormap_data[a, 2] + (turbo_colormap_data[b, 2] - turbo_colormap_data[a, 2]) * f,
+                          turbo_colormap_data[a, 3] + (turbo_colormap_data[b, 3] - turbo_colormap_data[a, 3]) * f)
 
     if (reverse) pal <- rev(pal)
 
