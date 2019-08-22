@@ -579,7 +579,7 @@ schemes[["smooth rainbow"]] <- list(
   nan  = "#666666"
 )
 
-# unknown author on gnuplot-info
+# Unknown author on gnuplot-info
 
 schemes[["bpy"]] <- list(
   type = "Sequential",
@@ -588,10 +588,6 @@ schemes[["bpy"]] <- list(
 )
 
 # Anton Mikhailov (Google)
-# data from turbo colormap look-up table,
-# copyright 2019 Google LLC, Apache-2.0 license,
-# accessed August 21, 2019
-# at https://gist.github.com/mikhailov-work/ee72ba4191942acecc03fe6da94fc73f
 
 schemes[["turbo"]] <- list(
   type = "Sequential",
@@ -599,6 +595,10 @@ schemes[["turbo"]] <- list(
   nmax = Inf
 )
 
+# data from turbo colormap look-up table,
+# copyright 2019 Google LLC, Apache-2.0 license,
+# accessed August 21, 2019
+# at https://gist.github.com/mikhailov-work/ee72ba4191942acecc03fe6da94fc73f
 turbo_colormap_data <- rbind(c(0.18995, 0.07176, 0.23217),
                              c(0.19483, 0.08339, 0.26149),
                              c(0.19956, 0.09498, 0.29024),

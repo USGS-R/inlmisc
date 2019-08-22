@@ -288,7 +288,9 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
 
   if (scheme == "turbo") {
 
-    # code adapted from turbo colormap look-up table,
+    # code adapted from turbo colormap look-up table;
+    # changes include: add 'bias' variable, convert from Python to R,
+    # and store parsed 'turbo_colormap_data' in R/sysdata.rda,
     # copyright 2019 Google LLC, Apache-2.0 license,
     # authored by Anton Mikhailov and accessed August 21, 2019
     # at https://gist.github.com/mikhailov-work/ee72ba4191942acecc03fe6da94fc73f
