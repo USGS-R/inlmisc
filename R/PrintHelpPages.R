@@ -97,9 +97,19 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
     sep <- if (hr & i < length(nm)) "<hr />" else ""
     x <- c(x, sep)
 
+    # encode images as a base64 string
+    is <- grepl("<p><img src=\"", x)
+    if (any(is)) {
+      src <- as.character(vapply(x[is], function(y) strsplit(y, "\"")[[1]][2], ""))
+      src <- sub("..", system.file(package=pkg), src)
+      for (f in src) checkmate::assertFileExists(f, access="r")
+      uri <- vapply(src, function(f) knitr::image_uri(f), "")
+      x[is] <- sprintf("<p><img src=\"%s\" alt=\"%s\" />", uri, basename(src))
+    }
+
     # preserve html
-    txt <- htmltools::htmlPreserve(x)
-    cat(txt, "\n", file=file, sep="\n", fill=TRUE, append=TRUE)
+    x <- htmltools::htmlPreserve(c("", x, ""))
+    cat(x, "\n", file=file, sep="\n", fill=TRUE, append=TRUE)
   }
 
   invisible()
