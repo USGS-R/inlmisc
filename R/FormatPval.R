@@ -1,6 +1,6 @@
 #' Format P Values
 #'
-#' Format \emph{p}-values
+#' Format \emph{p}-values for pretty printing.
 #'
 #' @param x 'numeric' vector.
 #'   \emph{p}-values

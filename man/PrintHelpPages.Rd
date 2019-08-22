@@ -22,12 +22,11 @@ The table of contents (toc) option in R Markdown requires Markdown headers.}
 \item{hr}{'logical' flag.
 Whether to add a horizontal rule or line to separate help pages.}
 
-\item{links}{'character' vector.
-Names of packages searched when creating internal hyperlinks to help topics
-(an experimental feature).}
+\item{links}{'character' vector (experimental).
+Names of packages searched when creating internal hyperlinks to help topics.}
 }
 \description{
-Print the HTML code associated with help pages of a loaded R package.
+Print the HTML code associated with help pages of an add-on package.
 }
 \examples{
 \dontrun{
@@ -37,8 +36,8 @@ cat("---",
     "  html_document:",
     "    toc: true",
     "    toc_float: true",
-    "---\\n\\n---\\n",
-    sep = "\\n", file = "help-example.Rmd")
+    "---",
+    "", sep = "\\n", file = "help-example.Rmd")
 PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
 rmarkdown::render("help-example.Rmd")
 url <- file.path("file:/", getwd(), "help-example.html")
