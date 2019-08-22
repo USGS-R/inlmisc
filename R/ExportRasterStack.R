@@ -46,13 +46,15 @@
 #'
 #' @examples
 #' \dontrun{
-#' rs <- raster::stack(system.file("external/rlogo.grd", package = "raster"))
+#' rs <- raster::stack(system.file("external/rlogo.grd",
+#'                     package = "raster"))
 #' print(rs)
 #' path <- file.path(tempdir(), "rlogo")
 #' dir.create(path)
 #' ExportRasterStack(rs, path)
-#' list.files(normalizePath(path, winslash = "/"), full.name = TRUE,
-#'            recursive = TRUE, include.dirs = TRUE)
+#' list.files(normalizePath(path, winslash = "/"),
+#'            full.name = TRUE, recursive = TRUE,
+#'            include.dirs = TRUE)
 #'
 #' unlink(path, recursive = TRUE)
 #' }

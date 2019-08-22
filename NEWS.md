@@ -1,10 +1,12 @@
 # inlmisc 0.4.7.9000
 
+- In `GetColors` function, add `"turbo"` color scheme.
+
 - In `SetHinge` function, non-backward compatible change to allocating colors on each side of hinge.
   The effect of this change is only perceivable when the number of colors is small (`n < 10`).
 
 - In `PrintHelpPages` function: preserve empty lines in the Examples section of help documentation;
-  fix parsing bug on identifying code blocks.
+  fix parsing bug on identifying code blocks; tidy main header for each help topic.
 
 - In `Grid2Polygons`, add `check_validity` argument, used to check the validity of polygons.
 

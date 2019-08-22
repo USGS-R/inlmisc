@@ -5,10 +5,10 @@
 #' @param pkg 'character' string.
 #'   Package name
 #' @param file 'character' string.
-#'   A connection, or a character string naming the file to print to.
+#'   A connection, or a character string naming the file to append output to.
 #'   Prints to the standard output connection by default.
 #' @param toc 'logical' flag.
-#'   Whether to format the initial HTML header of each help page in Markdown.
+#'   Whether to format the title of each help topic as a level 1 header.
 #'   The table of contents (toc) option in R Markdown requires Markdown headers.
 #' @param hr 'logical' flag.
 #'   Whether to add a horizontal rule or line to separate help pages.
@@ -24,9 +24,18 @@
 #'
 #' @examples
 #' \dontrun{
+#' cat("---",
+#'     "title: Help Topics",
+#'     "output:",
+#'     "  html_document:",
+#'     "    toc: true",
+#'     "    toc_float: true",
+#'     "---\n\n---\n",
+#'     sep = "\n", file = "help-example.Rmd")
 #' PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
 #' rmarkdown::render("help-example.Rmd")
-#' utils::browseURL(sprintf("file://%s", file.path(getwd(), "help-example.html")))
+#' url <- file.path("file:/", getwd(), "help-example.html")
+#' utils::browseURL(url)
 #'
 #' file.remove("help-example.Rmd", "help-example.html")
 #' }
@@ -53,11 +62,12 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
     x <- .GetHelpFile(utils::help(nm[i], package=eval(pkg)))
     x <- utils::capture.output(tools::Rd2HTML(x, Links=links, Links2=links))
 
-    # edit first header
+    # edit first header for table-of-contents
     idx <- pmatch("<h2>", x)
-    txt <- sprintf("## %s (%s) {#%s}\n\n",
-                   gsub("<.*?>", "", x[idx]), nm[i], nm[i])
-    if (toc) cat(txt, file=file, append=TRUE)
+    if (toc)
+      cat(sprintf("## %s", nm[i]),
+          sprintf("*%s*\n", gsub("<.*?>", "", x[idx])),
+          file=file, sep="\n\n", append=TRUE)
 
     # remove extraneous lines at beginning and end
     x <- x[-c(seq_len(idx - !toc), length(x))]
@@ -87,6 +97,7 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
     sep <- if (hr & i < length(nm)) "<hr />" else ""
     x <- c(x, sep)
 
+    # preserve html
     txt <- htmltools::htmlPreserve(x)
     cat(txt, "\n", file=file, sep="\n", fill=TRUE, append=TRUE)
   }

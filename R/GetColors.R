@@ -18,7 +18,6 @@
 #'   Only suitable for schemes that allow for color interpolations.
 #' @param bias 'numeric' number.
 #'   Interpolation bias where larger values result in more widely spaced colors at the high end.
-#'   See \code{\link[grDevices]{colorRamp}} function for details.
 #' @param reverse 'logical' flag.
 #'   Whether to reverse the order of colors in the scheme.
 #' @param blind 'character' string.
@@ -59,6 +58,9 @@
 #'   \if{html}{\figure{table04.svg}}
 #'   \if{latex}{\figure{table04.pdf}{options: width=5.36in}}
 #'
+#'   \if{html}{\figure{table05.svg}}
+#'   \if{latex}{\figure{table05.pdf}{options: width=5.36in}}
+#'
 #'   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
 #'   intended to be accessed in their entirety and subset using vector element names.
 #'
@@ -93,6 +95,10 @@
 #'   Dewez, Thomas, 2004, Variations on a DEM palette, accessed October 15, 2018 at
 #'   \url{http://soliton.vm.bytemark.co.uk/pub/cpt-city/td/index.html}
 #'
+#'   Mikhailov, Anton, 2019, Turbo, an improved rainbow colormap for visualization:
+#'   Google AI Blog, accessed August 21, 2019 at
+#'   \url{https://ai.googleblog.com/2019/08/turbo-improved-rainbow-colormap-for.html}.
+#'
 #'   Tol, Paul, 2018, Colour Schemes:
 #'   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.1, 20 p.,
 #'   accessed September 24, 2018 at \url{https://personal.sron.nl/~pault/data/colourschemes.pdf}.
@@ -117,8 +123,9 @@
 #' print(pal)
 #' plot(pal)
 #'
-#' Pal <- GetColors(scheme = "DEM screen", alpha = 0.9)
-#' filled.contour(datasets::volcano, color.palette = Pal, plot.axes = FALSE)
+#' Pal <- GetColors(scheme = "turbo")
+#' filled.contour(datasets::volcano, color.palette = Pal,
+#'                plot.axes = FALSE)
 #'
 #' # Diverging color schemes (scheme)
 #' op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
@@ -181,7 +188,8 @@
 #' par(op)
 #'
 #' # Reverse colors (reverse)
-#' op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
+#' op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0),
+#'           cex = 0.7)
 #' plot(GetColors(10, reverse = FALSE))
 #' plot(GetColors(10, reverse = TRUE))
 #' par(op)
@@ -197,19 +205,26 @@
 #'
 #' # Gray-scale preparation (gray)
 #' op <- par(mfrow = c(8, 1), oma = c(0, 0, 0, 0))
-#' plot(GetColors(3, "bright",        gray = TRUE))
-#' plot(GetColors(3, "bright",        gray = TRUE, blind = "monochrome"))
+#' plot(GetColors(3, "bright", gray = TRUE))
+#' plot(GetColors(3, "bright", gray = TRUE,
+#'                blind = "monochrome"))
 #' plot(GetColors(5, "high-contrast", gray = TRUE))
-#' plot(GetColors(5, "high-contrast", gray = TRUE, blind = "monochrome"))
-#' plot(GetColors(4, "vibrant",       gray = TRUE))
-#' plot(GetColors(4, "vibrant",       gray = TRUE, blind = "monochrome"))
-#' plot(GetColors(5, "muted",         gray = TRUE))
-#' plot(GetColors(5, "muted",         gray = TRUE, blind = "monochrome"))
+#' plot(GetColors(5, "high-contrast", gray = TRUE,
+#'                blind = "monochrome"))
+#' plot(GetColors(4, "vibrant", gray = TRUE))
+#' plot(GetColors(4, "vibrant", gray = TRUE,
+#'                blind = "monochrome"))
+#' plot(GetColors(5, "muted", gray = TRUE))
+#' plot(GetColors(5, "muted", gray = TRUE,
+#'                blind = "monochrome"))
 #' par(op)
 #'
 
 GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
                       bias=1, reverse=FALSE, blind=NULL, gray=FALSE, ...) {
+
+  # if copy-pasting, run the following command:
+  # lazyLoad(file.path(system.file("R", package="inlmisc"), "sysdata"))
 
   if (!missing(n)) {
     checkmate::assertCount(n)
@@ -274,32 +289,31 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
   color <- s$data$color; names(color) <- s$data$name
   if (gray) color <- color[s$gray]
 
-  if (scheme == "discrete rainbow") {
-    idx <- list(c(10),
-                c(10, 26),
-                c(10, 18, 26),
-                c(10, 15, 18, 26),
-                c(10, 14, 15, 18, 26),
-                c(10, 14, 15, 17, 18, 26),
-                c( 9, 10, 14, 15, 17, 18, 26),
-                c( 9, 10, 14, 15, 17, 18, 23, 26),
-                c( 9, 10, 14, 15, 17, 18, 23, 26, 28),
-                c( 9, 10, 14, 15, 17, 18, 21, 24, 26, 28),
-                c( 9, 10, 12, 14, 15, 17, 18, 21, 24, 26, 28),
-                c( 3,  6,  9, 10, 12, 14, 15, 17, 18, 21, 24, 26),
-                c( 3,  6,  9, 10, 12, 14, 15, 16, 17, 18, 21, 24, 26),
-                c( 3,  6,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26),
-                c( 3,  6,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26, 28),
-                c( 3,  5,  7,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26, 28),
-                c( 3,  5,  7,  8,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26, 28),
-                c( 3,  5,  7,  8,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26, 27, 28),
-                c( 2,  4,  5,  7,  8,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26, 27, 28),
-                c( 2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 20, 22, 24, 26, 27, 28),
-                c( 2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28),
-                c( 2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29),
-                c( 1,  2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29))
-    pal <- color[idx[[n]]]
+  if (scheme == "turbo") {
+
+    # code adapted from turbo colormap look-up table;
+    # changes include: add 'bias' variable, convert from Python to R,
+    # and store parsed 'turbo_colormap_data' in R/sysdata.rda,
+    # copyright 2019 Google LLC, Apache-2.0 license,
+    # authored by Anton Mikhailov and accessed August 21, 2019
+    # at https://gist.github.com/mikhailov-work/ee72ba4191942acecc03fe6da94fc73f
+    x <- seq.int(stops[1], stops[2], length.out=n)^bias
+    x <- vapply(x, function(y) max(0, min(1, y)), 0)
+    a <- floor(x * 255)
+    b <- vapply(a, function(y) min(255, y + 1), 0)
+    f <- x * 255 - a
+    a <- a + 1
+    b <- b + 1
+    pal <- grDevices::rgb(turbo_colormap_data[a, 1] + (turbo_colormap_data[b, 1] - turbo_colormap_data[a, 1]) * f,
+                          turbo_colormap_data[a, 2] + (turbo_colormap_data[b, 2] - turbo_colormap_data[a, 2]) * f,
+                          turbo_colormap_data[a, 3] + (turbo_colormap_data[b, 3] - turbo_colormap_data[a, 3]) * f)
+
     if (reverse) pal <- rev(pal)
+
+  } else if (scheme == "discrete rainbow") {
+    pal <- color[discrete_rainbow_indexes[[n]]]
+    if (reverse) pal <- rev(pal)
+
   } else if (scheme == "bpy") {
 
     # code adapted from sp::bpy.colors function,
@@ -313,9 +327,11 @@ GetColors <- function(n, scheme="smooth rainbow", alpha=NULL, stops=c(0, 1),
     pal <- grDevices::rgb(r, g, b)
 
     if (reverse) pal <- rev(pal)
+
   } else if (nmax < Inf) {
     if (reverse) color <- rev(color)
     pal <- color[1:n]
+
   } else {
     value <- if (is.null(s$data$value)) seq_along(s$data$color) else s$data$value
     value <- scales::rescale(value)

@@ -11,8 +11,13 @@
 #'
 #' @examples
 #' \dontrun{
-#' rmarkdown::draft("myarticle.Rmd", template = "usgs_article", package = "inlmisc")
+#' rmarkdown::draft("myarticle.Rmd", template = "usgs_article",
+#'                  package = "inlmisc")
+#'
 #' rmarkdown::render("myarticle/myarticle.Rmd")
+#' system("open myarticle/wrapper.pdf")
+#'
+#' unlink("myarticle", recursive = TRUE)
 #' }
 #'
 

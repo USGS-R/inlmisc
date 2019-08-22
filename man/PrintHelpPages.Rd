@@ -12,11 +12,11 @@ PrintHelpPages(pkg, file = "", toc = FALSE, hr = TRUE,
 Package name}
 
 \item{file}{'character' string.
-A connection, or a character string naming the file to print to.
+A connection, or a character string naming the file to append output to.
 Prints to the standard output connection by default.}
 
 \item{toc}{'logical' flag.
-Whether to format the initial HTML header of each help page in Markdown.
+Whether to format the title of each help topic as a level 1 header.
 The table of contents (toc) option in R Markdown requires Markdown headers.}
 
 \item{hr}{'logical' flag.
@@ -31,9 +31,18 @@ Print the HTML code associated with help pages of a loaded R package.
 }
 \examples{
 \dontrun{
+cat("---",
+    "title: Help Topics",
+    "output:",
+    "  html_document:",
+    "    toc: true",
+    "    toc_float: true",
+    "---\\n\\n---\\n",
+    sep = "\\n", file = "help-example.Rmd")
 PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
 rmarkdown::render("help-example.Rmd")
-utils::browseURL(sprintf("file://\%s", file.path(getwd(), "help-example.html")))
+url <- file.path("file:/", getwd(), "help-example.html")
+utils::browseURL(url)
 
 file.remove("help-example.Rmd", "help-example.html")
 }

@@ -27,8 +27,7 @@ and used to select a subset of the color palette.
 Only suitable for schemes that allow for color interpolations.}
 
 \item{bias}{'numeric' number.
-Interpolation bias where larger values result in more widely spaced colors at the high end.
-See \code{\link[grDevices]{colorRamp}} function for details.}
+Interpolation bias where larger values result in more widely spaced colors at the high end.}
 
 \item{reverse}{'logical' flag.
 Whether to reverse the order of colors in the scheme.}
@@ -99,6 +98,9 @@ The suggested data type for color schemes and the
   \if{html}{\figure{table04.svg}}
   \if{latex}{\figure{table04.pdf}{options: width=5.36in}}
 
+  \if{html}{\figure{table05.svg}}
+  \if{latex}{\figure{table05.pdf}{options: width=5.36in}}
+
   Schemes \code{"pale"}, \code{"dark"}, and \code{"ground cover"} are
   intended to be accessed in their entirety and subset using vector element names.
 }
@@ -111,8 +113,9 @@ pal <- GetColors(n = 10)
 print(pal)
 plot(pal)
 
-Pal <- GetColors(scheme = "DEM screen", alpha = 0.9)
-filled.contour(datasets::volcano, color.palette = Pal, plot.axes = FALSE)
+Pal <- GetColors(scheme = "turbo")
+filled.contour(datasets::volcano, color.palette = Pal,
+               plot.axes = FALSE)
 
 # Diverging color schemes (scheme)
 op <- par(mfrow = c(6, 1), oma = c(0, 0, 0, 0))
@@ -175,7 +178,8 @@ plot(GetColors(255, bias = 1.6))
 par(op)
 
 # Reverse colors (reverse)
-op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), cex = 0.7)
+op <- par(mfrow = c(2, 1), oma = c(0, 0, 0, 0),
+          cex = 0.7)
 plot(GetColors(10, reverse = FALSE))
 plot(GetColors(10, reverse = TRUE))
 par(op)
@@ -191,20 +195,28 @@ par(op)
 
 # Gray-scale preparation (gray)
 op <- par(mfrow = c(8, 1), oma = c(0, 0, 0, 0))
-plot(GetColors(3, "bright",        gray = TRUE))
-plot(GetColors(3, "bright",        gray = TRUE, blind = "monochrome"))
+plot(GetColors(3, "bright", gray = TRUE))
+plot(GetColors(3, "bright", gray = TRUE,
+               blind = "monochrome"))
 plot(GetColors(5, "high-contrast", gray = TRUE))
-plot(GetColors(5, "high-contrast", gray = TRUE, blind = "monochrome"))
-plot(GetColors(4, "vibrant",       gray = TRUE))
-plot(GetColors(4, "vibrant",       gray = TRUE, blind = "monochrome"))
-plot(GetColors(5, "muted",         gray = TRUE))
-plot(GetColors(5, "muted",         gray = TRUE, blind = "monochrome"))
+plot(GetColors(5, "high-contrast", gray = TRUE,
+               blind = "monochrome"))
+plot(GetColors(4, "vibrant", gray = TRUE))
+plot(GetColors(4, "vibrant", gray = TRUE,
+               blind = "monochrome"))
+plot(GetColors(5, "muted", gray = TRUE))
+plot(GetColors(5, "muted", gray = TRUE,
+               blind = "monochrome"))
 par(op)
 
 }
 \references{
 Dewez, Thomas, 2004, Variations on a DEM palette, accessed October 15, 2018 at
   \url{http://soliton.vm.bytemark.co.uk/pub/cpt-city/td/index.html}
+
+  Mikhailov, Anton, 2019, Turbo, an improved rainbow colormap for visualization:
+  Google AI Blog, accessed August 21, 2019 at
+  \url{https://ai.googleblog.com/2019/08/turbo-improved-rainbow-colormap-for.html}.
 
   Tol, Paul, 2018, Colour Schemes:
   SRON Technical Note, doc. no. SRON/EPS/TN/09-002, issue 3.1, 20 p.,
