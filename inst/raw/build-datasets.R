@@ -496,45 +496,6 @@ schemes[["iridescent"]] <- list(
   nan  = "#999999"
 )
 
-schemes[["discrete rainbow"]] <- list(
-  data = read.csv(strip.white=TRUE, text="
-                  name, color
-                     1, #E8ECFB
-                     2, #D9CCE3
-                     3, #D1BBD7
-                     4, #CAACCB
-                     5, #BA8DB4
-                     6, #AE76A3
-                     7, #AA6F9E
-                     8, #994F88
-                     9, #882E72
-                    10, #1965B0
-                    11, #437DBF
-                    12, #5289C7
-                    13, #6195CF
-                    14, #7BAFDE
-                    15, #4EB265
-                    16, #90C987
-                    17, #CAE0AB
-                    18, #F7F056
-                    19, #F7CB45
-                    20, #F6C141
-                    21, #F4A736
-                    22, #F1932D
-                    23, #EE8026
-                    24, #E8601C
-                    25, #E65518
-                    26, #DC050C
-                    27, #A5170E
-                    28, #72190E
-                    29, #42150A
-                  "),
-  type = "Sequential",
-  cite = "Paul Tol (2018)",
-  nmax = 23,
-  nan  = "#777777"
-)
-
 schemes[["smooth rainbow"]] <- list(
   data = read.csv(strip.white=TRUE, text="
                   color
@@ -577,6 +538,71 @@ schemes[["smooth rainbow"]] <- list(
   cite = "Paul Tol (2018)",
   nmax = Inf,
   nan  = "#666666"
+)
+
+schemes[["discrete rainbow"]] <- list(
+  data = read.csv(strip.white=TRUE, text="
+                  name, color
+                     1, #E8ECFB
+                     2, #D9CCE3
+                     3, #D1BBD7
+                     4, #CAACCB
+                     5, #BA8DB4
+                     6, #AE76A3
+                     7, #AA6F9E
+                     8, #994F88
+                     9, #882E72
+                    10, #1965B0
+                    11, #437DBF
+                    12, #5289C7
+                    13, #6195CF
+                    14, #7BAFDE
+                    15, #4EB265
+                    16, #90C987
+                    17, #CAE0AB
+                    18, #F7F056
+                    19, #F7CB45
+                    20, #F6C141
+                    21, #F4A736
+                    22, #F1932D
+                    23, #EE8026
+                    24, #E8601C
+                    25, #E65518
+                    26, #DC050C
+                    27, #A5170E
+                    28, #72190E
+                    29, #42150A
+                  "),
+  type = "Sequential",
+  cite = "Paul Tol (2018)",
+  nmax = 23,
+  nan  = "#777777"
+)
+
+discrete_rainbow_indexes <- list(
+  c(10),
+  c(10, 26),
+  c(10, 18, 26),
+  c(10, 15, 18, 26),
+  c(10, 14, 15, 18, 26),
+  c(10, 14, 15, 17, 18, 26),
+  c( 9, 10, 14, 15, 17, 18, 26),
+  c( 9, 10, 14, 15, 17, 18, 23, 26),
+  c( 9, 10, 14, 15, 17, 18, 23, 26, 28),
+  c( 9, 10, 14, 15, 17, 18, 21, 24, 26, 28),
+  c( 9, 10, 12, 14, 15, 17, 18, 21, 24, 26, 28),
+  c( 3,  6,  9, 10, 12, 14, 15, 17, 18, 21, 24, 26),
+  c( 3,  6,  9, 10, 12, 14, 15, 16, 17, 18, 21, 24, 26),
+  c( 3,  6,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26),
+  c( 3,  6,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26, 28),
+  c( 3,  5,  7,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26, 28),
+  c( 3,  5,  7,  8,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26, 28),
+  c( 3,  5,  7,  8,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26, 27, 28),
+  c( 2,  4,  5,  7,  8,  9, 10, 12, 14, 15, 16, 17, 18, 20, 22, 24, 26, 27, 28),
+  c( 2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 20, 22, 24, 26, 27, 28),
+  c( 2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28),
+  c( 2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29),
+  c( 1,  2,  4,  5,  7,  8,  9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 21, 23, 25, 26, 27, 28, 29)
 )
 
 # Unknown author on gnuplot-info
@@ -855,8 +881,9 @@ turbo_colormap_data <- rbind(c(0.18995, 0.07176, 0.23217),
                              c(0.50664, 0.02354, 0.00863),
                              c(0.49321, 0.01963, 0.00955),
                              c(0.47960, 0.01583, 0.01055))
+colnames(turbo_colormap_data) <- c("red", "green", "blue")
 
 schemes <- schemes[order(vapply(schemes, function(x) x$type, ""), names(schemes))]
 invisible(lapply(schemes, .CheckScheme))
-save(schemes, turbo_colormap_data, file="sysdata.rda")
+save(schemes, discrete_rainbow_indexes, turbo_colormap_data, file="sysdata.rda")
 tools::resaveRdaFiles(getwd(), compress="auto")
