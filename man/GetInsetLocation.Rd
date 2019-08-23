@@ -27,7 +27,7 @@ Padding distance from the margins in user coordinate units.}
 Padding distance from the margins in inches.}
 }
 \value{
-Returns a 'numeric' vector of length 2 giving the user coordinates
+A 'numeric' vector of length 2 giving the user coordinates
   for the bottom-left corner of the inset.
 }
 \description{

@@ -47,7 +47,7 @@ If true (default), check the validity of polygons.
 If any of the polygons are invalid, try making them valid by zero-width buffering.}
 }
 \value{
-Returns an object of class 'SpatialPolygonsDataFrame'.
+An object of class 'SpatialPolygonsDataFrame'.
   The objects \code{data} slot is a data frame, number of rows equal to
   the number of \code{Polygons} objects and a single column containing attribute values.
   If \code{level} is true, attribute values are set equal to the midpoint between breakpoints.

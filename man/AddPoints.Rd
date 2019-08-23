@@ -122,7 +122,7 @@ If true, circle symbols (and an optional legend) are added to an existing plot.}
 Unused if \code{add = TRUE}.}
 }
 \value{
-Used for the side-effect of a bubble map drawn on the current graphics device.
+Invisible \code{NULL}
 }
 \description{
 Add point symbols to a plot.

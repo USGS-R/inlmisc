@@ -40,7 +40,7 @@ Dimensions (width and height) of the color strip, in picas.}
 to position the legend in the main plot region.}
 }
 \value{
-Used for the side-effect of a legend drawn on the current graphics device.
+Invisible \code{NULL}
 }
 \description{
 Add a continuous color gradient legend strip to a plot.

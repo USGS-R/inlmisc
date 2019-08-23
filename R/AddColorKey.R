@@ -33,7 +33,7 @@
 #'   Margin size in inches and of the form \code{c(bottom, left, top, right)}.
 #' @inheritParams ToScientific
 #'
-#' @return Used for the side-effect of a color key drawn on the current graphics device.
+#' @return Invisible \code{NULL}
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

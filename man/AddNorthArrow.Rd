@@ -27,7 +27,7 @@ Arrow offset-rotation in degrees, where positive values are taken to be clockwis
 to position the north arrow in the main plot region.}
 }
 \value{
-Used for the side-effect of a north arrow drawn on the current graphics device.
+Invisible \code{NULL}
 }
 \description{
 Add a north arrow aligned to true north to a plot.

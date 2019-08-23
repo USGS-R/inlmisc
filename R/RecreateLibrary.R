@@ -379,7 +379,7 @@ SavePackageDetails <- function(file="R-packages.tsv", lib=.libPaths(), pkg=NULL)
 #' @param lib 'character' vector.
 #'   Library trees
 #'
-#' @return Returns a 'logical' vector of the same length as argument \code{x}.
+#' @return A 'logical' vector of the same length as argument \code{x}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

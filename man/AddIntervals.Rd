@@ -30,7 +30,7 @@ Overrides graphical parameters used for left- and right-censored data.
 Passed arguments include \code{col}, \code{lty}, and \code{lwd}.}
 }
 \value{
-Used for the side-effect of interval symbols drawn on the current graphics device.
+Invisible \code{NULL}
 }
 \description{
 Add interval symbols (also known as error bars) to plots.

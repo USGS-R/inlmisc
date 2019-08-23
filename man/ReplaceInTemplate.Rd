@@ -14,7 +14,7 @@ Template text}
 Values to replace in \code{text}.}
 }
 \value{
-Returns a 'character' vector of strings after key replacement.
+A 'character' vector of strings after key replacement.
 }
 \description{
 Replace keys within special markups in a template text with specified values.

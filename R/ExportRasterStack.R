@@ -26,7 +26,7 @@
 #'   Therefore, the conversion of gridded data between cartographic projections
 #'   may introduce a new source of error.
 #'
-#' @return Used for the side-effect files written to disk.
+#' @return Invisible \code{NULL}
 #'
 #' @note If the zip program is unavailable on windows, install it
 #'   by downloading the latest binary version from the

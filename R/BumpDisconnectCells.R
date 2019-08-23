@@ -21,7 +21,7 @@
 #'   (2) For cells violating the minimum vertical overlap, lower raster layer (\code{rs[[2]]}) values are
 #'       decreased by the value specified in the \code{bump.by} argument.
 #'
-#' @return Returns an object of class 'RasterLayer' that can be added to
+#' @return An object of class 'RasterLayer' that can be added to
 #'   \code{rs[[2]]} to ensure connectivity between model layer cells.
 #'   Cell values in the returned raster grid represent vertical adjustments.
 #'

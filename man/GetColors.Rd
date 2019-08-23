@@ -105,7 +105,7 @@ The suggested data type for color schemes and the
   intended to be accessed in their entirety and subset using vector element names.
 }
 \note{
-The sequential color schemes \code{"YlOrBr"} and \code{"iridescent"}
+Sequential color schemes \code{"YlOrBr"} and \code{"iridescent"}
   work well for conversion to gray scale.
 }
 \examples{

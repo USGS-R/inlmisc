@@ -14,7 +14,7 @@ Calendar date and time}
 Conversion specification format}
 }
 \value{
-Returns a 'character' vector representing time.
+A 'character' vector representing time.
 }
 \description{
 Convert objects from '\link{POSIXct}' class to '\link{character}' class.

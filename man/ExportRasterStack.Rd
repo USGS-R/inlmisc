@@ -22,7 +22,7 @@ you can supply the full path to a \file{zip.exe} here, in order to make a KMZ fi
 Color names}
 }
 \value{
-Used for the side-effect files written to disk.
+Invisible \code{NULL}
 }
 \description{
 Write a raster-stack, a collection of raster layers,

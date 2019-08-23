@@ -87,22 +87,24 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
   for (i in seq_along(rd)) {
 
     # convert Rd to html
-    x <- utils::capture.output(tools::Rd2HTML(rd[[i]], Links=links, Links2=links))
+    x <- utils::capture.output(tools::Rd2HTML(rd[[i]],
+                                              Links=links,
+                                              Links2=links))
 
-    # print horizontal seperator
+    # print horizontal seperator in markdown format
     if (hr) cat("---\n\n", file=file, append=TRUE)
 
-    # edit and print first header for table-of-contents
+    # edit and print first header for table of contents in markdown format
     idx <- pmatch("<h2>", x)
     if (toc)
       cat(sprintf("## %s", meta$name[i]),
           sprintf("*%s*\n", gsub("<.*?>", "", x[idx])),
           file=file, sep="\n\n", append=TRUE)
 
-    # remove extraneous lines at beginning and end
+    # remove extraneous lines at the beginning and end of help page
     x <- x[-c(seq_len(idx - !toc), length(x))]
 
-    # edit code chunk tags
+    # edit code chunk tags for syntax highlighting
     xtrim <- trimws(x)
     x[xtrim == "</pre>"] <- "</code></pre>"
     idx <- which(xtrim == "<pre>")
@@ -110,7 +112,7 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
                            x[idx + 1L])
     x[idx] <- ""
 
-    # remove empty lines everywhere but the examples section
+    # remove empty lines everywhere but in the examples section
     is <- nzchar(x)
     if (!all(is)) {
       from <- grep("^<h3>Examples</h3>", x)
@@ -137,12 +139,12 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
     # preserve html
     txt <- htmltools::htmlPreserve(c("\n", x, "\n"))
 
-    # print help topic
+    # print help topic in html format
     cat(txt, "\n", file=file, fill=TRUE, append=TRUE)
   }
 
-  # print horizontal seperator
-  if (hr) cat("<hr />", "\n", file=file, append=TRUE)
+  # print horizontal seperator in markdown format
+  if (hr) cat("---", "\n", file=file, append=TRUE)
 
   invisible()
 }

@@ -42,7 +42,7 @@
 #' @param title 'character' string.
 #'   Legend title
 #'
-#' @return Returns an object of class 'leaflet'.
+#' @return An object of class 'leaflet'.
 #'   A new \code{map} object with added element.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

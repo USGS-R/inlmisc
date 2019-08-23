@@ -1,6 +1,7 @@
 #' Build Package Vignettes
 #'
 #' Build package vignettes from their source files.
+#' Writes the PDF and (or) HTML documents of the package vignettes, and their executable code files.
 #'
 #' @param dir 'character' string.
 #'   Path to a package's root source directory, by default the \link[=getwd]{working directory}.
@@ -16,8 +17,7 @@
 #' @param quiet 'logical' flag.
 #'   Whether to suppress most output.
 #'
-#' @return Used for the side-effect of creating the PDF and (or) HTML documents
-#'   of the package vignettes, and their executable code files.
+#' @return Invisible \code{NULL}
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -55,5 +55,5 @@ BuildVignettes <- function(dir=getwd(), doc=file.path(dir, "inst/doc"),
     tools::compactPDF(paths=doc, gs_cmd=gs_cmd, gs_quality=gs_quality)
   }
 
-  invisible(TRUE)
+  invisible()
 }

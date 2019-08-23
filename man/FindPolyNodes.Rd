@@ -11,7 +11,7 @@ FindPolyNodes(s)
 A 2-column table giving start- and end-node indexes for each segment in a level.}
 }
 \value{
-Returns an object of class 'list'.
+An object of class 'list'.
   Vector components giving node indexes for each polygon ring.
   The status of the polygon as a hole or an island is taken from the ring direction,
   with clockwise meaning island, and counter-clockwise meaning hole.

@@ -62,7 +62,7 @@
 #'   represented with a binary codification, linear-rank selection,
 #'   uniform crossover, and uniform mutation.
 #'
-#' @return Returns a 'list' with components:
+#' @return A 'list' with components:
 #'   \describe{
 #'     \item{\code{call}}{original call which can be used for later re-use.}
 #'     \item{\code{solution}}{a 'matrix' representation of the best solution found.

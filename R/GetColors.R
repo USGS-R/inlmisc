@@ -86,7 +86,7 @@
 #'   shows a palette of colors using a sequence of shaded rectangles,
 #'   see \sQuote{Examples} section for usage.
 #'
-#' @note The sequential color schemes \code{"YlOrBr"} and \code{"iridescent"}
+#' @note Sequential color schemes \code{"YlOrBr"} and \code{"iridescent"}
 #'   work well for conversion to gray scale.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
@@ -479,7 +479,7 @@ plot.inlpal <- function(x, ..., label=TRUE) {
 #' @param null.ok 'logical' flag.
 #'   If set to \code{TRUE}, \code{x} may also be \code{NULL}.
 #'
-#' @return Returns a 'logical' vector of the same length as argument \code{x}.
+#' @return A 'logical' vector of the same length as argument \code{x}.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

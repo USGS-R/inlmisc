@@ -32,7 +32,7 @@
 #'    If true (default), check the validity of polygons.
 #'    If any of the polygons are invalid, try making them valid by zero-width buffering.
 #'
-#' @return Returns an object of class 'SpatialPolygonsDataFrame'.
+#' @return An object of class 'SpatialPolygonsDataFrame'.
 #'   The objects \code{data} slot is a data frame, number of rows equal to
 #'   the number of \code{Polygons} objects and a single column containing attribute values.
 #'   If \code{level} is true, attribute values are set equal to the midpoint between breakpoints.
@@ -266,7 +266,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
 #' @param s 'matrix'.
 #'    A 2-column table giving start- and end-node indexes for each segment in a level.
 #'
-#' @return Returns an object of class 'list'.
+#' @return An object of class 'list'.
 #'   Vector components giving node indexes for each polygon ring.
 #'   The status of the polygon as a hole or an island is taken from the ring direction,
 #'   with clockwise meaning island, and counter-clockwise meaning hole.

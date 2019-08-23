@@ -72,7 +72,7 @@ Symbol type in the legend, either \code{"square"} or \code{"circle"}.}
 Legend title}
 }
 \value{
-Returns an object of class 'leaflet'.
+An object of class 'leaflet'.
   A new \code{map} object with added element.
 }
 \description{

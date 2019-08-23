@@ -14,7 +14,7 @@ Transect line or its vertices.}
 Raster layer(s)}
 }
 \value{
-Returns a 'list' with components of class 'SpatialPointsDataFrame'.
+A 'list' with components of class 'SpatialPointsDataFrame'.
   These components represent continuous piecewise line segments along the transect.
   The following variables are specified for each coordinate point in the line segment:
   \describe{

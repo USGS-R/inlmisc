@@ -18,7 +18,7 @@ The \code{\link{rasterize}} function is used to locate outlet cells in the raste
 Minimum drop in stage between adjacent river cells.}
 }
 \value{
-Returns an object of class 'RasterLayer' with cell values representing the vertical change in stream stage.
+An object of class 'RasterLayer' with cell values representing the vertical change in stream stage.
   These changes can be added to \code{r} to ensure that water always flows downhill.
 }
 \description{

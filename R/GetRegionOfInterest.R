@@ -19,7 +19,7 @@
 #' @param ...
 #'   Additional arguments to be passed to the \code{\link{gBuffer}} function.
 #'
-#' @return Returns an object of class 'SpatialPolygons'.
+#' @return An object of class 'SpatialPolygons'.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

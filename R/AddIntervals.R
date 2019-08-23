@@ -25,7 +25,7 @@
 #'     \code{(y0[i], y1[i])} for interval-censored.
 #'   Where infinity may be represented with either \code{Inf} or \code{NA}.
 #'
-#' @return Used for the side-effect of interval symbols drawn on the current graphics device.
+#' @return Invisible \code{NULL}
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

@@ -14,7 +14,7 @@ Package names}
 Library trees}
 }
 \value{
-Returns a 'logical' vector of the same length as argument \code{x}.
+A 'logical' vector of the same length as argument \code{x}.
 }
 \description{
 Check whether a package(s) is installed under the library tree(s).

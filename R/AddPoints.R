@@ -84,7 +84,7 @@
 #'   Graphics parameters to be passed to \code{\link{PlotMap}}.
 #'   Unused if \code{add = TRUE}.
 #'
-#' @return Used for the side-effect of a bubble map drawn on the current graphics device.
+#' @return Invisible \code{NULL}
 #'
 #' @note To avoid overplotting, circle symbols are drawn in order of decreasing radius.
 #'

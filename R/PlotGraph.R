@@ -86,7 +86,7 @@
 #'     \code{(y0, y1)} for an interval censored value.
 #'   Where infinity is represented as \code{Inf} or \code{NA}, and \code{y} is a numeric value.
 #'
-#' @return Used for the side-effect of a new plot generated.
+#' @return Invisible \code{NULL}
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

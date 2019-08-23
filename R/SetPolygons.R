@@ -19,7 +19,7 @@
 #' @details This function tests if the resulting geometry is valid.
 #' If invalid, an attempt is made to make the geometry valid by zero-width buffering.
 #'
-#' @return Returns an object of class 'SpatialPolygons*'.
+#' @return An object of class 'SpatialPolygons*'.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
