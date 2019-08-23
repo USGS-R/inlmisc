@@ -49,25 +49,53 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
 
   stopifnot(require(pkg, character.only=TRUE))
 
+  # identify links
   if (!is.null(links)) {
     nm <- do.call("c", lapply(links, function(x) ls(paste0("package:", x))))
     links <- paste0("#", nm)
     names(links) <- nm
   }
 
+  # parse contents of Rd files
   nm <- ls(paste0("package:", pkg))
-  for (i in seq_along(nm)) {
-    x <- .GetHelpFile(utils::help(nm[i], package=eval(pkg)))
-    if (grepl("\\keyword\\{internal\\}", paste(as.character(x), collapse=""))) next
-    x <- utils::capture.output(tools::Rd2HTML(x, Links=links, Links2=links))
+  rd <- lapply(nm, function(x) {
+    .GetHelpFile(utils::help(x, package=eval(pkg)))
+  })
+  names(rd) <- nm
+
+  # organize Rd meta-data
+  meta <- vapply(rd, function(x) {
+    txt <- as.character(x)
+    name <- txt[which(txt == "\\name") + 2L]
+    idx <- which(txt == "\\keyword")
+    keyword <- if (length(idx)) txt[idx + 2L] else as.character(NA)
+    c("name"=name, "keyword"=keyword)
+  }, c("", ""))
+  meta <- as.data.frame(t(meta), stringsAsFactors=FALSE)
+  meta <- meta[!(meta$keyword %in% "internal"), , drop=FALSE]
+  meta$alias <- lapply(meta$name, function(x) {
+    I(rownames(meta)[meta$name %in% x])
+  })
+  meta <- meta[!duplicated(meta$name), ]
+  rownames(meta) <- NULL
+
+  # subset list of Rd objects
+  rd <- rd[vapply(meta$alias, function(x) match(x[1], names(rd)), 0)]
+  names(rd) <- meta$name
+
+  # loop through each of the help items
+  for (i in seq_along(rd)) {
+
+    # convert Rd to html
+    x <- utils::capture.output(tools::Rd2HTML(rd[[i]], Links=links, Links2=links))
 
     # print horizontal seperator
-    if (hr) cat("<hr />", "\n", file=file, append=TRUE)
+    if (hr) cat("---\n\n", file=file, append=TRUE)
 
     # edit and print first header for table-of-contents
     idx <- pmatch("<h2>", x)
     if (toc)
-      cat(sprintf("## %s", nm[i]),
+      cat(sprintf("## %s", meta$name[i]),
           sprintf("*%s*\n", gsub("<.*?>", "", x[idx])),
           file=file, sep="\n\n", append=TRUE)
 
