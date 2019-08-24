@@ -8,36 +8,35 @@ PrintHelpPages(pkg, file = "", toc = FALSE, hr = TRUE,
   links = NULL)
 }
 \arguments{
-\item{pkg}{'character' string.
-Package names}
+\item{pkg}{'character' vector.
+Package name(s)}
 
-\item{file}{'character' string.
-A connection, or a character string naming the file to append output to.
+\item{file}{'connection' or 'character' string.
+Names the file to append output to.
 Prints to the standard output connection by default.}
 
 \item{toc}{'logical' flag.
-Whether to format the title of each help topic as a level-1 header.
-The table of contents (toc) option in R Markdown requires Markdown headers.}
+Whether to format level-2 headers (help-topic titles) using a Markdown syntax,
+a requirement when specifying the table-of-contents (toc) format option in R Markdown,
+see \code{\link[rmarkdown]{render}} function for details.}
 
 \item{hr}{'logical' flag.
-Whether to add a horizontal rule or line to separate help pages.}
+Whether to add horizontal lines separating help topics.}
 
 \item{links}{'character' vector (experimental).
-Package names of packages searched when creating internal hyperlinks to help topics.}
+Names of packages searched when creating internal hyperlinks to help topics.}
 }
 \description{
-Print the HTML code associated with help pages of an add-on packages.
+Print the HTML code associated with help pages of one or more add-on packages.
 }
 \examples{
 \dontrun{
 cat("---",
-    "title: Help Topics",
     "output:",
     "  html_document:",
     "    toc: true",
     "    toc_float: true",
     "---",
-    "",
     sep = "\\n", file = "help-example.Rmd")
 PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
 rmarkdown::render("help-example.Rmd")

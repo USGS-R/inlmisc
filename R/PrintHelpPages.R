@@ -1,19 +1,20 @@
 #' Print Package Help Pages in HTML Format
 #'
-#' Print the HTML code associated with help pages of an add-on packages.
+#' Print the HTML code associated with help pages of one or more add-on packages.
 #'
-#' @param pkg 'character' string.
-#'   Package names
-#' @param file 'character' string.
-#'   A connection, or a character string naming the file to append output to.
+#' @param pkg 'character' vector.
+#'   Package name(s)
+#' @param file 'connection' or 'character' string.
+#'   Names the file to append output to.
 #'   Prints to the standard output connection by default.
 #' @param toc 'logical' flag.
-#'   Whether to format the title of each help topic as a level-1 header.
-#'   The table of contents (toc) option in R Markdown requires Markdown headers.
+#'   Whether to format level-2 headers (help-topic titles) using a Markdown syntax,
+#'   a requirement when specifying the table-of-contents (toc) format option in R Markdown,
+#'   see \code{\link[rmarkdown]{render}} function for details.
 #' @param hr 'logical' flag.
-#'   Whether to add a horizontal rule or line to separate help pages.
+#'   Whether to add horizontal lines separating help topics.
 #' @param links 'character' vector (experimental).
-#'   Package names of packages searched when creating internal hyperlinks to help topics.
+#'   Names of packages searched when creating internal hyperlinks to help topics.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -24,13 +25,11 @@
 #' @examples
 #' \dontrun{
 #' cat("---",
-#'     "title: Help Topics",
 #'     "output:",
 #'     "  html_document:",
 #'     "    toc: true",
 #'     "    toc_float: true",
 #'     "---",
-#'     "",
 #'     sep = "\n", file = "help-example.Rmd")
 #' PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
 #' rmarkdown::render("help-example.Rmd")
@@ -75,6 +74,9 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
     names(links) <- d$name
   }
 
+  # print horizontal seperator in markdown format
+  if (hr) cat("\n---\n\n", file=file, append=TRUE)
+
   # loop through each of the help items
   for (i in seq_along(rd)) {
 
@@ -84,16 +86,14 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
                                                 Links=links,
                                                 Links2=links))
 
-    # print horizontal seperator in markdown format
-    if (hr) cat("---\n\n", file=file, append=TRUE)
-
-    # edit and print first header for table-of-contents in markdown format,
-    # and remove extraneous lines at the beginning and end of help page
+    # convert level-2 header from html to markdown
     idx <- pmatch("<h2>", htm)
     if (toc)
       cat(sprintf("## %s", names(rd)[i]),
           sprintf("*%s*\n", gsub("<.*?>", "", htm[idx])),
           file=file, sep="\n\n", append=TRUE)
+
+    # remove extraneous lines at the beginning and end of help page
     htm <- htm[-c(seq_len(idx - !toc), length(htm))]
 
     # edit code chunk tags for syntax highlighting
@@ -131,15 +131,15 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
                          uri, basename(src))
     }
 
+    # add horizontal seperator
+    if (hr) htm <- c(htm, "\n<hr>\n")
+
     # preserve html
-    htm <- htmltools::htmlPreserve(c("\n", htm, "\n"))
+    htm <- htmltools::htmlPreserve(c("", htm))
 
     # print help topic in html format
     cat(htm, "\n", file=file, fill=TRUE, append=TRUE)
   }
-
-  # print horizontal seperator in markdown format
-  if (hr) cat("---", "\n", file=file, append=TRUE)
 
   invisible()
 }
