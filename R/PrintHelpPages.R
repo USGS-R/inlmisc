@@ -64,8 +64,9 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
 
   # remove hidden help topics
   is <- !(info$keyword %in% "internal")
+  info <- info[is, , drop=FALSE]
   rd <- rd[is]
-  names(rd) <- info$name[is]
+  names(rd) <- info$name
 
   # identify links
   if (!is.null(links)) {
@@ -123,7 +124,7 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
       src <- as.character(vapply(htm[is], function(x) {
         strsplit(x, "\"")[[1]][2]
       }, ""))
-      src <- sub("..", system.file(package=pkg), src)
+      src <- sub("..", system.file(package=info$package[i]), src)
       for (f in src) checkmate::assertFileExists(f, access="r")
       uri <- vapply(src, function(f) knitr::image_uri(f), "")
       htm[is] <- sprintf("<p><img src=\"%s\" alt=\"%s\" />",
