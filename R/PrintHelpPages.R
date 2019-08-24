@@ -7,6 +7,8 @@
 #' @param file 'connection' or 'character' string.
 #'   Names the file to append output to.
 #'   Prints to the standard output connection by default.
+#' @param internal 'logical' flag.
+#'   Whether to print help topics flagged with the keyword \code{internal}.
 #' @param toc 'logical' flag.
 #'   Whether to format level-2 headers (help-topic titles) using a Markdown syntax,
 #'   a requirement when specifying the table-of-contents (toc) format option in R Markdown,
@@ -15,6 +17,8 @@
 #'   Whether to add horizontal lines separating help topics.
 #' @param links 'character' vector (experimental).
 #'   Names of packages searched when creating internal hyperlinks to help topics.
+#'
+#' @return Invisible \code{NULL}
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -40,9 +44,11 @@
 #' }
 #'
 
-PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
+PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE, hr=TRUE,
+                           links=NULL) {
 
   checkmate::assertCharacter(pkg, unique=TRUE)
+  checkmate::assertFlag(internal)
   checkmate::assertFlag(toc)
   checkmate::assertFlag(hr)
   checkmate::assertCharacter(links, unique=TRUE, null.ok=TRUE)
@@ -62,10 +68,12 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
   }, "")
 
   # remove hidden help topics
-  is <- !(info$keyword %in% "internal")
-  info <- info[is, , drop=FALSE]
-  rd <- rd[is]
-  names(rd) <- info$name
+  if (!internal) {
+    is <- !(info$keyword %in% "internal")
+    info <- info[is, , drop=FALSE]
+    rd <- rd[is]
+    names(rd) <- info$name
+  }
 
   # identify links
   if (!is.null(links)) {

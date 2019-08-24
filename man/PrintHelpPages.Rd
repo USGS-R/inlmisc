@@ -4,8 +4,8 @@
 \alias{PrintHelpPages}
 \title{Print Package Help Pages in HTML Format}
 \usage{
-PrintHelpPages(pkg, file = "", toc = FALSE, hr = TRUE,
-  links = NULL)
+PrintHelpPages(pkg, file = "", internal = FALSE, toc = FALSE,
+  hr = TRUE, links = NULL)
 }
 \arguments{
 \item{pkg}{'character' vector.
@@ -14,6 +14,9 @@ Package name(s)}
 \item{file}{'connection' or 'character' string.
 Names the file to append output to.
 Prints to the standard output connection by default.}
+
+\item{internal}{'logical' flag.
+Whether to print help topics flagged with the keyword \code{internal}.}
 
 \item{toc}{'logical' flag.
 Whether to format level-2 headers (help-topic titles) using a Markdown syntax,
@@ -25,6 +28,9 @@ Whether to add horizontal lines separating help topics.}
 
 \item{links}{'character' vector (experimental).
 Names of packages searched when creating internal hyperlinks to help topics.}
+}
+\value{
+Invisible \code{NULL}
 }
 \description{
 Print the HTML code associated with help pages of one or more add-on packages.
