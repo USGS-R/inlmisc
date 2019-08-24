@@ -20,7 +20,7 @@
 #'   Data in the MODFLOW cell-by-cell budget file must be saved using the
 #'   \emph{\bold{"COMPACT BUDGET"}} output option.
 #'
-#' @return Returns a 'data.table' with the following variables:
+#' @return A 'data.table' with the following variables:
 #'   \describe{
 #'     \item{desc}{description of data type, such as "wells".}
 #'     \item{kper}{stress period}

@@ -33,7 +33,7 @@
 #' @param allow_bias 'logical' flag.
 #'   Whether to allow bias in the color spacing.
 #'
-#' @return Returns a 'function' that takes an 'integer' argument
+#' @return A 'function' that takes an 'integer' argument
 #'   (the required number of colors) and returns a 'character' vector of colors.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

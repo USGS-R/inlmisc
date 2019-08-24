@@ -43,7 +43,7 @@ and used to select a subset of the color palette(s).}
 Whether to allow bias in the color spacing.}
 }
 \value{
-Returns a 'function' that takes an 'integer' argument
+A 'function' that takes an 'integer' argument
   (the required number of colors) and returns a 'character' vector of colors.
 }
 \description{

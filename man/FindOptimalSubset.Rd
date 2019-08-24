@@ -74,7 +74,7 @@ Random number generator state for random number generation, used to replicate th
 The \pkg{doRNG} package must be installed if using parallel computing.}
 }
 \value{
-Returns a 'list' with components:
+A 'list' with components:
   \describe{
     \item{\code{call}}{original call which can be used for later re-use.}
     \item{\code{solution}}{a 'matrix' representation of the best solution found.

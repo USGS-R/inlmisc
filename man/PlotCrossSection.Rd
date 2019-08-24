@@ -128,8 +128,7 @@ included with the function's returned values, see "Value" section for details;
 these device dimensions can be useful when creating similar map layouts in dynamic reports.}
 }
 \value{
-Used for the side-effect of a new plot generated.
-  Returns a 'list' with the following graphical parameters:
+A 'list' with the following graphical parameters:
   \describe{
     \item{din}{device dimensions \code{(width, height)}, in inches.}
     \item{usr}{extremes of the coordinates of the plotting region \code{(x1, x2, y1, y2)}.}

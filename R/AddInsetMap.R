@@ -26,7 +26,7 @@
 #'   Type of box to be drawn about the inset map.
 #'   A value of \code{"o"} (the default) results in a box and a value of \code{"n"} supresses the box.
 #'
-#' @return Used for the side-effect of a inset map drawn on the current graphics device.
+#' @return Invisible \code{NULL}
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'

@@ -17,7 +17,7 @@
 #' @param padin 'numeric' vector of length 1 or 2, value is recycled as necessary.
 #'   Padding distance from the margins in inches.
 #'
-#' @return Returns a 'numeric' vector of length 2 giving the user coordinates
+#' @return A 'numeric' vector of length 2 giving the user coordinates
 #'   for the bottom-left corner of the inset.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

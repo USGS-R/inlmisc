@@ -26,10 +26,10 @@ Whether values should be encoded in scientific format using LaTeX notation.
 A missing value lets \R decide whether fixed or scientific notation is used.}
 }
 \value{
-Returns a 'character' vector of formatted \emph{p}-values.
+A 'character' vector of formatted \emph{p}-values.
 }
 \description{
-Format \emph{p}-values
+Format \emph{p}-values for pretty printing.
 }
 \examples{
 x <- c(stats::runif(5), pi^-100, NA)

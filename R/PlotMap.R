@@ -122,8 +122,7 @@
 #'   and \code{simplify} is the numerical tolerance value to be used by the algorithm.
 #'   See \code{\link[rgeos:topo-unary-gSimplify]{gSimplify}} function for additional information.
 #'
-#' @return Used for the side-effect of a new plot generated.
-#'   Returns a 'list' with the following graphical parameters:
+#' @return A 'list' with the following graphical parameters:
 #'   \describe{
 #'     \item{din}{device dimensions \code{c(width, height)}, in inches.}
 #'     \item{usr}{extremes of the coordinates of the plotting region \code{c(x1, x2, y1, y2)}.}
@@ -183,14 +182,17 @@
 #' m <- m[nrow(m):1, ncol(m):1]
 #' x <- seq(from = 2667405, length.out = ncol(m), by = 10)
 #' y <- seq(from = 6478705, length.out = nrow(m), by = 10)
-#' r <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
-#'                     crs = "+init=epsg:27200")
+#' r <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y),
+#'                     ymx = max(y), crs = "+init=epsg:27200")
+#' bg.image <- raster::hillShade(raster::terrain(r, "slope"),
+#'                               raster::terrain(r, "aspect"))
 #' credit <- paste("Digitized from a topographic map by Ross Ihaka",
 #'                 "on a grid with 10-meter by 10-meter spacing.")
 #' explanation <- "Elevation on Auckland's Maunga Whau volcano, in meters."
-#' PlotMap(r, extend.z = TRUE, pal = GetColors(scheme = "DEM screen"),
+#' PlotMap(r, extend.z = TRUE, bg.image=bg.image,
+#'         pal = GetColors(scheme = "DEM screen", alpha = 0.8),
 #'         scale.loc = "bottomright", arrow.loc = "topright",
-#'         explanation = explanation, credit = credit, shade = list("alpha" = 0.3),
+#'         explanation = explanation, credit = credit,
 #'         contour.lines = list("col" = "#1F1F1FA6"), "useRaster" = TRUE)
 #'
 #' out <- PlotMap(r, file = "Rplots1.pdf")

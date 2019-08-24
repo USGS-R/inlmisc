@@ -24,7 +24,7 @@ Select \code{"rest"} for representational state transfer services (the default) 
 \code{"wms"} for web map services.}
 }
 \value{
-Returns an object of class 'leaflet', a hypertext markup language (HTML) widget object.
+An object of class 'leaflet', a hypertext markup language (HTML) widget object.
   See example for instructions on how to add additional graphic layers
   (such as points, lines, and polygons) to the map widget.
   Graphic layers added to the web map must be in latitude and longitude using WGS 84

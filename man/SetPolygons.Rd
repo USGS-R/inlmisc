@@ -26,7 +26,7 @@ the specified width, see \code{gBuffer}.
 Specifying \code{NA}, the default, indicates no buffer.}
 }
 \value{
-Returns an object of class 'SpatialPolygons*'.
+An object of class 'SpatialPolygons*'.
 }
 \description{
 Calculate the intersection or difference between two multi-polygon objects.

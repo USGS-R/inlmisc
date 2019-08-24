@@ -26,7 +26,7 @@ Buffer distance from geometry of convex hull.}
 \item{...}{Additional arguments to be passed to the \code{\link{gBuffer}} function.}
 }
 \value{
-Returns an object of class 'SpatialPolygons'.
+An object of class 'SpatialPolygons'.
 }
 \description{
 Create a spatial polygon describing the convex hull of a set of spatial points.

@@ -12,7 +12,7 @@
 #'   Unnamed chunks (that is, \code{chunk-name} is missing) will be assigned
 #'   names like \code{unnamed-chunk-i} where \code{i} is the chunk number.
 #'
-#' @return Returns a 'list' of length equal to the number of code chunks in \code{path}.
+#' @return A 'list' of length equal to the number of code chunks in \code{path}.
 #'   Each list component is named after its corresponding chunk name (\code{chunk-name}).
 #'   The returned object includes the value of the \code{path} argument as an attribute.
 #'

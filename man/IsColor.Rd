@@ -14,7 +14,7 @@ color specification}
 If set to \code{TRUE}, \code{x} may also be \code{NULL}.}
 }
 \value{
-Returns a 'logical' vector of the same length as argument \code{x}.
+A 'logical' vector of the same length as argument \code{x}.
 }
 \description{
 Check whether a character string is a valid color specification.

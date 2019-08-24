@@ -14,7 +14,7 @@
 #' @param rm.totim.0 'logical' falg.
 #'   Whether data associated with the stress period at time zero should be removed.
 #'
-#' @return Returns a 'list' of length equal to the
+#' @return A 'list' of length equal to the
 #'   number of times data were written to the binary file.
 #'   List components are as follows:
 #'   \describe{

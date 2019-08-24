@@ -35,7 +35,7 @@ see \code{\link{GetInsetLocation}} function for keyword descriptions.}
 to position the scale bar in the main plot region.}
 }
 \value{
-Used for the side-effect of a scale bar drawn on the current graphics device.
+Invisible \code{NULL}
 }
 \description{
 Add a scale bar (also known as a rake scale) to a plot.

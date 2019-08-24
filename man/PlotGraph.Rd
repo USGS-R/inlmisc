@@ -119,7 +119,7 @@ Passed arguments include \code{"x"} and \code{"col"}.}
 Whether to draw a rectangular grid.}
 }
 \value{
-Used for the side-effect of a new plot generated.
+Invisible \code{NULL}
 }
 \description{
 Draw a sequence of points, lines, or box-and-whiskers.

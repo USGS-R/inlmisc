@@ -54,7 +54,7 @@ Whether the axis is to be logarithmic.}
 Margin size in inches and of the form \code{c(bottom, left, top, right)}.}
 }
 \value{
-Used for the side-effect of a color key drawn on the current graphics device.
+Invisible \code{NULL}
 }
 \description{
 Add a color key to a plot.
