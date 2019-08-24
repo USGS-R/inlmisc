@@ -1,19 +1,19 @@
 #' Print Package Help Pages in HTML Format
 #'
-#' Print the HTML code associated with help pages of an add-on package.
+#' Print the HTML code associated with help pages of an add-on packages.
 #'
 #' @param pkg 'character' string.
-#'   Package name
+#'   Package names
 #' @param file 'character' string.
 #'   A connection, or a character string naming the file to append output to.
 #'   Prints to the standard output connection by default.
 #' @param toc 'logical' flag.
-#'   Whether to format the title of each help topic as a level 1 header.
+#'   Whether to format the title of each help topic as a level-1 header.
 #'   The table of contents (toc) option in R Markdown requires Markdown headers.
 #' @param hr 'logical' flag.
 #'   Whether to add a horizontal rule or line to separate help pages.
 #' @param links 'character' vector (experimental).
-#'   Names of packages searched when creating internal hyperlinks to help topics.
+#'   Package names of packages searched when creating internal hyperlinks to help topics.
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -30,7 +30,8 @@
 #'     "    toc: true",
 #'     "    toc_float: true",
 #'     "---",
-#'     "", sep = "\n", file = "help-example.Rmd")
+#'     "",
+#'     sep = "\n", file = "help-example.Rmd")
 #' PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
 #' rmarkdown::render("help-example.Rmd")
 #' url <- file.path("file:/", getwd(), "help-example.html")
@@ -42,105 +43,98 @@
 
 PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
 
-  checkmate::assertString(pkg)
+  checkmate::assertCharacter(pkg, unique=TRUE)
   checkmate::assertFlag(toc)
   checkmate::assertFlag(hr)
   checkmate::assertCharacter(links, unique=TRUE, null.ok=TRUE)
 
-  stopifnot(require(pkg, character.only=TRUE))
+  # get help-topic information
+  info <- .GetHelpInfo(pkg)
+
+  # parse contents of help files
+  rd <- lapply(seq_len(nrow(info)), function(i) .GetHelpFile(info$file[i]))
+  names(rd) <- info$name
+
+  # get keywords
+  info$keyword <- vapply(rd, function(x) {
+    x <- as.character(x)
+    idx <- which(x == "\\keyword")
+    if (length(idx)) x[idx + 2L] else as.character(NA)
+  }, "")
+
+  # remove hidden help topics
+  is <- !(info$keyword %in% "internal")
+  rd <- rd[is]
+  names(rd) <- info$name[is]
 
   # identify links
   if (!is.null(links)) {
-    nm <- do.call("c", lapply(links, function(x) ls(paste0("package:", x))))
-    links <- paste0("#", nm)
-    names(links) <- nm
+    d <- .GetHelpInfo(links)
+    links <- paste0("#", d$name)
+    names(links) <- d$name
   }
-
-  # parse contents of Rd files
-  nm <- ls(paste0("package:", pkg))
-  rd <- lapply(nm, function(x) {
-    .GetHelpFile(utils::help(x, package=eval(pkg)))
-  })
-  names(rd) <- nm
-
-  # organize Rd meta-data
-  meta <- vapply(rd, function(x) {
-    txt <- as.character(x)
-    name <- txt[which(txt == "\\name") + 2L]
-    idx <- which(txt == "\\keyword")
-    keyword <- if (length(idx)) txt[idx + 2L] else as.character(NA)
-    c("name"=name, "keyword"=keyword)
-  }, c("", ""))
-  meta <- as.data.frame(t(meta), stringsAsFactors=FALSE)
-  meta <- meta[!(meta$keyword %in% "internal"), , drop=FALSE]
-  meta$alias <- lapply(meta$name, function(x) {
-    I(rownames(meta)[meta$name %in% x])
-  })
-  meta <- meta[!duplicated(meta$name), ]
-  rownames(meta) <- NULL
-
-  # subset list of Rd objects
-  rd <- rd[vapply(meta$alias, function(x) match(x[1], names(rd)), 0)]
-  names(rd) <- meta$name
 
   # loop through each of the help items
   for (i in seq_along(rd)) {
 
     # convert Rd to html
-    x <- utils::capture.output(tools::Rd2HTML(rd[[i]],
-                                              Links=links,
-                                              Links2=links))
+    htm <- utils::capture.output(tools::Rd2HTML(rd[[i]],
+                                                no_links=is.null(links),
+                                                Links=links,
+                                                Links2=links))
 
     # print horizontal seperator in markdown format
     if (hr) cat("---\n\n", file=file, append=TRUE)
 
-    # edit and print first header for table of contents in markdown format
-    idx <- pmatch("<h2>", x)
+    # edit and print first header for table-of-contents in markdown format,
+    # and remove extraneous lines at the beginning and end of help page
+    idx <- pmatch("<h2>", htm)
     if (toc)
-      cat(sprintf("## %s", meta$name[i]),
-          sprintf("*%s*\n", gsub("<.*?>", "", x[idx])),
+      cat(sprintf("## %s", names(rd)[i]),
+          sprintf("*%s*\n", gsub("<.*?>", "", htm[idx])),
           file=file, sep="\n\n", append=TRUE)
-
-    # remove extraneous lines at the beginning and end of help page
-    x <- x[-c(seq_len(idx - !toc), length(x))]
+    htm <- htm[-c(seq_len(idx - !toc), length(htm))]
 
     # edit code chunk tags for syntax highlighting
-    xtrim <- trimws(x)
-    x[xtrim == "</pre>"] <- "</code></pre>"
-    idx <- which(xtrim == "<pre>")
-    x[idx + 1L] <- sprintf("<pre class=\"lang-r\"><code class=\"lang-r\">%s",
-                           x[idx + 1L])
-    x[idx] <- ""
+    htm_trim <- trimws(htm)
+    htm[htm_trim == "</pre>"] <- "</code></pre>"
+    idx <- which(htm_trim == "<pre>")
+    htm[idx + 1L] <- sprintf("<pre class=\"lang-r\"><code class=\"lang-r\">%s",
+                             htm[idx + 1L])
+    htm[idx] <- ""
 
     # remove empty lines everywhere but in the examples section
-    is <- nzchar(x)
+    is <- nzchar(htm)
     if (!all(is)) {
-      from <- grep("^<h3>Examples</h3>", x)
+      from <- grep("^<h3>Examples</h3>", htm)
       if (length(from) > 0) {
-        to <- utils::tail(grep("</code></pre>" , x), 1)
+        to <- utils::tail(grep("</code></pre>" , htm), 1)
         idxs <- seq(from + 1L, to - 1L, by=1)
-        lim <- range(which(nzchar(x[idxs])))
+        lim <- range(which(nzchar(htm[idxs])))
         idxs <- idxs[lim[1]:lim[2]]
         is[idxs] <- TRUE
       }
-      x <- x[is]
+      htm <- htm[is]
     }
 
     # encode images as a base64 string
-    is <- grepl("<p><img src=\"", x)
+    is <- grepl("<p><img src=\"", htm)
     if (any(is)) {
-      src <- as.character(vapply(x[is], function(y) strsplit(y, "\"")[[1]][2], ""))
+      src <- as.character(vapply(htm[is], function(x) {
+        strsplit(x, "\"")[[1]][2]
+      }, ""))
       src <- sub("..", system.file(package=pkg), src)
       for (f in src) checkmate::assertFileExists(f, access="r")
       uri <- vapply(src, function(f) knitr::image_uri(f), "")
-      x[is] <- sprintf("<p><img src=\"%s\" alt=\"%s\" />", uri, basename(src))
+      htm[is] <- sprintf("<p><img src=\"%s\" alt=\"%s\" />",
+                         uri, basename(src))
     }
 
     # preserve html
-    txt <- htmltools::htmlPreserve(c("\n", x, "\n"))
+    htm <- htmltools::htmlPreserve(c("\n", htm, "\n"))
 
     # print help topic in html format
-    cat(txt, "\n", file=file, fill=TRUE, append=TRUE)
+    cat(htm, "\n", file=file, fill=TRUE, append=TRUE)
   }
 
   # print horizontal seperator in markdown format
@@ -148,6 +142,28 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
 
   invisible()
 }
+
+
+# get help-topic information
+.GetHelpInfo <- function(pkg) {
+  for (x in pkg) stopifnot(require(x, character.only=TRUE))
+  l <- lapply(pkg, function(x) {
+    paths <- tools::findHTMLlinks(pkgDir=system.file(package=x), level=0)
+    unique(tools::file_path_sans_ext(basename(paths)))
+  })
+  names(l) <- pkg
+  d <- data.frame("name"=do.call("c", l), stringsAsFactors=FALSE)
+  d$package <- do.call("c", lapply(pkg, function(x) rep(x, length(l[[x]]))))
+  d$file <- vapply(seq_len(nrow(d)), function(i) {
+    x <- as.character(utils::help(d[i, 1], package=d[i, 2], help_type="html"))
+    if (length(x) > 0) x else as.character(NA)
+  }, "")
+  d <- d[!is.na(d$file), , drop=FALSE]
+  d <- d[order(d$name, d$package), ]
+  rownames(d) <- NULL
+  d
+}
+
 
 # copied from utils:::.getHelpFile to avoid CRAN warning, accessed on 2019-07-03
 .GetHelpFile <- function(file) {
@@ -162,6 +178,7 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
                   sQuote(pkgname)), domain=NA)
   .FetchRdDB(rddb, basename(file))
 }
+
 
 # copied from tools:::fetchRdDB to avoid CRAN warning, accessed on 2019-07-03
 .FetchRdDB <- function(filebase, key=NULL) {
