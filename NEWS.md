@@ -7,7 +7,8 @@
 
 - In `PrintHelpPages` function: preserve empty lines in the Examples section of help documentation;
   fix parsing bug on identifying code blocks; tidy main header for each help topic;
-  add `internal` argument, used to print help pages flagged with keyword `internal`.
+  add `internal` argument, used to print help pages flagged with keyword `internal`;
+  replace `hr` argument with `sep` argument (not backward compatible but same default behavior).
 
 - In `Grid2Polygons`, add `check_validity` argument, used to check the validity of polygons.
 

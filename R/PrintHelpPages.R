@@ -8,13 +8,13 @@
 #'   Names the file to append output to.
 #'   Prints to the standard output connection by default.
 #' @param internal 'logical' flag.
-#'   Whether to print help topics flagged with the keyword \code{internal}.
+#'   Whether to print help topics flagged with the keyword "internal".
 #' @param toc 'logical' flag.
-#'   Whether to format level-2 headers (help-topic titles) using a Markdown syntax,
-#'   a requirement when specifying the table-of-contents (toc) format option in R Markdown,
+#'   Whether to format level-2 headers (help-topic titles) using a Markdown syntax.
+#'   This is required when specifying the table-of-contents (toc) format option in R Markdown,
 #'   see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.
-#' @param hr 'logical' flag.
-#'   Whether to add horizontal lines separating help topics.
+#' @param sep 'character' string.
+#'   HTML to separate help topics, a horizontal line by default.
 #' @param links 'character' vector (experimental).
 #'   Names of packages searched when creating internal hyperlinks to help topics.
 #'
@@ -44,13 +44,13 @@
 #' }
 #'
 
-PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE, hr=TRUE,
-                           links=NULL) {
+PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE,
+                           sep="<hr>", links=NULL) {
 
   checkmate::assertCharacter(pkg, unique=TRUE)
   checkmate::assertFlag(internal)
   checkmate::assertFlag(toc)
-  checkmate::assertFlag(hr)
+  checkmate::assertString(sep, null.ok=TRUE)
   checkmate::assertCharacter(links, unique=TRUE, null.ok=TRUE)
 
   # get help-topic information
@@ -81,9 +81,6 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE, hr=TRUE,
     links <- paste0("#", d$name)
     names(links) <- d$name
   }
-
-  # print horizontal seperator in markdown format
-  if (hr) cat("\n<hr>\n\n", file=file, append=TRUE)
 
   # loop through each of the help items
   for (i in seq_along(rd)) {
@@ -140,7 +137,8 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE, hr=TRUE,
     }
 
     # add horizontal seperator
-    if (hr) htm <- c(htm, "\n<hr>\n")
+    if (!is.null(sep) && i < nrow(info))
+      htm <- c(htm, sprintf("\n%s\n", sep))
 
     # preserve html
     htm <- htmltools::htmlPreserve(c("", htm))
