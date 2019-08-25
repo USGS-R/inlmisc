@@ -21,7 +21,7 @@ Whether to print help topics flagged with the keyword \code{internal}.}
 \item{toc}{'logical' flag.
 Whether to format level-2 headers (help-topic titles) using a Markdown syntax,
 a requirement when specifying the table-of-contents (toc) format option in R Markdown,
-see \code{\link[rmarkdown]{render}} function for details.}
+see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.}
 
 \item{hr}{'logical' flag.
 Whether to add horizontal lines separating help topics.}

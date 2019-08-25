@@ -12,7 +12,7 @@
 #' @param toc 'logical' flag.
 #'   Whether to format level-2 headers (help-topic titles) using a Markdown syntax,
 #'   a requirement when specifying the table-of-contents (toc) format option in R Markdown,
-#'   see \code{\link[rmarkdown]{render}} function for details.
+#'   see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.
 #' @param hr 'logical' flag.
 #'   Whether to add horizontal lines separating help topics.
 #' @param links 'character' vector (experimental).
@@ -83,7 +83,7 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE, hr=TRUE,
   }
 
   # print horizontal seperator in markdown format
-  if (hr) cat("\n---\n\n", file=file, append=TRUE)
+  if (hr) cat("\n<hr>\n\n", file=file, append=TRUE)
 
   # loop through each of the help items
   for (i in seq_along(rd)) {
@@ -155,7 +155,6 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE, hr=TRUE,
 
 # get help-topic information
 .GetHelpInfo <- function(pkg) {
-  for (x in pkg) stopifnot(require(x, character.only=TRUE))
   l <- lapply(pkg, function(x) {
     paths <- tools::findHTMLlinks(pkgDir=system.file(package=x), level=0)
     unique(tools::file_path_sans_ext(basename(paths)))
