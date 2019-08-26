@@ -9,14 +9,12 @@
 #'   Prints to the standard output connection by default.
 #' @param internal 'logical' flag.
 #'   Whether to print help topics flagged with the keyword "internal".
-#' @param toc 'logical' flag.
-#'   Whether to format level-2 headers (help-topic titles) using a Markdown syntax.
-#'   This is required when specifying the table-of-contents (toc) format option in R Markdown,
-#'   see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.
 #' @param sep 'character' string.
 #'   HTML to separate help topics, a horizontal line by default.
 #' @param links 'character' vector (experimental).
 #'   Names of packages searched when creating internal hyperlinks to help topics.
+#' @param ...
+#'   Not used
 #'
 #' @return Invisible \code{NULL}
 #'
@@ -32,10 +30,12 @@
 #'     "output:",
 #'     "  html_document:",
 #'     "    toc: true",
-#'     "    toc_float: true",
+#'     "    toc_float:",
+#'     "      smooth_scroll: false",
+#'     "    mathjax: null",
 #'     "---",
 #'     sep = "\n", file = "help-example.Rmd")
-#' PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
+#' PrintHelpPages("inlmisc", file = "help-example.Rmd")
 #' rmarkdown::render("help-example.Rmd")
 #' url <- file.path("file:/", getwd(), "help-example.html")
 #' utils::browseURL(url)
@@ -44,24 +44,25 @@
 #' }
 #'
 
-PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE,
-                           sep="<hr>", links=NULL) {
+PrintHelpPages <- function(pkg, file="", internal=FALSE, sep="<hr>",
+                           links=NULL, ...) {
 
   checkmate::assertCharacter(pkg, unique=TRUE)
   checkmate::assertFlag(internal)
-  checkmate::assertFlag(toc)
   checkmate::assertString(sep, null.ok=TRUE)
   checkmate::assertCharacter(links, unique=TRUE, null.ok=TRUE)
 
-  # get help-topic information
-  info <- .GetHelpInfo(pkg)
+  # get metadata for help topics
+  meta <- .GetHelpMeta(pkg)
 
   # parse contents of help files
-  rd <- lapply(seq_len(nrow(info)), function(i) .GetHelpFile(info$file[i]))
-  names(rd) <- info$name
+  rd <- lapply(seq_len(nrow(meta)), function(i) {
+    .GetHelpFile(meta$file[i])
+  })
+  names(rd) <- meta$name
 
   # get keywords
-  info$keyword <- vapply(rd, function(x) {
+  meta$keyword <- vapply(rd, function(x) {
     x <- as.character(x)
     idx <- which(x == "\\keyword")
     if (length(idx)) x[idx + 2L] else as.character(NA)
@@ -69,20 +70,20 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE,
 
   # remove hidden help topics
   if (!internal) {
-    is <- !(info$keyword %in% "internal")
-    info <- info[is, , drop=FALSE]
+    is <- !(meta$keyword %in% "internal")
+    meta <- meta[is, , drop=FALSE]
     rd <- rd[is]
-    names(rd) <- info$name
+    names(rd) <- meta$name
   }
 
   # identify links
   if (!is.null(links)) {
-    d <- .GetHelpInfo(links)
+    d <- .GetHelpMeta(links)
     links <- paste0("#", d$name)
     names(links) <- d$name
   }
 
-  # loop through each of the help items
+  # loop through help items
   for (i in seq_along(rd)) {
 
     # convert Rd to html
@@ -91,17 +92,15 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE,
                                                 Links=links,
                                                 Links2=links))
 
-    # convert level-2 header from html to markdown
+    # replace level-2 header
     idx <- pmatch("<h2>", htm)
-    if (toc)
-      cat(sprintf("## %s", names(rd)[i]),
-          sprintf("*%s*\n", gsub("<.*?>", "", htm[idx])),
-          file=file, sep="\n\n", append=TRUE)
+    htm[idx] <- sprintf("<h2>%s</h2>\n\n<em>%s</em>\n",
+                        names(rd)[i], gsub("<.*?>", "", htm[idx]))
 
-    # remove extraneous lines at the beginning and end of help page
-    htm <- htm[-c(seq_len(idx - !toc), length(htm))]
+    # remove extraneous lines at beginning and end of help page
+    htm <- htm[-c(seq_len(idx - 1L), length(htm))]
 
-    # edit code chunk tags for syntax highlighting
+    # edit code-chunk tags to use syntax highlighting
     htm_trim <- trimws(htm)
     htm[htm_trim == "</pre>"] <- "</code></pre>"
     idx <- which(htm_trim == "<pre>")
@@ -109,7 +108,7 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE,
                              htm[idx + 1L])
     htm[idx] <- ""
 
-    # remove empty lines everywhere but in the examples section
+    # remove empty lines everywhere but in examples section
     is <- nzchar(htm)
     if (!all(is)) {
       from <- grep("^<h3>Examples</h3>", htm)
@@ -123,36 +122,34 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE, toc=FALSE,
       htm <- htm[is]
     }
 
-    # encode images as a base64 string
+    # encode images as base64 strings
     is <- grepl("<p><img src=\"", htm)
     if (any(is)) {
       src <- as.character(vapply(htm[is], function(x) {
         strsplit(x, "\"")[[1]][2]
       }, ""))
-      src <- sub("..", system.file(package=info$package[i]), src)
+      src <- sub("..", system.file(package=meta$package[i]), src)
       for (f in src) checkmate::assertFileExists(f, access="r")
       uri <- vapply(src, function(f) knitr::image_uri(f), "")
-      htm[is] <- sprintf("<p><img src=\"%s\" alt=\"%s\" />",
-                         uri, basename(src))
+      htm[is] <- sprintf("<p><img src=\"%s\" alt=\"%s\" />", uri, basename(src))
     }
 
-    # add horizontal seperator
-    if (!is.null(sep) && i < nrow(info))
-      htm <- c(htm, sprintf("\n%s\n", sep))
+    # add seperator
+    if (!is.null(sep) && i < nrow(meta)) htm <- c(htm, sprintf("\n%s\n", sep))
 
     # preserve html
-    htm <- htmltools::htmlPreserve(c("", htm))
+    htm <- htmltools::htmlPreserve(htm)
 
-    # print help topic in html format
-    cat(htm, "\n", file=file, fill=TRUE, append=TRUE)
+    # print help topic
+    cat("", htm, file=file, sep="\n", fill=TRUE, append=TRUE)
   }
 
   invisible()
 }
 
 
-# get help-topic information
-.GetHelpInfo <- function(pkg) {
+# get help-topic metadata
+.GetHelpMeta <- function(pkg) {
   l <- lapply(pkg, function(x) {
     paths <- tools::findHTMLlinks(pkgDir=system.file(package=x), level=0)
     unique(tools::file_path_sans_ext(basename(paths)))
