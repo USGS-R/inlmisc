@@ -8,7 +8,13 @@
 #'   Names the file to append output to.
 #'   Prints to the standard output connection by default.
 #' @param internal 'logical' flag.
-#'   Whether to print help topics flagged with the keyword "internal".
+#'   Whether to print help documentation flagged with the keyword "internal".
+#' @param toc 'logical' flag.
+#'   Whether to format level-2 headers (help-topic titles) using a Markdown syntax.
+#'   This is required when specifying the table-of-contents (toc) format option in R Markdown,
+#'   see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.
+#' @param replace_title 'logical' flag.
+#'   Whether to replace the help-topic \dQuote{title} with its \dQuote{name}.
 #' @param sep 'character' string.
 #'   HTML to separate help topics, a horizontal line by default.
 #' @param links 'character' vector (experimental).
@@ -27,6 +33,7 @@
 #' @examples
 #' \dontrun{
 #' cat("---",
+#'     "title: \"Help Documentation\"",
 #'     "output:",
 #'     "  html_document:",
 #'     "    toc: true",
@@ -35,7 +42,8 @@
 #'     "    mathjax: null",
 #'     "---",
 #'     sep = "\n", file = "help-example.Rmd")
-#' PrintHelpPages("inlmisc", file = "help-example.Rmd")
+#' PrintHelpPages("inlmisc", file = "help-example.Rmd",
+#'                toc = TRUE, replace_title = TRUE)
 #' rmarkdown::render("help-example.Rmd")
 #' url <- file.path("file:/", getwd(), "help-example.html")
 #' utils::browseURL(url)
@@ -44,11 +52,14 @@
 #' }
 #'
 
-PrintHelpPages <- function(pkg, file="", internal=FALSE, sep="<hr>",
-                           links=NULL, ...) {
+PrintHelpPages <- function(pkg, file="", internal=FALSE,
+                           toc=FALSE, replace_title=FALSE,
+                           sep="<hr>", links=NULL, ...) {
 
   checkmate::assertCharacter(pkg, unique=TRUE)
   checkmate::assertFlag(internal)
+  checkmate::assertFlag(toc)
+  checkmate::assertFlag(replace_title)
   checkmate::assertString(sep, null.ok=TRUE)
   checkmate::assertCharacter(links, unique=TRUE, null.ok=TRUE)
 
@@ -86,19 +97,28 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE, sep="<hr>",
   # loop through help items
   for (i in seq_along(rd)) {
 
-    # convert Rd to html
+    # convert rd to html
     htm <- utils::capture.output(tools::Rd2HTML(rd[[i]],
                                                 no_links=is.null(links),
                                                 Links=links,
                                                 Links2=links))
 
-    # replace level-2 header
+    # update level-2 header (title of help documentation)
     idx <- pmatch("<h2>", htm)
-    htm[idx] <- sprintf("<h2>%s</h2>\n\n<em>%s</em>\n",
-                        names(rd)[i], gsub("<.*?>", "", htm[idx]))
+    ti <- gsub("<.*?>", "", htm[idx])
+    nm <- names(rd)[i]
+    if (toc) {
+      if (replace_title)
+        txt <- sprintf("\n## %s\n\n*%s*\n", nm, ti)
+      else
+        txt <- sprintf("\n## %s {#%s}\n", ti, nm)
+      cat(txt, file=file, sep="\n\n", append=TRUE)
+    } else if (replace_title) {
+      htm[idx] <- sprintf("<h2>%s</h2>\n\n<em>%s</em>\n", nm, ti)
+    }
 
     # remove extraneous lines at beginning and end of help page
-    htm <- htm[-c(seq_len(idx - 1L), length(htm))]
+    htm <- htm[-c(seq_len(idx - !toc), length(htm))]
 
     # edit code-chunk tags to use syntax highlighting
     htm_trim <- trimws(htm)
@@ -140,7 +160,7 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE, sep="<hr>",
     # preserve html
     htm <- htmltools::htmlPreserve(htm)
 
-    # print help topic
+    # print help documentation
     cat("", htm, file=file, sep="\n", fill=TRUE, append=TRUE)
   }
 

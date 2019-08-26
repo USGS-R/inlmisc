@@ -9,7 +9,7 @@
   fix parsing bug on identifying code blocks; tidy main header for each help topic;
   add `internal` argument, used to print help pages flagged with keyword `internal`;
   replace `hr` argument with `sep` argument (not backward compatible but same default behavior);
-  remove `toc` argument because it was not needed.
+  add `replace_title` argument, used to replace the help-topic "title" with its "name".
 
 - In `Grid2Polygons`, add `check_validity` argument, used to check the validity of polygons.
 
