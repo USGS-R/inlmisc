@@ -3,9 +3,12 @@
 \name{inlmisc-deprecated}
 \alias{inlmisc-deprecated}
 \alias{GetTolColors}
+\alias{PrintHelpPages}
 \title{Deprecated Functions in the inlmisc Package}
 \usage{
 GetTolColors(...)
+
+PrintHelpPages(...)
 }
 \arguments{
 \item{...}{Arguments to be passed to the functions

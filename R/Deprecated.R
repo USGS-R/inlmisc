@@ -20,3 +20,12 @@ GetTolColors <- function(...) {
   .Deprecated("GetColors", package="inlmisc")
   GetColors(...)
 }
+
+
+#' @rdname Deprecated
+#' @export
+
+PrintHelpPages <- function(...) {
+  .Deprecated("PrintPackageHelp", package="inlmisc")
+  PrintPackageHelp(...)
+}
