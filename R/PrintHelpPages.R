@@ -1,19 +1,28 @@
 #' Print Package Help Pages in HTML Format
 #'
-#' Print the HTML code associated with help pages of an add-on packages.
+#' Print the HTML code associated with help pages of one or more add-on packages.
 #'
-#' @param pkg 'character' string.
-#'   Package names
-#' @param file 'character' string.
-#'   A connection, or a character string naming the file to append output to.
+#' @param pkg 'character' vector.
+#'   Package name(s)
+#' @param file 'connection' or 'character' string.
+#'   Names the file to append output to.
 #'   Prints to the standard output connection by default.
+#' @param internal 'logical' flag.
+#'   Whether to print help documentation flagged with the keyword "internal".
 #' @param toc 'logical' flag.
-#'   Whether to format the title of each help topic as a level-1 header.
-#'   The table of contents (toc) option in R Markdown requires Markdown headers.
-#' @param hr 'logical' flag.
-#'   Whether to add a horizontal rule or line to separate help pages.
+#'   Whether to format level-2 headers (help-topic titles) using a Markdown syntax.
+#'   This is required when specifying the table-of-contents (toc) format option in R Markdown,
+#'   see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.
+#' @param replace_title 'logical' flag.
+#'   Whether to replace the help-topic \dQuote{title} with its \dQuote{name}.
+#' @param sep 'character' string.
+#'   HTML to separate help topics, a horizontal line by default.
 #' @param links 'character' vector (experimental).
-#'   Package names of packages searched when creating internal hyperlinks to help topics.
+#'   Names of packages searched when creating internal hyperlinks to help topics.
+#' @param ...
+#'   Not used
+#'
+#' @return Invisible \code{NULL}
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
@@ -24,15 +33,15 @@
 #' @examples
 #' \dontrun{
 #' cat("---",
-#'     "title: Help Topics",
+#'     "title: \"Help Documentation\"",
 #'     "output:",
 #'     "  html_document:",
 #'     "    toc: true",
 #'     "    toc_float: true",
 #'     "---",
-#'     "",
 #'     sep = "\n", file = "help-example.Rmd")
-#' PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
+#' PrintHelpPages("inlmisc", file = "help-example.Rmd",
+#'                toc = TRUE, replace_title = TRUE)
 #' rmarkdown::render("help-example.Rmd")
 #' url <- file.path("file:/", getwd(), "help-example.html")
 #' utils::browseURL(url)
@@ -41,62 +50,75 @@
 #' }
 #'
 
-PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
+PrintHelpPages <- function(pkg, file="", internal=FALSE,
+                           toc=FALSE, replace_title=FALSE,
+                           sep="<hr>", links=NULL, ...) {
 
   checkmate::assertCharacter(pkg, unique=TRUE)
+  checkmate::assertFlag(internal)
   checkmate::assertFlag(toc)
-  checkmate::assertFlag(hr)
+  checkmate::assertFlag(replace_title)
+  checkmate::assertString(sep, null.ok=TRUE)
   checkmate::assertCharacter(links, unique=TRUE, null.ok=TRUE)
 
-  # get help-topic information
-  info <- .GetHelpInfo(pkg)
+  # get metadata for help topics
+  meta <- .GetHelpMeta(pkg)
 
   # parse contents of help files
-  rd <- lapply(seq_len(nrow(info)), function(i) .GetHelpFile(info$file[i]))
-  names(rd) <- info$name
+  rd <- lapply(seq_len(nrow(meta)), function(i) {
+    .GetHelpFile(meta$file[i])
+  })
+  names(rd) <- meta$name
 
   # get keywords
-  info$keyword <- vapply(rd, function(x) {
+  meta$keyword <- vapply(rd, function(x) {
     x <- as.character(x)
     idx <- which(x == "\\keyword")
     if (length(idx)) x[idx + 2L] else as.character(NA)
   }, "")
 
   # remove hidden help topics
-  is <- !(info$keyword %in% "internal")
-  info <- info[is, , drop=FALSE]
-  rd <- rd[is]
-  names(rd) <- info$name
+  if (!internal) {
+    is <- !(meta$keyword %in% "internal")
+    meta <- meta[is, , drop=FALSE]
+    rd <- rd[is]
+    names(rd) <- meta$name
+  }
 
   # identify links
   if (!is.null(links)) {
-    d <- .GetHelpInfo(links)
+    d <- .GetHelpMeta(links)
     links <- paste0("#", d$name)
     names(links) <- d$name
   }
 
-  # loop through each of the help items
+  # loop through help items
   for (i in seq_along(rd)) {
 
-    # convert Rd to html
+    # convert rd to html
     htm <- utils::capture.output(tools::Rd2HTML(rd[[i]],
                                                 no_links=is.null(links),
                                                 Links=links,
                                                 Links2=links))
 
-    # print horizontal seperator in markdown format
-    if (hr) cat("---\n\n", file=file, append=TRUE)
-
-    # edit and print first header for table-of-contents in markdown format,
-    # and remove extraneous lines at the beginning and end of help page
+    # update level-2 header (title of help documentation)
     idx <- pmatch("<h2>", htm)
-    if (toc)
-      cat(sprintf("## %s", names(rd)[i]),
-          sprintf("*%s*\n", gsub("<.*?>", "", htm[idx])),
-          file=file, sep="\n\n", append=TRUE)
+    ti <- gsub("<.*?>", "", htm[idx])
+    nm <- names(rd)[i]
+    if (toc) {
+      if (replace_title)
+        txt <- sprintf("\n## %s\n\n*%s*", nm, ti)
+      else
+        txt <- sprintf("\n## %s {#%s}", ti, nm)
+      cat(txt, file=file, sep="\n\n", append=TRUE)
+    } else if (replace_title) {
+      htm[idx] <- sprintf("<h2>%s</h2>\n\n<em>%s</em>\n", nm, ti)
+    }
+
+    # remove extraneous lines at beginning and end of help page
     htm <- htm[-c(seq_len(idx - !toc), length(htm))]
 
-    # edit code chunk tags for syntax highlighting
+    # edit code-chunk tags to use syntax highlighting
     htm_trim <- trimws(htm)
     htm[htm_trim == "</pre>"] <- "</code></pre>"
     idx <- which(htm_trim == "<pre>")
@@ -104,7 +126,7 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
                              htm[idx + 1L])
     htm[idx] <- ""
 
-    # remove empty lines everywhere but in the examples section
+    # remove empty lines everywhere but in examples section
     is <- nzchar(htm)
     if (!all(is)) {
       from <- grep("^<h3>Examples</h3>", htm)
@@ -118,36 +140,34 @@ PrintHelpPages <- function(pkg, file="", toc=FALSE, hr=TRUE, links=NULL) {
       htm <- htm[is]
     }
 
-    # encode images as a base64 string
+    # encode images as base64 strings
     is <- grepl("<p><img src=\"", htm)
     if (any(is)) {
       src <- as.character(vapply(htm[is], function(x) {
         strsplit(x, "\"")[[1]][2]
       }, ""))
-      src <- sub("..", system.file(package=info$package[i]), src)
+      src <- sub("..", system.file(package=meta$package[i]), src)
       for (f in src) checkmate::assertFileExists(f, access="r")
       uri <- vapply(src, function(f) knitr::image_uri(f), "")
-      htm[is] <- sprintf("<p><img src=\"%s\" alt=\"%s\" />",
-                         uri, basename(src))
+      htm[is] <- sprintf("<p><img src=\"%s\" alt=\"%s\" />", uri, basename(src))
     }
 
+    # add seperator
+    if (!is.null(sep) && i < nrow(meta)) htm <- c(htm, sprintf("\n%s\n", sep))
+
     # preserve html
-    htm <- htmltools::htmlPreserve(c("\n", htm, "\n"))
+    htm <- htmltools::htmlPreserve(htm)
 
-    # print help topic in html format
-    cat(htm, "\n", file=file, fill=TRUE, append=TRUE)
+    # print help documentation
+    cat("", htm, file=file, sep="\n", fill=TRUE, append=TRUE)
   }
-
-  # print horizontal seperator in markdown format
-  if (hr) cat("---", "\n", file=file, append=TRUE)
 
   invisible()
 }
 
 
-# get help-topic information
-.GetHelpInfo <- function(pkg) {
-  for (x in pkg) stopifnot(require(x, character.only=TRUE))
+# get help-topic metadata
+.GetHelpMeta <- function(pkg) {
   l <- lapply(pkg, function(x) {
     paths <- tools::findHTMLlinks(pkgDir=system.file(package=x), level=0)
     unique(tools::file_path_sans_ext(basename(paths)))

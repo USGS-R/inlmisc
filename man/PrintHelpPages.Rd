@@ -4,42 +4,54 @@
 \alias{PrintHelpPages}
 \title{Print Package Help Pages in HTML Format}
 \usage{
-PrintHelpPages(pkg, file = "", toc = FALSE, hr = TRUE,
-  links = NULL)
+PrintHelpPages(pkg, file = "", internal = FALSE, toc = FALSE,
+  replace_title = FALSE, sep = "<hr>", links = NULL, ...)
 }
 \arguments{
-\item{pkg}{'character' string.
-Package names}
+\item{pkg}{'character' vector.
+Package name(s)}
 
-\item{file}{'character' string.
-A connection, or a character string naming the file to append output to.
+\item{file}{'connection' or 'character' string.
+Names the file to append output to.
 Prints to the standard output connection by default.}
 
-\item{toc}{'logical' flag.
-Whether to format the title of each help topic as a level-1 header.
-The table of contents (toc) option in R Markdown requires Markdown headers.}
+\item{internal}{'logical' flag.
+Whether to print help documentation flagged with the keyword "internal".}
 
-\item{hr}{'logical' flag.
-Whether to add a horizontal rule or line to separate help pages.}
+\item{toc}{'logical' flag.
+Whether to format level-2 headers (help-topic titles) using a Markdown syntax.
+This is required when specifying the table-of-contents (toc) format option in R Markdown,
+see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.}
+
+\item{replace_title}{'logical' flag.
+Whether to replace the help-topic \dQuote{title} with its \dQuote{name}.}
+
+\item{sep}{'character' string.
+HTML to separate help topics, a horizontal line by default.}
 
 \item{links}{'character' vector (experimental).
-Package names of packages searched when creating internal hyperlinks to help topics.}
+Names of packages searched when creating internal hyperlinks to help topics.}
+
+\item{...}{Not used}
+}
+\value{
+Invisible \code{NULL}
 }
 \description{
-Print the HTML code associated with help pages of an add-on packages.
+Print the HTML code associated with help pages of one or more add-on packages.
 }
 \examples{
 \dontrun{
 cat("---",
-    "title: Help Topics",
+    "title: \\"Help Documentation\\"",
     "output:",
     "  html_document:",
     "    toc: true",
     "    toc_float: true",
     "---",
-    "",
     sep = "\\n", file = "help-example.Rmd")
-PrintHelpPages("inlmisc", file = "help-example.Rmd", toc = TRUE)
+PrintHelpPages("inlmisc", file = "help-example.Rmd",
+               toc = TRUE, replace_title = TRUE)
 rmarkdown::render("help-example.Rmd")
 url <- file.path("file:/", getwd(), "help-example.html")
 utils::browseURL(url)

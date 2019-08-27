@@ -6,7 +6,10 @@
   The effect of this change is only perceivable when the number of colors is small (`n < 10`).
 
 - In `PrintHelpPages` function: preserve empty lines in the Examples section of help documentation;
-  fix parsing bug on identifying code blocks; tidy main header for each help topic.
+  fix parsing bug on identifying code blocks; tidy main header for each help topic;
+  add `internal` argument, used to print help pages flagged with keyword `internal`;
+  replace `hr` argument with `sep` argument (not backward compatible but same default behavior);
+  add `replace_title` argument, used to replace the help-topic "title" with its "name".
 
 - In `Grid2Polygons`, add `check_validity` argument, used to check the validity of polygons.
 

@@ -72,24 +72,24 @@
 #'
 #'   The package-details \code{file} is of the following format:
 #'   \preformatted{
-#'     # Date modified: YYYY-MM-DD HH:MM:SS UTC
-#'     # R version 9.9.9 (YYYY-MM-DD)
-#'     Package Version
-#'     name    9.9.9
-#'     ...     ...
+#'# Date modified: YYYY-MM-DD HH:MM:SS UTC
+#'# R version 9.9.9 (YYYY-MM-DD)
+#'Package Version
+#'name    9.9.9
+#'...     ...
 #'   }
 #'
 #'   Where the first two lines are reserved for the timestamp and \R-version number, respectively.
-#'   And package data are stored in a tabular structure, that is, data-table values are separated by a \kbd{TAB} character.
+#'   And package data are stored in a tabular structure, that is, data-table values are separated by a TAB character.
 #'   The data format is flexible enough to add additional extraneous metadata and table fields, for example,
 #'   \preformatted{
-#'     # Date modified: 2017-08-12 05:14:33 UTC
-#'     # R version 3.4.1 (2017-06-30)
-#'     # Running under: Windows 10 x64 (build 14393)
-#'     # Platform: x86_64-w64-mingw32
-#'     Package   Version Priority Depends       Imports
-#'     akima     0.6-2   NA       R (>= 2.0.0)  sp
-#'     animation 2.5     NA       R (>= 2.14.0) NA
+#'# Date modified: 2017-08-12 05:14:33 UTC
+#'# R version 3.4.1 (2017-06-30)
+#'# Running under: Windows 10 x64 (build 14393)
+#'# Platform: x86_64-w64-mingw32
+#'Package   Version Priority Depends       Imports
+#'akima     0.6-2   NA       R (>= 2.0.0)  sp
+#'animation 2.5     NA       R (>= 2.14.0) NA
 #'   }
 #'
 #' @return The \code{SavePackageDetails} function returns (invisibly) the MD5 hash of the package-details \code{file} content.

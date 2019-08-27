@@ -9,7 +9,7 @@
 #' @param map '\link[leaflet]{leaflet}'.
 #'   Map widget object
 #' @param extent 'Spatial*', 'Raster*', 'Extent', 'matrix', or 'numeric' vector.
-#'   Extent object (or object from which an \code{\link[raster]{extent}} object can be extracted/created)
+#'   Extent object (or object from which an \code{\link[raster:extent]{raster::extent}} object can be extracted/created)
 #'   representing a rectangular geographical area on the map.
 #'   The extent must be specified in the coordinate reference system (CRS) of the web map,
 #'   usually in latitude and longitude using WGS 84 (also known as \href{https://epsg.io/4326}{EPSG:4326}).
