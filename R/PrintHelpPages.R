@@ -37,9 +37,7 @@
 #'     "output:",
 #'     "  html_document:",
 #'     "    toc: true",
-#'     "    toc_float:",
-#'     "      smooth_scroll: false",
-#'     "    mathjax: null",
+#'     "    toc_float: true",
 #'     "---",
 #'     sep = "\n", file = "help-example.Rmd")
 #' PrintHelpPages("inlmisc", file = "help-example.Rmd",
@@ -109,9 +107,9 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE,
     nm <- names(rd)[i]
     if (toc) {
       if (replace_title)
-        txt <- sprintf("\n## %s\n\n*%s*\n", nm, ti)
+        txt <- sprintf("\n## %s\n\n*%s*", nm, ti)
       else
-        txt <- sprintf("\n## %s {#%s}\n", ti, nm)
+        txt <- sprintf("\n## %s {#%s}", ti, nm)
       cat(txt, file=file, sep="\n\n", append=TRUE)
     } else if (replace_title) {
       htm[idx] <- sprintf("<h2>%s</h2>\n\n<em>%s</em>\n", nm, ti)
