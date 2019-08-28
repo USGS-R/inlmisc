@@ -159,9 +159,12 @@ xy <- rbind(c(2667705, 6478897), c(2667430, 6479178))
 p <- sp::SpatialPoints(xy, proj4string = raster::crs(rs))
 d <-  data.frame("label" = c("Peak", "Random"))
 features <- sp::SpatialPointsDataFrame(p, d, match.ID = TRUE)
-PlotMap(r1, pal = GetColors(scheme = "DEM screen"), scale.loc = "top",
-        arrow.loc = "topright", shade = list("alpha" = 0.3),
-        contour.lines = list("col" = "#1F1F1FA6"))
+bg.image <- raster::hillShade(raster::terrain(r1, "slope"),
+                              raster::terrain(r1, "aspect"))
+PlotMap(r1, bg.image = bg.image,
+        pal = GetColors(scheme = "DEM screen", alpha = 0.8),
+        scale.loc = "top", arrow.loc = "topright",
+        contour.lines = list("col" = "#1F1F1FA6"), "useRaster" = TRUE)
 lines(transect)
 raster::text(as(transect, "SpatialPoints"), labels = c("A", "BEND", "A'"),
              halo = TRUE, cex = 0.7, pos = c(3, 4, 1), offset = 0.1, font = 4)
