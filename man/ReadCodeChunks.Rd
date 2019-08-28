@@ -39,9 +39,6 @@ eval(parse(text = unlist(chunks[c("unnamed-chunk-3", "named-chunk-4")])))
 }
 
 }
-\seealso{
-\code{\link[knitr]{read_chunk}}
-}
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 }

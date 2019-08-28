@@ -161,7 +161,7 @@ PlotGraph(d, type = "i", ylim = c(0, 5), xpd = TRUE)
 
 }
 \seealso{
-\code{\link[graphics]{matplot}}, \code{\link[graphics]{boxplot}}, \code{\link{AddIntervals}}
+\code{\link{AddIntervals}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

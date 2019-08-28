@@ -36,8 +36,6 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link[raster]{writeRaster}}
-#'
 #' @keywords IO
 #'
 #' @importClassesFrom raster BasicRaster
@@ -47,7 +45,7 @@
 #' @examples
 #' \dontrun{
 #' rs <- raster::stack(system.file("external/rlogo.grd",
-#'                     package = "raster"))
+#'                                 package = "raster"))
 #' print(rs)
 #' path <- file.path(tempdir(), "rlogo")
 #' dir.create(path)

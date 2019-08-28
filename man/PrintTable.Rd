@@ -152,9 +152,6 @@ file.remove("table-example.tex", "table-example.pdf")
 }
 
 }
-\seealso{
-\code{\link[xtable]{xtable}}
-}
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 }

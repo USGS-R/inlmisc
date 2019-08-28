@@ -18,8 +18,6 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link{strptime}}
-#'
 #' @keywords manip
 #'
 #' @export

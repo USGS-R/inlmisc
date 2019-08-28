@@ -33,9 +33,6 @@ PlotMap(r_new)
 graphics.off()
 
 }
-\seealso{
-\code{\link{clump}}
-}
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 }

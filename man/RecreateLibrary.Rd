@@ -145,9 +145,6 @@ inlmisc::RecreateLibrary(repos = repos)
 file.remove("R-packages.tsv")
 
 }
-\seealso{
-\code{\link[utils]{installed.packages}}, \code{\link[utils]{install.packages}}
-}
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 }
