@@ -7,7 +7,7 @@
 usgs_article(...)
 }
 \arguments{
-\item{...}{Arguments to \code{\link[rmarkdown]{pdf_document}} function.}
+\item{...}{Arguments passed to the \code{\link[rmarkdown]{pdf_document}} function.}
 }
 \value{
 R Markdown output format to pass to \code{\link[rmarkdown]{render}}
@@ -17,7 +17,8 @@ Format for creating a U.S. Geological Survey (USGS) article.
 }
 \examples{
 \dontrun{
-rmarkdown::draft("myarticle.Rmd", template = "usgs_article",
+rmarkdown::draft("myarticle.Rmd",
+                 template = "usgs_article",
                  package = "inlmisc")
 
 rmarkdown::render("myarticle/myarticle.Rmd")
@@ -27,3 +28,7 @@ unlink("myarticle", recursive = TRUE)
 }
 
 }
+\author{
+J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+}
+\keyword{documentation}

@@ -63,4 +63,4 @@ file.remove("help-example.Rmd", "help-example.html")
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 }
-\keyword{utilities}
+\keyword{documentation}

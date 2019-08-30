@@ -3,15 +3,20 @@
 #' Format for creating a U.S. Geological Survey (USGS) article.
 #'
 #' @inheritParams rmarkdown::pdf_document
-#' @param ... Arguments to \code{\link[rmarkdown]{pdf_document}} function.
+#' @param ... Arguments passed to the \code{\link[rmarkdown]{pdf_document}} function.
 #'
 #' @return R Markdown output format to pass to \code{\link[rmarkdown]{render}}
+#'
+#' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
+#'
+#' @keywords documentation
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' rmarkdown::draft("myarticle.Rmd", template = "usgs_article",
+#' rmarkdown::draft("myarticle.Rmd",
+#'                  template = "usgs_article",
 #'                  package = "inlmisc")
 #'
 #' rmarkdown::render("myarticle/myarticle.Rmd")

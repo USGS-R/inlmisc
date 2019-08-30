@@ -26,7 +26,7 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @keywords utilities
+#' @keywords documentation
 #'
 #' @export
 #'

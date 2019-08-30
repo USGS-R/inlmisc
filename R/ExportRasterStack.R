@@ -47,7 +47,7 @@
 #' rs <- raster::stack(system.file("external/rlogo.grd",
 #'                                 package = "raster"))
 #' print(rs)
-#' path <- file.path(tempdir(), "rlogo")
+#' path <- file.path(getwd(), "rlogo")
 #' dir.create(path)
 #' ExportRasterStack(rs, path)
 #' list.files(normalizePath(path, winslash = "/"),
