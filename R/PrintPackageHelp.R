@@ -1,6 +1,6 @@
-#' Print Package Help Pages in HTML Format
+#' Print Package Help Documentation
 #'
-#' Print the HTML code associated with help pages of one or more add-on packages.
+#' Print the HTML code associated with the help documentation of one or more add-on packages.
 #'
 #' @param pkg 'character' vector.
 #'   Package name(s)
@@ -8,7 +8,7 @@
 #'   Names the file to append output to.
 #'   Prints to the standard output connection by default.
 #' @param internal 'logical' flag.
-#'   Whether to print help documentation flagged with the keyword "internal".
+#'   Whether to print help topics flagged with the keyword "internal".
 #' @param toc 'logical' flag.
 #'   Whether to format level-2 headers (help-topic titles) using a Markdown syntax.
 #'   This is required when specifying the table-of-contents (toc) format option in R Markdown,
@@ -26,7 +26,7 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @keywords utilities
+#' @keywords documentation
 #'
 #' @export
 #'
@@ -40,8 +40,8 @@
 #'     "    toc_float: true",
 #'     "---",
 #'     sep = "\n", file = "help-example.Rmd")
-#' PrintHelpPages("inlmisc", file = "help-example.Rmd",
-#'                toc = TRUE, replace_title = TRUE)
+#' PrintPackageHelp("inlmisc", file = "help-example.Rmd",
+#'                  toc = TRUE, replace_title = TRUE)
 #' rmarkdown::render("help-example.Rmd")
 #' url <- file.path("file:/", getwd(), "help-example.html")
 #' utils::browseURL(url)
@@ -50,9 +50,9 @@
 #' }
 #'
 
-PrintHelpPages <- function(pkg, file="", internal=FALSE,
-                           toc=FALSE, replace_title=FALSE,
-                           sep="<hr>", links=NULL, ...) {
+PrintPackageHelp <- function(pkg, file="", internal=FALSE,
+                             toc=FALSE, replace_title=FALSE,
+                             sep="<hr>", links=NULL, ...) {
 
   checkmate::assertCharacter(pkg, unique=TRUE)
   checkmate::assertFlag(internal)
@@ -71,15 +71,15 @@ PrintHelpPages <- function(pkg, file="", internal=FALSE,
   names(rd) <- meta$name
 
   # get keywords
-  meta$keyword <- vapply(rd, function(x) {
+  meta$keyword <- I(lapply(rd, function(x) {
     x <- as.character(x)
     idx <- which(x == "\\keyword")
     if (length(idx)) x[idx + 2L] else as.character(NA)
-  }, "")
+  }))
 
   # remove hidden help topics
   if (!internal) {
-    is <- !(meta$keyword %in% "internal")
+    is <- !vapply(meta$keyword, function(x) "internal" %in% x, TRUE)
     meta <- meta[is, , drop=FALSE]
     rd <- rd[is]
     names(rd) <- meta$name

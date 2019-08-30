@@ -90,7 +90,7 @@
 #'
 #' @author J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
 #'
-#' @seealso \code{\link[graphics]{matplot}}, \code{\link[graphics]{boxplot}}, \code{\link{AddIntervals}}
+#' @seealso \code{\link{AddIntervals}}
 #'
 #' @keywords hplot
 #'

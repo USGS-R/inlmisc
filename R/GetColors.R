@@ -124,6 +124,7 @@
 #' plot(pal)
 #'
 #' Pal <- GetColors(scheme = "turbo")
+#' formals(Pal)
 #' filled.contour(datasets::volcano, color.palette = Pal,
 #'                plot.axes = FALSE)
 #'

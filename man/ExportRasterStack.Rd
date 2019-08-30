@@ -51,9 +51,9 @@ If the zip program is unavailable on windows, install it
 \examples{
 \dontrun{
 rs <- raster::stack(system.file("external/rlogo.grd",
-                    package = "raster"))
+                                package = "raster"))
 print(rs)
-path <- file.path(tempdir(), "rlogo")
+path <- file.path(getwd(), "rlogo")
 dir.create(path)
 ExportRasterStack(rs, path)
 list.files(normalizePath(path, winslash = "/"),
@@ -63,9 +63,6 @@ list.files(normalizePath(path, winslash = "/"),
 unlink(path, recursive = TRUE)
 }
 
-}
-\seealso{
-\code{\link[raster]{writeRaster}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

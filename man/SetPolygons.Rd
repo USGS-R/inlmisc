@@ -15,9 +15,9 @@ Multi-polygon object}
 Multi-polygon object}
 
 \item{cmd}{'character' string.
-Specifying "gIntersection", the default, cuts out portions of the
+Specifying "\link{gIntersection}", the default, cuts out portions of the
 \code{x} polygons that overlay the \code{y} polygons.
-If "gDifference" is specified, only those portions of the \code{x} polygons
+If "\link{gDifference}" is specified, only those portions of the \code{x} polygons
 falling outside the \code{y} polygons are copied to the output polygons.}
 
 \item{buffer.width}{'numeric' number.
@@ -65,9 +65,6 @@ sp::plot(p, col = "green", add = TRUE)
 p <- SetPolygons(p2, p1, "gDifference")
 sp::plot(p, col = "purple", add = TRUE)
 
-}
-\seealso{
-\code{\link{gIntersection}}, \code{\link{gDifference}}
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

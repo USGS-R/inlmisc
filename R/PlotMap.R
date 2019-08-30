@@ -189,7 +189,7 @@
 #' credit <- paste("Digitized from a topographic map by Ross Ihaka",
 #'                 "on a grid with 10-meter by 10-meter spacing.")
 #' explanation <- "Elevation on Auckland's Maunga Whau volcano, in meters."
-#' PlotMap(r, extend.z = TRUE, bg.image=bg.image,
+#' PlotMap(r, extend.z = TRUE, bg.image = bg.image,
 #'         pal = GetColors(scheme = "DEM screen", alpha = 0.8),
 #'         scale.loc = "bottomright", arrow.loc = "topright",
 #'         explanation = explanation, credit = credit,
