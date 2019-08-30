@@ -71,15 +71,15 @@ PrintPackageHelp <- function(pkg, file="", internal=FALSE,
   names(rd) <- meta$name
 
   # get keywords
-  meta$keyword <- vapply(rd, function(x) {
+  meta$keyword <- I(lapply(rd, function(x) {
     x <- as.character(x)
     idx <- which(x == "\\keyword")
     if (length(idx)) x[idx + 2L] else as.character(NA)
-  }, "")
+  }))
 
   # remove hidden help topics
   if (!internal) {
-    is <- !(meta$keyword %in% "internal")
+    is <- !vapply(meta$keyword, function(x) "internal" %in% x, TRUE)
     meta <- meta[is, , drop=FALSE]
     rd <- rd[is]
     names(rd) <- meta$name
