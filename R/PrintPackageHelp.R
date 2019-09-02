@@ -13,12 +13,15 @@
 #'   Whether to format level-2 headers (help-topic titles) using a Markdown syntax.
 #'   This is required when specifying the table-of-contents (toc) format option in R Markdown,
 #'   see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.
-#' @param replace_title 'logical' flag.
+#' @param title_to_name 'logical' flag.
 #'   Whether to replace the help-topic \dQuote{title} with its \dQuote{name}.
+#'   For example, replace \bold{Print Package Help Documentation} with \bold{PrintPackageHelp}.
 #' @param sep 'character' string.
 #'   HTML to separate help topics, a horizontal line by default.
+#' @param notrun 'logical' flag.
+#'   Whether to inlcude \code{## Not run} comments in \sQuote{Examples} section.
 #' @param links 'character' vector (experimental).
-#'   Names of packages searched when creating internal hyperlinks to help topics.
+#'   Names of packages searched when creating internal hyperlinks.
 #' @param ...
 #'   Not used
 #'
@@ -41,7 +44,8 @@
 #'     "---",
 #'     sep = "\n", file = "help-example.Rmd")
 #' PrintPackageHelp("inlmisc", file = "help-example.Rmd",
-#'                  toc = TRUE, replace_title = TRUE)
+#'                  toc = TRUE, title_to_name = TRUE,
+#'                  notrun = FALSE)
 #' rmarkdown::render("help-example.Rmd")
 #' url <- file.path("file:/", getwd(), "help-example.html")
 #' utils::browseURL(url)
@@ -50,14 +54,15 @@
 #' }
 #'
 
-PrintPackageHelp <- function(pkg, file="", internal=FALSE,
-                             toc=FALSE, replace_title=FALSE,
-                             sep="<hr>", links=NULL, ...) {
+PrintPackageHelp <- function(pkg, file="", internal=FALSE, toc=FALSE,
+                             title_to_name=FALSE, notrun=TRUE, sep="<hr>",
+                             links=NULL, ...) {
 
   checkmate::assertCharacter(pkg, unique=TRUE)
   checkmate::assertFlag(internal)
   checkmate::assertFlag(toc)
-  checkmate::assertFlag(replace_title)
+  checkmate::assertFlag(title_to_name)
+  checkmate::assertFlag(notrun)
   checkmate::assertString(sep, null.ok=TRUE)
   checkmate::assertCharacter(links, unique=TRUE, null.ok=TRUE)
 
@@ -101,29 +106,36 @@ PrintPackageHelp <- function(pkg, file="", internal=FALSE,
                                                 Links=links,
                                                 Links2=links))
 
-    # update level-2 header (title of help documentation)
+    # level-2 header (title of help documentation)
     idx <- pmatch("<h2>", htm)
     ti <- gsub("<.*?>", "", htm[idx])
     nm <- names(rd)[i]
     if (toc) {
-      if (replace_title)
+      if (title_to_name)
         txt <- sprintf("\n## %s\n\n*%s*", nm, ti)
       else
         txt <- sprintf("\n## %s {#%s}", ti, nm)
       cat(txt, file=file, sep="\n\n", append=TRUE)
-    } else if (replace_title) {
+    } else if (title_to_name) {
       htm[idx] <- sprintf("<h2>%s</h2>\n\n<em>%s</em>\n", nm, ti)
     }
 
     # remove extraneous lines at beginning and end of help page
     htm <- htm[-c(seq_len(idx - !toc), length(htm))]
 
+
+    # remove 'not run' commented lines
+    if (!notrun) {
+      idx <- which(htm %in% c("## Not run: ", "## End(Not run)"))
+      if (length(idx) > 0) htm <- htm[-idx]
+    }
+
     # edit code-chunk tags to use syntax highlighting
     htm_trim <- trimws(htm)
     htm[htm_trim == "</pre>"] <- "</code></pre>"
     idx <- which(htm_trim == "<pre>")
-    htm[idx + 1L] <- sprintf("<pre class=\"lang-r\"><code class=\"lang-r\">%s",
-                             htm[idx + 1L])
+    fmt <- "<pre class=\"lang-r\"><code class=\"lang-r\">%s"
+    htm[idx + 1L] <- sprintf(fmt, htm[idx + 1L])
     htm[idx] <- ""
 
     # remove empty lines everywhere but in examples section
@@ -149,11 +161,13 @@ PrintPackageHelp <- function(pkg, file="", internal=FALSE,
       src <- sub("..", system.file(package=meta$package[i]), src)
       for (f in src) checkmate::assertFileExists(f, access="r")
       uri <- vapply(src, function(f) knitr::image_uri(f), "")
-      htm[is] <- sprintf("<p><img src=\"%s\" alt=\"%s\" />", uri, basename(src))
+      fmt <- "<p><img src=\"%s\" alt=\"%s\" />"
+      htm[is] <- sprintf(fmt, uri, basename(src))
     }
 
     # add seperator
-    if (!is.null(sep) && i < nrow(meta)) htm <- c(htm, sprintf("\n%s\n", sep))
+    if (!is.null(sep) && i < nrow(meta))
+      htm <- c(htm, sprintf("\n%s\n", sep))
 
     # preserve html
     htm <- htmltools::htmlPreserve(htm)
@@ -194,9 +208,10 @@ PrintPackageHelp <- function(pkg, file="", internal=FALSE,
     stop(gettextf("invalid %s argument", sQuote("file")), domain=NA)
   pkgname <- basename(dirpath)
   rddb <- file.path(path, pkgname)
-  if (!file.exists(paste0(rddb, ".rdx")))
-    stop(gettextf("package %s exists but was not installed under R >= 2.10.0 so help cannot be accessed",
-                  sQuote(pkgname)), domain=NA)
+  if (!file.exists(paste0(rddb, ".rdx"))) {
+    fmt <- "package %s exists but was not installed under R >= 2.10.0 so help cannot be accessed"
+    stop(gettextf(fmt, sQuote(pkgname)), domain=NA)
+  }
   .FetchRdDB(rddb, basename(file))
 }
 

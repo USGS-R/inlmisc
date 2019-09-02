@@ -5,7 +5,8 @@
 \title{Print Package Help Documentation}
 \usage{
 PrintPackageHelp(pkg, file = "", internal = FALSE, toc = FALSE,
-  replace_title = FALSE, sep = "<hr>", links = NULL, ...)
+  title_to_name = FALSE, notrun = TRUE, sep = "<hr>", links = NULL,
+  ...)
 }
 \arguments{
 \item{pkg}{'character' vector.
@@ -23,14 +24,18 @@ Whether to format level-2 headers (help-topic titles) using a Markdown syntax.
 This is required when specifying the table-of-contents (toc) format option in R Markdown,
 see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.}
 
-\item{replace_title}{'logical' flag.
-Whether to replace the help-topic \dQuote{title} with its \dQuote{name}.}
+\item{title_to_name}{'logical' flag.
+Whether to replace the help-topic \dQuote{title} with its \dQuote{name}.
+For example, replace \bold{Print Package Help Documentation} with \bold{PrintPackageHelp}.}
+
+\item{notrun}{'logical' flag.
+Whether to inlcude \code{## Not run} comments in \sQuote{Examples} section.}
 
 \item{sep}{'character' string.
 HTML to separate help topics, a horizontal line by default.}
 
 \item{links}{'character' vector (experimental).
-Names of packages searched when creating internal hyperlinks to help topics.}
+Names of packages searched when creating internal hyperlinks.}
 
 \item{...}{Not used}
 }
@@ -51,7 +56,8 @@ cat("---",
     "---",
     sep = "\\n", file = "help-example.Rmd")
 PrintPackageHelp("inlmisc", file = "help-example.Rmd",
-                 toc = TRUE, replace_title = TRUE)
+                 toc = TRUE, title_to_name = TRUE,
+                 notrun = FALSE)
 rmarkdown::render("help-example.Rmd")
 url <- file.path("file:/", getwd(), "help-example.html")
 utils::browseURL(url)

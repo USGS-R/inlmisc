@@ -10,7 +10,8 @@
   fix parsing bug on identifying code blocks; tidy main header for each help topic;
   add `internal` argument, used to print help pages flagged with keyword `internal`;
   replace `hr` argument with `sep` argument;
-  add `replace_title` argument, used to replace the help-topic "title" with its "name".
+  add `title_to_name` argument, used to replace the help-topic "title" with its "name";
+  add `notrun` argument, used to remove `## Not run` comments.
 
 - In `Grid2Polygons`, add `check_validity` argument, used to check the validity of polygons.
 
