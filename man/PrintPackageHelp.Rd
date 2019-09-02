@@ -17,7 +17,7 @@ Names the file to append output to.
 Prints to the standard output connection by default.}
 
 \item{internal}{'logical' flag.
-Whether to print help topics flagged with the keyword "internal".}
+Whether to print help topics flagged with the keyword \dQuote{internal}.}
 
 \item{toc}{'logical' flag.
 Whether to format level-2 headers (help-topic titles) using a Markdown syntax.
@@ -25,11 +25,10 @@ This is required when specifying the table-of-contents (toc) format option in R 
 see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.}
 
 \item{title_to_name}{'logical' flag.
-Whether to replace the help-topic \dQuote{title} with its \dQuote{name}.
-For example, replace \bold{Print Package Help Documentation} with \bold{PrintPackageHelp}.}
+Whether to replace the help-topic \dQuote{title} with its \dQuote{name}.}
 
 \item{notrun}{'logical' flag.
-Whether to inlcude \code{## Not run} comments in \sQuote{Examples} section.}
+Whether to inlcude \code{## Not run} comments in the Examples section of help documentation.}
 
 \item{sep}{'character' string.
 HTML to separate help topics, a horizontal line by default.}
