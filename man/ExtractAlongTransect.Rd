@@ -59,11 +59,12 @@ PlotGraph(NA, xlab = xlab, ylab = ylab,
           xlim = xlim, ylim = ylim, type = "n")
 cols <- GetColors(length(segs), scheme = "bright")
 for (i in seq_along(segs))
-  lines(segs[[i]]@data[, c("dist", "value")], col = cols[i])
+  lines(segs[[i]]@data[, c("dist", "value")],
+        col = cols[i], lwd = 2)
 coords <- sp::coordinates(transect)
 n <- length(transect)
 d <- cumsum(c(0, as.matrix(dist((coords)))[cbind(1:(n - 1), 2:n)]))
-abline(v = d, col = "green", lty = 2)
+abline(v = d, lty = 2)
 mtext(sprintf("(\%d, \%d)", coords[1, 1], coords[1, 2]),
       line = -1, adj = 0, cex = 0.7)
 mtext(sprintf("(\%d, \%d)", coords[n, 1], coords[n, 2]),
