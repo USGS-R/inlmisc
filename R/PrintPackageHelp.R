@@ -1,6 +1,6 @@
 #' Print Package Help Documentation
 #'
-#' Print the HTML code associated with the help documentation of one or more add-on packages.
+#' Print the HTML code associated with the help documentation of one or more \R packages.
 #'
 #' @param pkg 'character' vector.
 #'   Package name(s)
@@ -20,7 +20,7 @@
 #' @param notrun 'logical' flag.
 #'   Whether to inlcude \code{## Not run} comments in the Examples section of help documentation.
 #' @param links 'character' vector.
-#'   Names of packages searched (level 0) when creating internal hyperlinks.
+#'   Names of packages searched (level 0) when creating internal hyperlinks to functions and datasets.
 #' @param ...
 #'   Not used
 #'
@@ -92,7 +92,7 @@ PrintPackageHelp <- function(pkg, file="", internal=FALSE, toc=FALSE,
   # identify links
   if (!is.null(links)) {
     d <- .GetHelpMeta(links)
-    links <- paste0("#", d$name)
+    links <- paste0("#", tolower(gsub(" ", "-", d$name)))
     names(links) <- d$name
   }
 
@@ -115,25 +115,25 @@ PrintPackageHelp <- function(pkg, file="", internal=FALSE, toc=FALSE,
         re <- regexpr(pattern, st)
         if (re == -1) break
         st <- substr(st, re, re + attr(re, "match") - 1L)
-        st <- gsub("<a.*\">", "", st)
-        st <- gsub("</a>", "", st)
-        htm[j] <- gsub(pattern, st, htm[j])
+        st <- sub("<a.*\">", "", sub("</a>", "", st))
+        htm[j] <- sub(pattern, st, htm[j])
       }
     }
 
-    # level-2 header (title of help documentation)
+    # substitute level-2 header (title of help documentation)
     idx <- grep("<h2>", htm)
     ti <- gsub("<.*?>", "", htm[idx])
     nm <- names(rd)[i]
+    id <- tolower(gsub(" ", "-", nm))
     if (toc) {
       if (title_to_name)
-        txt <- sprintf("\n## %s {#%s}\n\n*%s*", nm, nm, ti)
+        txt <- sprintf("\n## %s {#%s}\n\n*%s*", nm, id, ti)
       else
-        txt <- sprintf("\n## %s {#%s}", ti, nm)
+        txt <- sprintf("\n## %s {#%s}", ti, id)
       cat(txt, file=file, sep="\n\n", append=TRUE)
     } else if (title_to_name) {
       htm[idx] <- sprintf("<h2 id=\"%s\">%s</h2>\n\n<em>%s</em>\n",
-                          nm, nm, ti)
+                          id, nm, ti)
     }
 
     # remove extraneous lines at beginning and end of help page

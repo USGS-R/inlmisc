@@ -34,7 +34,7 @@ Whether to inlcude \code{## Not run} comments in the Examples section of help do
 HTML to separate help topics, a horizontal line by default.}
 
 \item{links}{'character' vector.
-Names of packages searched (level 0) when creating internal hyperlinks.}
+Names of packages searched (level 0) when creating internal hyperlinks to functions and datasets.}
 
 \item{...}{Not used}
 }
@@ -42,7 +42,7 @@ Names of packages searched (level 0) when creating internal hyperlinks.}
 Invisible \code{NULL}
 }
 \description{
-Print the HTML code associated with the help documentation of one or more add-on packages.
+Print the HTML code associated with the help documentation of one or more \R packages.
 }
 \examples{
 \dontrun{
