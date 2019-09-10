@@ -5,7 +5,7 @@
 \title{Print Package Help Documentation}
 \usage{
 PrintPackageHelp(pkg, file = "", internal = FALSE, toc = FALSE,
-  title_to_name = FALSE, notrun = TRUE, sep = "<hr>", links = NULL,
+  title_to_name = FALSE, notrun = TRUE, sep = "<hr>", links = pkg,
   ...)
 }
 \arguments{
@@ -33,8 +33,8 @@ Whether to inlcude \code{## Not run} comments in the Examples section of help do
 \item{sep}{'character' string.
 HTML to separate help topics, a horizontal line by default.}
 
-\item{links}{'character' vector (experimental).
-Names of packages searched when creating internal hyperlinks.}
+\item{links}{'character' vector.
+Names of packages searched (level 0) when creating internal hyperlinks.}
 
 \item{...}{Not used}
 }

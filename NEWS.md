@@ -11,7 +11,8 @@
   add `internal` argument, used to print help pages flagged with keyword `internal`;
   replace `hr` argument with `sep` argument;
   add `title_to_name` argument, used to replace the help-topic "title" with its "name";
-  add `notrun` argument, used to remove `## Not run` comments.
+  add `notrun` argument, used to remove `## Not run` comments;
+  include internal links for package by default.
 
 - In `Grid2Polygons`, add `check_validity` argument, used to check the validity of polygons.
 

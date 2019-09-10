@@ -19,8 +19,8 @@
 #'   HTML to separate help topics, a horizontal line by default.
 #' @param notrun 'logical' flag.
 #'   Whether to inlcude \code{## Not run} comments in the Examples section of help documentation.
-#' @param links 'character' vector (experimental).
-#'   Names of packages searched when creating internal hyperlinks.
+#' @param links 'character' vector.
+#'   Names of packages searched (level 0) when creating internal hyperlinks.
 #' @param ...
 #'   Not used
 #'
@@ -55,7 +55,7 @@
 
 PrintPackageHelp <- function(pkg, file="", internal=FALSE, toc=FALSE,
                              title_to_name=FALSE, notrun=TRUE, sep="<hr>",
-                             links=NULL, ...) {
+                             links=pkg, ...) {
 
   checkmate::assertCharacter(pkg, unique=TRUE)
   checkmate::assertFlag(internal)
@@ -100,28 +100,44 @@ PrintPackageHelp <- function(pkg, file="", internal=FALSE, toc=FALSE,
   for (i in seq_along(rd)) {
 
     # convert rd to html
-    htm <- utils::capture.output(tools::Rd2HTML(rd[[i]],
-                                                no_links=is.null(links),
-                                                Links=links,
-                                                Links2=links))
+    htm <- utils::capture.output({
+      suppressWarnings(tools::Rd2HTML(rd[[i]],
+                                      no_links=is.null(links),
+                                      Links=links,
+                                      Links2=links))
+    })
+
+    # remove broken internal links
+    pattern <- "<a href=\\\"\\.\\./\\.\\./.*\\\">.*</a>"
+    for (j in grep(pattern, htm)) {
+      repeat {
+        st <- htm[j]
+        re <- regexpr(pattern, st)
+        if (re == -1) break
+        st <- substr(st, re, re + attr(re, "match") - 1L)
+        st <- gsub("<a.*\">", "", st)
+        st <- gsub("</a>", "", st)
+        htm[j] <- gsub(pattern, st, htm[j])
+      }
+    }
 
     # level-2 header (title of help documentation)
-    idx <- pmatch("<h2>", htm)
+    idx <- grep("<h2>", htm)
     ti <- gsub("<.*?>", "", htm[idx])
     nm <- names(rd)[i]
     if (toc) {
       if (title_to_name)
-        txt <- sprintf("\n## %s\n\n*%s*", nm, ti)
+        txt <- sprintf("\n## %s {#%s}\n\n*%s*", nm, nm, ti)
       else
         txt <- sprintf("\n## %s {#%s}", ti, nm)
       cat(txt, file=file, sep="\n\n", append=TRUE)
     } else if (title_to_name) {
-      htm[idx] <- sprintf("<h2>%s</h2>\n\n<em>%s</em>\n", nm, ti)
+      htm[idx] <- sprintf("<h2 id=\"%s\">%s</h2>\n\n<em>%s</em>\n",
+                          nm, nm, ti)
     }
 
     # remove extraneous lines at beginning and end of help page
     htm <- htm[-c(seq_len(idx - !toc), length(htm))]
-
 
     # remove 'not run' commented lines
     if (!notrun) {
