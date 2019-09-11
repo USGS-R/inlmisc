@@ -17,18 +17,18 @@ Format for creating a U.S. Geological Survey (USGS) article.
 }
 \examples{
 \dontrun{
-if (Sys.which("pdflatex") == "") {
-  # install LaTeX distribution with required packages
-  dir <- "auto"  # directory to install (should not exist)
-  pkgs <- readLines(system.file("misc", "latex-packages.txt",
-                                package = "inlmisc"))
-  tinytex::install_tinytex(dir = dir, extra_packages = pkgs)
-  # ensure environment variable points to the correct path
-}
+# install LaTeX distribution
+if (Sys.which("pdflatex") == "" && !tinytex:::is_tinytex())
+  tinytex::install_tinytex()
+
+# install LaTeX packages
+if (tinytex:::is_tinytex())
+  inlmisc:::InstallLatexPackages()
 
 rmarkdown::draft("myarticle.Rmd",
                  template = "usgs_article",
                  package = "inlmisc")
+
 rmarkdown::render("myarticle/myarticle.Rmd")
 system("open myarticle/wrapper.pdf")
 

@@ -15,18 +15,18 @@
 #'
 #' @examples
 #' \dontrun{
-#' if (Sys.which("pdflatex") == "") {
-#'   # install LaTeX distribution with required packages
-#'   dir <- "auto"  # directory to install (should not exist)
-#'   pkgs <- readLines(system.file("misc", "latex-packages.txt",
-#'                                 package = "inlmisc"))
-#'   tinytex::install_tinytex(dir = dir, extra_packages = pkgs)
-#'   # ensure environment variable points to the correct path
-#' }
+#' # install LaTeX distribution
+#' if (Sys.which("pdflatex") == "" && !tinytex:::is_tinytex())
+#'   tinytex::install_tinytex()
+#'
+#' # install LaTeX packages
+#' if (tinytex:::is_tinytex())
+#'   inlmisc:::InstallLatexPackages()
 #'
 #' rmarkdown::draft("myarticle.Rmd",
 #'                  template = "usgs_article",
 #'                  package = "inlmisc")
+#'
 #' rmarkdown::render("myarticle/myarticle.Rmd")
 #' system("open myarticle/wrapper.pdf")
 #'
@@ -120,4 +120,13 @@ usgs_article <- function(...) {
                                     "plot"    = knitr::hook_plot_tex))
 
   base
+}
+
+
+# install required LaTeX packages into TinyTeX
+InstallLatexPackages <- function() {
+  file <- system.file("misc", "latex-packages.txt", package="inlmisc")
+  pkgs <- readLines(file)
+  pkgs <- pkgs[!pkgs %in% tinytex::tl_pkgs()]
+  tinytex::tlmgr_install(pkgs)
 }
