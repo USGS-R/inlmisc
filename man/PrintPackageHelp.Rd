@@ -5,7 +5,8 @@
 \title{Print Package Help Documentation}
 \usage{
 PrintPackageHelp(pkg, file = "", internal = FALSE, toc = FALSE,
-  replace_title = FALSE, sep = "<hr>", links = NULL, ...)
+  title_to_name = FALSE, notrun = TRUE, sep = "<hr>", links = pkg,
+  ...)
 }
 \arguments{
 \item{pkg}{'character' vector.
@@ -16,21 +17,24 @@ Names the file to append output to.
 Prints to the standard output connection by default.}
 
 \item{internal}{'logical' flag.
-Whether to print help topics flagged with the keyword "internal".}
+Whether to print help topics flagged with the keyword \dQuote{internal}.}
 
 \item{toc}{'logical' flag.
 Whether to format level-2 headers (help-topic titles) using a Markdown syntax.
 This is required when specifying the table-of-contents (toc) format option in R Markdown,
 see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.}
 
-\item{replace_title}{'logical' flag.
+\item{title_to_name}{'logical' flag.
 Whether to replace the help-topic \dQuote{title} with its \dQuote{name}.}
+
+\item{notrun}{'logical' flag.
+Whether to inlcude \code{## Not run} comments in the Examples section of help documentation.}
 
 \item{sep}{'character' string.
 HTML to separate help topics, a horizontal line by default.}
 
-\item{links}{'character' vector (experimental).
-Names of packages searched when creating internal hyperlinks to help topics.}
+\item{links}{'character' vector.
+Names of packages searched (level 0) when creating internal hyperlinks to functions and datasets.}
 
 \item{...}{Not used}
 }
@@ -38,7 +42,7 @@ Names of packages searched when creating internal hyperlinks to help topics.}
 Invisible \code{NULL}
 }
 \description{
-Print the HTML code associated with the help documentation of one or more add-on packages.
+Print the HTML code associated with the help documentation of one or more \R packages.
 }
 \examples{
 \dontrun{
@@ -51,7 +55,8 @@ cat("---",
     "---",
     sep = "\\n", file = "help-example.Rmd")
 PrintPackageHelp("inlmisc", file = "help-example.Rmd",
-                 toc = TRUE, replace_title = TRUE)
+                 toc = TRUE, title_to_name = TRUE,
+                 notrun = FALSE)
 rmarkdown::render("help-example.Rmd")
 url <- file.path("file:/", getwd(), "help-example.html")
 utils::browseURL(url)

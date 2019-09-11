@@ -17,6 +17,14 @@ Format for creating a U.S. Geological Survey (USGS) article.
 }
 \examples{
 \dontrun{
+# install LaTeX distribution
+if (Sys.which("pdflatex") == "" && !tinytex:::is_tinytex())
+  tinytex::install_tinytex()
+
+# install LaTeX packages
+if (tinytex:::is_tinytex())
+  inlmisc:::InstallLatexPackages()
+
 rmarkdown::draft("myarticle.Rmd",
                  template = "usgs_article",
                  package = "inlmisc")

@@ -103,6 +103,7 @@ PrintTable(d, colheadings, align, digits, title = title,
 \dontrun{
 sink("table-example.tex")
 cat("\\\\documentclass{article}",
+    "\\\\usepackage{geometry}",
     "\\\\usepackage[labelsep = period, labelfont = bf]{caption}",
     "\\\\usepackage{siunitx}",
     "\\\\sisetup{input-ignore = {,}, input-decimal-markers = {.},",
@@ -140,7 +141,7 @@ align <- c("S", "S",
 PrintTable(d, colheadings, align)
 cat("\\\\end{document}\\n")
 sink()
-tools::texi2pdf("table-example.tex", clean = TRUE)  # requires TeX
+tinytex::pdflatex("table-example.tex")  # requires TeX
 system("open table-example.pdf")
 
 file.remove("table-example.tex", "table-example.pdf")
