@@ -60,23 +60,22 @@
 #'     "\\usepackage[labelsep=period, labelfont=bf]{caption}",
 #'     "\\usepackage{subcaption}",
 #'     "\\captionsetup[figure]{skip=10pt}",
-#'     "\\captionsetup[subfigure]{skip=-10pt, labelfont={bf, it}}",
+#'     "\\captionsetup[subfigure]{skip=0pt, labelfont={bf, it}}",
 #'     "\\renewcommand{\\thesubfigure}{\\Alph{subfigure}}",
 #'     "\\begin{document}",
 #'     "<<id, echo=FALSE, fig.width=3, fig.height=2, results='asis'>>=",
 #'     "par(mar=c(2.1, 2.1, 1.1, 1.1))",
-#'     "n <- 9",
-#'     "fig <- sprintf('plot(runif(%s))', seq_len(n))",
-#'     "headings <- sprintf('Subfigure caption, n=%s', seq_len(n))",
-#'     "PrintFigure(fig, 3, 2, 'id', title='Figure caption', headings=headings)",
+#'     "n <- 10",
+#'     "fig <- sprintf('inlmisc::PlotGraph(runif(%s))', 2:n)",
+#'     "headings <- sprintf('Subfigure caption, $n=%s$', 2:n)",
+#'     "PrintFigure(fig, 3, 2, 'id', title='Caption', headings=headings)",
 #'     "@",
 #'     "\\end{document}",
 #'     file = "figure-example.Rnw", sep = "\n")
-#' knitr::knit2pdf("figure-example.Rnw", clean = TRUE)  # requires TeX installation
+#' knitr::knit2pdf("figure-example.Rnw", clean = TRUE)  # requires LaTeX
 #' system("open figure-example.pdf")
 #'
-#' unlink("figure-example.*")
-#' unlink("figure", recursive = TRUE)
+#' unlink(c("figure-example.*", "figure"), recursive = TRUE)
 #' }
 #'
 

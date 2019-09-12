@@ -141,7 +141,7 @@ align <- c("S", "S",
 PrintTable(d, colheadings, align)
 cat("\\\\end{document}\\n")
 sink()
-tinytex::pdflatex("table-example.tex")  # requires TeX
+tinytex::pdflatex("table-example.tex")  # requires LaTeX
 system("open table-example.pdf")
 
 file.remove("table-example.tex", "table-example.pdf")
