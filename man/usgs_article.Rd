@@ -18,7 +18,7 @@ Format for creating a U.S. Geological Survey (USGS) article.
 \examples{
 \dontrun{
 # install LaTeX distribution
-if (Sys.which("pdflatex") == "" && !tinytex:::is_tinytex())
+if (Sys.which("pdflatex") == "" & !tinytex:::is_tinytex())
   tinytex::install_tinytex()
 
 # install LaTeX packages
