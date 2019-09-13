@@ -16,14 +16,14 @@ Idaho National Laboratory (INL) [Project Office](https://www.usgs.gov/centers/id
 
 ## Install
 
-You can install the stable version from [CRAN](https://CRAN.R-project.org/package=inlmisc "The Comprehensive R Archive Network")
-using the following command:
+The current release is available on [CRAN](https://CRAN.R-project.org/package=inlmisc "The Comprehensive R Archive Network"),
+which you can install using the following command:
 
 ```r
 install.packages("inlmisc", dependencies = TRUE)
 ```
 
-Or use the **remotes** package to install the development version from GitHub.
+To install the development version, you need to clone the repository and build from source, or run:
 
 ```r
 remotes::install_github("USGS-R/inlmisc", dependencies = TRUE)
