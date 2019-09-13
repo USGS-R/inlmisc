@@ -1,25 +1,32 @@
 # inlmisc 0.4.7.9000
 
+- Add *misc/latex-packages.txt* file: contains a list of required LaTeX packages
+  that are not included in the default installation of [TinyTeX](https://yihui.name/tinytex/);
+  use the `inlmisc:::InstallLatexPackages()` command to install these packages into TinyTeX.
+
+- In LaTeX preamble, replace **xcolor** package with **color**,
+  eliminates an annoying warning when compiling document.
+
 - In `GetColors` function, add `"turbo"` color scheme.
 
-- In `SetHinge` function, non-backward compatible change to allocating colors on each side of hinge.
-  The effect of this change is only perceivable when the number of colors is small (`n < 10`).
+- In `SetHinge` function, non-backward compatible change to allocating colors on each side
+  of hinge, is only perceivable when the number of colors is small (`n < 10`).
 
 - Rename `PrintHelpPages` function to `PrintPackageHelp`.
   Preserve empty lines in the Examples section of help documentation;
-  fix parsing bug on identifying code blocks; tidy main header for each help topic;
+  fix parsing bug associated with identifying code blocks; tidy main header for each help topic;
   add `internal` argument, used to print help pages flagged with keyword `internal`;
-  replace `hr` argument with `sep` argument;
+  replace `hr` argument with `sep`;
   add `title_to_name` argument, used to replace the help-topic "title" with its "name";
   add `notrun` argument, used to remove `## Not run` comments;
-  include internal links for package by default.
+  include internal links by default.
 
 - In `Grid2Polygons`, add `check_validity` argument, used to check the validity of polygons.
 
 - Fix bugs in *raw/build-datasets.R* and *raw/render-tables.R* files
   that incorrectly called `IsColor` function.
 
-- Changed package dependency from R >= 3.4.0 to R >= 3.5.0 because serialized objects
+- Change package dependency from R >= 3.4.0 to R >= 3.5.0 because serialized objects
   in serialize/load version 3 cannot be read in older versions of R.
 
 # inlmisc 0.4.7

@@ -16,7 +16,7 @@
 #' @examples
 #' \dontrun{
 #' # install LaTeX distribution
-#' if (Sys.which("pdflatex") == "" && !tinytex:::is_tinytex())
+#' if (Sys.which("pdflatex") == "")
 #'   tinytex::install_tinytex()
 #'
 #' # install LaTeX packages
@@ -123,7 +123,8 @@ usgs_article <- function(...) {
 }
 
 
-# install required LaTeX packages into TinyTeX
+# install required LaTeX packages that are not included
+# in the default installation of TinyTeX
 InstallLatexPackages <- function() {
   file <- system.file("misc", "latex-packages.txt", package="inlmisc")
   pkgs <- readLines(file)

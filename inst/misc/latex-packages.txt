@@ -16,5 +16,4 @@ siunitx
 symbol
 tocloft
 verbatimbox
-xcolor
 xpatch
