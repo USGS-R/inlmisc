@@ -1,7 +1,7 @@
 # inlmisc 0.4.7.9000
 
 - Add *misc/latex-packages.txt* file: contains a list of required LaTeX packages
-  that are not included with [TinyTeX](https://yihui.name/tinytex/);
+  that are not included in the default installation of [TinyTeX](https://yihui.name/tinytex/);
   use the `inlmisc:::InstallLatexPackages()` command to install these packages into TinyTeX.
 
 - In LaTeX preamble, replace **xcolor** package with **color**,
