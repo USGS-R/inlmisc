@@ -16,7 +16,7 @@
 #' @examples
 #' \dontrun{
 #' # install LaTeX distribution
-#' if (Sys.which("pdflatex") == "" & !tinytex:::is_tinytex())
+#' if (Sys.which("pdflatex") == "")
 #'   tinytex::install_tinytex()
 #'
 #' # install LaTeX packages
