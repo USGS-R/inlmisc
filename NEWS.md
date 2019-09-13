@@ -1,5 +1,11 @@
 # inlmisc 0.4.7.9000
 
+- Add *misc/latex-packages.txt* file: contains a list of required LaTeX packages
+  that are not included in [TinyTeX](https://yihui.name/tinytex/);
+  use the `inlmisc:::InstallLatexPackages()` command to install these packages into TinyTeX.
+
+- In LaTeX preamble, replace **xcolor** package with **color**, eliminates an annoying warning.
+
 - In `GetColors` function, add `"turbo"` color scheme.
 
 - In `SetHinge` function, non-backward compatible change to allocating colors on each side
