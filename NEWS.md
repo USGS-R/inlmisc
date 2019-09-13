@@ -1,10 +1,11 @@
 # inlmisc 0.4.7.9000
 
 - Add *misc/latex-packages.txt* file: contains a list of required LaTeX packages
-  that are not included in [TinyTeX](https://yihui.name/tinytex/);
+  that are not included with [TinyTeX](https://yihui.name/tinytex/);
   use the `inlmisc:::InstallLatexPackages()` command to install these packages into TinyTeX.
 
-- In LaTeX preamble, replace **xcolor** package with **color**, eliminates an annoying warning.
+- In LaTeX preamble, replace **xcolor** package with **color**,
+  eliminates an annoying warning when compiling document.
 
 - In `GetColors` function, add `"turbo"` color scheme.
 
@@ -25,7 +26,7 @@
 - Fix bugs in *raw/build-datasets.R* and *raw/render-tables.R* files
   that incorrectly called `IsColor` function.
 
-- Changed package dependency from R >= 3.4.0 to R >= 3.5.0 because serialized objects
+- Change package dependency from R >= 3.4.0 to R >= 3.5.0 because serialized objects
   in serialize/load version 3 cannot be read in older versions of R.
 
 # inlmisc 0.4.7
