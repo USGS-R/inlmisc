@@ -48,7 +48,7 @@ BuildVignettes <- function(dir=getwd(), doc=file.path(dir, "inst/doc"),
   if (v$dir != doc) {
     dir.create(doc, showWarnings=!quiet, recursive=TRUE)
     file.copy(c(v$docs, out), doc, overwrite=TRUE)
-    file.remove(out)
+    if (clean) file.remove(out)
   }
 
   if (gs_quality != "none") {

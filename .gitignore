@@ -2,3 +2,4 @@
 /.Rhistory
 /*.tar.gz
 /*.zip
+/vignettes/cache/*
