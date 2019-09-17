@@ -20,6 +20,8 @@
 #'   Additional arguments to be passed to the fitness function.
 #' @param popSize 'integer' count.
 #'   Population size
+#' @param numIslands 'integer' count.
+#'   Number of islands
 #' @param migrationRate 'numeric' number.
 #'   Proportion of individuals that should migrate between islands.
 #' @param migrationInterval 'integer' count.
@@ -31,6 +33,7 @@
 #'   Probability of mutation in a parent chromosome.
 #' @param elitism 'integer' count.
 #'   Number of chromosomes to survive into the next generation.
+#'   Defaults to 5-percent of the island population.
 #' @param maxiter 'integer' count.
 #'   Maximum number of iterations to run before the GA search is halted.
 #' @param run 'integer' count.
@@ -41,8 +44,7 @@
 #'   See returned \code{solution} component for a suggested value for this arugment.
 #' @param parallel 'logical' flag or 'integer' count.
 #'   Whether to use parallel computing.
-#'   This argument can also be used to specify the number of cores
-#'   (and number of islands) to employ; by default,
+#'   This argument can also be used to specify the number of cores to employ; by default,
 #'   this is the number of physical CPUs/cores.
 #'   The \pkg{parallel} and \pkg{doParallel} packages must be
 #'   installed for parallel computing to work.
@@ -98,8 +100,9 @@
 #' @export
 #'
 #' @examples
-#' # Problem: Choose the 4 smallest numbers from a list of 100 values
-#' # genearated from a standard uniform distribution.
+#' # Problem:  Choose the 4 smallest numbers from a list
+#' # of 100 values genearated from a standard uniform
+#' # distribution.
 #' k <- 4
 #' n <- 100
 #' seed <- 123
@@ -109,8 +112,8 @@
 #'   -1 * sum(numbers[idxs])
 #' }
 #' \dontrun{
-#' out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1,
-#'                          run = 10, monitor = GA::gaislMonitor,
+#' out <- FindOptimalSubset(n, k, Fitness, numbers, run = 10,
+#'                          monitor = GA::gaislMonitor,
 #'                          seed = seed)
 #' plot(out[["ga_output"]])
 #' summary(out[["ga_output"]])
@@ -119,9 +122,10 @@
 #' }
 #'
 
-FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
+FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100, numIslands=4,
                               migrationRate=0.1, migrationInterval=10,
-                              pcrossover=0.8, pmutation=0.1, elitism=0,
+                              pcrossover=0.8, pmutation=0.1,
+                              elitism=max(1, round(popSize/numIslands*0.05)),
                               maxiter=1000, run=maxiter, suggestions=NULL,
                               parallel=TRUE, monitor=NULL, seed=NULL) {
 
@@ -130,11 +134,12 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   checkmate::assertInt(k, lower=1, upper=n - 1)
   checkmate::assertFunction(Fitness)
   checkmate::assertInt(popSize, lower=1)
+  checkmate::assertInt(numIslands, lower=1)
   checkmate::assertNumber(migrationRate, lower=0, upper=1, finite=TRUE)
   checkmate::assertInt(migrationInterval, lower=1)
   checkmate::assertNumber(pcrossover, lower=0, upper=1, finite=TRUE)
   checkmate::assertNumber(pmutation, lower=0, upper=1, finite=TRUE)
-  checkmate::assertInt(elitism, lower=0, upper=popSize)
+  checkmate::assertInt(elitism, lower=1)
   checkmate::assertInt(maxiter, lower=1)
   checkmate::assertInt(run, lower=1, upper=maxiter)
   checkmate::assertMatrix(suggestions, min.rows=1, min.cols=1, null.ok=TRUE)
@@ -142,12 +147,6 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100,
   checkmate::assertFunction(monitor, null.ok=TRUE)
   if (is.null(monitor)) monitor <- FALSE
   checkmate::assertInt(seed, null.ok=TRUE)
-
-  # set number of islands
-  if (is.logical(parallel))
-    numIslands <- if (parallel) parallel::detectCores(logical=FALSE) else 4L
-  else
-    numIslands <- parallel
 
   # calculate number of bits in the binary string representing the chromosome
   nBits <- .CountBits(n) * k

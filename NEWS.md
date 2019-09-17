@@ -1,5 +1,9 @@
 # inlmisc 0.4.7.9000
 
+- In `FindOptimalSubset` function, add `numIslands` argument, used to specify the number of islands,
+  was previously dependent on the `parallel` argument;
+  change default value of `elitism` argument from 0 to 5-percent of the island population.
+
 - Add *misc/latex-packages.txt* file: contains a list of required LaTeX packages
   that are not included in the default installation of [TinyTeX](https://yihui.name/tinytex/);
   use the `inlmisc:::InstallLatexPackages()` command to install these packages into TinyTeX.
