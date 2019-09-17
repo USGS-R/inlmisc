@@ -33,11 +33,14 @@ BuildVignettes <- function(dir=getwd(), doc=file.path(dir, "inst/doc"),
                            gs_quality=c("ebook", "printer", "screen", "none"),
                            clean=TRUE, quiet=TRUE) {
 
-  checkmate::assertFileExists(file.path(dir, "DESCRIPTION"))
+  checkmate::assertString(dir)
   checkmate::assertPathForOutput(doc, overwrite=TRUE)
   gs_quality <- match.arg(gs_quality)
   checkmate::assertFlag(clean)
   checkmate::assertFlag(quiet)
+
+  dir <- normalizePath(path.expand(dir), winslash="/", mustWork=FALSE)
+  checkmate::assertFileExists(file.path(dir, "DESCRIPTION"))
 
   tools::buildVignettes(dir=dir, quiet=quiet, clean=clean, tangle=TRUE)
 
