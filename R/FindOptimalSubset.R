@@ -100,9 +100,9 @@
 #' @export
 #'
 #' @examples
-#' # Problem:  Choose the 4 smallest numbers from a list
-#' # of 100 values genearated from a standard uniform
-#' # distribution.
+#' # Problem: Choose the 4 smallest numbers from a list
+#' #          of 100 values genearated from a standard
+#' #          uniform distribution.
 #' k <- 4
 #' n <- 100
 #' seed <- 123
