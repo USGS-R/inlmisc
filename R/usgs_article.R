@@ -15,14 +15,6 @@
 #'
 #' @examples
 #' \dontrun{
-#' # install LaTeX distribution
-#' if (Sys.which("pdflatex") == "")
-#'   tinytex::install_tinytex()
-#'
-#' # install LaTeX packages
-#' if (tinytex:::is_tinytex())
-#'   inlmisc:::InstallLatexPackages()
-#'
 #' rmarkdown::draft("myarticle.Rmd",
 #'                  template = "usgs_article",
 #'                  package = "inlmisc")
