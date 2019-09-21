@@ -101,7 +101,7 @@ PrintTable(d, colheadings, align, digits, title = title,
            hline = hline, nrec = c(41, 42), rm_dup = 1)
 
 \dontrun{
-sink("table-example.tex")
+sink("test-table.tex")
 cat("\\\\documentclass{article}",
     "\\\\usepackage{geometry}",
     "\\\\usepackage[labelsep = period, labelfont = bf]{caption}",
@@ -141,10 +141,10 @@ align <- c("S", "S",
 PrintTable(d, colheadings, align)
 cat("\\\\end{document}\\n")
 sink()
-tinytex::pdflatex("table-example.tex")  # requires LaTeX
-system("open table-example.pdf")
+tinytex::pdflatex("test-table.tex")  # requires LaTeX
+system("open test-table.pdf")
 
-file.remove("table-example.tex", "table-example.pdf")
+file.remove("test-table.tex", "test-table.pdf")
 }
 
 }

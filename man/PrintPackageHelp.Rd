@@ -53,15 +53,15 @@ cat("---",
     "    toc: true",
     "    toc_float: true",
     "---",
-    sep = "\\n", file = "help-example.Rmd")
-PrintPackageHelp("inlmisc", file = "help-example.Rmd",
+    sep = "\\n", file = "test-help.Rmd")
+PrintPackageHelp("inlmisc", file = "test-help.Rmd",
                  toc = TRUE, title_to_name = TRUE,
                  notrun = FALSE)
-rmarkdown::render("help-example.Rmd")
-url <- file.path("file:/", getwd(), "help-example.html")
+rmarkdown::render("test-help.Rmd")
+url <- file.path("file:/", getwd(), "test-help.html")
 utils::browseURL(url)
 
-file.remove("help-example.Rmd", "help-example.html")
+file.remove("test-help.Rmd", "test-help.html")
 }
 
 }

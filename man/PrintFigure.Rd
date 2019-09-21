@@ -81,11 +81,11 @@ cat("\\\\documentclass{article}",
     "PrintFigure(fig, 3, 2, 'id', title='Caption', headings=headings)",
     "@",
     "\\\\end{document}",
-    file = "figure-example.Rnw", sep = "\\n")
-knitr::knit2pdf("figure-example.Rnw", clean = TRUE)  # requires LaTeX
-system("open figure-example.pdf")
+    file = "test-figure.Rnw", sep = "\\n")
+knitr::knit2pdf("test-figure.Rnw", clean = TRUE)  # requires LaTeX
+system("open test-figure.pdf")
 
-unlink(c("figure-example.*", "figure"), recursive = TRUE)
+unlink(c("test-figure.*", "figure"), recursive = TRUE)
 }
 
 }
