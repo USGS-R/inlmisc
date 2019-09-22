@@ -6,31 +6,31 @@
 #' and result in much "cleaner" images when plotted.
 #'
 #' @param grd 'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.
-#'    Spatial grid
+#'   Spatial grid
 #' @param zcol 'character' string or 'integer' count.
-#'    Layer to extract from a multi-layer spatial grid.
+#'   Layer to extract from a multi-layer spatial grid.
 #' @param level 'logical' flag.
-#'    If true, a set of levels is used to partition the range of attribute values,
-#'    its default is false.
+#'   If true, a set of levels is used to partition the range of attribute values,
+#'   its default is false.
 #' @param at 'numeric' vector.
-#'    Breakpoints along the range of attribute values.
+#'   Breakpoints along the range of attribute values.
 #' @param cuts 'integer' count.
-#'    Number of levels the range of attribute values would be divided into.
+#'   Number of levels the range of attribute values would be divided into.
 #' @param pretty 'logical' flag.
-#'    Whether to use pretty cut locations.
+#'   Whether to use pretty cut locations.
 #' @param xlim 'numeric' vector of length 2.
-#'    Left and right limits of the spatial grid, data outside these limits is excluded.
+#'   Left and right limits of the spatial grid, data outside these limits is excluded.
 #' @param ylim 'numeric' vector of length 2.
-#'    Lower and upper limits of the spatial grid,
-#'    data outside these limits is excluded.
+#'   Lower and upper limits of the spatial grid,
+#'   data outside these limits is excluded.
 #' @param zlim 'numeric' vector of length 2.
-#'    Minimum and maximum limits of the attribute variable,
-#'    data outside these limits is excluded.
+#'   Minimum and maximum limits of the attribute variable,
+#'   data outside these limits is excluded.
 #' @param ply 'SpatialPolygons', or 'SpatialGridDataFrame'.
-#'    Cropping polygon
+#'   Cropping polygon
 #' @param check_validity 'logical' flag.
-#'    If true (default), check the validity of polygons.
-#'    If any of the polygons are invalid, try making them valid by zero-width buffering.
+#'   If true (default), check the validity of polygons.
+#'   If any of the polygons are invalid, try making them valid by zero-width buffering.
 #'
 #' @return An object of class 'SpatialPolygonsDataFrame'.
 #'   The objects \code{data} slot is a data frame, number of rows equal to
