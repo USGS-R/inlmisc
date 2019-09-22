@@ -89,12 +89,12 @@ align <- c("l", "c", "c", "c", "c")
 digits <- c(0, 1, 1, 1, 1)
 title <- "Measurements of sepal length and width and petal
           length and width for three species of Iris flower."
-headnotes <- "\\\\textbf{Species of Iris}: includes setosa, versicolor, and virginica.
+headnotes <- "\\\\textbf{Iris Species}: setosa, versicolor, and virginica.
               \\\\textbf{Abbreviations}: cm, centimeters"
 levels(d[[1]]) <- sprintf("\%s\\\\footnotemark[\%d]", levels(d[[1]]), 1:3)
-footnotes <- paste(sprintf("\\\\footnotemark[\%d] Common name is \%s iris.", 1:3,
-                           c("Wild Flag", "Blue Flag", "Virginia")),
-                   collapse = "\\\\\\\\")
+footnotes <- sprintf("\\\\footnotemark[\%d] Common name is \%s iris.",
+                     1:3, c("Wild Flag", "Blue Flag", "Virginia"))
+footnotes <- paste(footnotes, collapse = "\\\\\\\\")
 hline <- utils::tail(which(!duplicated(d[[1]])), -1) - 1L
 PrintTable(d, colheadings, align, digits, title = title,
            headnotes = headnotes, footnotes = footnotes,

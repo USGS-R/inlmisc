@@ -54,9 +54,8 @@ cat("---",
     "    toc_float: true",
     "---",
     sep = "\\n", file = "test-help.Rmd")
-PrintPackageHelp("inlmisc", file = "test-help.Rmd",
-                 toc = TRUE, title_to_name = TRUE,
-                 notrun = FALSE)
+PrintPackageHelp("inlmisc", file = "test-help.Rmd", toc = TRUE,
+                 title_to_name = TRUE, notrun = FALSE)
 rmarkdown::render("test-help.Rmd")
 url <- file.path("file:/", getwd(), "test-help.html")
 utils::browseURL(url)

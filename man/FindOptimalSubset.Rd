@@ -120,8 +120,7 @@ Fitness <- function(string, n, numbers) {
 }
 \dontrun{
 out <- FindOptimalSubset(n, k, Fitness, numbers, run = 10,
-                         monitor = GA::gaislMonitor,
-                         seed = seed)
+                         monitor = GA::gaislMonitor, seed = seed)
 plot(out[["ga_output"]])
 summary(out[["ga_output"]])
 print(out[["solution"]])

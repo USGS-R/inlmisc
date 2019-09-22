@@ -105,10 +105,12 @@
 #'           scientific = FALSE, conversion.factor = 3.28)
 #'
 #' y <- data.frame(lapply(1:3, function(i) sample(n, replace = TRUE)))
-#' PlotGraph(x, y, ylab = "Random number", pch = 1, seq.date.by = "days",
-#'           scientific = TRUE)
+#' PlotGraph(x, y, ylab = "Random number", pch = 1,
+#'           seq.date.by = "days", scientific = TRUE)
 #'
-#' y <- sapply(1:3, function(i) sample((1:100) + i * 100, n, replace = TRUE))
+#' y <- sapply(1:3, function(i) {
+#'   sample((1:100) + i * 100, n, replace = TRUE)
+#' })
 #' m <- cbind(as.numeric(x), y)
 #' col <- GetColors(3, scheme = "bright")
 #' PlotGraph(m, xlab = "Number", ylab = "Random number", type = "b",

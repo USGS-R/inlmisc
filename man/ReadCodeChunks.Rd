@@ -27,8 +27,7 @@ If the source document is \file{.Rnw} or \file{.Rmd} the \code{purl} function is
   names like \code{unnamed-chunk-i} where \code{i} is the chunk number.
 }
 \examples{
-file <- system.file("misc/knitr-markdown.Rmd",
-                    package = "inlmisc")
+file <- system.file("misc/knitr-markdown.Rmd", package = "inlmisc")
 chunks <- ReadCodeChunks(file)
 print(chunks)
 attr(chunks, "path")

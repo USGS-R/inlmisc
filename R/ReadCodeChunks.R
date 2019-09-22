@@ -23,8 +23,7 @@
 #' @export
 #'
 #' @examples
-#' file <- system.file("misc/knitr-markdown.Rmd",
-#'                     package = "inlmisc")
+#' file <- system.file("misc/knitr-markdown.Rmd", package = "inlmisc")
 #' chunks <- ReadCodeChunks(file)
 #' print(chunks)
 #' attr(chunks, "path")
