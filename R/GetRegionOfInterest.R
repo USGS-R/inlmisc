@@ -54,8 +54,10 @@
 #' r <- sqrt(stats::runif(n, 0.25^2, 0.50^2))
 #' x <- sp::SpatialPoints(cbind(0.5 + r * cos(theta), 0.5 + r * sin(theta)),
 #'                        proj4string = sp::CRS("+init=epsg:32610"))
-#' sp::plot(GetRegionOfInterest(x, alpha = 0.1, width = 0.05), col = "green")
-#' sp::plot(GetRegionOfInterest(x, alpha = 0.1), col = "yellow", add = TRUE)
+#' sp::plot(GetRegionOfInterest(x, alpha = 0.1, width = 0.05),
+#'          col = "green")
+#' sp::plot(GetRegionOfInterest(x, alpha = 0.1),
+#'          col = "yellow", add = TRUE)
 #' sp::plot(x, add = TRUE)
 #' }
 #'

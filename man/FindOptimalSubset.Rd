@@ -4,10 +4,11 @@
 \alias{FindOptimalSubset}
 \title{Find Optimal Subset Using a GA}
 \usage{
-FindOptimalSubset(n, k, Fitness, ..., popSize = 100,
+FindOptimalSubset(n, k, Fitness, ..., popSize = 100, numIslands = 4,
   migrationRate = 0.1, migrationInterval = 10, pcrossover = 0.8,
-  pmutation = 0.1, elitism = 0, maxiter = 1000, run = maxiter,
-  suggestions = NULL, parallel = TRUE, monitor = NULL, seed = NULL)
+  pmutation = 0.1, elitism = max(1, round(popSize/numIslands * 0.05)),
+  maxiter = 1000, run = maxiter, suggestions = NULL,
+  parallel = TRUE, monitor = NULL, seed = NULL)
 }
 \arguments{
 \item{n}{'integer' count.
@@ -30,6 +31,9 @@ Recall that the GA searches for a maximum fitness value.}
 \item{popSize}{'integer' count.
 Population size}
 
+\item{numIslands}{'integer' count.
+Number of islands}
+
 \item{migrationRate}{'numeric' number.
 Proportion of individuals that should migrate between islands.}
 
@@ -44,7 +48,8 @@ Probability of crossover between pairs of chromosomes.}
 Probability of mutation in a parent chromosome.}
 
 \item{elitism}{'integer' count.
-Number of chromosomes to survive into the next generation.}
+Number of chromosomes to survive into the next generation.
+Defaults to 5-percent of the island population.}
 
 \item{maxiter}{'integer' count.
 Maximum number of iterations to run before the GA search is halted.}
@@ -59,8 +64,7 @@ See returned \code{solution} component for a suggested value for this arugment.}
 
 \item{parallel}{'logical' flag or 'integer' count.
 Whether to use parallel computing.
-This argument can also be used to specify the number of cores
-(and number of islands) to employ; by default,
+This argument can also be used to specify the number of cores to employ; by default,
 this is the number of physical CPUs/cores.
 The \pkg{parallel} and \pkg{doParallel} packages must be
 installed for parallel computing to work.}
@@ -103,8 +107,9 @@ The fitness function (see \code{Fitness} argument) is solved using
   uniform crossover, and uniform mutation.
 }
 \examples{
-# Problem: Choose the 4 smallest numbers from a list of 100 values
-# genearated from a standard uniform distribution.
+# Problem: Choose the 4 smallest numbers from a list
+#          of 100 values genearated from a standard
+#          uniform distribution.
 k <- 4
 n <- 100
 seed <- 123
@@ -114,9 +119,8 @@ Fitness <- function(string, n, numbers) {
   -1 * sum(numbers[idxs])
 }
 \dontrun{
-out <- FindOptimalSubset(n, k, Fitness, numbers, elitism = 1,
-                         run = 10, monitor = GA::gaislMonitor,
-                         seed = seed)
+out <- FindOptimalSubset(n, k, Fitness, numbers, run = 10,
+                         monitor = GA::gaislMonitor, seed = seed)
 plot(out[["ga_output"]])
 summary(out[["ga_output"]])
 print(out[["solution"]])

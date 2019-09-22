@@ -123,8 +123,8 @@
 #' m <- m[nrow(m):1, ncol(m):1]
 #' x <- seq(from = 2667405, length.out = ncol(m), by = 10)
 #' y <- seq(from = 6478705, length.out = nrow(m), by = 10)
-#' r <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y), ymx = max(y),
-#'                     crs = "+init=epsg:27200")
+#' r <- raster::raster(m, xmn = min(x), xmx = max(x), ymn = min(y),
+#'                     ymx = max(y), crs = "+init=epsg:27200")
 #' plys <- Grid2Polygons(r, level = TRUE)
 #' cols <- GetColors(length(plys), scheme = "DEM screen")
 #' sp::plot(plys, col = cols, border = "#515151")

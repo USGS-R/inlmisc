@@ -89,19 +89,19 @@ align <- c("l", "c", "c", "c", "c")
 digits <- c(0, 1, 1, 1, 1)
 title <- "Measurements of sepal length and width and petal
           length and width for three species of Iris flower."
-headnotes <- "\\\\textbf{Species of Iris}: includes setosa, versicolor, and virginica.
+headnotes <- "\\\\textbf{Iris Species}: setosa, versicolor, and virginica.
               \\\\textbf{Abbreviations}: cm, centimeters"
 levels(d[[1]]) <- sprintf("\%s\\\\footnotemark[\%d]", levels(d[[1]]), 1:3)
-footnotes <- paste(sprintf("\\\\footnotemark[\%d] Common name is \%s iris.", 1:3,
-                           c("Wild Flag", "Blue Flag", "Virginia")),
-                   collapse = "\\\\\\\\")
+footnotes <- sprintf("\\\\footnotemark[\%d] Common name is \%s iris.",
+                     1:3, c("Wild Flag", "Blue Flag", "Virginia"))
+footnotes <- paste(footnotes, collapse = "\\\\\\\\")
 hline <- utils::tail(which(!duplicated(d[[1]])), -1) - 1L
 PrintTable(d, colheadings, align, digits, title = title,
            headnotes = headnotes, footnotes = footnotes,
            hline = hline, nrec = c(41, 42), rm_dup = 1)
 
 \dontrun{
-sink("table-example.tex")
+sink("test-table.tex")
 cat("\\\\documentclass{article}",
     "\\\\usepackage{geometry}",
     "\\\\usepackage[labelsep = period, labelfont = bf]{caption}",
@@ -141,10 +141,10 @@ align <- c("S", "S",
 PrintTable(d, colheadings, align)
 cat("\\\\end{document}\\n")
 sink()
-tinytex::pdflatex("table-example.tex")  # requires LaTeX
-system("open table-example.pdf")
+tinytex::pdflatex("test-table.tex")  # requires LaTeX
+system("open test-table.pdf")
 
-file.remove("table-example.tex", "table-example.pdf")
+file.remove("test-table.tex", "test-table.pdf")
 }
 
 }

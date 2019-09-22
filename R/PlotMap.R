@@ -151,7 +151,8 @@
 #' r[51:100] <- 2L
 #' r[3:6, 1:5] <- 8L
 #' r <- raster::ratify(r)
-#' rat <- cbind(raster::levels(r)[[1]], land.cover = c("Pine", "Oak", "Meadow"))
+#' rat <- cbind(raster::levels(r)[[1]],
+#'              land.cover = c("Pine", "Oak", "Meadow"))
 #' levels(r) <- rat
 #' PlotMap(r)
 #'
@@ -160,23 +161,26 @@
 #' sp::proj4string(meuse.grid) <- sp::CRS("+init=epsg:28992")
 #' sp::gridded(meuse.grid) <- TRUE
 #' meuse.grid <- raster::raster(meuse.grid, layer = "soil")
-#' model <- gstat::gstat(id = "zinc", formula = zinc~1, locations = ~x+y, data = meuse)
+#' model <- gstat::gstat(id = "zinc", formula = zinc~1,
+#'                       locations = ~x+y, data = meuse)
 #' r <- raster::interpolate(meuse.grid, model)
 #' r <- raster::mask(r, meuse.grid)
 #' Pal <- function(n) GetColors(n, stops=c(0.3, 0.9))
 #' breaks <- seq(0, 2000, by = 200)
 #' credit <- paste("Data collected in a flood plain of the river Meuse,",
 #'                 "near the village of Stein (Netherlands),",
-#'                 "\nand iterpolated on a grid with 40-meter by 40-meter spacing",
+#'                 "\nand iterpolated on a grid with 40m by 40m spacing",
 #'                 "using inverse distance weighting.")
-#' PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE, bg.lines = TRUE,
-#'         contour.lines = list("col" = "#1F1F1F"), credit = credit,
-#'         draw.key = FALSE, simplify = 0)
-#' AddScaleBar(unit = c("KILOMETER", "MILES"), conv.fact = c(0.001, 0.000621371),
+#' PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE,
+#'         bg.lines = TRUE, contour.lines = list("col" = "#1F1F1F"),
+#'         credit = credit, draw.key = FALSE, simplify = 0)
+#' AddScaleBar(unit = c("KILOMETER", "MILES"),
+#'             conv.fact = c(0.001, 0.000621371),
 #'             loc = "bottomright", inset = c(0.1, 0.05))
 #' AddGradientLegend(breaks, Pal, at = breaks,
-#'                   title = "Topsoil zinc\nconcentration\n(ppm)", loc = "topleft",
-#'                   inset = c(0.05, 0.1), strip.dim = c(2, 20))
+#'                   title = "Topsoil zinc\nconcentration\n(ppm)",
+#'                   loc = "topleft", inset = c(0.05, 0.1),
+#'                   strip.dim = c(2, 20))
 #'
 #' m <- datasets::volcano
 #' m <- m[nrow(m):1, ncol(m):1]
