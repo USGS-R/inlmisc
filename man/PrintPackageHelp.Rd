@@ -28,7 +28,7 @@ see \code{\link[rmarkdown:render]{rmarkdown::render}} function for details.}
 Whether to replace the help-topic \dQuote{title} with its \dQuote{name}.}
 
 \item{notrun}{'logical' flag.
-Whether to inlcude \code{## Not run} comments in the Examples section of help documentation.}
+Whether to include \code{## Not run} comments in the Examples section of help documentation.}
 
 \item{sep}{'character' string.
 HTML to separate help topics, a horizontal line by default.}

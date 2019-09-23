@@ -87,7 +87,7 @@ Defaults to 2 percent of the axis range.}
 \item{bty}{'character' string.
 Type of box to be drawn about the legend.
 A value of \code{"o"} (the default) results in a box and
-a value of \code{"n"} supresses the box.}
+a value of \code{"n"} suppresses the box.}
 
 \item{breaks}{'numeric' vector.
 Finite breakpoints for the legend circle symbols.}
@@ -113,7 +113,7 @@ Legend subtitle to be placed below the main title.}
 If true, a legend is drawn.}
 
 \item{draw.points}{'logical' flag.
-If true, the circle symobls are drawn.}
+If true, the circle symbols are drawn.}
 
 \item{add}{'logical' flag.
 If true, circle symbols (and an optional legend) are added to an existing plot.}

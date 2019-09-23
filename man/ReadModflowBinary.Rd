@@ -19,7 +19,7 @@ Specify \code{"array"} for array data (such as hydraulic heads or drawdowns) and
 \item{endian}{'character' string.
 Endian-ness (or byte-order) of the binary file.}
 
-\item{rm.totim.0}{'logical' falg.
+\item{rm.totim.0}{'logical' flag.
 Whether data associated with the stress period at time zero should be removed.}
 }
 \value{

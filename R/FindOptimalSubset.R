@@ -41,7 +41,7 @@
 #'   \dQuote{best} fitness value before the GA is stopped.
 #' @param suggestions integer 'matrix'.
 #'   Integer chromosomes to be included in the initial population.
-#'   See returned \code{solution} component for a suggested value for this arugment.
+#'   See returned \code{solution} component for a suggested value for this argument.
 #' @param parallel 'logical' flag or 'integer' count.
 #'   Whether to use parallel computing.
 #'   This argument can also be used to specify the number of cores to employ; by default,
@@ -101,7 +101,7 @@
 #'
 #' @examples
 #' # Problem: Choose the 4 smallest numbers from a list
-#' #          of 100 values genearated from a standard
+#' #          of 100 values generated from a standard
 #' #          uniform distribution.
 #' k <- 4
 #' n <- 100

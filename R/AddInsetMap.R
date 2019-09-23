@@ -24,7 +24,7 @@
 #'   Defaults to the user coordinate extent of the main plot region, see \code{par("usr")}.
 #' @param bty 'character' string.
 #'   Type of box to be drawn about the inset map.
-#'   A value of \code{"o"} (the default) results in a box and a value of \code{"n"} supresses the box.
+#'   A value of \code{"o"} (the default) results in a box and a value of \code{"n"} suppresses the box.
 #'
 #' @return Invisible \code{NULL}
 #'
