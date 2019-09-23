@@ -1,4 +1,4 @@
-# inlmisc 0.4.7.9000
+# inlmisc 0.4.8
 
 - In `FindOptimalSubset` function, add `numIslands` argument, used to specify the number of islands,
   was previously dependent on the `parallel` argument;
