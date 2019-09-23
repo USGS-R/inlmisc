@@ -11,7 +11,7 @@
 #'   \code{"flow"} for cell-by-cell flow data (budget data).
 #' @param endian 'character' string.
 #'   Endian-ness (or byte-order) of the binary file.
-#' @param rm.totim.0 'logical' falg.
+#' @param rm.totim.0 'logical' flag.
 #'   Whether data associated with the stress period at time zero should be removed.
 #'
 #' @return A 'list' of length equal to the

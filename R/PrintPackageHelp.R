@@ -18,7 +18,7 @@
 #' @param sep 'character' string.
 #'   HTML to separate help topics, a horizontal line by default.
 #' @param notrun 'logical' flag.
-#'   Whether to inlcude \code{## Not run} comments in the Examples section of help documentation.
+#'   Whether to include \code{## Not run} comments in the Examples section of help documentation.
 #' @param links 'character' vector.
 #'   Names of packages searched (level 0) when creating internal hyperlinks to functions and datasets.
 #' @param ...
