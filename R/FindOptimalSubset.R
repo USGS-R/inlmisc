@@ -157,7 +157,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100, numIslands=4,
     if (k < ncol(m)) {
       m <- m[, seq_len(k), drop=FALSE]
     } else if (k > ncol(m)) {
-      set.seed(seed)
+      if (!is.null(seed)) set.seed(seed)
       m <- cbind(m, t(apply(m, 1, function(x) sample(seq_len(n)[-x], k - ncol(m)))))
     }
     suggestions <- t(apply(m, 1, function(x) EncodeChromosome(x, n)))
