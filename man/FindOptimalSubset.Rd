@@ -29,7 +29,7 @@ Recall that the GA searches for a maximum fitness value.}
 \item{...}{Additional arguments to be passed to the fitness function.}
 
 \item{popSize}{'integer' count.
-Population size on islands, that is, the number of indiviuals on all islands.}
+Population size that is distributed evenly between islands.}
 
 \item{numIslands}{'integer' count.
 Number of islands}
@@ -38,8 +38,8 @@ Number of islands}
 Proportion of individuals that should migrate between islands.}
 
 \item{migrationInterval}{'integer' count.
-Number of iterations at which exchange of individuals takes place between islands.
-This interval between migrations is called an \emph{epoch}.}
+Number of iterations at which exchange of individuals takes place.
+This migration between islands is called an \emph{epoch}.}
 
 \item{pcrossover}{'numeric' number.
 Probability of crossover between pairs of chromosomes.}
