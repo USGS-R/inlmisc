@@ -1,37 +1,28 @@
+# inlmisc 0.4.8.9000
+
+- In `PlotMap`, fix bug resulting from change in `raster::crop` that returns an error when the subset is empty, was previously returning `NULL`.
+
+- In `FindOptimalSubset`, stop setting state of random number generator when `seed` argument is `NULL`.
+
 # inlmisc 0.4.8
 
-- In `FindOptimalSubset` function, add `numIslands` argument, used to specify the number of islands,
-  was previously dependent on the `parallel` argument;
-  change default value of `elitism` argument from 0 to 5-percent of the island population.
+- In `FindOptimalSubset`, add `numIslands` argument, used to specify the number of islands, was previously dependent on the `parallel` argument; change default value of `elitism` argument from 0 to 5-percent of the island population.
 
-- Add *misc/latex-packages.txt* file: contains a list of required LaTeX packages
-  that are not included in the default installation of [TinyTeX](https://yihui.name/tinytex/);
-  use the `inlmisc:::InstallLatexPackages()` command to install these packages into TinyTeX.
+- Add *misc/latex-packages.txt*: contains a list of required LaTeX packages that are not included in the default installation of [TinyTeX](https://yihui.name/tinytex/); use the `inlmisc:::InstallLatexPackages()` command to install these packages into TinyTeX.
 
-- In LaTeX preamble, replace **xcolor** package with **color**,
-  eliminates an annoying warning when compiling document.
+- In LaTeX preamble, replace **xcolor** package with **color**, eliminates an annoying warning when compiling document.
 
-- In `GetColors` function, add `"turbo"` color scheme.
+- In `GetColors`, add `"turbo"` color scheme.
 
-- In `SetHinge` function, non-backward compatible change to allocating colors on each side
-  of hinge, is only perceivable when the number of colors is small (`n < 10`).
+- In `SetHinge`, non-backward compatible change to allocating colors on each side of hinge, is only perceivable when the number of colors is small (`n < 10`).
 
-- Rename `PrintHelpPages` function to `PrintPackageHelp`.
-  Preserve empty lines in the Examples section of help documentation;
-  fix parsing bug associated with identifying code blocks; tidy main header for each help topic;
-  add `internal` argument, used to print help pages flagged with keyword `internal`;
-  replace `hr` argument with `sep`;
-  add `title_to_name` argument, used to replace the help-topic "title" with its "name";
-  add `notrun` argument, used to remove `## Not run` comments;
-  include internal links by default.
+- Rename `PrintHelpPages` to `PrintPackageHelp`. Preserve empty lines in the Examples section of help documentation; fix parsing bug associated with identifying code blocks; tidy main header for each help topic; add `internal` argument, used to print help pages flagged with keyword `internal`; replace `hr` argument with `sep`; add `title_to_name` argument, used to replace the help-topic "title" with its "name"; add `notrun` argument, used to remove `## Not run` comments; include internal links by default.
 
 - In `Grid2Polygons`, add `check_validity` argument, used to check the validity of polygons.
 
-- Fix bugs in *raw/build-datasets.R* and *raw/render-tables.R* files
-  that incorrectly called `IsColor` function.
+- Fix bugs in *raw/build-datasets.R* and *raw/render-tables.R* files that incorrectly called `IsColor` function.
 
-- Change package dependency from R >= 3.4.0 to R >= 3.5.0 because serialized objects
-  in serialize/load version 3 cannot be read in older versions of R.
+- Change package dependency from R >= 3.4.0 to R >= 3.5.0 because serialized objects in serialize/load version 3 cannot be read in older versions of R.
 
 # inlmisc 0.4.7
 
@@ -39,213 +30,168 @@
 
 # inlmisc 0.4.6
 
-- Add `"usgs_article"` template for R Markdown documents.
-  This template is experimental and subject to change in the future.
+- Add `"usgs_article"` template for R Markdown documents. This template is experimental and subject to change in the future.
 
-- Set `checkValidity` argument to 2 (check and try to buffer by zero distance to repair)
-  in many of the **rgeos** function calls.
+- Set `checkValidity` argument to 2 (check and try to buffer by zero distance to repair) in many of the **rgeos** function calls.
 
 - In `AddColorKey`, remove border line around color blocks.
 
-- In `Grid2Polygons`, improved performance;
-  change polygon cropping function from `raster::crop` to `SetPolygons`.
+- In `Grid2Polygons`, improved performance; change polygon cropping function from `raster::crop` to `SetPolygons`.
 
 - In `RecreateLibrary`, remove `github` option that allowed package installation from GitHub repositories.
 
-- Add `PrintHelpPages` function, used to print the HTML code associated with
-  help pages of a loaded R package.
+- Add `PrintHelpPages`, used to print the HTML code associated with help pages of a loaded R package.
 
-- In `BuildVignettes` function, rearrange order of arguments and add `doc` argument,
-  used to specify the directory to write vignette output files.
+- In `BuildVignettes`, rearrange order of arguments and add `doc` argument, used to specify the directory to write vignette output files.
 
-- In `GetColors` function, add `"bpy"` (blue-pink-yellow) color scheme.
+- In `GetColors`, add `"bpy"` (blue-pink-yellow) color scheme.
 
-- In `AddPoints` function, change interval to reflect labels, that is,
-  open at the left and closed at right.
+- In `AddPoints`, change interval to reflect labels, that is, open at the left and closed at right.
 
-- Add `AddIntervals` function, used to add vertical interval symbols to plots.
-  Replaces use of `graphics::arrows` in `PlotGraph` function, and
-  avoids the warning message resulting from an arrow length less than 1/1000 inch.
+- Add `AddIntervals`, used to add vertical interval symbols to plots. Replaces use of `graphics::arrows` in `PlotGraph`, and avoids the warning message resulting from an arrow length less than 1/1000 inch.
 
-- In *misc/preamble.tex* file: reduce hyphenation and prevent writing into margin.
+- In *misc/preamble.tex*: reduce hyphenation and prevent writing into margin.
 
-- In `PlotGraph` function: improve handling of cases where range of `y` values is zero;
-  extend y-axis limits to prevent symbols from being drawn on an axis limit;
-  change margin line for the main title, axis title, and axis labels;
-  decrease size of upper margin by 0.2 lines;
-  add `add.grid` argument, determines whether to draw a rectangular grid.
+- In `PlotGraph`: improve handling of cases where range of `y` values is zero; extend y-axis limits to prevent symbols from being drawn on an axis limit; change margin line for the main title, axis title, and axis labels; decrease size of upper margin by 0.2 lines; add `add.grid` argument, determines whether to draw a rectangular grid.
 
-- In `PrintFigure` function, allow heading on single figure.
+- In `PrintFigure`, allow heading on single figure.
 
-- In `AddSearchButton` function, fix bug that prevented popup from opening
-  when `openPopup` argument is true.
+- In `AddSearchButton`, fix bug that prevented popup from opening when `openPopup` argument is true.
 
 # inlmisc 0.4.5
 
-- In `PlotGraph` function, change alignment of `main` title from center to left-hand side of plot.
+- In `PlotGraph`, change alignment of `main` title from center to left-hand side of plot.
 
-- In `ToScientific` function, add `zero` argument, used to substitute a string for values of zero.
+- In `ToScientific`, add `zero` argument, used to substitute a string for values of zero.
 
-- In `PrintTable` function: allow `colheadings` argument to be a data table,
-  used to make column headings with spanners;
-  separate multi-table pages using `\clearpage`.
+- In `PrintTable`: allow `colheadings` argument to be a data table, used to make column headings with spanners; separate multi-table pages using `\clearpage`.
 
-- In *misc/preamble.tex* file: set 'pdfa' option to true,
-  tries to avoid violations of PDF/A in code generated by **hyperref** package;
-  add **multirow**, **footmisc**, and **siunitx** packages;
-  ragged right justification of captions.
+- In *misc/preamble.tex*: set 'pdfa' option to true, tries to avoid violations of PDF/A in code generated by **hyperref** package; add **multirow**, **footmisc**, and **siunitx** packages; ragged right justification of captions.
 
 - Add **alphahull**, **maptools**, and **remotes** to suggested packages.
 
 - Remove **httr** and **devtools** from suggested packages.
 
-- In `GetRegionOfInterest` function: replace `obj` argument with `x` and `y`;
-  add `alpha` and `width` arguments,
-  used to compute alpha-shape and expand the region of interest, respectively.
+- In `GetRegionOfInterest`: replace `obj` argument with `x` and `y`; add `alpha` and `width` arguments, used to compute alpha-shape and expand the region of interest, respectively.
 
 # inlmisc 0.4.4
 
-- Add `BuildVignettes` function, used to build package vignettes.
+- Add `BuildVignettes`, used to build package vignettes.
 
-- In `SummariseBudget` function, improve memory management.
+- In `SummariseBudget`, improve memory management.
 
 - Change package imports by adding **data.table** and removing **dplyr**.
 
-- Add `SetHinge` function, used to specify a hinge location in a color palette.
+- Add `SetHinge`, used to specify a hinge location in a color palette.
 
-- In `PrintTable` function: `d` argument can be of class 'matrix'; and
-  a default caption is no longer added when `title` and `headnotes` arguments are not specified.
+- In `PrintTable`: `d` argument can be of class 'matrix'; and a default caption is no longer added when `title` and `headnotes` arguments are not specified.
 
 - Tidy help documentation
 
-- Add `GetRegionOfInterest` function, used to calculate the region of interest from spatial points.
+- Add `GetRegionOfInterest`, used to calculate the region of interest from spatial points.
 
-- In `FindOptimalSubset` function: improve matrix construction of `suggestions`;
-  change calculation of number of bits in a number.
+- In `FindOptimalSubset`: improve matrix construction of `suggestions`; change calculation of number of bits in a number.
 
-- In `AddColorKey` function, rearrange order of arguments.
+- In `AddColorKey`, rearrange order of arguments.
 
-- In `PlotCrossSection` function: add `bend.label` argument, used to
-  place labels at top of the bend-in-section lines;
-  change default value of `bg.col` argument from `"#FFFFFFD8"` to `NULL`,
-  and for `scale.loc` argument from `"bottom"` to `NULL`;
-  make font/line color darker for section breaks and features.
+- In `PlotCrossSection`: add `bend.label` argument, used to place labels at top of the bend-in-section lines; change default value of `bg.col` argument from `"#FFFFFFD8"` to `NULL`, and for `scale.loc` argument from `"bottom"` to `NULL`; make font/line color darker for section breaks and features.
 
-- Rename `GetTolColors` function to `GetColors`.
-  Add additional color schemes;
-  replace `start` and `end` arguments with `stops`, a vector of length 2;
-  change `blind` argument option from `"monochromacy"` to `"monochrome"`;
-  return a variant of the `GetColors` function when argument `n` is unspecified.
+- Rename `GetTolColors` to `GetColors`. Add additional color schemes; replace `start` and `end` arguments with `stops`, a vector of length 2; change `blind` argument option from `"monochromacy"` to `"monochrome"`; return a variant of the `GetColors` function when argument `n` is unspecified.
 
 - For leaflet-search plugin, change version from `2.8.0` to `2.9.6` and tidy wrapper functions.
 
-- In `CreateWebMap` function, add `service` argument for specifying
-  the mapping service to use for accessing base-map tiles.
+- In `CreateWebMap`, add `service` argument for specifying the mapping service to use for accessing base-map tiles.
 
 - Change required R version from `>= 3.2.0` to `>= 3.4.0`.
 
 # inlmisc 0.4.3
 
-- Add `AddNorthArrow` function, was previously defined as an internal function.
+- Add `AddNorthArrow`, was previously defined as an internal function.
 
-- In `AddScaleBar` function: non-backward compatible argument changes.
-  Remove `offset` argument and replace with `...`, see help documentation for details.
+- In `AddScaleBar`: non-backward compatible argument changes. Remove `offset` argument and replace with `...`, see help documentation for details.
 
 - Make **dichromat** a suggested package.
 
 - Remove **viridisLite** from suggested packages.
 
-- Add `GetInsetLocation` function, used to determine
-  the location for a inset graphics in the main plot region.
+- Add `GetInsetLocation`, used to determine the location for a inset graphics in the main plot region.
 
-- In `AddPoints` function: add `bty`, `draw.legend`, and `draw.points` arguments.
+- In `AddPoints`: add `bty`, `draw.legend`, and `draw.points` arguments.
 
-- In `PlotGraph` function: add `xpd` argument, determines
-  whether point and (or) line symbols are clipped to the plot region;
-  change default color scheme;
-  change contents of `fill` argument (non-backward compatible) and add a `fillcolor` argument;
-  provide `main` argument a default value of `NULL`.
+- In `PlotGraph`: add `xpd` argument, determines whether point and (or) line symbols are clipped to the plot region; change default color scheme; change contents of `fill` argument (non-backward compatible) and add a `fillcolor` argument; provide `main` argument a default value of `NULL`.
 
-- In `FindOptimalSubset` function, add `monitor` argument to check on status of GA run.
+- In `FindOptimalSubset`, add `monitor` argument to check on status of GA run.
 
-- In `GetTolColors` function: add color schemes;
-  change default scheme from `"bright"` to `"smooth rainbow"`;
-  add `start`, `end`, `bias`, `reverse`, `blind`, and `gray` arguments.
+- In `GetTolColors`: add color schemes; change default scheme from `"bright"` to `"smooth rainbow"`; add `start`, `end`, `bias`, `reverse`, `blind`, and `gray` arguments.
 
 # inlmisc 0.4.2
 
-- In `GetTolColors` function, revise color schemes based of issue 3.0 of technical note.
+- In `GetTolColors`, revise color schemes based of issue 3.0 of technical note.
 
-- In `PlotGraph` function, improve placement of tick marks.
+- In `PlotGraph`, improve placement of tick marks.
 
 - Remove **colorspace** from suggested packages and replace with **viridisLite**.
 
-- In `ToScientific` function, better identify whether to print numeric values in fixed or scientific notation.
+- In `ToScientific`, better identify whether to print numeric values in fixed or scientific notation.
 
-- In `AddScaleBar` function, non-backward compatible argument changes and formatting improvements.
+- In `AddScaleBar`, non-backward compatible argument changes and formatting improvements.
 
-- In `PlotGraph` function: fix bug that resulted in an error when `type = "n"`; and
-  add `main` argument for placing a title at the top of the plot.
+- In `PlotGraph`: fix bug that resulted in an error when `type = "n"`; and add `main` argument for placing a title at the top of the plot.
 
 - Make **gstat** and **roxygen2** suggested packages.
 
 - Remove **httr**, **maps**, and **maptools** from suggested packages.
 
-- In *misc/preamble.tex* file: tidy code;
-  include fix for spacing after number in List of Figures and List of Tables;
-  remove **helvet** package; and add **float** package, provides the H float modifier option.
+- In *misc/preamble.tex*: tidy code; include fix for spacing after number in List of Figures and List of Tables;  remove **helvet** package; and add **float** package, provides the H float modifier option.
 
-- In `AddInsetMap`: add an optional `e` argument, a numeric vector describing
-  the extent of the smaller axis-aligned rectangle; add "center" option for `loc` argument; and
-  add `bty` argument, determines if a box is to be drawn around the inset map.
+- In `AddInsetMap`: add an optional `e` argument, a numeric vector describing the extent of the smaller axis-aligned rectangle; add "center" option for `loc` argument; and add `bty` argument, determines if a box is to be drawn around the inset map.
 
 - Update *leaflet-search.min.js* and *leaflet-search.min.css* files to version 2.8.0.
 
-- Add `PrintFigure` function, used to print the LaTeX code associated with a figure.
+- Add `PrintFigure`, used to print the LaTeX code associated with a figure.
 
 # inlmisc 0.4.0
 
-- Add `GetTolColors` function, used to access color palettes by Paul Tol.
+- Add `GetTolColors`, used to access color palettes by Paul Tol.
 
 - Avoid importing all functions from a package.
 
-- Remove `AddCertificate` function, no longer needed with new version of R (3.4.3).
+- Remove `AddCertificate`, no longer needed with new version of R (3.4.3).
 
-- Add `PrintTable` function, used to print the LaTeX code associated with a `data.frame` object.
+- Add `PrintTable`, used to print the LaTeX code associated with a `data.frame` object.
 
-- In `PlotMap` function, remove option to map points.
+- In `PlotMap`, remove option to map points.
 
-- In `ReadCodeChunks` function, remove dependency on *knitr-intro.Rmd* file in example.
+- In `ReadCodeChunks`, remove dependency on *knitr-intro.Rmd* file in example.
 
-- In `AddColorKey` function, replace `scientific` argument with `scipen`, see `getOption("scipen")` command.
+- In `AddColorKey`, replace `scientific` argument with `scipen`, see `getOption("scipen")` command.
 
-- In `AddColorKey` function, add `log` argument to specify axis to be logarithmic.
+- In `AddColorKey`, add `log` argument to specify axis to be logarithmic.
 
 - In `AddColorKey`, use *m x 10^n* format for tick labels written in scientific notation.
 
-- In `RecreateLibrary` function, add `parallel` argument to install packages from source using parallel processes.
+- In `RecreateLibrary`, add `parallel` argument to install packages from source using parallel processes.
 
-- In `ToScientific` function, add `big.mark` argument with default value of `","`.
+- In `ToScientific`, add `big.mark` argument with default value of `","`.
 
-- In `ToScientific` function, fix bug that formatted `0` as `NA` when `type = "plotmath"`.
+- In `ToScientific`, fix bug that formatted `0` as `NA` when `type = "plotmath"`.
 
-- In `CreateWebMap` function, pass `...` arguments to `leaflet::leaflet` function,
+- In `CreateWebMap`, pass `...` arguments to `leaflet::leaflet` function,
   these arguments were previously passed to the `leaflet::leafletOptions` function.
 
-- In `CreateWebMap` function, add `maps` argument to specify which base maps to include.
+- In `CreateWebMap`, add `maps` argument to specify which base maps to include.
 
-- In `CreateWebMap` function, remove coordinates and zoom level information from top of map.
+- In `CreateWebMap`, remove coordinates and zoom level information from top of map.
 
-- Add `AddHomeButton`, `AddClusterButton`, and `AddSearchButton`, and `AddLegend` functions,
-  used to add additional web map elements.
+- Add `AddHomeButton`, `AddClusterButton`, and `AddSearchButton`, and `AddLegend`, used to add additional web map elements.
 
-- In `FindOptimalSubset` function, allow integer chromosomes to be specified for the `suggestions` argument.
+- In `FindOptimalSubset`, allow integer chromosomes to be specified for the `suggestions` argument.
 
 - Add additional argument checks using **checkmate** package.
 
 # inlmisc 0.3.5
 
-- In `PlotMap` function, fix bug introduced by previous fix of raster range calculation.
+- In `PlotMap`, fix bug introduced by previous fix of raster range calculation.
 
 - Made `AddCertificate` an internal function.
 
@@ -253,94 +199,80 @@
 
 # inlmisc 0.3.4
 
-- In `PlotMap` function, fix bug in range calculation of raster values by removing `finite = TRUE`.
+- In `PlotMap`, fix bug in range calculation of raster values by removing `finite = TRUE`.
 
-- In `PlotMap` function, fix extent of background image, rivers, lakes, and roads using `par("usr")`.
+- In `PlotMap`, fix extent of background image, rivers, lakes, and roads using `par("usr")`.
 
-- Add `FindOptimalSubset` function, used to identify an optimal subset using a genetic algorithm.
+- Add `FindOptimalSubset`, used to identify an optimal subset using a genetic algorithm.
 
 # inlmisc 0.3.3
 
-- In `AddPoints` function: add option to scale symbol size to radius;
+- In `AddPoints`: add option to scale symbol size to radius;
   revise calculation of symbol size and legend labels.
 
-- In `PlotMap` function, let `r` argument accept any object that can be converted to a `RasterLayer` class.
+- In `PlotMap`, let `r` argument accept any object that can be converted to a `RasterLayer` class.
 
 - In LaTeX preamble: add **verbatimbox** package; add maketitle format.
 
-- In `PlotMap` function, add `simplify` argument, used to convert raster to polygons prior to plotting.
+- In `PlotMap`, add `simplify` argument, used to convert raster to polygons prior to plotting.
 
-- In `Grid2Polygons` function: allow `grd` argument to be an object of class `SpatialPixelsDataFrame` or `Raster*`;
-  transform coordinate reference system (CRS) of `ply` argument to match the CRS of the `grd` argument; and
-  add `zlim` argument, a limit on the attribute variable.
+- In `Grid2Polygons`: allow `grd` argument to be an object of class `SpatialPixelsDataFrame` or `Raster*`; transform coordinate reference system (CRS) of `ply` argument to match the CRS of the `grd` argument; and add `zlim` argument, a limit on the attribute variable.
 
-- In `ToScientific` function, add arguments `scipen`, `delimiter`, and `...`;
-  and rename `lab.type` argument to `type`.
-  Code in place for backwards compatibility.
+- In `ToScientific`, add arguments `scipen`, `delimiter`, and `...`; and rename `lab.type` argument to `type`. Code in place for backwards compatibility.
 
 # inlmisc 0.3.2
 
-- In `RecreateLibrary` and `SavePackageDetails` functions, add support for *gzip* file compression.
+- In `RecreateLibrary` and `SavePackageDetails`, add support for *gzip* file compression.
 
-- In `SavePackageDetails` function, fix bug that results in
-  an 'invalid cross-device link' error on some flavor's of R.
+- In `SavePackageDetails`, fix bug that results in an 'invalid cross-device link' error on some flavor's of R.
 
 # inlmisc 0.3.1
 
-- Rename `SavePackageNames` function to `SavePackageDetails`.
+- Rename `SavePackageNames` to `SavePackageDetails`.
 
-- Add `AddCertificate` function, used to add a X.509 certificate to your CA bundle.
+- Add `AddCertificate`, used to add a X.509 certificate to your CA bundle.
 
 - Make **httr** a suggested package.
 
-- In `RecreateLibrary` function, add `local` argument, file paths of files containing builds of packages.
+- In `RecreateLibrary`, add `local` argument, file paths of files containing builds of packages.
 
-- In `AddGradientLegend` function, add `n` argument, the desired number of tick-marks to be drawn.
+- In `AddGradientLegend`, add `n` argument, the desired number of tick-marks to be drawn.
 
 # inlmisc 0.3.0
 
-- Add `Grid2Polygons` function from the **Grid2Polygons** package.
+- Add `Grid2Polygons` from the **Grid2Polygons** package.
 
-- Total revision of the `RecreateLibrary` and `SavePackageNames` functions.
+- Total revision of `RecreateLibrary` and `SavePackageNames`.
 
-- In `ToScientific` function, improve default value for `digits` argument.
+- In `ToScientific`, improve default value for `digits` argument.
 
-- Add `AddGradientLegend` function, used to add a continuous color gradient legend strip to a plot.
+- Add `AddGradientLegend`, used to add a continuous color gradient legend strip to a plot.
 
 # inlmisc 0.2.7
 
-- Add `RecreateLibrary` function, used to recreate an existing library on a new installation of R.
+- Add `RecreateLibrary`, used to recreate an existing library on a new installation of R.
 
-- Add `FormatPval` function, used to format *p*-values.
+- Add `FormatPval`, used to format *p*-values.
 
 - Add **bm** and **makecell** packages to LaTeX preamble.
 
-- Changes in `PlotGraph` function include:
-  Add option for plotting interval censored data by specifying `type = "i"`.
-  Select box-and-whisker plot using `type = "w"`, was previously `type = "box"`.
-  Default for `seq.date.by` argument changed from `"year"` to `NULL`.
+- Changes in `PlotGraph`: Add option for plotting interval censored data by specifying `type = "i"`. Select box-and-whisker plot using `type = "w"`, was previously `type = "box"`. Default for `seq.date.by` argument changed from `"year"` to `NULL`.
 
-- Add `CreateWebMap` function, creates a Leaflet map widget using
-  [The National Map](https://nationalmap.gov/) services.
+- Add `CreateWebMap`, creates a Leaflet map widget using [The National Map](https://nationalmap.gov/) services.
 
 - Tidy help documentation for functions.
 
 # inlmisc 0.2.6
 
-- Add `endian` argument to `ReadModflowBinary` function.
-  Argument describes the endian-ness (or byte-order) of the binary file
-  and is required for calls to the `readBin` function.
-  Thanks to Professor Brian Ripley for identifying this issue.
+- Add `endian` argument to `ReadModflowBinary`. Argument describes the endian-ness (or byte-order) of the binary file and is required for calls to the `readBin` function. Thanks to Professor Brian Ripley for identifying this issue.
 
 # inlmisc 0.2.5
 
-- In `SummariseBudget` function, the `desc` argument no longer needs to be specified.
-  If missing, all data types are summarized.
+- In `SummariseBudget`, the `desc` argument no longer needs to be specified. If missing, all data types are summarized.
 
-- In `SummariseBudget` function, remove default for `desc` argument and add `id` argument,
-  the auxiliary variable name.
+- In `SummariseBudget`, remove default for `desc` argument and add `id` argument, the auxiliary variable name.
 
-- In `ReadModflowBinary` function, enable cell-by-cell budget files to be read when they are not in compact form.
+- In `ReadModflowBinary`, enable cell-by-cell budget files to be read when they are not in compact form.
 
 - Change legend format for binned point data from `[#, )` to `># to #`.
 
@@ -354,39 +286,31 @@
 
 # inlmisc 0.2.3
 
-- In `PlotMap`, `PlotCrossSection`, and `AddColorKey` functions,
-  dynamically adjust vertical plot margins based on the number of lines in the user specified labels.
+- In `PlotMap`, `PlotCrossSection`, and `AddColorKey`, dynamically adjust vertical plot margins based on the number of lines in the user specified labels.
 
-- In `AddPoints` function, remove `draw.legend` argument and rename `pos` argument to `legend.pos`.
-  A `NULL` value for `legend.pos` will prevent the legend from being drawn.
+- In `AddPoints`, remove `draw.legend` argument and rename `pos` argument to `legend.pos`. A `NULL` value for `legend.pos` will prevent the legend from being drawn.
 
-- Change function name from `AddBubbles` to `AddPoints`.
+- Change name from `AddBubbles` to `AddPoints`.
 
-- In `PlotMap` and `PlotCrossSection` functions, fix layout so color key dimensions don't change on resize.
+- In `PlotMap` and `PlotCrossSection`, fix layout so color key dimensions don't change on resize.
 
-- In `PlotMap` function, add `file.close` argument.
-  A logical that indicates if the graphics device driver should be shut down when the function exits.
+- In `PlotMap` function, add `file.close` argument. A logical that indicates if the graphics device driver should be shut down when the function exits.
 
-- In `AddBubbles` function, allow `z` argument to be an object of class `factor`.
+- In `AddBubbles`, allow `z` argument to be an object of class `factor`.
 
-- In `AddBubbles` function, account for aspect ratio when constructing legend.
+- In `AddBubbles`, account for aspect ratio when constructing legend.
 
-- In `AddBubbles` function, rename `bg.pos` argument to `bg`, and set `bg.neg = NULL`.
-  The `bg` argument may now be used to specify circle colors for all `z` values, not just positive values.
-  See help documentation for details.
+- In `AddBubbles`, rename `bg.pos` argument to `bg`, and set `bg.neg = NULL`. The `bg` argument may now be used to specify circle colors for all `z` values, not just positive values. See help documentation for details.
 
-- In `AddBubbles` function, specifying a single numeric value for the `inches` arguments results in
-  a fixed radius being used for all circle symbols.
+- In `AddBubbles`, specifying a single numeric value for the `inches` arguments results in a fixed radius being used for all circle symbols.
 
-- In `PlotMap` function, account for z-axis limits prior to removing rows and columns having all missing values.
+- In `PlotMap`, account for z-axis limits prior to removing rows and columns having all missing values.
 
-- In `PlotMap` function, change default for `scale.loc` argument from `"leftbottom"` to `NULL`;
-  the scale bar is no longer drawn by default.
+- In `PlotMap`, change default for `scale.loc` argument from `"leftbottom"` to `NULL`; the scale bar is no longer drawn by default.
 
-- In `PlotMap` function, change `asp` argument from 1 to NULL.
-  Defaults to 1 when data is projected, otherwise, a calculated value based on axes limits is used.
+- In `PlotMap`, change `asp` argument from 1 to NULL. Defaults to 1 when data is projected, otherwise, a calculated value based on axes limits is used.
 
-- Add function `POSIXct2Character`, used to convert objects from `POSIXct` to `character` class.
+- Add `POSIXct2Character`, used to convert objects from `POSIXct` to `character` class.
 
 - Update URL links to HTTP Secure
 
@@ -396,7 +320,7 @@
 
 - Change argument name in `ReadModflowBinary` function from `f` to `path`.
 
-- Add `ReadCodeChunk` function, reads **knitr** code chunks into the current session.
+- Add `ReadCodeChunk`, reads **knitr** code chunks into the current session.
 
 - Change NEWS file to markdown format.
 
@@ -408,8 +332,7 @@
 
 # inlmisc 0.2.0
 
-- Add `file` argument to `PlotMap` and `PlotCrossSection` functions.
-  Specifying this argument will start a graphics device driver for producing either a PDF or PNG file.
+- Add `file` argument to `PlotMap` and `PlotCrossSection`. Specifying this argument will start a graphics device driver for producing either a PDF or PNG file.
 
 - Width and height of graphics device is no longer calculated when drawing to screen.
 

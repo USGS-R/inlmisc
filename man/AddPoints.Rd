@@ -134,7 +134,6 @@ To avoid overplotting, circle symbols are drawn in order of decreasing radius.
 }
 \examples{
 set.seed(2)
-
 n <- 50L
 x <- cbind(runif(n, 1, 10), runif(n, 1, 500))
 z <- runif(n, 0, 1000)

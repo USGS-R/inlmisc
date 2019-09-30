@@ -124,7 +124,7 @@
 FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100, numIslands=4,
                               migrationRate=0.1, migrationInterval=10,
                               pcrossover=0.8, pmutation=0.1,
-                              elitism=max(1, round(popSize/numIslands*0.05)),
+                              elitism=max(1, round(popSize / numIslands * 0.05)),
                               maxiter=1000, run=maxiter, suggestions=NULL,
                               parallel=TRUE, monitor=NULL, seed=NULL) {
 
@@ -157,7 +157,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100, numIslands=4,
     if (k < ncol(m)) {
       m <- m[, seq_len(k), drop=FALSE]
     } else if (k > ncol(m)) {
-      set.seed(seed)
+      if (!is.null(seed)) set.seed(seed)
       m <- cbind(m, t(apply(m, 1, function(x) sample(seq_len(n)[-x], k - ncol(m)))))
     }
     suggestions <- t(apply(m, 1, function(x) EncodeChromosome(x, n)))
