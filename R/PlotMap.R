@@ -271,7 +271,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   if (!is.na(xl[2])) e[2] <- xl[2]
   if (!is.na(yl[1])) e[3] <- yl[1]
   if (!is.na(yl[2])) e[4] <- yl[2]
-  r <- raster::crop(r, raster::extent(e), snap="near")
+  r <- tryCatch(raster::crop(r, raster::extent(e), snap="near"),
+                error=function(e) NULL)
 
   if (all(is.na(r[]))) {
     n <- 0
@@ -486,7 +487,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
   }
 
   if (!is.null(bg.image)) {
-    bg.image <- raster::crop(bg.image, raster::extent(graphics::par("usr")), snap="out")
+    bg.image <- tryCatch(raster::crop(bg.image, raster::extent(graphics::par("usr")), snap="out"),
+                         error=function(e) NULL)
     if (!is.null(bg.image))
       raster::image(bg.image, maxpixels=length(bg.image), useRaster=TRUE,
                     col=grDevices::grey(0:255 / 255, alpha=bg.image.alpha), add=TRUE)
@@ -528,7 +530,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (is.list(rivers)) {
     river <- sp::spTransform(rivers[[1]], r@crs)
-    river <- raster::crop(river, raster::extent(graphics::par("usr")))
+    river <- tryCatch(raster::crop(river, raster::extent(graphics::par("usr"))),
+                      error=function(e) NULL)
     if (!is.null(river)) {
       color <- as.character(rivers[["col"]])
       width <- as.numeric(rivers[["lwd"]])
@@ -540,7 +543,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (is.list(lakes)) {
     lake <- sp::spTransform(lakes[[1]], r@crs)
-    lake <- raster::crop(lake, raster::extent(graphics::par("usr")))
+    lake <- tryCatch(raster::crop(lake, raster::extent(graphics::par("usr"))),
+                     error=function(e) NULL)
     if (!is.null(lake)) {
       color <- as.character(lakes[["col"]])
       bordr <- as.character(lakes[["border"]])
@@ -554,7 +558,8 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
 
   if (is.list(roads)) {
     road <- sp::spTransform(roads[[1]], r@crs)
-    road <- raster::crop(road, raster::extent(graphics::par("usr")))
+    road <- tryCatch(raster::crop(road, raster::extent(graphics::par("usr"))),
+                     error=function(e) NULL)
     if (!is.null(roads)) {
       color <- as.character(roads[["col"]])
       width <- as.numeric(roads[["lwd"]])
