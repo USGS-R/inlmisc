@@ -1,6 +1,10 @@
 # inlmisc 0.4.8.9000
 
-- ...
+- In `PlotMap` function, fix bug resulting from change in `raster::crop` that
+  returns an error when the subset is empty, was previously returning `NULL`.
+
+- In `FindOptimalSubset` function, stop setting state of random number generator
+  when `seed` argument is `NULL`.
 
 # inlmisc 0.4.8
 
