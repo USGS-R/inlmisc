@@ -1,8 +1,7 @@
-title  <- sprintf("{%s}: %s", meta$Package, meta$Title)
-author <- meta$Authors
-year   <- sub("-.*", "", meta$Packaged)
-note   <- sprintf("R package version %s", meta$Version)
-url    <- sprintf("https://CRAN.R-project.org/package=%s", meta$Package)
-
-bibentry(bibtype="Manual", title=title, author=eval(parse(text=author)),
-         year=year, note=note, url=url)
+utils::bibentry(bibtype = "Manual",
+                title   = sprintf("{%s}: %s", meta$Package, meta$Title),
+                author  = eval(parse(text=meta$Authors)),
+                year    = sub("-.*", "", meta$Packaged),
+                note    = sprintf("R package version %s", meta$Version),
+                url     = sprintf("https://CRAN.R-project.org/package=%s",
+                                  meta$Package))
