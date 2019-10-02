@@ -140,7 +140,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100, numIslands=4,
   checkmate::assertNumber(pmutation, lower=0, upper=1, finite=TRUE)
   checkmate::assertInt(elitism, lower=1)
   checkmate::assertInt(maxiter, lower=1)
-  checkmate::assertInt(run, lower=1, upper=maxiter)
+  checkmate::assertInt(run, lower=1)
   checkmate::assertMatrix(suggestions, min.rows=1, min.cols=1, null.ok=TRUE)
   checkmate::qassert(parallel, c("B1", "X1[0,)"))
   checkmate::assertFunction(monitor, null.ok=TRUE)
