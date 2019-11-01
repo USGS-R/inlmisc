@@ -1,9 +1,10 @@
 # inlmisc
 
 [![Travis Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
+[![CRAN Version](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
+[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/inlmisc?color=brightgreen)](https://CRAN.R-project.org/package=inlmisc)
+[![Dependencies](https://tinyverse.netlify.com/badge/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
 [![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
-[![](https://cranlogs.r-pkg.org/badges/inlmisc?color=brightgreen)](https://CRAN.R-project.org/package=inlmisc)
 [![USGS Category](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
 
 ## Overview
@@ -35,8 +36,8 @@ Please consider reporting bugs and asking questions on the [Issues page](https:/
 
 ## Disclaimer
 
-This software has been approved for release by the U.S. Geological Survey
-(USGS). Although the software has been subjected to rigorous review, the USGS
+This software has been approved for release by the USGS.
+Although the software has been subjected to rigorous review, the USGS
 reserves the right to update the software as needed pursuant to further analysis
 and review. No warranty, expressed or implied, is made by the USGS or the U.S.
 Government as to the functionality of the software and related material nor

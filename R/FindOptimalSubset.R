@@ -19,14 +19,14 @@
 #' @param ...
 #'   Additional arguments to be passed to the fitness function.
 #' @param popSize 'integer' count.
-#'   Population size
+#'   Population size that is distributed evenly between islands.
 #' @param numIslands 'integer' count.
 #'   Number of islands
 #' @param migrationRate 'numeric' number.
 #'   Proportion of individuals that should migrate between islands.
 #' @param migrationInterval 'integer' count.
 #'   Number of iterations at which exchange of individuals takes place.
-#'   This interval between migrations is called an \emph{epoch}.
+#'   This migration between islands is called an \emph{epoch}.
 #' @param pcrossover 'numeric' number.
 #'   Probability of crossover between pairs of chromosomes.
 #' @param pmutation 'numeric' number.
@@ -35,7 +35,7 @@
 #'   Number of chromosomes to survive into the next generation.
 #'   Defaults to 5-percent of the island population.
 #' @param maxiter 'integer' count.
-#'   Maximum number of iterations to run before the GA search is halted.
+#'   Maximum number of iterations to run on each island before the GA search is halted.
 #' @param run 'integer' count.
 #'   Number of consecutive generations without any improvement in the
 #'   \dQuote{best} fitness value before the GA is stopped.
@@ -140,7 +140,7 @@ FindOptimalSubset <- function(n, k, Fitness, ..., popSize=100, numIslands=4,
   checkmate::assertNumber(pmutation, lower=0, upper=1, finite=TRUE)
   checkmate::assertInt(elitism, lower=1)
   checkmate::assertInt(maxiter, lower=1)
-  checkmate::assertInt(run, lower=1, upper=maxiter)
+  checkmate::assertInt(run, lower=1)
   checkmate::assertMatrix(suggestions, min.rows=1, min.cols=1, null.ok=TRUE)
   checkmate::qassert(parallel, c("B1", "X1[0,)"))
   checkmate::assertFunction(monitor, null.ok=TRUE)
