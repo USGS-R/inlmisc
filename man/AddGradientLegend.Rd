@@ -4,9 +4,17 @@
 \alias{AddGradientLegend}
 \title{Add Color Gradient Legend to Plot}
 \usage{
-AddGradientLegend(breaks, pal = GetColors, at = NULL, n = 5,
-  labels = TRUE, scientific = FALSE, title = NULL, strip.dim = c(2,
-  8), ...)
+AddGradientLegend(
+  breaks,
+  pal = GetColors,
+  at = NULL,
+  n = 5,
+  labels = TRUE,
+  scientific = FALSE,
+  title = NULL,
+  strip.dim = c(2, 8),
+  ...
+)
 }
 \arguments{
 \item{breaks}{'numeric' vector.

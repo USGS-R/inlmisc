@@ -4,13 +4,36 @@
 \alias{PlotGraph}
 \title{Plot Graph}
 \usage{
-PlotGraph(x, y, xlab, ylab, main = NULL, asp = NA, xlim = NULL,
-  ylim = NULL, xn = 5, yn = 5, ylog = FALSE, type = "s",
-  lty = 1, lwd = 0.7, pch = NULL, col = NULL, bg = NA,
-  fill = "none", fillcolor = NULL, pt.cex = 1, xpd = FALSE,
-  seq.date.by = NULL, scientific = NA, conversion.factor = NULL,
-  boxwex = 0.8, center.date.labels = FALSE, bg.polygon = NULL,
-  add.grid = TRUE)
+PlotGraph(
+  x,
+  y,
+  xlab,
+  ylab,
+  main = NULL,
+  asp = NA,
+  xlim = NULL,
+  ylim = NULL,
+  xn = 5,
+  yn = 5,
+  ylog = FALSE,
+  type = "s",
+  lty = 1,
+  lwd = 0.7,
+  pch = NULL,
+  col = NULL,
+  bg = NA,
+  fill = "none",
+  fillcolor = NULL,
+  pt.cex = 1,
+  xpd = FALSE,
+  seq.date.by = NULL,
+  scientific = NA,
+  conversion.factor = NULL,
+  boxwex = 0.8,
+  center.date.labels = FALSE,
+  bg.polygon = NULL,
+  add.grid = TRUE
+)
 }
 \arguments{
 \item{x, y}{'Date' vector, 'numeric' vector, 'matrix', or 'data.frame'.

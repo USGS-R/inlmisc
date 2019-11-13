@@ -4,11 +4,25 @@
 \alias{FindOptimalSubset}
 \title{Find Optimal Subset Using a GA}
 \usage{
-FindOptimalSubset(n, k, Fitness, ..., popSize = 100, numIslands = 4,
-  migrationRate = 0.1, migrationInterval = 10, pcrossover = 0.8,
-  pmutation = 0.1, elitism = max(1, round(popSize/numIslands * 0.05)),
-  maxiter = 1000, run = maxiter, suggestions = NULL,
-  parallel = TRUE, monitor = NULL, seed = NULL)
+FindOptimalSubset(
+  n,
+  k,
+  Fitness,
+  ...,
+  popSize = 100,
+  numIslands = 4,
+  migrationRate = 0.1,
+  migrationInterval = 10,
+  pcrossover = 0.8,
+  pmutation = 0.1,
+  elitism = max(1, round(popSize/numIslands * 0.05)),
+  maxiter = 1000,
+  run = maxiter,
+  suggestions = NULL,
+  parallel = TRUE,
+  monitor = NULL,
+  seed = NULL
+)
 }
 \arguments{
 \item{n}{'integer' count.

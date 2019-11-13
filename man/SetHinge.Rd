@@ -4,8 +4,16 @@
 \alias{SetHinge}
 \title{Set Hinge Location in Color Palette}
 \usage{
-SetHinge(x, hinge, scheme = "sunset", alpha = NULL, reverse = FALSE,
-  buffer = 0, stops = c(0, 1), allow_bias = TRUE)
+SetHinge(
+  x,
+  hinge,
+  scheme = "sunset",
+  alpha = NULL,
+  reverse = FALSE,
+  buffer = 0,
+  stops = c(0, 1),
+  allow_bias = TRUE
+)
 }
 \arguments{
 \item{x}{'numeric' object that can be passed to the \code{\link{range}}

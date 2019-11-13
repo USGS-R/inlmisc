@@ -5,12 +5,18 @@
 \alias{SavePackageDetails}
 \title{Recreate R Library}
 \usage{
-RecreateLibrary(file = "R-packages.tsv", lib = .libPaths()[1],
-  repos = getOption("repos"), snapshot = FALSE, local = NULL,
-  versions = FALSE, parallel = TRUE, quiet = FALSE)
+RecreateLibrary(
+  file = "R-packages.tsv",
+  lib = .libPaths()[1],
+  repos = getOption("repos"),
+  snapshot = FALSE,
+  local = NULL,
+  versions = FALSE,
+  parallel = TRUE,
+  quiet = FALSE
+)
 
-SavePackageDetails(file = "R-packages.tsv", lib = .libPaths(),
-  pkg = NULL)
+SavePackageDetails(file = "R-packages.tsv", lib = .libPaths(), pkg = NULL)
 }
 \arguments{
 \item{file}{'character' string.

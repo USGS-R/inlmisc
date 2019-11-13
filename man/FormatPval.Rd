@@ -4,8 +4,13 @@
 \alias{FormatPval}
 \title{Format P Values}
 \usage{
-FormatPval(x, digits = max(1, getOption("digits") - 2),
-  eps = .Machine$double.eps, na.form = "NA", scientific = NA)
+FormatPval(
+  x,
+  digits = max(1, getOption("digits") - 2),
+  eps = .Machine$double.eps,
+  na.form = "NA",
+  scientific = NA
+)
 }
 \arguments{
 \item{x}{'numeric' vector.

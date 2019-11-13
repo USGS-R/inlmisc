@@ -4,10 +4,22 @@
 \alias{PrintTable}
 \title{Print as LaTeX Table}
 \usage{
-PrintTable(d, colheadings = NULL, align = NULL, digits = NULL,
-  label = NULL, title = NULL, headnotes = NULL, footnotes = NULL,
-  nrec = nrow(d), hline = NULL, na = "\\\\textemdash",
-  rm_dup = NULL, landscape = FALSE, ...)
+PrintTable(
+  d,
+  colheadings = NULL,
+  align = NULL,
+  digits = NULL,
+  label = NULL,
+  title = NULL,
+  headnotes = NULL,
+  footnotes = NULL,
+  nrec = nrow(d),
+  hline = NULL,
+  na = "\\\\textemdash",
+  rm_dup = NULL,
+  landscape = FALSE,
+  ...
+)
 }
 \arguments{
 \item{d}{'data.frame' or 'matrix'.
@@ -80,73 +92,6 @@ for tables in United States Geological Survey (USGS) publications.
 Requires \code{\\usepackage{caption}}, \code{\\usepackage{booktabs}},
   \code{\\usepackage{makecell}}, \code{\\usepackage{multirow}}, and
   \code{\\usepackage{siunitx}} in the LaTeX preamble.
-}
-\examples{
-d <- datasets::iris[, c(5, 1:4)]
-colheadings <- rbind(c("Species \\\\\\\\ type", rep("Sepal", 2), rep("Petal", 2)),
-                     c("", rep(c("Length", "Width"), 2)))
-align <- c("l", "c", "c", "c", "c")
-digits <- c(0, 1, 1, 1, 1)
-title <- "Measurements of sepal length and width and petal
-          length and width for three species of Iris flower."
-headnotes <- "\\\\textbf{Iris Species}: setosa, versicolor, and virginica.
-              \\\\textbf{Abbreviations}: cm, centimeters"
-levels(d[[1]]) <- sprintf("\%s\\\\footnotemark[\%d]", levels(d[[1]]), 1:3)
-footnotes <- sprintf("\\\\footnotemark[\%d] Common name is \%s iris.",
-                     1:3, c("Wild Flag", "Blue Flag", "Virginia"))
-footnotes <- paste(footnotes, collapse = "\\\\\\\\")
-hline <- utils::tail(which(!duplicated(d[[1]])), -1) - 1L
-PrintTable(d, colheadings, align, digits, title = title,
-           headnotes = headnotes, footnotes = footnotes,
-           hline = hline, nrec = c(41, 42), rm_dup = 1)
-
-\dontrun{
-sink("test-table.tex")
-cat("\\\\documentclass{article}",
-    "\\\\usepackage{geometry}",
-    "\\\\usepackage[labelsep = period, labelfont = bf]{caption}",
-    "\\\\usepackage{siunitx}",
-    "\\\\sisetup{input-ignore = {,}, input-decimal-markers = {.},",
-    "          group-separator = {,}, group-minimum-digits = 4}",
-    "\\\\usepackage{booktabs}",
-    "\\\\usepackage{makecell}",
-    "\\\\usepackage{multirow}",
-    "\\\\usepackage[pdftex]{lscape}",
-    "\\\\makeatletter",
-    "\\\\setlength{\\\\@fptop}{0pt}",
-    "\\\\makeatother",
-    "\\\\begin{document}", sep = "\\n")
-PrintTable(d, colheadings, align, digits, title = title,
-           headnotes = headnotes, footnotes = footnotes,
-           hline = hline, nrec = c(41, 42), rm_dup = 1)
-cat("\\\\clearpage\\n")
-PrintTable(datasets::CO2[, c(2, 3, 1, 4, 5)],
-           digits = c(0, 0, 0, 0, 1),
-           title = "Carbon dioxide uptake in grass plants.",
-           nrec = 45, rm_dup = 3)
-cat("\\\\clearpage\\n")
-digits <- c(1, 0, 1, 0, 2, 3, 2, 0, 0, 0, 0)
-PrintTable(datasets::mtcars, digits = digits,
-           title = "Motor trend car road tests.",
-           landscape = TRUE, include.rownames = TRUE)
-cat("\\\\clearpage\\n")
-x <- c(1.2, 1.23, 1121.2, 184, NA, pi, 0.4)
-d <- data.frame(matrix(rep(x, 4), ncol = 4))
-d[, 1] <- prettyNum(d[, 1])
-d[, 4] <- formatC(d[, 4], digits = 2, format = "e")
-colheadings <- paste("Wide heading", 1:ncol(d))
-align <- c("S", "S",
-           "S[round-mode = places, round-precision = 2]",
-           "S[scientific-notation = true, table-format = 1.2e+1]")
-PrintTable(d, colheadings, align)
-cat("\\\\end{document}\\n")
-sink()
-tinytex::pdflatex("test-table.tex")  # requires LaTeX
-system("open test-table.pdf")
-
-file.remove("test-table.tex", "test-table.pdf")
-}
-
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

@@ -4,8 +4,16 @@
 \alias{PrintFigure}
 \title{Print as LaTeX Figure}
 \usage{
-PrintFigure(fig, nr = 1, nc = 1, label = "", title = "",
-  title_lof = title, headings = "", pos = "")
+PrintFigure(
+  fig,
+  nr = 1,
+  nc = 1,
+  label = "",
+  title = "",
+  title_lof = title,
+  headings = "",
+  pos = ""
+)
 }
 \arguments{
 \item{fig}{'character' vector.
@@ -66,22 +74,22 @@ Requires \code{\\usepackage{caption}} and \code{\\usepackage{subcaption}} in the
 }
 \examples{
 \dontrun{
-cat("\\\\documentclass{article}",
-    "\\\\usepackage[labelsep=period, labelfont=bf]{caption}",
-    "\\\\usepackage{subcaption}",
-    "\\\\captionsetup[figure]{skip=10pt}",
-    "\\\\captionsetup[subfigure]{skip=0pt, labelfont={bf, it}}",
-    "\\\\renewcommand{\\\\thesubfigure}{\\\\Alph{subfigure}}",
-    "\\\\begin{document}",
+cat("\\documentclass{article}",
+    "\\usepackage[labelsep=period, labelfont=bf]{caption}",
+    "\\usepackage{subcaption}",
+    "\\captionsetup[figure]{skip=10pt}",
+    "\\captionsetup[subfigure]{skip=0pt, labelfont={bf, it}}",
+    "\\renewcommand{\\thesubfigure}{\\Alph{subfigure}}",
+    "\\begin{document}",
     "<<id, echo=FALSE, fig.width=3, fig.height=2, results='asis'>>=",
     "par(mar=c(2.1, 2.1, 1.1, 1.1))",
     "n <- 10",
-    "fig <- sprintf('inlmisc::PlotGraph(runif(\%s))', 2:n)",
-    "headings <- sprintf('Subfigure caption, $n=\%s$', 2:n)",
+    "fig <- sprintf('inlmisc::PlotGraph(runif(%s))', 2:n)",
+    "headings <- sprintf('Subfigure caption, $n=%s$', 2:n)",
     "PrintFigure(fig, 3, 2, 'id', title='Caption', headings=headings)",
     "@",
-    "\\\\end{document}",
-    file = "test-figure.Rnw", sep = "\\n")
+    "\\end{document}",
+    file = "test-figure.Rnw", sep = "\n")
 knitr::knit2pdf("test-figure.Rnw", clean = TRUE)  # requires LaTeX
 system("open test-figure.pdf")
 

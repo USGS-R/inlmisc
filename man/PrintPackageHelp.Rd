@@ -4,9 +4,17 @@
 \alias{PrintPackageHelp}
 \title{Print Package Help Documentation}
 \usage{
-PrintPackageHelp(pkg, file = "", internal = FALSE, toc = FALSE,
-  title_to_name = FALSE, notrun = TRUE, sep = "<hr>", links = pkg,
-  ...)
+PrintPackageHelp(
+  pkg,
+  file = "",
+  internal = FALSE,
+  toc = FALSE,
+  title_to_name = FALSE,
+  notrun = TRUE,
+  sep = "<hr>",
+  links = pkg,
+  ...
+)
 }
 \arguments{
 \item{pkg}{'character' vector.
@@ -47,13 +55,13 @@ Print the HTML code associated with the help documentation of one or more \R pac
 \examples{
 \dontrun{
 cat("---",
-    "title: \\"Help Documentation\\"",
+    "title: \"Help Documentation\"",
     "output:",
     "  html_document:",
     "    toc: true",
     "    toc_float: true",
     "---",
-    sep = "\\n", file = "test-help.Rmd")
+    sep = "\n", file = "test-help.Rmd")
 PrintPackageHelp("inlmisc", file = "test-help.Rmd", toc = TRUE,
                  title_to_name = TRUE, notrun = FALSE)
 rmarkdown::render("test-help.Rmd")

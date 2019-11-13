@@ -4,9 +4,17 @@
 \alias{ToScientific}
 \title{Format for Scientific Notation}
 \usage{
-ToScientific(x, digits = NULL, type = c("latex", "plotmath"),
-  na = as.character(NA), zero = "0", delimiter = "$",
-  scipen = NULL, big.mark = ",", ...)
+ToScientific(
+  x,
+  digits = NULL,
+  type = c("latex", "plotmath"),
+  na = as.character(NA),
+  zero = "0",
+  delimiter = "$",
+  scipen = NULL,
+  big.mark = ",",
+  ...
+)
 }
 \arguments{
 \item{x}{'numeric' vector.
