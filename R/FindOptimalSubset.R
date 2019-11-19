@@ -25,7 +25,7 @@
 #' @param migrationRate 'numeric' number.
 #'   Proportion of individuals that should migrate between islands.
 #' @param migrationInterval 'integer' count.
-#'   Number of iterations at which exchange of individuals takes place.
+#'   Number of generations at which exchange of individuals takes place.
 #'   This migration between islands is called an \emph{epoch}.
 #' @param pcrossover 'numeric' number.
 #'   Probability of crossover between pairs of chromosomes.
@@ -35,7 +35,7 @@
 #'   Number of chromosomes to survive into the next generation.
 #'   Defaults to 5-percent of the island population.
 #' @param maxiter 'integer' count.
-#'   Maximum number of iterations to run on each island before the GA search is halted.
+#'   Maximum number of generations to run on each island before the GA search is halted.
 #' @param run 'integer' count.
 #'   Number of consecutive generations without any improvement in the
 #'   \dQuote{best} fitness value before the GA is stopped.
@@ -58,7 +58,7 @@
 #' @details The fitness function (see \code{Fitness} argument) is solved using
 #'   the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
 #'   The function implements an islands evolution model (first proposed by Cohoon and others, 1987).
-#'   to maximize a fitness function using islands genetic algorithms (ISLGAs)
+#'   to maximize a fitness function using islands parallel genetic algorithms (ISLPGAs)
 #'   (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
 #'   Independent GAs are configured to use integer chromosomes
 #'   represented with a binary codification, linear-rank selection,
@@ -68,12 +68,12 @@
 #'   \describe{
 #'     \item{\code{call}}{original call which can be used for later re-use.}
 #'     \item{\code{solution}}{a 'matrix' representation of the best solution found.
-#'       Each row represents a unique solution giving the best fitness at the final iteration.
+#'       Each row represents a unique solution giving the best fitness at the final generation.
 #'       More than one row indicates a non-unique solution.
 #'       The number of columns is equal to the subset size \code{k}.}
-#'     \item{\code{ga_output}}{output from the ISLGAs,
+#'     \item{\code{ga_output}}{output from the ISLPGAs,
 #'       see \code{\link[=gaisl-class]{gaisl-class}} for format description.}
-#'     \item{\code{ga_time}}{time required to run the ISLGAs,
+#'     \item{\code{ga_time}}{time required to run the ISLPGAs,
 #'       see \code{\link{system.time}} for details.}
 #'   }
 #'
