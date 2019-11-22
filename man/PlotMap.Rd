@@ -232,7 +232,7 @@ Pal <- function(n) GetColors(n, stops=c(0.3, 0.9))
 breaks <- seq(0, 2000, by = 200)
 credit <- paste("Data collected in a flood plain of the river Meuse,",
                 "near the village of Stein (Netherlands),",
-                "\\nand iterpolated on a grid with 40m by 40m spacing",
+                "\nand iterpolated on a grid with 40m by 40m spacing",
                 "using inverse distance weighting.")
 PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE,
         bg.lines = TRUE, contour.lines = list("col" = "#1F1F1F"),
@@ -241,7 +241,7 @@ AddScaleBar(unit = c("KILOMETER", "MILES"),
             conv.fact = c(0.001, 0.000621371),
             loc = "bottomright", inset = c(0.1, 0.05))
 AddGradientLegend(breaks, Pal, at = breaks,
-                  title = "Topsoil zinc\\nconcentration\\n(ppm)",
+                  title = "Topsoil zinc\nconcentration\n(ppm)",
                   loc = "topleft", inset = c(0.05, 0.1),
                   strip.dim = c(2, 20))
 

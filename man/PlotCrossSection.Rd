@@ -209,7 +209,7 @@ PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"),
                  val.lays = "r3", ylab = "Elevation", asp = asp,
                  unit = unit, explanation = explanation,
                  features = features, max.feature.dist = 100,
-                 bg.col = "#E1E1E1", bend.label = "BEND IN\\nSECTION",
+                 bg.col = "#E1E1E1", bend.label = "BEND IN\nSECTION",
                  scale.loc = NULL)
 AddScaleBar(unit = unit, vert.exag = asp, inset = 0.05)
 

@@ -25,7 +25,7 @@
 #' @param migrationRate 'numeric' number.
 #'   Proportion of individuals that should migrate between islands.
 #' @param migrationInterval 'integer' count.
-#'   Number of generations at which exchange of individuals takes place.
+#'   Number of generations at which exchange of individuals (or migration) takes place.
 #'   This migration between islands is called an \emph{epoch}.
 #' @param pcrossover 'numeric' number.
 #'   Probability of crossover between pairs of chromosomes.
