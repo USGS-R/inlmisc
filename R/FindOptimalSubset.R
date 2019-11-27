@@ -26,7 +26,7 @@
 #'   Proportion of individuals that should migrate between islands.
 #' @param migrationInterval 'integer' count.
 #'   Number of generations at which exchange of individuals (or migration) takes place.
-#'   This migration between islands is called an \emph{epoch}.
+#'   This interval between migrations is called an \emph{epoch}.
 #' @param pcrossover 'numeric' number.
 #'   Probability of crossover between pairs of chromosomes.
 #' @param pmutation 'numeric' number.
@@ -90,7 +90,8 @@
 #'   available for free at \url{https://cs.gmu.edu/~sean/book/metaheuristics/}.
 #'
 #'   Scrucca, Luca, 2013, GA: A Package for Genetic Algorithms in R:
-#'   Journal of Statistical Software, v. 53, no. 4, p. 1-37.
+#'   Journal of Statistical Software, v. 53, no. 4, p. 1-37,
+#'   \url{http://dx.doi.org/10.18637/jss.v053.i04}.
 #'
 #'   Scrucca, Luca, 2017, On some extensions to GA package: hybrid optimisation,
 #'   parallelisation and islands evolution: The R Journal, v. 9, no. 1, p. 187-206,
