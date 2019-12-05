@@ -121,17 +121,10 @@
 
   nm <- tools::file_path_sans_ext(basename(file))
   type <- rep("Sequential", length(nm))
-  div <- c("berlin",
-           "broc",
-           "cork",
-           "lisbon",
-           "oleron",
-           "polar",
+  div <- c("polar",
            "red2green",
            "roma",
-           "split",
-           "tofino",
-           "vik")
+           "split")
   type[nm %in% div] <- "Diverging"
 
   cpt <- lapply(seq_along(destfile), function(i) {

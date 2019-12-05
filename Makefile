@@ -25,15 +25,15 @@ check:
 	R CMD check --no-build-vignettes --as-cran $(PKGNAME)_$(PKGVERS).tar.gz;\
 
 datasets:
-	cd inst/raw;\
+	cd data-raw;\
 	Rscript build-datasets.R;\
-	mv -f sysdata.rda ../../R/sysdata.rda;\
+	[ -f sysdata.rda ] && mv -f sysdata.rda ../R/;\
 
 tables: install
-	cd inst/raw;\
+	cd data-raw;\
 	Rscript render-tables.R;\
-	rm -r ../../man/figures;\
-	mv -f figures ../../man/;\
+	rm -r ../man/figures;\
+	mv -f figures ../man/;\
 
 clean:
 	cd ..;\
