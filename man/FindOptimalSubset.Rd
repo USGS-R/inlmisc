@@ -4,11 +4,25 @@
 \alias{FindOptimalSubset}
 \title{Find Optimal Subset Using a GA}
 \usage{
-FindOptimalSubset(n, k, Fitness, ..., popSize = 100, numIslands = 4,
-  migrationRate = 0.1, migrationInterval = 10, pcrossover = 0.8,
-  pmutation = 0.1, elitism = max(1, round(popSize/numIslands * 0.05)),
-  maxiter = 1000, run = maxiter, suggestions = NULL,
-  parallel = TRUE, monitor = NULL, seed = NULL)
+FindOptimalSubset(
+  n,
+  k,
+  Fitness,
+  ...,
+  popSize = 100,
+  numIslands = 4,
+  migrationRate = 0.1,
+  migrationInterval = 10,
+  pcrossover = 0.8,
+  pmutation = 0.1,
+  elitism = max(1, round(popSize/numIslands * 0.05)),
+  maxiter = 1000,
+  run = maxiter,
+  suggestions = NULL,
+  parallel = TRUE,
+  monitor = NULL,
+  seed = NULL
+)
 }
 \arguments{
 \item{n}{'integer' count.
@@ -38,8 +52,8 @@ Number of islands}
 Proportion of individuals that should migrate between islands.}
 
 \item{migrationInterval}{'integer' count.
-Number of iterations at which exchange of individuals takes place.
-This migration between islands is called an \emph{epoch}.}
+Number of generations at which exchange of individuals (or migration) takes place.
+This interval between migrations is called an \emph{epoch}.}
 
 \item{pcrossover}{'numeric' number.
 Probability of crossover between pairs of chromosomes.}
@@ -52,7 +66,7 @@ Number of chromosomes to survive into the next generation.
 Defaults to 5-percent of the island population.}
 
 \item{maxiter}{'integer' count.
-Maximum number of iterations to run on each island before the GA search is halted.}
+Maximum number of generations to run on each island before the GA search is halted.}
 
 \item{run}{'integer' count.
 Number of consecutive generations without any improvement in the
@@ -82,12 +96,12 @@ A 'list' with components:
   \describe{
     \item{\code{call}}{original call which can be used for later re-use.}
     \item{\code{solution}}{a 'matrix' representation of the best solution found.
-      Each row represents a unique solution giving the best fitness at the final iteration.
+      Each row represents a unique solution giving the best fitness at the final generation.
       More than one row indicates a non-unique solution.
       The number of columns is equal to the subset size \code{k}.}
-    \item{\code{ga_output}}{output from the ISLGAs,
+    \item{\code{ga_output}}{output from the ISLPGAs,
       see \code{\link[=gaisl-class]{gaisl-class}} for format description.}
-    \item{\code{ga_time}}{time required to run the ISLGAs,
+    \item{\code{ga_time}}{time required to run the ISLPGAs,
       see \code{\link{system.time}} for details.}
   }
 }
@@ -100,7 +114,7 @@ subset selection based on the maximization of a user-supplied fitness function.
 The fitness function (see \code{Fitness} argument) is solved using
   the \code{\link[GA]{gaisl}} function in the \pkg{GA} package (Scrucca, 2013, 2016).
   The function implements an islands evolution model (first proposed by Cohoon and others, 1987).
-  to maximize a fitness function using islands genetic algorithms (ISLGAs)
+  to maximize a fitness function using islands parallel genetic algorithms (ISLPGAs)
   (Luke, 2013, p. 103-104; Scrucca, 2016, p. 197-200).
   Independent GAs are configured to use integer chromosomes
   represented with a binary codification, linear-rank selection,
@@ -139,10 +153,12 @@ Cohoon, J.P., Hegde, S.U., Martin, W.N., and Richards, D., 1987,
   available for free at \url{https://cs.gmu.edu/~sean/book/metaheuristics/}.
 
   Scrucca, Luca, 2013, GA: A Package for Genetic Algorithms in R:
-  Journal of Statistical Software, v. 53, no. 4, p. 1-37.
+  Journal of Statistical Software, v. 53, no. 4, p. 1-37,
+  \url{http://dx.doi.org/10.18637/jss.v053.i04}.
 
   Scrucca, Luca, 2017, On some extensions to GA package: hybrid optimisation,
-  parallelisation and islands evolution: The R Journal, v. 9, no. 1, p. 187-206.
+  parallelisation and islands evolution: The R Journal, v. 9, no. 1, p. 187-206,
+  \url{https://journal.r-project.org/archive/2017/RJ-2017-008}.
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center

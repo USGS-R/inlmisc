@@ -4,9 +4,19 @@
 \alias{Grid2Polygons}
 \title{Convert Spatial Grids to Polygons}
 \usage{
-Grid2Polygons(grd, zcol = 1, level = FALSE, at = NULL, cuts = 20,
-  pretty = FALSE, xlim = NULL, ylim = NULL, zlim = NULL,
-  ply = NULL, check_validity = TRUE)
+Grid2Polygons(
+  grd,
+  zcol = 1,
+  level = FALSE,
+  at = NULL,
+  cuts = 20,
+  pretty = FALSE,
+  xlim = NULL,
+  ylim = NULL,
+  zlim = NULL,
+  ply = NULL,
+  check_validity = TRUE
+)
 }
 \arguments{
 \item{grd}{'SpatialGridDataFrame', 'SpatialPixelsDataFrame', or 'Raster*'.

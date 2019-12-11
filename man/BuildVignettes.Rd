@@ -4,9 +4,13 @@
 \alias{BuildVignettes}
 \title{Build Package Vignettes}
 \usage{
-BuildVignettes(dir = getwd(), doc = file.path(dir, "inst/doc"),
-  gs_quality = c("ebook", "printer", "screen", "none"), clean = TRUE,
-  quiet = TRUE)
+BuildVignettes(
+  dir = getwd(),
+  doc = file.path(dir, "inst/doc"),
+  gs_quality = c("ebook", "printer", "screen", "none"),
+  clean = TRUE,
+  quiet = TRUE
+)
 }
 \arguments{
 \item{dir}{'character' string.

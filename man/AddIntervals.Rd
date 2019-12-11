@@ -4,8 +4,19 @@
 \alias{AddIntervals}
 \title{Add Interval Symbols to Plot}
 \usage{
-AddIntervals(x, y0, y1, hin = NULL, col = "black", lty = 1,
-  lwd = 0.7, cex = 1, xpd = FALSE, ..., nondetects = NULL)
+AddIntervals(
+  x,
+  y0,
+  y1,
+  hin = NULL,
+  col = "black",
+  lty = 1,
+  lwd = 0.7,
+  cex = 1,
+  xpd = FALSE,
+  ...,
+  nondetects = NULL
+)
 }
 \arguments{
 \item{x}{'numeric' or 'Date' vector.

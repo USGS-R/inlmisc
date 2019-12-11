@@ -4,8 +4,16 @@
 \alias{PrintFigure}
 \title{Print as LaTeX Figure}
 \usage{
-PrintFigure(fig, nr = 1, nc = 1, label = "", title = "",
-  title_lof = title, headings = "", pos = "")
+PrintFigure(
+  fig,
+  nr = 1,
+  nc = 1,
+  label = "",
+  title = "",
+  title_lof = title,
+  headings = "",
+  pos = ""
+)
 }
 \arguments{
 \item{fig}{'character' vector.
@@ -81,7 +89,7 @@ cat("\\\\documentclass{article}",
     "PrintFigure(fig, 3, 2, 'id', title='Caption', headings=headings)",
     "@",
     "\\\\end{document}",
-    file = "test-figure.Rnw", sep = "\\n")
+    file = "test-figure.Rnw", sep = "\n")
 knitr::knit2pdf("test-figure.Rnw", clean = TRUE)  # requires LaTeX
 system("open test-figure.pdf")
 

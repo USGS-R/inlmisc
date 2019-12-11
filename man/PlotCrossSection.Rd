@@ -4,14 +4,36 @@
 \alias{PlotCrossSection}
 \title{Plot Cross Section}
 \usage{
-PlotCrossSection(transect, rs, geo.lays = names(rs), val.lays = NULL,
-  wt.lay = NULL, asp = 1, ylim = NULL, max.dev.dim = c(43, 56),
-  n = NULL, breaks = NULL, pal = NULL, col = NULL, ylab = NULL,
-  unit = NULL, id = c("A", "A'"), labels = NULL,
-  explanation = NULL, features = NULL, max.feature.dist = Inf,
-  draw.key = TRUE, draw.sep = TRUE, is.categorical = FALSE,
-  contour.lines = NULL, bg.col = NULL, wt.col = "#FFFFFFD8",
-  bend.label = "BEND", scale.loc = NULL, file = NULL)
+PlotCrossSection(
+  transect,
+  rs,
+  geo.lays = names(rs),
+  val.lays = NULL,
+  wt.lay = NULL,
+  asp = 1,
+  ylim = NULL,
+  max.dev.dim = c(43, 56),
+  n = NULL,
+  breaks = NULL,
+  pal = NULL,
+  col = NULL,
+  ylab = NULL,
+  unit = NULL,
+  id = c("A", "A'"),
+  labels = NULL,
+  explanation = NULL,
+  features = NULL,
+  max.feature.dist = Inf,
+  draw.key = TRUE,
+  draw.sep = TRUE,
+  is.categorical = FALSE,
+  contour.lines = NULL,
+  bg.col = NULL,
+  wt.col = "#FFFFFFD8",
+  bend.label = "BEND",
+  scale.loc = NULL,
+  file = NULL
+)
 }
 \arguments{
 \item{transect}{'SpatialLines'.
@@ -187,7 +209,7 @@ PlotCrossSection(transect, rs, geo.lays = c("r1", "r2"),
                  val.lays = "r3", ylab = "Elevation", asp = asp,
                  unit = unit, explanation = explanation,
                  features = features, max.feature.dist = 100,
-                 bg.col = "#E1E1E1", bend.label = "BEND IN\\nSECTION",
+                 bg.col = "#E1E1E1", bend.label = "BEND IN\nSECTION",
                  scale.loc = NULL)
 AddScaleBar(unit = unit, vert.exag = asp, inset = 0.05)
 

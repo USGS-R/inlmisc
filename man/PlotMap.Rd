@@ -4,16 +4,43 @@
 \alias{PlotMap}
 \title{Plot Map}
 \usage{
-PlotMap(r, layer = 1, att = NULL, n = NULL, breaks = NULL,
-  xlim = NULL, ylim = NULL, zlim = NULL, asp = NULL,
-  extend.xy = FALSE, extend.z = FALSE, reg.axs = TRUE,
-  dms.tick = FALSE, bg.lines = FALSE, bg.image = NULL,
-  bg.image.alpha = 1, pal = NULL, col = NULL, max.dev.dim = c(43,
-  56), labels = NULL, scale.loc = NULL, arrow.loc = NULL,
-  explanation = NULL, credit = NULL, shade = NULL,
-  contour.lines = NULL, rivers = NULL, lakes = NULL, roads = NULL,
-  draw.key = NULL, draw.raster = TRUE, file = NULL,
-  close.file = TRUE, useRaster, simplify)
+PlotMap(
+  r,
+  layer = 1,
+  att = NULL,
+  n = NULL,
+  breaks = NULL,
+  xlim = NULL,
+  ylim = NULL,
+  zlim = NULL,
+  asp = NULL,
+  extend.xy = FALSE,
+  extend.z = FALSE,
+  reg.axs = TRUE,
+  dms.tick = FALSE,
+  bg.lines = FALSE,
+  bg.image = NULL,
+  bg.image.alpha = 1,
+  pal = NULL,
+  col = NULL,
+  max.dev.dim = c(43, 56),
+  labels = NULL,
+  scale.loc = NULL,
+  arrow.loc = NULL,
+  explanation = NULL,
+  credit = NULL,
+  shade = NULL,
+  contour.lines = NULL,
+  rivers = NULL,
+  lakes = NULL,
+  roads = NULL,
+  draw.key = NULL,
+  draw.raster = TRUE,
+  file = NULL,
+  close.file = TRUE,
+  useRaster,
+  simplify
+)
 }
 \arguments{
 \item{r}{'Raster*', 'Spatial*', or 'CRS'.
@@ -205,7 +232,7 @@ Pal <- function(n) GetColors(n, stops=c(0.3, 0.9))
 breaks <- seq(0, 2000, by = 200)
 credit <- paste("Data collected in a flood plain of the river Meuse,",
                 "near the village of Stein (Netherlands),",
-                "\\nand iterpolated on a grid with 40m by 40m spacing",
+                "\nand iterpolated on a grid with 40m by 40m spacing",
                 "using inverse distance weighting.")
 PlotMap(r, breaks = breaks, pal = Pal, dms.tick = TRUE,
         bg.lines = TRUE, contour.lines = list("col" = "#1F1F1F"),
@@ -214,7 +241,7 @@ AddScaleBar(unit = c("KILOMETER", "MILES"),
             conv.fact = c(0.001, 0.000621371),
             loc = "bottomright", inset = c(0.1, 0.05))
 AddGradientLegend(breaks, Pal, at = breaks,
-                  title = "Topsoil zinc\\nconcentration\\n(ppm)",
+                  title = "Topsoil zinc\nconcentration\n(ppm)",
                   loc = "topleft", inset = c(0.05, 0.1),
                   strip.dim = c(2, 20))
 

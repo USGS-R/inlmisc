@@ -123,8 +123,9 @@ for (no in seq_along(levels(cite))) {
   cat("\\end{document}\n")
   sink()
 
-  tools::texi2pdf("table.tex", clean=TRUE)
+  tinytex::pdflatex("table.tex")
 
+  # tinytex::tlmgr_install("pdfcrop")
   arg <- c("--margins 1", "--clip", "table.pdf", "table.pdf")
   system2("pdfcrop", args=arg, stdout=FALSE, stderr=FALSE)
 

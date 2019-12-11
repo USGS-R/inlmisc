@@ -4,8 +4,14 @@
 \alias{AddScaleBar}
 \title{Add Scale Bar to Plot}
 \usage{
-AddScaleBar(unit = NULL, conv.fact = NULL, vert.exag = NULL,
-  longlat = FALSE, loc = "bottomleft", ...)
+AddScaleBar(
+  unit = NULL,
+  conv.fact = NULL,
+  vert.exag = NULL,
+  longlat = FALSE,
+  loc = "bottomleft",
+  ...
+)
 }
 \arguments{
 \item{unit}{'character' vector of length 1 or 2, value is recycled as necessary.

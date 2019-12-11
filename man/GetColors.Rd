@@ -4,8 +4,17 @@
 \alias{GetColors}
 \title{Get Palette Colors}
 \usage{
-GetColors(n, scheme = "smooth rainbow", alpha = NULL, stops = c(0,
-  1), bias = 1, reverse = FALSE, blind = NULL, gray = FALSE, ...)
+GetColors(
+  n,
+  scheme = "smooth rainbow",
+  alpha = NULL,
+  stops = c(0, 1),
+  bias = 1,
+  reverse = FALSE,
+  blind = NULL,
+  gray = FALSE,
+  ...
+)
 }
 \arguments{
 \item{n}{'integer' count.

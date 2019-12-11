@@ -4,8 +4,7 @@
 \alias{SetPolygons}
 \title{Overlay Multi-Polygon Objects}
 \usage{
-SetPolygons(x, y, cmd = c("gIntersection", "gDifference"),
-  buffer.width = NA)
+SetPolygons(x, y, cmd = c("gIntersection", "gDifference"), buffer.width = NA)
 }
 \arguments{
 \item{x}{'SpatialPolygons*'.

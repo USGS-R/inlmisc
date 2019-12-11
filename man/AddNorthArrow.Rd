@@ -4,8 +4,7 @@
 \alias{AddNorthArrow}
 \title{Add North Arrow to Plot}
 \usage{
-AddNorthArrow(crs = sp::CRS(), len = 0.05, lab = "N", rotate = 0,
-  ...)
+AddNorthArrow(crs = sp::CRS(), len = 0.05, lab = "N", rotate = 0, ...)
 }
 \arguments{
 \item{crs}{'CRS', 'Raster*', or 'Spatial'.

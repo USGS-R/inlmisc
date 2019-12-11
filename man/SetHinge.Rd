@@ -4,8 +4,16 @@
 \alias{SetHinge}
 \title{Set Hinge Location in Color Palette}
 \usage{
-SetHinge(x, hinge, scheme = "sunset", alpha = NULL, reverse = FALSE,
-  buffer = 0, stops = c(0, 1), allow_bias = TRUE)
+SetHinge(
+  x,
+  hinge,
+  scheme = "sunset",
+  alpha = NULL,
+  reverse = FALSE,
+  buffer = 0,
+  stops = c(0, 1),
+  allow_bias = TRUE
+)
 }
 \arguments{
 \item{x}{'numeric' object that can be passed to the \code{\link{range}}
@@ -86,7 +94,7 @@ par(op)
 # Color scheme (scheme)
 x <- c(-10, 10); hinge <- -3; n <- 255
 op <- par(mfrow = c(3, 1), oma = c(0, 0, 0, 0))
-Plot(SetHinge(x, hinge, scheme = "oleron")(n))
+Plot(SetHinge(x, hinge, scheme = "roma")(n))
 Plot(SetHinge(x, hinge, scheme = "BuRd")(n))
 Plot(SetHinge(x, hinge, scheme = c("ocean", "copper"))(n))
 par(op)

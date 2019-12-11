@@ -4,8 +4,7 @@
 \alias{GetInsetLocation}
 \title{Get Location for Inset in Plot}
 \usage{
-GetInsetLocation(dx, dy, loc = "bottomright", inset = 0, pad = 0,
-  padin = 0)
+GetInsetLocation(dx, dy, loc = "bottomright", inset = 0, pad = 0, padin = 0)
 }
 \arguments{
 \item{dx, dy}{'numeric' number.

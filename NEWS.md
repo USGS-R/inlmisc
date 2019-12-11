@@ -1,5 +1,9 @@
 # inlmisc 0.4.8.9000
 
+- In LaTeX preamble, omit group separators in the decimal part when using **siunitx** package.
+
+- In `GetColors`, type change from diverging to sequential for color schemes: `"berlin"`, `"broc"`, `"cork"`, `"lisbon"`, `"oleron"`, `"tofino"`, and `"vik"`. Results from CPTs not actually having a zero entry.
+
 - In `PlotMap`, fix bug resulting from change in `raster::crop` that returns an error when the subset is empty, was previously returning `NULL`.
 
 - In `FindOptimalSubset`, stop setting state of random number generator when `seed` argument is `NULL`.
