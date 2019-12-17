@@ -36,6 +36,13 @@ check:
 	R CMD check --no-build-vignettes --as-cran $(PKGNAME)_$(PKGVERS).tar.gz
 .PHONY: check
 
+clean:
+	cd ..
+	rm -f -r $(PKGNAME).Rcheck/
+	rm -f sysdata.rda
+	rm -f -r figures
+.PHONY: clean
+
 datasets:
 	cd data-raw
 	Rscript build-datasets.R
@@ -48,10 +55,3 @@ tables: install
 	rm -r ../man/figures
 	mv -f figures ../man/
 .PHONY: tables
-
-clean:
-	cd ..
-	rm -f -r $(PKGNAME).Rcheck/
-	rm -f sysdata.rda
-	rm -f -r figures
-.PHONY: clean
