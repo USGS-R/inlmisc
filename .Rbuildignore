@@ -7,3 +7,5 @@
 ^appveyor\.yml$
 ^vignettes/cache$
 ^data-raw$
+^README\.Rmd$
+^README\.html$
