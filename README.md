@@ -15,7 +15,7 @@ selecting subsets using a genetic algorithm, creating interactive web maps, acce
 Used to support packages and scripts written by researchers at the United States Geological Survey (USGS)
 Idaho National Laboratory (INL) [Project Office](https://www.usgs.gov/centers/id-water/science/idaho-national-laboratory-project-office "USGS INL Project Office").
 
-## Install
+## Installation
 
 The current release is available on [CRAN](https://CRAN.R-project.org/package=inlmisc "The Comprehensive R Archive Network"),
 which you can install using the following command:
