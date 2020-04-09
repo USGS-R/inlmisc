@@ -1,6 +1,6 @@
 # inlmisc 0.4.9.9000
 
-- In LaTeX preamble, decrease distance between subfigure and caption.
+- n LaTeX preamble, use the default vertical distance between a subfigure and its caption
 
 # inlmisc 0.4.9
 
