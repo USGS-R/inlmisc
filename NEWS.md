@@ -1,6 +1,6 @@
 # inlmisc 0.4.9.9000
 
-- ...
+- In `AddInsetMap`, add `feature` argument, used to add one or more spatial features to the inset map.
 
 # inlmisc 0.4.9
 

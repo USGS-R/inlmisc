@@ -2,7 +2,6 @@
 #'
 #' Format for creating a U.S. Geological Survey (USGS) article.
 #'
-#' @inheritParams rmarkdown::pdf_document
 #' @param ... Arguments passed to the \code{\link[rmarkdown]{pdf_document}} function.
 #'
 #' @return R Markdown output format to pass to \code{\link[rmarkdown]{render}}
