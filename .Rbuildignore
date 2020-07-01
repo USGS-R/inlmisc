@@ -9,3 +9,5 @@
 ^data-raw$
 ^README\.Rmd$
 ^README\.html$
+^code.json$
+^DISCLAIMER.md$
