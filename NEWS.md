@@ -1,5 +1,7 @@
 # inlmisc 0.5.0
 
+- Add top-level *README.Rmd* file.
+
 - Remove *LICENSE.note* file from package, and replace witha repo-only *LICENSE.md* file.
 
 - Add *DISCLAIMER.md* file.

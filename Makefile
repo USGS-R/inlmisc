@@ -55,3 +55,7 @@ tables: install
 	rm -r ../man/figures
 	mv -f figures ../man/
 .PHONY: tables
+
+readme:
+	R -q -e 'rmarkdown::render('\''README.Rmd'\'')'
+.PHONY: readme
