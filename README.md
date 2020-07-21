@@ -22,8 +22,8 @@ analysis, processing
 [MODFLOW](https://www.usgs.gov/mission-areas/water-resources/science/modflow-and-related-programs "USGS's modular hydrologic model")-based
 models, selecting subsets using a genetic algorithm, creating
 interactive web maps, accessing color palettes, etc. Used to support
-packages and scripts written by researchers at the United States
-Geological Survey (USGS) Idaho National Laboratory (INL) [Project
+packages and scripts written by researchers at the U.S. Geological
+Survey (USGS) Idaho National Laboratory (INL) [Project
 Office](https://www.usgs.gov/centers/id-water/science/idaho-national-laboratory-project-office "USGS INL Project Office").
 
 Installation
@@ -44,7 +44,7 @@ build from source, or run:
 Usage
 -----
 
-Examples are given in the help files within this package. To access this
+Examples are given in the package help pages. To access this
 documentation, run:
 
     library("inlmisc")
