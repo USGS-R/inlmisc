@@ -1,5 +1,5 @@
 Disclaimer
-==========
+----------
 
 This software has been approved for release by the U.S. Geological Survey
 (USGS). Although the software has been subjected to rigorous review, the USGS

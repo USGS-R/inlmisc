@@ -1,6 +1,8 @@
-# inlmisc 0.4.9.9000
+# inlmisc 0.5.0
 
-- Add *DISCLAIMER.md* and *code.json* files.
+- Remove *LICENSE.note* file from package, and replace witha repo-only *LICENSE.md* file.
+
+- Add *DISCLAIMER.md* file.
 
 - In LaTeX preamble, include new solution for printing fancy header on all pages.
 
