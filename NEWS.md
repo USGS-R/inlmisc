@@ -1,3 +1,15 @@
+# inlmisc 0.5.0
+
+- Add top-level *README.Rmd* file.
+
+- Remove *LICENSE.note* file from package, and replace witha repo-only *LICENSE.md* file.
+
+- Add *DISCLAIMER.md* file.
+
+- In LaTeX preamble, include new solution for printing fancy header on all pages.
+
+- In `AddInsetMap`, add `feature` argument, used to add one or more spatial features to the inset map.
+
 # inlmisc 0.4.9
 
 - In LaTeX preamble, omit group separators in the decimal part when using **siunitx** package.

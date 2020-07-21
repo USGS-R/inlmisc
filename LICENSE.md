@@ -1,4 +1,21 @@
-U.S. Geological Survey Software User Rights Notice
+LICENSE
+=======
+
+Creative Commons (CC0) license
+------------------------------
+
+The code within this repository is distributed under the
+**Creative Commons (CCO) license** and further details concerning this license and USGS
+coded so associated can be found at
+https://www.usgs.gov/products/software/software-management/distribution-usgs-code
+on July 7, 2020.
+
+Software User Rights Notice
+---------------------------
+
+**U.S.Geological Survey Software User Rights Notice** copied from
+https://water.usgs.gov/software/help/notice/ on July 7, 2020.
+Please check webpage for updates.
 
 Software and related material (data and (or) documentation), contained in or
 furnished in connection with a software distribution, are made available by the
@@ -9,10 +26,10 @@ documentation, subject to the following restrictions and understandings.
 
 If you distribute copies or modifications of the software and related material,
 make sure the recipients receive a copy of this notice and receive or can get a
-copy of the original distribution. If the software and (or) related material
-are modified and distributed, it must be made clear that the recipients do not
-have the original and they must be informed of the extent of the modifications.
-For example, modified files must include a prominent notice stating the
+copy of the original distribution. If the software and (or) related material are
+modified and distributed, it must be made clear that the recipients do not have
+the original and they must be informed of the extent of the modifications. For
+example, modified files must include a prominent notice stating the
 modifications made, the author of the modifications, and the date the
 modifications were made. This restriction is necessary to guard against problems
 introduced in the software by others, reflecting negatively on the reputation of
@@ -42,17 +59,3 @@ updates, revisions, new versions or "bug fixes".
 The user assumes all risk for any damages whatsoever resulting from loss of use,
 data, or profits arising in connection with the access, use, quality, or
 performance of this software.
-
-R and other package dependencies have more restrictive licenses.
-
-Color schemes in the inlmisc package are included with the permission of
-the author, either explicitly or where the license under which they were
-distributed allows it. For instance, the Generic Mapping Tools (GMT) color
-palette tables are distributed under the GNU Lesser General Public License
-(LGPL), version 3 or later. Refer to the license notice included with the source
-files in raw/cpt/. Google's turbo colormap look-up table is distributed under
-the Apache License, version 2.0.
-
-The inlmisc package includes the leaflet-search software, a leaflet plugin
-distributed under the MIT license. Refer to the license notice included with
-the source files in htmlwidgets/plugins/leaflet-search/.

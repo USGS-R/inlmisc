@@ -31,13 +31,15 @@
 \pagestyle{fancy}
 \renewcommand{\sectionmark}[1]{\markboth{#1}{}}
 \renewcommand{\headrulewidth}{0pt}
+\newcommand{\reportTitle}{Report Title}
 \fancyhf{}
+\fancyhead[LE]{\normalfont\bfseries\sffamily \thepage \quad \reportTitle}
+\fancyhead[RO]{\normalfont\bfseries\sffamily \nouppercase{\leftmark} \quad \thepage}
 \fancypagestyle{plain}{
   \fancyhf{}
+  \fancyhead[LE]{\normalfont\bfseries\sffamily \thepage \quad \reportTitle}
   \fancyhead[RO]{\normalfont\bfseries\sffamily \thepage}
 }
-\fancyhead[LE]{\normalfont\bfseries\sffamily \thepage \quad Report Title}
-\fancyhead[RO]{\normalfont\bfseries\sffamily \nouppercase{\leftmark} \quad \thepage}
 
 % Maths ------------------------------------------------------------------------
 
@@ -87,6 +89,8 @@
 \setlength{\cftbeforesubsubsecskip}{0.1cm}
 \setlength{\cftbeforefigskip}{0.1cm}
 \setlength{\cftbeforetabskip}{0.1cm}
+\renewcommand*\listfigurename{Figures}
+\renewcommand*\listtablename{Tables}
 
 % Tables -----------------------------------------------------------------------
 
