@@ -33,13 +33,17 @@ The current release is available on
 [CRAN](https://CRAN.R-project.org/package=inlmisc "The Comprehensive R Archive Network"),
 which you can install using the following command:
 
-    install.packages("inlmisc", dependencies = TRUE)
+``` r
+install.packages("inlmisc", dependencies = TRUE)
+```
 
 To install the development version, you need to clone the repository and
 build from source, or run:
 
-    if (!requireNamespace("remotes")) install.packages("remotes")
-    remotes::install_github("USGS-R/inlmisc", dependencies = TRUE)
+``` r
+if (!requireNamespace("remotes")) install.packages("remotes")
+remotes::install_github("USGS-R/inlmisc", dependencies = TRUE)
+```
 
 Usage
 -----
@@ -47,8 +51,10 @@ Usage
 Examples are given in the package help pages. To access this
 documentation, run:
 
-    library("inlmisc")
-    help(package = "inlmisc")
+``` r
+library("inlmisc")
+help(package = "inlmisc")
+```
 
 Author
 ------
