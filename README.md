@@ -39,7 +39,7 @@ install.packages("inlmisc", dependencies = TRUE)
 
 A recent version of [Pandoc](https://pandoc.org/installing.html) (&gt;=
 1.12.3) is also required to run particular examples in the help
-documentation; [RStudio](https://rstudio.com/products/rstudio/) includes
+documentation—[RStudio](https://rstudio.com/products/rstudio/) includes
 this so you do not need to download Pandoc if working in a RStudio IDE.
 The **webshot** package is imported from and has as a dependency the
 external program [PhantomJS](https://phantomjs.org/), which may be
@@ -53,7 +53,7 @@ The [OptiPNG](http://optipng.sourceforge.net/) program is recommended
 for creating word clouds, and needs to be accessible through the command
 window.
 
-To install the development version of **inlpubs**, you need to clone the
+To install the development version of **inlmisc**, you need to clone the
 repository and build from source, or run:
 
 ``` r
