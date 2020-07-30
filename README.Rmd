@@ -4,8 +4,7 @@ output:
     variant: markdown_github
 ---
 
-inlmisc
-=======
+# inlmisc
 
 [![Travis Build Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
 [![CRAN Version](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
@@ -14,8 +13,7 @@ inlmisc
 [![Coverage Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
 [![USGS Category](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
 
-Description
------------
+## Description
 
 The [R](https://www.r-project.org/) package **inlmisc** is a collection of functions for creating high-level graphics,
 performing raster-based analysis, processing [MODFLOW](https://www.usgs.gov/mission-areas/water-resources/science/modflow-and-related-programs "USGS's modular hydrologic model")-based models,
@@ -23,8 +21,7 @@ selecting subsets using a genetic algorithm, creating interactive web maps, acce
 Used to support packages and scripts written by researchers at the U.S. Geological Survey (USGS)
 Idaho National Laboratory (INL) [Project Office](https://www.usgs.gov/centers/id-water/science/idaho-national-laboratory-project-office "USGS INL Project Office").
 
-Installation
-------------
+## Installation
 
 The current release is available on [CRAN](https://CRAN.R-project.org/package=inlmisc "The Comprehensive R Archive Network"),
 which you can install using the following command:
@@ -43,8 +40,7 @@ which may be installed using the command:
 webshot::webshotinstall_phantomjs()
 ```
 
-For creating word clouds, the [OptiPNG](http://optipng.sourceforge.net/) program is recommended,
-and needs to be accessible through the command window.
+For creating word clouds, the [OptiPNG](http://optipng.sourceforge.net/) program is recommended and needs to be accessible through the command window.
 Finally, to install the development version of **inlmisc**, you need to clone the repository and build from source, or run:
 
 ```r
@@ -52,8 +48,7 @@ if (!requireNamespace("remotes")) install.packages("remotes")
 remotes::install_github("USGS-R/inlmisc", dependencies = TRUE)
 ```
 
-Usage
------
+## Usage
 
 Examples are given in the package help pages.
 To access this documentation, run:
@@ -63,27 +58,23 @@ library("inlmisc")
 help(package = "inlmisc")
 ```
 
-Author
-------
+## Author
 
 Jason C. Fisher (ORCID iD [0000-0001-9032-8912](http://orcid.org/0000-0001-9032-8912))
 
-Suggested citation
-------------------
+## Suggested citation
 
 ```{r "citation", echo=FALSE, results="asis"}
 cit <- utils::citation(package="inlmisc")
 print(cit, bibtex=FALSE)
 ```
 
-Contributing
-------------
+## Contributing
 
 Please submit bug reports, suggestions, and pull requests to the
 [issues tracker](https://github.com/USGS-R/inlmisc/issues).
 
-Package support
----------------
+## Package support
 
 The Idaho National Laboratory Project Office of the USGS supports the development and maintenance of inlmisc.
 Resources are available primarily for maintenance and responding to user questions.

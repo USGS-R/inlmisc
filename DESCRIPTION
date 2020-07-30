@@ -46,7 +46,8 @@ Suggests:
     remotes,
     roxygen2,
     testthat
-SystemRequirements: pandoc - https://pandoc.org/
+SystemRequirements: pandoc (https://pandoc.org/) and
+    phantomjs (https://phantomjs.org/)
 License: CC0
 Copyright: This software is in the public domain because it contains materials
     that originally came from the USGS, an agency of the
