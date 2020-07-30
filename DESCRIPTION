@@ -32,6 +32,8 @@ Imports:
     stats,
     tinytex,
     tools,
+    webshot,
+    wordcloud2,
     xtable,
     yaml
 Suggests:
