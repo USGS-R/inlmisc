@@ -49,12 +49,10 @@ installed using the command:
 webshot::webshotinstall_phantomjs()
 ```
 
-The [OptiPNG](http://optipng.sourceforge.net/) program is recommended
-for creating word clouds, and needs to be accessible through the command
-window.
-
-To install the development version of **inlmisc**, you need to clone the
-repository and build from source, or run:
+For creating word clouds, the [OptiPNG](http://optipng.sourceforge.net/)
+program is recommended, and needs to be accessible through the command
+window. Finally, to install the development version of **inlmisc**, you
+need to clone the repository and build from source, or run:
 
 ``` r
 if (!requireNamespace("remotes")) install.packages("remotes")
