@@ -1,8 +1,6 @@
-LICENSE
-=======
+# LICENSE
 
-Creative Commons (CC0) license
-------------------------------
+## Creative Commons (CC0) license
 
 The code within this repository is distributed under the
 **Creative Commons (CCO) license** and further details concerning this license and USGS
@@ -10,8 +8,7 @@ coded so associated can be found at
 https://www.usgs.gov/products/software/software-management/distribution-usgs-code
 on July 7, 2020.
 
-Software User Rights Notice
----------------------------
+## Software User Rights Notice
 
 **U.S.Geological Survey Software User Rights Notice** copied from
 https://water.usgs.gov/software/help/notice/ on July 7, 2020.

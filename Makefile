@@ -1,5 +1,12 @@
-# Prepare package for release
-# Requires pdfcrop, inkscape, and svgcleaner
+# Prepare Package for Release
+#
+# System requirements:
+#   pdfcrop - http://pdfcrop.sourceforge.net/
+#   inkscape - https://inkscape.org/
+#   svgcleaner - https://github.com/RazrFalcon/svgcleaner
+#   pandoc - https://pandoc.org/
+#   phantomjs - https://phantomjs.org/
+#   optipng - http://optipng.sourceforge.net/
 
 SHELL := bash
 .ONESHELL:
