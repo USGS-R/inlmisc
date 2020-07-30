@@ -38,13 +38,12 @@ install.packages("inlmisc", dependencies = TRUE)
 ```
 
 A recent version of [Pandoc](https://pandoc.org/installing.html) (&gt;=
-1.12.3) is also required to running particular examples in the help
+1.12.3) is also required to run particular examples in the help
 documentation; [RStudio](https://rstudio.com/products/rstudio/) includes
-this so you do not need to download Pandoc if working in a RStudio
-integrated development environment. The imported **webshot** package has
-as a dependency the external program
-[PhantomJS](https://phantomjs.org/), which may be installed using the
-command:
+this so you do not need to download Pandoc if working in a RStudio IDE.
+The **webshot** package is imported from and has as a dependency the
+external program [PhantomJS](https://phantomjs.org/), which may be
+installed using the command:
 
 ``` r
 webshot::webshotinstall_phantomjs()
