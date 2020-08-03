@@ -41,8 +41,10 @@ Suggests:
     dichromat,
     doParallel,
     doRNG,
+    grid,
     gstat,
     maptools,
+    png,
     remotes,
     roxygen2,
     testthat

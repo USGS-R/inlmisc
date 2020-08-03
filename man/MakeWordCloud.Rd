@@ -7,11 +7,13 @@
 MakeWordCloud(
   x,
   max_words = 200L,
+  size = 1,
   shape = "circle",
   ellipticity = 0.65,
   ...,
   width = 910L,
-  output = NULL
+  output = NULL,
+  display = FALSE
 )
 }
 \arguments{
@@ -20,6 +22,9 @@ A frequency table of words that includes \code{"word"} and \code{"freq"} in each
 
 \item{max_words}{'integer' number.
 Maximum number of words to include in the word cloud.}
+
+\item{size}{'numeric' number.
+Font size, where the larger size indicates a bigger word.}
 
 \item{shape}{'character' string.
 Shape of the \dQuote{cloud} to draw.
@@ -37,12 +42,18 @@ Desired image width in pixels.}
 
 \item{output}{'character' string.
 Path to the output file, by default the word cloud is copied to a temporary file.}
+
+\item{display}{'logical' flag.
+Whether to display the saved PNG file in a graphics window.
+Requires access to the \pkg{png} package.}
 }
 \value{
 The word cloud plots in PNG format, and the path of the output file is returned.
 }
 \description{
-Create a word cloud from a frequency table of words, and plot to a PNG file.
+Create a word cloud from a frequency table of words, and save to a PNG file.
+Visualizations are created using the
+\sQuote{\href{https://wordcloud2-js.timdream.org/}{wordcloud2.js}} JavaScript library.
 }
 \details{
 The \pkg{webshot} package requires the external program \href{https://phantomjs.org/}{PhantomJS},
@@ -52,7 +63,7 @@ The \pkg{webshot} package requires the external program \href{https://phantomjs.
 }
 \examples{
 \dontrun{
-MakeWordCloud(wordcloud2::demoFreq, output = "wordcloud.png")
+MakeWordCloud(wordcloud2::demoFreq, size = 1.5, display = TRUE)
 }
 
 }
