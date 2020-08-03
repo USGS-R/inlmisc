@@ -7,6 +7,7 @@
 MakeWordCloud(
   x,
   max_words = 200L,
+  size = 1,
   shape = "circle",
   ellipticity = 0.65,
   ...,
@@ -21,6 +22,9 @@ A frequency table of words that includes \code{"word"} and \code{"freq"} in each
 
 \item{max_words}{'integer' number.
 Maximum number of words to include in the word cloud.}
+
+\item{size}{'numeric' number.
+Font size, where the larger size indicates a bigger word.}
 
 \item{shape}{'character' string.
 Shape of the \dQuote{cloud} to draw.
@@ -48,6 +52,8 @@ The word cloud plots in PNG format, and the path of the output file is returned.
 }
 \description{
 Create a word cloud from a frequency table of words, and save to a PNG file.
+Visualizations are created using the
+\sQuote{\href{https://wordcloud2-js.timdream.org/}{wordcloud2.js}} JavaScript library.
 }
 \details{
 The \pkg{webshot} package requires the external program \href{https://phantomjs.org/}{PhantomJS},
@@ -57,7 +63,7 @@ The \pkg{webshot} package requires the external program \href{https://phantomjs.
 }
 \examples{
 \dontrun{
-MakeWordCloud(wordcloud2::demoFreq, display = TRUE)
+MakeWordCloud(wordcloud2::demoFreq, size = 1.5, display = TRUE)
 }
 
 }
