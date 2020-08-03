@@ -19,6 +19,9 @@
 #'   Desired image width in pixels.
 #' @param output 'character' string.
 #'   Path to the output file, by default the word cloud is copied to a temporary file.
+#' @param display 'logical' flag.
+#'   Whether to display the saved PNG file in a graphics window.
+#'   Requires access to the \pkg{png} package.
 #'
 #' @details The \pkg{webshot} package requires the external program \href{https://phantomjs.org/}{PhantomJS},
 #'   which may be installed using the \code{webshot::\link[webshot]{install_phantomjs}()} command.
@@ -40,7 +43,7 @@
 #'
 
 MakeWordCloud <- function(x, max_words=200L, shape="circle", ellipticity=0.65, ...,
-                          width=910L, output=NULL) {
+                          width=910L, output=NULL, display=FALSE) {
 
   # check arguments
   checkmate::assert_data_frame(x, types=c("factor", "character", "integerish"),
@@ -51,6 +54,13 @@ MakeWordCloud <- function(x, max_words=200L, shape="circle", ellipticity=0.65, .
                               "triangle", "pentagon", "star"))
   checkmate::assert_number(ellipticity, lower=0, upper=1, finite=TRUE)
   checkmate::assert_count(width, positive=TRUE)
+  checkmate::assertFlag(display)
+
+  if (display && !requireNamespace("png", quietly=TRUE)) {
+    txt <- sprintf("Displaying word cloud's require access to the %s package.",
+                   sQuote("png"))
+    stop(txt, call.=FALSE)
+  }
 
   if (is.null(output)) output <- tempfile(fileext=".png")
   output <- normalizePath(output, winslash="/", mustWork=FALSE)
@@ -85,6 +95,11 @@ MakeWordCloud <- function(x, max_words=200L, shape="circle", ellipticity=0.65, .
 
   # recompress png file
   suppressWarnings(system2("optipng", c("-quiet", "-strip all", "-o7", shQuote(output))))
+
+  # display saved png in a graphics window
+  if (display && requireNamespace("grid", quietly=TRUE)) {
+    grid::grid.raster(png::readPNG(output))
+  }
 
   output
 }

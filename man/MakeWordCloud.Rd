@@ -11,7 +11,8 @@ MakeWordCloud(
   ellipticity = 0.65,
   ...,
   width = 910L,
-  output = NULL
+  output = NULL,
+  display = FALSE
 )
 }
 \arguments{
@@ -37,6 +38,10 @@ Desired image width in pixels.}
 
 \item{output}{'character' string.
 Path to the output file, by default the word cloud is copied to a temporary file.}
+
+\item{display}{'logical' flag.
+Whether to display the saved PNG file in a graphics window.
+Requires access to the \pkg{png} package.}
 }
 \value{
 The word cloud plots in PNG format, and the path of the output file is returned.
