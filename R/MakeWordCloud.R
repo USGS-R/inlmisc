@@ -38,8 +38,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' MakeWordCloud(wordcloud2::demoFreq, output = "wordcloud.png",
-#'               display = TRUE)
+#' MakeWordCloud(wordcloud2::demoFreq, display = TRUE)
 #' }
 #'
 
