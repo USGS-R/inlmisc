@@ -1,6 +1,6 @@
 #' Create a Word Cloud from a Frequency Table of Words
 #'
-#' Create a word cloud from a frequency table of words, and plot to a PNG file.
+#' Create a word cloud from a frequency table of words, and save to a PNG file.
 #'
 #' @param x 'data.frame'.
 #'   A frequency table of words that includes \code{"word"} and \code{"freq"} in each column.
@@ -38,7 +38,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' MakeWordCloud(wordcloud2::demoFreq, output = "wordcloud.png")
+#' MakeWordCloud(wordcloud2::demoFreq, output = "wordcloud.png",
+#'               display = TRUE)
 #' }
 #'
 

@@ -47,7 +47,7 @@ Requires access to the \pkg{png} package.}
 The word cloud plots in PNG format, and the path of the output file is returned.
 }
 \description{
-Create a word cloud from a frequency table of words, and plot to a PNG file.
+Create a word cloud from a frequency table of words, and save to a PNG file.
 }
 \details{
 The \pkg{webshot} package requires the external program \href{https://phantomjs.org/}{PhantomJS},
@@ -57,7 +57,8 @@ The \pkg{webshot} package requires the external program \href{https://phantomjs.
 }
 \examples{
 \dontrun{
-MakeWordCloud(wordcloud2::demoFreq, output = "wordcloud.png")
+MakeWordCloud(wordcloud2::demoFreq, output = "wordcloud.png",
+              display = TRUE)
 }
 
 }
