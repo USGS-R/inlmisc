@@ -62,6 +62,10 @@ help(package = "inlmisc")
 
 Jason C. Fisher (ORCID iD [0000-0001-9032-8912](http://orcid.org/0000-0001-9032-8912))
 
+## Point of contact
+
+Jason C. Fisher (<jfisher@usgs.gov>)
+
 ## Suggested citation
 
 ```{r "citation", echo=FALSE, results="asis"}
