@@ -55,7 +55,7 @@ window. Finally, to install the development version of **inlmisc**, you
 need to clone the repository and build from source, or run:
 
 ``` r
-if (!requireNamespace("remotes")) install.packages("remotes")
+if (! requireNamespace("remotes")) install.packages("remotes")
 remotes::install_github("USGS-R/inlmisc", dependencies = TRUE)
 ```
 
@@ -75,6 +75,11 @@ Author
 
 Jason C. Fisher (ORCID iD
 [0000-0001-9032-8912](http://orcid.org/0000-0001-9032-8912))
+
+Point of contact
+----------------
+
+Jason C. Fisher (<jfisher@usgs.gov>)
 
 Suggested citation
 ------------------
