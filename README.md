@@ -55,7 +55,7 @@ window. Finally, to install the development version of **inlmisc**, you
 need to clone the repository and build from source, or run:
 
 ``` r
-if (! requireNamespace("remotes")) install.packages("remotes")
+if (!requireNamespace("remotes")) install.packages("remotes")
 remotes::install_github("USGS-R/inlmisc", dependencies = TRUE)
 ```
 
