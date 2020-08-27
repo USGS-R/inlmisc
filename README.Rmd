@@ -68,9 +68,10 @@ Jason C. Fisher (<jfisher@usgs.gov>)
 
 ## Suggested Citation
 
+To cite **inlmisc** in publications, please use:
+
 ```{r "citation", echo=FALSE, results="asis"}
-cit <- utils::citation(package="inlmisc")
-print(cit, bibtex=FALSE)
+print(utils::citation(package="inlmisc"), style="textVersion")
 ```
 
 ## Contributing

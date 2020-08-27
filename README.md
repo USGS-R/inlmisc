@@ -84,7 +84,7 @@ Jason C. Fisher (<jfisher@usgs.gov>)
 Suggested Citation
 ------------------
 
-To cite inlmisc in publications, please use:
+To cite **inlmisc** in publications, please use:
 
 Fisher, J.C., 2020, inlmisc—Miscellaneous functions for the U.S.
 Geological Survey Idaho National Laboratory Project Office: U.S.
