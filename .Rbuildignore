@@ -9,6 +9,7 @@
 ^data-raw$
 ^README\.Rmd$
 ^README\.html$
-^code.json$
-^DISCLAIMER.md$
-^LICENSE.md$
+^code\.json$
+^DISCLAIMER\.md$
+^LICENSE\.md$
+^CODE_OF_CONDUCT\.md$

@@ -62,11 +62,11 @@ help(package = "inlmisc")
 
 Jason C. Fisher (ORCID iD [0000-0001-9032-8912](http://orcid.org/0000-0001-9032-8912))
 
-## Point of contact
+## Point of Contact
 
 Jason C. Fisher (<jfisher@usgs.gov>)
 
-## Suggested citation
+## Suggested Citation
 
 ```{r "citation", echo=FALSE, results="asis"}
 cit <- utils::citation(package="inlmisc")
@@ -75,10 +75,14 @@ print(cit, bibtex=FALSE)
 
 ## Contributing
 
-Please submit bug reports, suggestions, and pull requests to the
-[issues tracker](https://github.com/USGS-R/inlmisc/issues).
+We welcome your contributions and suggestions for how to make these materials more useful to the community. Please feel free to comment on the [issue tracker](https://github.com/USGS-R/inlmisc/issues) or open a [pull request](https://github.com/USGS-R/inlmisc/pull/new/master) to contribute.
 
-## Package support
+```{r, echo=FALSE, results="asis"}
+files <- c("CODE_OF_CONDUCT.md", "DISCLAIMER.md", "LICENSE.md")
+for (f in files) cat(readLines(f), "\n\n", sep="\n")
+```
+
+## Package Support
 
 The Idaho National Laboratory Project Office of the USGS supports the development and maintenance of inlmisc.
 Resources are available primarily for maintenance and responding to user questions.

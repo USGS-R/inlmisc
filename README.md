@@ -76,12 +76,12 @@ Author
 Jason C. Fisher (ORCID iD
 [0000-0001-9032-8912](http://orcid.org/0000-0001-9032-8912))
 
-Point of contact
+Point of Contact
 ----------------
 
 Jason C. Fisher (<jfisher@usgs.gov>)
 
-Suggested citation
+Suggested Citation
 ------------------
 
 To cite inlmisc in publications, please use:
@@ -93,10 +93,68 @@ Geological Survey software release, R package, Reston, Va.
 Contributing
 ------------
 
-Please submit bug reports, suggestions, and pull requests to the [issues
-tracker](https://github.com/USGS-R/inlmisc/issues).
+We welcome your contributions and suggestions for how to make these
+materials more useful to the community. Please feel free to comment on
+the [issue tracker](https://github.com/USGS-R/inlmisc/issues) or open a
+[pull request](https://github.com/USGS-R/inlmisc/pull/new/master) to
+contribute.
 
-Package support
+Code of Conduct
+---------------
+
+All contributions to- and interactions surrounding- this project will
+abide by the [USGS Code of Scientific
+Conduct](https://www2.usgs.gov/fsp/fsp_code_of_scientific_conduct.asp).
+
+Disclaimer
+----------
+
+This software has been approved for release by the U.S. Geological
+Survey (USGS). Although the software has been subjected to rigorous
+review, the USGS reserves the right to update the software as needed
+pursuant to further analysis and review. No warranty, expressed or
+implied, is made by the USGS or the U.S. Government as to the
+functionality of the software and related material nor shall the fact of
+release constitute any such warranty. Furthermore, the software is
+released on condition that neither the USGS nor the U.S. Government
+shall be held liable for any damages resulting from its authorized or
+unauthorized use.
+
+License Information
+-------------------
+
+This software is a product of the U.S. Geological Survey (USGS), an
+agency of the United States Department of Interior, which is part of the
+U.S. Government.
+
+#### Cost
+
+This software is freely distributed. There is no fee to download and
+(or) use this software.
+
+#### License
+
+Users do not need a license or permission from the USGS to use this
+software. Users can download and install as many copies of the software
+as they need. See Exceptions below.
+
+#### Public domain
+
+As a work of the United States Government, this USGS product is in the
+[public domain](http://www.usa.gov/publicdomain/label/1.0/) within the
+United States. You can copy, modify, distribute, and perform the work,
+even for commercial purposes, all without asking permission.
+Additionally, USGS waives copyright and related rights in the work
+worldwide through [CC0 1.0 Universal Public Domain
+Dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+
+#### Exceptions
+
+This project may have numerous dependencies from other open-source
+software projects. The re-use and distribution of those software
+packages may be subject to the licenses of each of those dependencies.
+
+Package Support
 ---------------
 
 The Idaho National Laboratory Project Office of the USGS supports the
