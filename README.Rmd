@@ -82,9 +82,9 @@ files <- c("CODE_OF_CONDUCT.md", "DISCLAIMER.md", "LICENSE.md")
 for (f in files) cat(readLines(f), "\n\n", sep="\n")
 ```
 
-## Package Support
+## Support
 
-The Idaho National Laboratory Project Office of the USGS supports the development and maintenance of inlmisc.
+The Idaho National Laboratory Project Office of the USGS supports the development and maintenance of **inlmisc**.
 Resources are available primarily for maintenance and responding to user questions.
 Priorities on the development of new features are determined by the inlmisc development team.
 

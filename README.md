@@ -154,11 +154,11 @@ This project may have numerous dependencies from other open-source
 software projects. The re-use and distribution of those software
 packages may be subject to the licenses of each of those dependencies.
 
-Package Support
----------------
+Support
+-------
 
 The Idaho National Laboratory Project Office of the USGS supports the
-development and maintenance of inlmisc. Resources are available
+development and maintenance of **inlmisc**. Resources are available
 primarily for maintenance and responding to user questions. Priorities
 on the development of new features are determined by the inlmisc
 development team.
