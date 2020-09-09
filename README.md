@@ -37,7 +37,7 @@ which you can install using the following command:
 install.packages("inlmisc", dependencies = TRUE)
 ```
 
-A recent version of [Pandoc](https://pandoc.org/installing.html) (&gt;=
+A recent version of [Pandoc](https://pandoc.org/installing.html) (\>=
 1.12.3) is also required to run particular examples in the help
 documentation—[RStudio](https://rstudio.com/products/rstudio/) includes
 this so you do not need to download Pandoc if working in a RStudio IDE.
@@ -79,7 +79,8 @@ Jason C. Fisher (ORCID iD
 Point of Contact
 ----------------
 
-Jason C. Fisher (<jfisher@usgs.gov>)
+Jason C. Fisher
+(<a href="mailto:jfisher@usgs.gov" class="email">jfisher@usgs.gov</a>)
 
 Suggested Citation
 ------------------
@@ -96,7 +97,7 @@ Contributing
 We welcome your contributions and suggestions for how to make these
 materials more useful to the community. Please feel free to comment on
 the [issue tracker](https://github.com/USGS-R/inlmisc/issues) or open a
-[pull request](https://github.com/USGS-R/inlmisc/pull/new/master) to
+[merge request](https://github.com/USGS-R/inlmisc/pull/new/master) to
 contribute.
 
 Code of Conduct

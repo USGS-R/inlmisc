@@ -76,7 +76,7 @@ print(utils::citation(package="inlmisc"), style="textVersion")
 
 ## Contributing
 
-We welcome your contributions and suggestions for how to make these materials more useful to the community. Please feel free to comment on the [issue tracker](https://github.com/USGS-R/inlmisc/issues) or open a [pull request](https://github.com/USGS-R/inlmisc/pull/new/master) to contribute.
+We welcome your contributions and suggestions for how to make these materials more useful to the community. Please feel free to comment on the [issue tracker](https://github.com/USGS-R/inlmisc/issues) or open a [merge request](https://github.com/USGS-R/inlmisc/pull/new/master) to contribute.
 
 ```{r, echo=FALSE, results="asis"}
 files <- c("CODE_OF_CONDUCT.md", "DISCLAIMER.md", "LICENSE.md")
