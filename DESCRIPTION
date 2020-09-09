@@ -1,6 +1,6 @@
 Package: inlmisc
 Title: Miscellaneous Functions for the USGS INL Project Office
-Version: 0.5.0.9000
+Version: 0.5.1
 Authors@R: person(given=c("Jason", "C."), family="Fisher", role=c("aut", "cre"), email="jfisher@usgs.gov", comment=c(ORCID="0000-0001-9032-8912"))
 Description: A collection of functions for creating high-level graphics,
     performing raster-based analysis, processing MODFLOW-based models,
@@ -52,8 +52,10 @@ SystemRequirements: pandoc (https://pandoc.org/) and
     phantomjs (https://phantomjs.org/)
 License: CC0
 Copyright: This software is in the public domain because it contains materials
-    that originally came from the USGS, an agency of the
-    United States Department of Interior.
+    that originally came from the United States Geological Survey (USGS), an
+    agency of the United States Department of Interior. For more information,
+    see the official USGS copyright policy at
+    https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits
 URL: https://github.com/USGS-R/inlmisc
 BugReports: https://github.com/USGS-R/inlmisc/issues
 Encoding: UTF-8

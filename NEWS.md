@@ -1,7 +1,6 @@
-# inlmisc (development version)
+# inlmisc 0.5.1
 
- - Import **wordcloud2** and **webshot** packages, and suggest **png** package.
-   The **webshot** package has as a dependency the external program [PhantomJS](https://phantomjs.org/).
+ - Import **wordcloud2** and **webshot** packages, and suggest **png** package. The **webshot** package has as a dependency the external program [PhantomJS](https://phantomjs.org/).
 
 - Add `CreateWordCloud`, used to create a word cloud from a frequency table of words, and plot to a PNG file.
 
