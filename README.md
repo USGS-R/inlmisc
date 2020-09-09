@@ -105,7 +105,7 @@ Code of Conduct
 
 All contributions to- and interactions surrounding- this project will
 abide by the [USGS Code of Scientific
-Conduct](https://www2.usgs.gov/fsp/fsp_code_of_scientific_conduct.asp).
+Conduct](https://www.usgs.gov/about/organization/science-support/science-quality-and-integrity/fundamental-science-practices).
 
 Disclaimer
 ----------
@@ -142,11 +142,11 @@ as they need. See Exceptions below.
 #### Public domain
 
 As a work of the United States Government, this USGS product is in the
-[public domain](http://www.usa.gov/publicdomain/label/1.0/) within the
-United States. You can copy, modify, distribute, and perform the work,
-even for commercial purposes, all without asking permission.
-Additionally, USGS waives copyright and related rights in the work
-worldwide through [CC0 1.0 Universal Public Domain
+[public domain](https://www.usa.gov/government-works) within the United
+States. You can copy, modify, distribute, and perform the work, even for
+commercial purposes, all without asking permission. Additionally, USGS
+waives copyright and related rights in the work worldwide through [CC0
+1.0 Universal Public Domain
 Dedication](https://creativecommons.org/publicdomain/zero/1.0/).
 
 #### Exceptions
