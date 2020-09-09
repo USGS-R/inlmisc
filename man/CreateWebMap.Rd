@@ -31,10 +31,10 @@ An object of class 'leaflet', a hypertext markup language (HTML) widget object.
   (also known as \href{https://epsg.io/4326}{EPSG:4326}).
 }
 \description{
-Create a \href{http://leafletjs.com/}{Leaflet} map widget with base maps offered through
+Create a \href{https://leafletjs.com/}{Leaflet} map widget with base maps offered through
 The National Map (\href{https://nationalmap.gov/}{TNM}).
 Information about the content of these base maps can be found within the
-\href{https://viewer.nationalmap.gov/help/3.0\%20TNM\%20Base\%20Maps.htm}{TNM Base Maps} document.
+\href{https://www.usgs.gov/core-science-systems/national-geospatial-program/national-map}{TNM Base Maps} document.
 }
 \details{
 Map \href{https://viewer.nationalmap.gov/services/}{service endpoints}

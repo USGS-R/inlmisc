@@ -1,6 +1,10 @@
+# inlmisc 0.5.2
+
+- Fixed invalid URL's.
+
 # inlmisc 0.5.1
 
- - Import **wordcloud2** and **webshot** packages, and suggest **png** package. The **webshot** package has as a dependency the external program [PhantomJS](https://phantomjs.org/).
+- Import **wordcloud2** and **webshot** packages, and suggest **png** package. The **webshot** package has as a dependency the external program [PhantomJS](https://phantomjs.org/).
 
 - Add `CreateWordCloud`, used to create a word cloud from a frequency table of words, and plot to a PNG file.
 
@@ -30,7 +34,7 @@
 
 - In `FindOptimalSubset`, add `numIslands` argument, used to specify the number of islands, was previously dependent on the `parallel` argument; change default value of `elitism` argument from 0 to 5-percent of the island population.
 
-- Add *misc/latex-packages.txt*: contains a list of required LaTeX packages that are not included in the default installation of [TinyTeX](https://yihui.name/tinytex/); use the `inlmisc:::InstallLatexPackages()` command to install these packages into TinyTeX.
+- Add *misc/latex-packages.txt*: contains a list of required LaTeX packages that are not included in the default installation of [TinyTeX](https://yihui.org/tinytex/); use the `inlmisc:::InstallLatexPackages()` command to install these packages into TinyTeX.
 
 - In LaTeX preamble, replace **xcolor** package with **color**, eliminates an annoying warning when compiling document.
 
@@ -280,7 +284,7 @@
 
 - Changes in `PlotGraph`: Add option for plotting interval censored data by specifying `type = "i"`. Select box-and-whisker plot using `type = "w"`, was previously `type = "box"`. Default for `seq.date.by` argument changed from `"year"` to `NULL`.
 
-- Add `CreateWebMap`, creates a Leaflet map widget using [The National Map](https://nationalmap.gov/) services.
+- Add `CreateWebMap`, creates a Leaflet map widget using [The National Map](https://www.usgs.gov/core-science-systems/national-geospatial-program/national-map) services.
 
 - Tidy help documentation for functions.
 

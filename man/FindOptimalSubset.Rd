@@ -158,7 +158,7 @@ Cohoon, J.P., Hegde, S.U., Martin, W.N., and Richards, D., 1987,
 
   Scrucca, Luca, 2017, On some extensions to GA package: hybrid optimisation,
   parallelisation and islands evolution: The R Journal, v. 9, no. 1, p. 187-206,
-  \url{https://journal.r-project.org/archive/2017/RJ-2017-008}.
+  \url{https://journal.r-project.org/archive/2017/RJ-2017-008/}.
 }
 \author{
 J.C. Fisher, U.S. Geological Survey, Idaho Water Science Center
