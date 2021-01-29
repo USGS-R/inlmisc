@@ -17,7 +17,7 @@ Value of \eqn{\alpha}, used to implement a generalization of the convex hull
 (Edelsbrunner and others, 1983).
 As \eqn{\alpha} decreases, the shape shrinks.
 Requires that the \pkg{alphahull} and \pkg{maptools} packages are available.
-Note that the \href{https://CRAN.R-project.org/package=alphahull}{alphahull} package
+The \href{https://CRAN.R-project.org/package=alphahull}{alphahull} package
 is released under a restrictive non-free software license.}
 
 \item{width}{'numeric' number.

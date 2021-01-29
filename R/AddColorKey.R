@@ -18,7 +18,7 @@
 #'   only applicable for continuous data.
 #'   The tick marks will be located at the color breaks if the length of \code{at} is
 #'   greater than or equal to one minus the length of \code{breaks}.
-#'   Note that tick-mark labels are omitted where they would abut or overlap previously drawn labels
+#'   Tick-mark labels are omitted where they would abut or overlap previously drawn labels
 #'   (labels are drawn left to right).
 #' @param labels 'logical' flag, 'character' vector, 'expression' vector, 'numeric' vector, or 'factor' vector.
 #'   Can either be a flag specifying whether (numerical) annotations are to be made at the tick marks,
