@@ -1,7 +1,7 @@
 # Prepare Package for Release
 #
 # System requirements:
-#   pdfcrop - http://pdfcrop.sourceforge.net/
+#   pdfcrop - http://pdfcrop.sourceforge.net/ - tinytex::tlmgr_install("pdfcrop")
 #   inkscape - https://inkscape.org/
 #   svgcleaner - https://github.com/RazrFalcon/svgcleaner
 #   pandoc - https://pandoc.org/
