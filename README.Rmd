@@ -1,7 +1,7 @@
 ---
 output:
   md_document:
-    variant: markdown_github
+    variant: gfm
 ---
 
 # inlmisc
@@ -80,15 +80,14 @@ We welcome your contributions and suggestions for how to make these materials mo
 
 ```{r, echo=FALSE, results="asis"}
 files <- c("CODE_OF_CONDUCT.md", "DISCLAIMER.md", "LICENSE.md")
-for (f in files) cat(readLines(f), "\n\n", sep="\n")
+for (f in files) {
+  txt <- readLines(f, encoding = "UTF-8")
+  is <- grepl("^(#+)\\s*(.*)\\s*$", txt)
+  txt[is] <- gsub("#\\s", "## ", txt[is])
+  cat(txt, "\n\n", sep = "\n")
+}
 ```
 
 ## Support
 
-The Idaho National Laboratory Project Office of the USGS supports the development and maintenance of **inlmisc**.
-Resources are available primarily for maintenance and responding to user questions.
-Priorities on the development of new features are determined by the inlmisc development team.
-
-```{r "support", echo=FALSE, results="asis"}
-cat(readLines("DISCLAIMER.md"), sep="\n")
-```
+The Idaho National Laboratory Project Office of the USGS supports the development and maintenance of **inlpubs**. Resources are available primarily for maintenance and responding to user questions. Priorities on the development of new features are determined by the development team.

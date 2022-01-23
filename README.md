@@ -97,69 +97,68 @@ All contributions to- and interactions surrounding- this project will
 abide by the [USGS Code of Scientific
 Conduct](https://www.usgs.gov/office-of-science-quality-and-integrity/fundamental-science-practices).
 
+<!-- Embedded References -->
+
 ## Disclaimer
 
-This software has been approved for release by the U.S. Geological
-Survey (USGS). Although the software has been subjected to rigorous
-review, the USGS reserves the right to update the software as needed
-pursuant to further analysis and review. No warranty, expressed or
-implied, is made by the USGS or the U.S. Government as to the
-functionality of the software and related material nor shall the fact of
-release constitute any such warranty. Furthermore, the software is
-released on condition that neither the USGS nor the U.S. Government
-shall be held liable for any damages resulting from its authorized or
-unauthorized use.
+This software is preliminary or provisional and is subject to revision.
+It is being provided to meet the need for timely best science. The
+software has not received final approval by the U.S. Geological Survey
+(USGS). No warranty, expressed or implied, is made by the USGS or the
+U.S. Government as to the functionality of the software and related
+material nor shall the fact of release constitute any such warranty. The
+software is provided on the condition that neither the USGS nor the U.S.
+Government shall be held liable for any damages resulting from the
+authorized or unauthorized use of the software.
 
-## License Information
+Any use of trade, product, or firm names is for descriptive purposes
+only and does not imply endorsement by the U.S. Government.
 
-This software is a product of the U.S. Geological Survey (USGS), an
-agency of the United States Department of Interior, which is part of the
-U.S. Government.
+## License
 
-#### Cost
+Unless otherwise noted, this project is in the public domain in the
+United States because it contains materials that originally came from
+the United States Geological Survey, an agency of the United States
+Department of Interior. For more information, see the official USGS
+copyright policy at
+[copyrights-and-credits](https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits).
 
-This software is freely distributed. There is no fee to download and
-(or) use this software.
+Additionally, we waive copyright and related rights in the work
+worldwide through the CC0 1.0 Universal public domain dedication.
 
-#### License
+#### CC0 1.0 Universal Summary
 
-Users do not need a license or permission from the USGS to use this
-software. Users can download and install as many copies of the software
-as they need. See Exceptions below.
+This is a human-readable summary of the [Legal Code (read the full
+text)](https://creativecommons.org/publicdomain/zero/1.0/legalcode).
 
-#### Public domain
+##### No Copyright
 
-As a work of the United States Government, this USGS product is in the
-[public domain](https://www.usa.gov/government-works) within the United
-States. You can copy, modify, distribute, and perform the work, even for
-commercial purposes, all without asking permission. Additionally, USGS
-waives copyright and related rights in the work worldwide through [CC0
-1.0 Universal Public Domain
-Dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+The person who associated a work with this deed has dedicated the work
+to the public domain by waiving all of his or her rights to the work
+worldwide under copyright law, including all related and neighboring
+rights, to the extent allowed by law.
 
-#### Exceptions
+You can copy, modify, distribute and perform the work, even for
+commercial purposes, all without asking permission.
 
-This project may have numerous dependencies from other open-source
-software projects. The re-use and distribution of those software
-packages may be subject to the licenses of each of those dependencies.
+##### Other Information
+
+In no way are the patent or trademark rights of any person affected by
+CC0, nor are the rights that other persons may have in the work or in
+how the work is used, such as publicity or privacy rights.
+
+Unless expressly stated otherwise, the person who associated a work with
+this deed makes no warranties about the work, and disclaims liability
+for all uses of the work, to the fullest extent permitted by applicable
+law. When using or citing the work, you should not imply endorsement by
+the author or the affirmer.
+
+<!-- Embedded References -->
 
 ## Support
 
 The Idaho National Laboratory Project Office of the USGS supports the
-development and maintenance of **inlmisc**. Resources are available
+development and maintenance of **inlpubs**. Resources are available
 primarily for maintenance and responding to user questions. Priorities
-on the development of new features are determined by the inlmisc
-development team.
-
-## Disclaimer
-
-This software has been approved for release by the U.S. Geological
-Survey (USGS). Although the software has been subjected to rigorous
-review, the USGS reserves the right to update the software as needed
-pursuant to further analysis and review. No warranty, expressed or
-implied, is made by the USGS or the U.S. Government as to the
-functionality of the software and related material nor shall the fact of
-release constitute any such warranty. Furthermore, the software is
-released on condition that neither the USGS nor the U.S. Government
-shall be held liable for any damages resulting from its authorized or
-unauthorized use.
+on the development of new features are determined by the development
+team.

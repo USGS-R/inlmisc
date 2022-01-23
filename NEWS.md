@@ -1,6 +1,8 @@
-# inlmisc (development version)
+# inlmisc 0.5.3
 
-- Fix bug in `SetPolygons`.
+- Fix inkscape command in `render-tables.R` script.
+
+- Fix bug in `SetPolygons` that resulted in error.
 
 - Fix invalid URL's.
 
