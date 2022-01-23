@@ -43,7 +43,7 @@ dependency the external program [PhantomJS](https://phantomjs.org/),
 which may be installed using the command:
 
 ``` r
-webshot::webshotinstall_phantomjs()
+webshot::install_phantomjs()
 ```
 
 For creating word clouds, the [OptiPNG](http://optipng.sourceforge.net/)
