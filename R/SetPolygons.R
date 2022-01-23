@@ -101,6 +101,7 @@ SetPolygons <- function(x, y, cmd=c("gIntersection", "gDifference"), buffer.widt
           x_geo <- rgeos::gUnaryUnion(x_geo@polyobj, checkValidity=2L)
       }))
 
+      if (is.null(x_geo)) return(NULL)
       p <- x_geo@polygons[[1]]
       methods::slot(p, "ID") <- methods::slot(x[i]@polygons[[1]], "ID")
 

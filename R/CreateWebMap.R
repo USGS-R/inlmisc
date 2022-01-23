@@ -1,9 +1,9 @@
 #' Create a Web Map Using TNM Services
 #'
 #' Create a \href{https://leafletjs.com/}{Leaflet} map widget with base maps offered through
-#' The National Map (\href{https://nationalmap.gov/}{TNM}).
+#' The National Map (\href{https://www.usgs.gov/programs/national-geospatial-program/national-map}{TNM}).
 #' Information about the content of these base maps can be found within the
-#' \href{https://www.usgs.gov/core-science-systems/national-geospatial-program/national-map}{TNM Base Maps} document.
+#' \href{https://www.usgs.gov/programs/national-geospatial-program/national-map}{TNM Base Maps} document.
 #'
 #' @param maps 'character' vector.
 #'   TNM base maps to include in the web map.
@@ -19,7 +19,7 @@
 #'   Select \code{"rest"} for representational state transfer services (the default) and
 #'   \code{"wms"} for web map services.
 #'
-#' @details Map \href{https://viewer.nationalmap.gov/services/}{service endpoints}
+#' @details Map \href{https://apps.nationalmap.gov/services}{service endpoints}
 #'   are offered through TNM with no use restrictions.
 #'   However, map content is limited to the United States and territories.
 #'   This function integrates TNM endpoint services within an interactive web map using

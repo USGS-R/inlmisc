@@ -91,7 +91,7 @@
 #'
 #'   Scrucca, Luca, 2013, GA: A Package for Genetic Algorithms in R:
 #'   Journal of Statistical Software, v. 53, no. 4, p. 1-37,
-#'   \url{http://dx.doi.org/10.18637/jss.v053.i04}.
+#'   \doi{10.18637/jss.v053.i04}.
 #'
 #'   Scrucca, Luca, 2017, On some extensions to GA package: hybrid optimisation,
 #'   parallelisation and islands evolution: The R Journal, v. 9, no. 1, p. 187-206,

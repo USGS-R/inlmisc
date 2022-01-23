@@ -1,5 +1,4 @@
-inlmisc
-=======
+# inlmisc
 
 [![Travis Build
 Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
@@ -13,8 +12,7 @@ Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master
 [![USGS
 Category](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
 
-Description
------------
+## Description
 
 The [R](https://www.r-project.org/) package **inlmisc** is a collection
 of functions for creating high-level graphics, performing raster-based
@@ -24,10 +22,9 @@ models, selecting subsets using a genetic algorithm, creating
 interactive web maps, accessing color palettes, etc. Used to support
 packages and scripts written by researchers at the U.S. Geological
 Survey (USGS) Idaho National Laboratory (INL) [Project
-Office](https://www.usgs.gov/centers/id-water/science/idaho-national-laboratory-project-office "USGS INL Project Office").
+Office](https://www.usgs.gov/centers/idaho-water-science-center/science/idaho-national-laboratory-project-office "USGS INL Project Office").
 
-Installation
-------------
+## Installation
 
 The current release is available on
 [CRAN](https://CRAN.R-project.org/package=inlmisc "The Comprehensive R Archive Network"),
@@ -37,13 +34,13 @@ which you can install using the following command:
 install.packages("inlmisc", dependencies = TRUE)
 ```
 
-A recent version of [Pandoc](https://pandoc.org/installing.html) (\>=
+A recent version of [Pandoc](https://pandoc.org/installing.html) (>=
 1.12.3) is also required to run particular examples in the help
-documentation—[RStudio](https://rstudio.com/products/rstudio/) includes
-this so you do not need to download Pandoc if working in a RStudio IDE.
-The **webshot** package is imported from and has as a dependency the
-external program [PhantomJS](https://phantomjs.org/), which may be
-installed using the command:
+documentation—[RStudio](https://www.rstudio.com/products/rstudio/)
+includes this so you do not need to download Pandoc if working in a
+RStudio IDE. The **webshot** package is imported from and has as a
+dependency the external program [PhantomJS](https://phantomjs.org/),
+which may be installed using the command:
 
 ``` r
 webshot::webshotinstall_phantomjs()
@@ -59,8 +56,7 @@ if (!requireNamespace("remotes")) install.packages("remotes")
 remotes::install_github("USGS-R/inlmisc", dependencies = TRUE)
 ```
 
-Usage
------
+## Usage
 
 Examples are given in the package help pages. To access this
 documentation, run:
@@ -70,20 +66,16 @@ library("inlmisc")
 help(package = "inlmisc")
 ```
 
-Author
-------
+## Author
 
 Jason C. Fisher (ORCID iD
-[0000-0001-9032-8912](http://orcid.org/0000-0001-9032-8912))
+[0000-0001-9032-8912](https://orcid.org/0000-0001-9032-8912))
 
-Point of Contact
-----------------
+## Point of Contact
 
-Jason C. Fisher
-(<a href="mailto:jfisher@usgs.gov" class="email">jfisher@usgs.gov</a>)
+Jason C. Fisher (<jfisher@usgs.gov>)
 
-Suggested Citation
-------------------
+## Suggested Citation
 
 To cite **inlmisc** in publications, please use:
 
@@ -91,8 +83,7 @@ Fisher, J.C., 2020, inlmisc—Miscellaneous functions for the U.S.
 Geological Survey Idaho National Laboratory Project Office: U.S.
 Geological Survey software release, R package, Reston, Va.
 
-Contributing
-------------
+## Contributing
 
 We welcome your contributions and suggestions for how to make these
 materials more useful to the community. Please feel free to comment on
@@ -100,15 +91,13 @@ the [issue tracker](https://github.com/USGS-R/inlmisc/issues) or open a
 [merge request](https://github.com/USGS-R/inlmisc/pull/new/master) to
 contribute.
 
-Code of Conduct
----------------
+## Code of Conduct
 
 All contributions to- and interactions surrounding- this project will
 abide by the [USGS Code of Scientific
-Conduct](https://www.usgs.gov/about/organization/science-support/science-quality-and-integrity/fundamental-science-practices).
+Conduct](https://www.usgs.gov/office-of-science-quality-and-integrity/fundamental-science-practices).
 
-Disclaimer
-----------
+## Disclaimer
 
 This software has been approved for release by the U.S. Geological
 Survey (USGS). Although the software has been subjected to rigorous
@@ -121,8 +110,7 @@ released on condition that neither the USGS nor the U.S. Government
 shall be held liable for any damages resulting from its authorized or
 unauthorized use.
 
-License Information
--------------------
+## License Information
 
 This software is a product of the U.S. Geological Survey (USGS), an
 agency of the United States Department of Interior, which is part of the
@@ -155,8 +143,7 @@ This project may have numerous dependencies from other open-source
 software projects. The re-use and distribution of those software
 packages may be subject to the licenses of each of those dependencies.
 
-Support
--------
+## Support
 
 The Idaho National Laboratory Project Office of the USGS supports the
 development and maintenance of **inlmisc**. Resources are available
@@ -164,8 +151,7 @@ primarily for maintenance and responding to user questions. Priorities
 on the development of new features are determined by the inlmisc
 development team.
 
-Disclaimer
-----------
+## Disclaimer
 
 This software has been approved for release by the U.S. Geological
 Survey (USGS). Although the software has been subjected to rigorous

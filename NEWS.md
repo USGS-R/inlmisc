@@ -1,6 +1,8 @@
 # inlmisc (development version)
 
-- ...
+- Fix bug in `SetPolygons`.
+
+- Fix invalid URL's.
 
 # inlmisc 0.5.2
 
@@ -288,7 +290,7 @@
 
 - Changes in `PlotGraph`: Add option for plotting interval censored data by specifying `type = "i"`. Select box-and-whisker plot using `type = "w"`, was previously `type = "box"`. Default for `seq.date.by` argument changed from `"year"` to `NULL`.
 
-- Add `CreateWebMap`, creates a Leaflet map widget using [The National Map](https://www.usgs.gov/core-science-systems/national-geospatial-program/national-map) services.
+- Add `CreateWebMap`, creates a Leaflet map widget using [The National Map](https://www.usgs.gov/programs/national-geospatial-program/national-map) services.
 
 - Tidy help documentation for functions.
 
