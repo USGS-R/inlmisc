@@ -1,3 +1,7 @@
+# inlmisc 0.5.4
+
+- Explicitly set `stringsAsFactors` option in all calls to `data.frame` and `as.data.frame`.
+
 # inlmisc 0.5.3
 
 - Fix inkscape command in `render-tables.R` script.

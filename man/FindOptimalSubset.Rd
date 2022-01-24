@@ -150,7 +150,7 @@ Cohoon, J.P., Hegde, S.U., Martin, W.N., and Richards, D., 1987,
   Grefenstette, J.J., Lawrence Earlbaum Associates, p. 155-161.
 
   Luke, Sean, 2015, Essentials of metaheuristics (2nd ed.): Lulu, 263 p.,
-  available for free at \url{https://cs.gmu.edu/~sean/book/metaheuristics/}.
+  available for free at https://cs.gmu.edu/~sean/book/metaheuristics/.
 
   Scrucca, Luca, 2013, GA: A Package for Genetic Algorithms in R:
   Journal of Statistical Software, v. 53, no. 4, p. 1-37,

@@ -113,7 +113,8 @@
 #'            landscape = TRUE, include.rownames = TRUE)
 #' cat("\\clearpage\n")
 #' x <- c(1.2, 1.23, 1121.2, 184, NA, pi, 0.4)
-#' d <- data.frame(matrix(rep(x, 4), ncol = 4))
+#' d <- data.frame(matrix(rep(x, 4), ncol = 4),
+#'                 stringsAsFactors = TRUE)
 #' d[, 1] <- prettyNum(d[, 1])
 #' d[, 4] <- formatC(d[, 4], digits = 2, format = "e")
 #' colheadings <- paste("Wide heading", 1:ncol(d))

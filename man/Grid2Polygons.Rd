@@ -93,7 +93,7 @@ x <- rep(0:n, m + 1)
 y <- rep(0:m, each = n + 1)
 xc <- c(rep(seq(0.5, n - 0.5, by = 1), m))
 yc <- rep(rev(seq(0.5, m - 0.5, by = 1)), each = n)
-grd <- data.frame(z = z, xc = xc, yc = yc)
+grd <- data.frame(z = z, xc = xc, yc = yc, stringsAsFactors = TRUE)
 sp::coordinates(grd) <- ~ xc + yc
 sp::gridded(grd) <- TRUE
 grd <- as(grd, "SpatialGridDataFrame")

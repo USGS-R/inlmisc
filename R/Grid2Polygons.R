@@ -73,7 +73,7 @@
 #' y <- rep(0:m, each = n + 1)
 #' xc <- c(rep(seq(0.5, n - 0.5, by = 1), m))
 #' yc <- rep(rev(seq(0.5, m - 0.5, by = 1)), each = n)
-#' grd <- data.frame(z = z, xc = xc, yc = yc)
+#' grd <- data.frame(z = z, xc = xc, yc = yc, stringsAsFactors = TRUE)
 #' sp::coordinates(grd) <- ~ xc + yc
 #' sp::gridded(grd) <- TRUE
 #' grd <- as(grd, "SpatialGridDataFrame")
@@ -251,7 +251,7 @@ Grid2Polygons <- function(grd, zcol=1, level=FALSE, at=NULL, cuts=20,
   }
 
   # convert to 'SpatialPolygonsDataFrame' object, add data frame of levels
-  d <- data.frame(z=levs, row.names=row.names(sp_polys))
+  d <- data.frame(z=levs, row.names=row.names(sp_polys), stringsAsFactors=TRUE)
   sp_polys <- sp::SpatialPolygonsDataFrame(sp_polys, data=d, match.ID=TRUE)
 
   # crop 'SpatialPolygonsDataFrame' object using polygon argument

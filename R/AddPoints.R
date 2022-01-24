@@ -242,7 +242,7 @@ AddPoints <- function(x, y=NULL, z=NULL, zcol=1, crs=NULL,
     # https://stackoverflow.com/questions/33930689
     SeqNext <- function(x, npred=1) {
       n <- length(x)
-      d <- data.frame(x=seq_along(x), y=x)
+      d <- data.frame(x=seq_along(x), y=x, stringsAsFactors=TRUE)
       unname(stats::predict(stats::lm(y ~ poly(x, 2), data=d),
                             newdata=list("x"=seq(n + 1, n + npred))))
     }

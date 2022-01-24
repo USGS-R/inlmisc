@@ -255,7 +255,7 @@ PlotMap <- function(r, layer=1, att=NULL, n=NULL, breaks=NULL,
     rr <- r
     rr[] <- NA
     new.ids <- seq(along=ids)
-    new.att.tbl <- as.data.frame(list("ID"=new.ids, "att"=r.levels))
+    new.att.tbl <- as.data.frame(list("ID"=new.ids, "att"=r.levels), stringsAsFactors=TRUE)
     suppressWarnings(levels(rr) <- list(new.att.tbl))
     for (i in new.ids) {
       rr[r == ids[i]] <- i
