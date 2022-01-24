@@ -134,21 +134,22 @@ This package-installation method does not offer one-hundred percent reproducibil
   both of which provide robust tools for dependency management in \R.
 }
 \examples{
+\donttest{
 # Run on old version of R
 SavePackageDetails()
 
-\dontrun{
 # Run on new version of R, and ensure 'inlmisc' package is available.
-repos <- c(CRAN = "https://cloud.r-project.org/",
-           GRAN = "https://owi.usgs.gov/R")
-if (system.file(package = "inlmisc") == "")
-  utils::install.packages("inlmisc", repos = repos["CRAN"],
-                          dependencies = TRUE)
-inlmisc::RecreateLibrary(repos = repos)
+if (interactive()) {
+  repos <- c(CRAN = "https://cloud.r-project.org/")
+  if (system.file(package = "inlmisc") == "")
+    utils::install.packages("inlmisc", repos = repos["CRAN"],
+                            dependencies = TRUE)
+  inlmisc::RecreateLibrary(repos = repos)
 }
 
 # Clean up example
 file.remove("R-packages.tsv")
+}
 
 }
 \author{

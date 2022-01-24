@@ -1,6 +1,10 @@
+# inlmisc 0.5.5
+
+- Stop running example in `RecreateLibrary` function.
+
 # inlmisc 0.5.4
 
-- Explicitly set `stringsAsFactors` option in all calls to `data.frame` and `as.data.frame`.
+- Explicitly set `stringsAsFactors` option in all calls to functions `data.frame` and `as.data.frame`.
 
 # inlmisc 0.5.3
 
