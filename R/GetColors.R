@@ -105,7 +105,7 @@
 #'
 #'   Wessel, P., Smith, W.H.F., Scharroo, R., Luis, J.F., and Wobbe, R., 2013,
 #'   Generic Mapping Tools: Improved version released, AGU, v. 94, no. 45, p. 409--410
-#'   doi:\href{https://doi.org/10.1002/2013EO450001}{10.1002/2013EO450001}
+#'   \url{https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2013EO450001}
 #'
 #' @seealso
 #'   \code{\link{SetHinge}} function to set the hinge location in

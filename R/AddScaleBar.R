@@ -15,7 +15,7 @@
 #' @param longlat 'logical' flag.
 #'   Whether user coordinates of the plotting region are in longitude and latitude;
 #'   if true, scale distances are in kilometers.
-#'   Note that scale distances are calculated at the maps latitude midpoint
+#'   Scale distances are calculated at the maps latitude midpoint
 #'   using the Great Circle distance (WGS84 ellipsoid) method.
 #' @param loc 'character' string.
 #'   Position of the scale bar in the main plot region;

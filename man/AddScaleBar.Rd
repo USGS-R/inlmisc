@@ -30,7 +30,7 @@ or a custom \emph{y/x} aspect ratio to include in this label.}
 \item{longlat}{'logical' flag.
 Whether user coordinates of the plotting region are in longitude and latitude;
 if true, scale distances are in kilometers.
-Note that scale distances are calculated at the maps latitude midpoint
+Scale distances are calculated at the maps latitude midpoint
 using the Great Circle distance (WGS84 ellipsoid) method.}
 
 \item{loc}{'character' string.

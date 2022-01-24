@@ -160,7 +160,9 @@ ExtractAlongTransect <- function(transect, r) {
   }
 
   lapply(segs, function(s) {
-    sp::SpatialPointsDataFrame(s[, 1:2], data.frame(s[, -(1:2)], row.names=NULL),
-                               proj4string=crs, match.ID=FALSE)
+    sp::SpatialPointsDataFrame(s[, 1:2],
+                               data.frame(s[, -(1:2)], row.names=NULL, stringsAsFactors=TRUE),
+                               proj4string=crs,
+                               match.ID=FALSE)
   })
 }

@@ -95,7 +95,7 @@
 #' xy <- rbind(c(2667705, 6478897),
 #'             c(2667430, 6479178))
 #' p <- sp::SpatialPoints(xy, proj4string = raster::crs(rs))
-#' d <-  data.frame("label" = c("Peak", "Random"))
+#' d <-  data.frame("label" = c("Peak", "Random"), stringsAsFactors = TRUE)
 #' features <- sp::SpatialPointsDataFrame(p, d, match.ID = TRUE)
 #' bg.image <- raster::hillShade(raster::terrain(r1, "slope"),
 #'                               raster::terrain(r1, "aspect"))

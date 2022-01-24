@@ -87,11 +87,11 @@
 #'   Grefenstette, J.J., Lawrence Earlbaum Associates, p. 155-161.
 #'
 #'   Luke, Sean, 2015, Essentials of metaheuristics (2nd ed.): Lulu, 263 p.,
-#'   available for free at \url{https://cs.gmu.edu/~sean/book/metaheuristics/}.
+#'   available for free at https://cs.gmu.edu/~sean/book/metaheuristics/.
 #'
 #'   Scrucca, Luca, 2013, GA: A Package for Genetic Algorithms in R:
 #'   Journal of Statistical Software, v. 53, no. 4, p. 1-37,
-#'   \url{http://dx.doi.org/10.18637/jss.v053.i04}.
+#'   \doi{10.18637/jss.v053.i04}.
 #'
 #'   Scrucca, Luca, 2017, On some extensions to GA package: hybrid optimisation,
 #'   parallelisation and islands evolution: The R Journal, v. 9, no. 1, p. 187-206,

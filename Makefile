@@ -1,7 +1,7 @@
 # Prepare Package for Release
 #
 # System requirements:
-#   pdfcrop - http://pdfcrop.sourceforge.net/
+#   pdfcrop - http://pdfcrop.sourceforge.net/ - tinytex::tlmgr_install("pdfcrop")
 #   inkscape - https://inkscape.org/
 #   svgcleaner - https://github.com/RazrFalcon/svgcleaner
 #   pandoc - https://pandoc.org/
@@ -19,7 +19,7 @@ PKGNAME := $(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
 PKGVERS := $(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
 PKGSRC  := $(shell basename `pwd`)
 
-all: docs install check clean
+all: install check clean
 .PHONY: all
 
 docs:
@@ -28,7 +28,7 @@ docs:
 	R -q -e 'pkgbuild::clean_dll()'
 .PHONY: docs
 
-build:
+build: docs
 	cd ..
 	R CMD build --no-build-vignettes $(PKGSRC)
 .PHONY: build

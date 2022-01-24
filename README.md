@@ -1,5 +1,4 @@
-inlmisc
-=======
+# inlmisc
 
 [![Travis Build
 Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
@@ -13,8 +12,7 @@ Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master
 [![USGS
 Category](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
 
-Description
------------
+## Description
 
 The [R](https://www.r-project.org/) package **inlmisc** is a collection
 of functions for creating high-level graphics, performing raster-based
@@ -24,10 +22,9 @@ models, selecting subsets using a genetic algorithm, creating
 interactive web maps, accessing color palettes, etc. Used to support
 packages and scripts written by researchers at the U.S. Geological
 Survey (USGS) Idaho National Laboratory (INL) [Project
-Office](https://www.usgs.gov/centers/id-water/science/idaho-national-laboratory-project-office "USGS INL Project Office").
+Office](https://www.usgs.gov/centers/idaho-water-science-center/science/idaho-national-laboratory-project-office "USGS INL Project Office").
 
-Installation
-------------
+## Installation
 
 The current release is available on
 [CRAN](https://CRAN.R-project.org/package=inlmisc "The Comprehensive R Archive Network"),
@@ -37,16 +34,16 @@ which you can install using the following command:
 install.packages("inlmisc", dependencies = TRUE)
 ```
 
-A recent version of [Pandoc](https://pandoc.org/installing.html) (\>=
+A recent version of [Pandoc](https://pandoc.org/installing.html) (>=
 1.12.3) is also required to run particular examples in the help
-documentation—[RStudio](https://rstudio.com/products/rstudio/) includes
-this so you do not need to download Pandoc if working in a RStudio IDE.
-The **webshot** package is imported from and has as a dependency the
-external program [PhantomJS](https://phantomjs.org/), which may be
-installed using the command:
+documentation—[RStudio](https://www.rstudio.com/products/rstudio/)
+includes this so you do not need to download Pandoc if working in a
+RStudio IDE. The **webshot** package is imported from and has as a
+dependency the external program [PhantomJS](https://phantomjs.org/),
+which may be installed using the command:
 
 ``` r
-webshot::webshotinstall_phantomjs()
+webshot::install_phantomjs()
 ```
 
 For creating word clouds, the [OptiPNG](http://optipng.sourceforge.net/)
@@ -59,8 +56,7 @@ if (!requireNamespace("remotes")) install.packages("remotes")
 remotes::install_github("USGS-R/inlmisc", dependencies = TRUE)
 ```
 
-Usage
------
+## Usage
 
 Examples are given in the package help pages. To access this
 documentation, run:
@@ -70,20 +66,16 @@ library("inlmisc")
 help(package = "inlmisc")
 ```
 
-Author
-------
+## Author
 
 Jason C. Fisher (ORCID iD
-[0000-0001-9032-8912](http://orcid.org/0000-0001-9032-8912))
+[0000-0001-9032-8912](https://orcid.org/0000-0001-9032-8912))
 
-Point of Contact
-----------------
+## Point of Contact
 
-Jason C. Fisher
-(<a href="mailto:jfisher@usgs.gov" class="email">jfisher@usgs.gov</a>)
+Jason C. Fisher (<jfisher@usgs.gov>)
 
-Suggested Citation
-------------------
+## Suggested Citation
 
 To cite **inlmisc** in publications, please use:
 
@@ -91,8 +83,7 @@ Fisher, J.C., 2020, inlmisc—Miscellaneous functions for the U.S.
 Geological Survey Idaho National Laboratory Project Office: U.S.
 Geological Survey software release, R package, Reston, Va.
 
-Contributing
-------------
+## Contributing
 
 We welcome your contributions and suggestions for how to make these
 materials more useful to the community. Please feel free to comment on
@@ -100,80 +91,74 @@ the [issue tracker](https://github.com/USGS-R/inlmisc/issues) or open a
 [merge request](https://github.com/USGS-R/inlmisc/pull/new/master) to
 contribute.
 
-Code of Conduct
----------------
+## Code of Conduct
 
 All contributions to- and interactions surrounding- this project will
 abide by the [USGS Code of Scientific
-Conduct](https://www.usgs.gov/about/organization/science-support/science-quality-and-integrity/fundamental-science-practices).
+Conduct](https://www.usgs.gov/office-of-science-quality-and-integrity/fundamental-science-practices).
 
-Disclaimer
-----------
+<!-- Embedded References -->
 
-This software has been approved for release by the U.S. Geological
-Survey (USGS). Although the software has been subjected to rigorous
-review, the USGS reserves the right to update the software as needed
-pursuant to further analysis and review. No warranty, expressed or
-implied, is made by the USGS or the U.S. Government as to the
-functionality of the software and related material nor shall the fact of
-release constitute any such warranty. Furthermore, the software is
-released on condition that neither the USGS nor the U.S. Government
-shall be held liable for any damages resulting from its authorized or
-unauthorized use.
+## Disclaimer
 
-License Information
--------------------
+This software is preliminary or provisional and is subject to revision.
+It is being provided to meet the need for timely best science. The
+software has not received final approval by the U.S. Geological Survey
+(USGS). No warranty, expressed or implied, is made by the USGS or the
+U.S. Government as to the functionality of the software and related
+material nor shall the fact of release constitute any such warranty. The
+software is provided on the condition that neither the USGS nor the U.S.
+Government shall be held liable for any damages resulting from the
+authorized or unauthorized use of the software.
 
-This software is a product of the U.S. Geological Survey (USGS), an
-agency of the United States Department of Interior, which is part of the
-U.S. Government.
+Any use of trade, product, or firm names is for descriptive purposes
+only and does not imply endorsement by the U.S. Government.
 
-#### Cost
+## License
 
-This software is freely distributed. There is no fee to download and
-(or) use this software.
+Unless otherwise noted, this project is in the public domain in the
+United States because it contains materials that originally came from
+the United States Geological Survey, an agency of the United States
+Department of Interior. For more information, see the official USGS
+copyright policy at
+[copyrights-and-credits](https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits).
 
-#### License
+Additionally, we waive copyright and related rights in the work
+worldwide through the CC0 1.0 Universal public domain dedication.
 
-Users do not need a license or permission from the USGS to use this
-software. Users can download and install as many copies of the software
-as they need. See Exceptions below.
+#### CC0 1.0 Universal Summary
 
-#### Public domain
+This is a human-readable summary of the [Legal Code (read the full
+text)](https://creativecommons.org/publicdomain/zero/1.0/legalcode).
 
-As a work of the United States Government, this USGS product is in the
-[public domain](https://www.usa.gov/government-works) within the United
-States. You can copy, modify, distribute, and perform the work, even for
-commercial purposes, all without asking permission. Additionally, USGS
-waives copyright and related rights in the work worldwide through [CC0
-1.0 Universal Public Domain
-Dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+##### No Copyright
 
-#### Exceptions
+The person who associated a work with this deed has dedicated the work
+to the public domain by waiving all of his or her rights to the work
+worldwide under copyright law, including all related and neighboring
+rights, to the extent allowed by law.
 
-This project may have numerous dependencies from other open-source
-software projects. The re-use and distribution of those software
-packages may be subject to the licenses of each of those dependencies.
+You can copy, modify, distribute and perform the work, even for
+commercial purposes, all without asking permission.
 
-Support
--------
+##### Other Information
+
+In no way are the patent or trademark rights of any person affected by
+CC0, nor are the rights that other persons may have in the work or in
+how the work is used, such as publicity or privacy rights.
+
+Unless expressly stated otherwise, the person who associated a work with
+this deed makes no warranties about the work, and disclaims liability
+for all uses of the work, to the fullest extent permitted by applicable
+law. When using or citing the work, you should not imply endorsement by
+the author or the affirmer.
+
+<!-- Embedded References -->
+
+## Support
 
 The Idaho National Laboratory Project Office of the USGS supports the
-development and maintenance of **inlmisc**. Resources are available
+development and maintenance of **inlpubs**. Resources are available
 primarily for maintenance and responding to user questions. Priorities
-on the development of new features are determined by the inlmisc
-development team.
-
-Disclaimer
-----------
-
-This software has been approved for release by the U.S. Geological
-Survey (USGS). Although the software has been subjected to rigorous
-review, the USGS reserves the right to update the software as needed
-pursuant to further analysis and review. No warranty, expressed or
-implied, is made by the USGS or the U.S. Government as to the
-functionality of the software and related material nor shall the fact of
-release constitute any such warranty. Furthermore, the software is
-released on condition that neither the USGS nor the U.S. Government
-shall be held liable for any damages resulting from its authorized or
-unauthorized use.
+on the development of new features are determined by the development
+team.

@@ -12,7 +12,7 @@
 #' @note R incorrectly formats objects of calss '\link{POSIXct}' with fractional seconds.
 #' For example, a 'POSIXct' time with fractional part \code{.3} seconds (stored as \code{0.29999})
 #' is printed as \code{.2} when represented with one decimal digit.
-#' Note that the fractional part on outputs is not rounded.
+#' The fractional part on outputs is not rounded.
 #' Decimal precision is down to milliseconds on Windows,
 #' and down to (almost) microseconds on the other operating systems.
 #'

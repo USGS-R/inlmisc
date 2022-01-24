@@ -65,7 +65,7 @@
 #'
 #'   Daily snapshots of CRAN are stored on MRAN and available as far back as September 17, 2014.
 #'   Use the \code{snapshot} argument to install older package versions from MRAN.
-#'   Note that newer versions of \R may not be compatible with older versions of packages.
+#'   Newer versions of \R may not be compatible with older versions of packages.
 #'   To avoid any package installation issues,
 #'   install the \R version that was available from CRAN on the
 #'   \href{https://mran.microsoft.com/snapshot/}{snapshot date}.
@@ -107,21 +107,22 @@
 #' @keywords utilities
 #'
 #' @examples
+#' \donttest{
 #' # Run on old version of R
 #' SavePackageDetails()
 #'
-#' \dontrun{
 #' # Run on new version of R, and ensure 'inlmisc' package is available.
-#' repos <- c(CRAN = "https://cloud.r-project.org/",
-#'            GRAN = "https://owi.usgs.gov/R")
-#' if (system.file(package = "inlmisc") == "")
-#'   utils::install.packages("inlmisc", repos = repos["CRAN"],
-#'                           dependencies = TRUE)
-#' inlmisc::RecreateLibrary(repos = repos)
+#' if (interactive()) {
+#'   repos <- c(CRAN = "https://cloud.r-project.org/")
+#'   if (system.file(package = "inlmisc") == "")
+#'     utils::install.packages("inlmisc", repos = repos["CRAN"],
+#'                             dependencies = TRUE)
+#'   inlmisc::RecreateLibrary(repos = repos)
 #' }
 #'
 #' # Clean up example
 #' file.remove("R-packages.tsv")
+#' }
 #'
 #' @rdname RecreateLibrary
 #' @export

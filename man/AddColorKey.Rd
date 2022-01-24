@@ -37,7 +37,7 @@ Points at which tick-marks and labels are to be drawn,
 only applicable for continuous data.
 The tick marks will be located at the color breaks if the length of \code{at} is
 greater than or equal to one minus the length of \code{breaks}.
-Note that tick-mark labels are omitted where they would abut or overlap previously drawn labels
+Tick-mark labels are omitted where they would abut or overlap previously drawn labels
 (labels are drawn left to right).}
 
 \item{labels}{'logical' flag, 'character' vector, 'expression' vector, 'numeric' vector, or 'factor' vector.

@@ -125,11 +125,10 @@ for (no in seq_along(levels(cite))) {
 
   tinytex::pdflatex("table.tex")
 
-  # tinytex::tlmgr_install("pdfcrop")
   arg <- c("--margins 1", "--clip", "table.pdf", "table.pdf")
   system2("pdfcrop", args=arg, stdout=FALSE, stderr=FALSE)
 
-  arg <- c("--without-gui", "--file=table.pdf", "--export-plain-svg=table.svg")
+  arg <- c("--export-plain-svg", "--export-filename=table.svg", "table.pdf")
   system2("inkscape", args=arg, stdout=FALSE, stderr=FALSE)
 
   gs_cmd <- Sys.getenv("R_GSCMD", tools::find_gs_cmd())
