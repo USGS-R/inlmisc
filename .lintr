@@ -1,0 +1,6 @@
+linters: with_defaults(
+    line_length_linter(120),
+    object_usage_linter = NULL,
+    undesirable_function_linter("sapply"),
+    object_name_linter("dotted.case")
+  )

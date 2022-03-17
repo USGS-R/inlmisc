@@ -61,4 +61,4 @@ your article for submission, see the
 
 # Todo
 
-\url{https://github.com/rstudio/rticles/blob/master/inst/rmarkdown/templates/sim_article/skeleton/skeleton.Rmd}
+\url{https://github.com/rstudio/rticles/blob/main/inst/rmarkdown/templates/sim_article/skeleton/skeleton.Rmd}
