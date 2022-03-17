@@ -214,7 +214,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
       if (is.null(n)) n <- 200L
       if (is.null(breaks)) {
         at <- pretty(cell.values)
-        breaks <- seq(min(at), max(at), length.out=n)
+        breaks <- seq(min(at, na.rm=TRUE), max(at, na.rm=TRUE), length.out=n)
       }
       intervals <- findInterval(cell.values, breaks, all.inside=TRUE)
       if (is.null(col)) col <- pal(length(breaks) - 1)
@@ -290,7 +290,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
 
   if (draw.key) {
     cm.in.inches <- 2.54
-    heights <- c(h2/ h, graphics::lcm(h1 * cm.in.inches))
+    heights <- c(h2 / h, graphics::lcm(h1 * cm.in.inches))
     graphics::layout(matrix(c(2, 1), nrow=2, ncol=1), heights=heights)
     if (!is.null(labels$at)) at <- labels$at
     labs <- if (is.null(labels$labels)) TRUE else labels$labels
