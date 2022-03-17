@@ -45,7 +45,7 @@ Finally, to install the development version of **inlmisc**, you need to clone th
 
 ```r
 if (!requireNamespace("remotes")) install.packages("remotes")
-remotes::install_github("USGS-R/inlmisc", dependencies = TRUE)
+remotes::install_github("USGS-R/inlmisc@develop", dependencies = TRUE)
 ```
 
 ## Usage

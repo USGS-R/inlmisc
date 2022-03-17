@@ -53,7 +53,7 @@ need to clone the repository and build from source, or run:
 
 ``` r
 if (!requireNamespace("remotes")) install.packages("remotes")
-remotes::install_github("USGS-R/inlmisc", dependencies = TRUE)
+remotes::install_github("USGS-R/inlmisc@develop", dependencies = TRUE)
 ```
 
 ## Usage
