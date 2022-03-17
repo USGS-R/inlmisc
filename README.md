@@ -1,14 +1,14 @@
 # inlmisc
 
-[![Travis Build
-Status](https://travis-ci.org/USGS-R/inlmisc.svg?branch=master)](https://travis-ci.org/USGS-R/inlmisc)
+[![Build
+status](https://ci.appveyor.com/api/projects/status/pvcq1jsgabqx61ah?svg=true)](https://ci.appveyor.com/project/jfisher-usgs/inlmisc)
 [![CRAN
 Version](https://www.r-pkg.org/badges/version/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
 [![CRAN
 Downloads](https://cranlogs.r-pkg.org/badges/inlmisc?color=brightgreen)](https://CRAN.R-project.org/package=inlmisc)
 [![Dependencies](https://tinyverse.netlify.com/badge/inlmisc)](https://CRAN.R-project.org/package=inlmisc)
 [![Coverage
-Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=master)](https://coveralls.io/github/USGS-R/inlmisc?branch=master)
+Status](https://coveralls.io/repos/github/USGS-R/inlmisc/badge.svg?branch=main)](https://coveralls.io/github/USGS-R/inlmisc?branch=main)
 [![USGS
 Category](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
 
@@ -34,7 +34,7 @@ which you can install using the following command:
 install.packages("inlmisc", dependencies = TRUE)
 ```
 
-A recent version of [Pandoc](https://pandoc.org/installing.html) (>=
+A recent version of [Pandoc](https://pandoc.org/installing.html) (\>=
 1.12.3) is also required to run particular examples in the help
 documentation—[RStudio](https://www.rstudio.com/products/rstudio/)
 includes this so you do not need to download Pandoc if working in a
@@ -88,7 +88,7 @@ Geological Survey software release, R package, Reston, Va.
 We welcome your contributions and suggestions for how to make these
 materials more useful to the community. Please feel free to comment on
 the [issue tracker](https://github.com/USGS-R/inlmisc/issues) or open a
-[merge request](https://github.com/USGS-R/inlmisc/pull/new/master) to
+[merge request](https://github.com/USGS-R/inlmisc/pull/new/main) to
 contribute.
 
 ## Code of Conduct
