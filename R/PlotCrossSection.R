@@ -180,7 +180,19 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   if (!is.null(file)) checkmate::assertPathForOutput(file, overwrite=TRUE)
 
   transect <- sp::spTransform(transect, raster::crs(rs))
-  rs <- raster::crop(rs, raster::extent(as.vector(t(sp::bbox(transect)))), snap="out")
+
+  ext <- raster::extent(as.vector(t(sp::bbox(transect))))
+  bump <- 0.001
+  if (identical(ext@xmin, ext@xmax)) {
+    ext@xmin <- ext@xmin - bump
+    ext@xmax <- ext@xmax + bump
+  }
+  if (identical(ext@ymin, ext@ymax)) {
+    ext@ymin <- ext@ymin - bump
+    ext@ymax <- ext@ymax + bump
+  }
+  rs <- raster::crop(rs, ext, snap="out")
+
   layer.names <- unique(c(geo.lays, val.lays, wt.lay))
   eat <- ExtractAlongTransect(transect, raster::subset(rs, layer.names))
 
@@ -318,6 +330,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
   if (!is.null(bg.col)) {
     bg.poly <- sp::SpatialPolygons(list(sp::Polygons(lapply(eat, function(i) {
       m <- cbind(x=i@data[[1]], y=i@data[[2]])
+      m <- m[!apply(m, 1, function(x) any(is.na(x))), ]
       m <- rbind(m, cbind(rev(range(m[, "x"], na.rm=TRUE)), usr[3]), m[1, , drop=FALSE])
       sp::Polygon(m)
     }), "bg")), 1L)
