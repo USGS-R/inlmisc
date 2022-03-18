@@ -232,7 +232,7 @@ PlotCrossSection <- function(transect, rs, geo.lays=names(rs), val.lays=NULL,
       if (is.null(col)) col <- pal(length(breaks) - 1)
       cell.cols <- col[intervals]
     }
-    cols <- unique(cell.cols)
+    cols <- unique(stats::na.omit(cell.cols))
 
     p <- lapply(seq_along(cols), function(i) {
       p <- sp::Polygons(cell.polys[which(cell.cols == cols[i])], i)
